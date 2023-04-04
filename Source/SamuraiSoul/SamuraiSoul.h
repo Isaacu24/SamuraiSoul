@@ -10,5 +10,5 @@ enum class ESSAbilityInputID : uint8
 	None,
 	Confirm,
 	Cancel,
-	Attack
+	Slash
 };

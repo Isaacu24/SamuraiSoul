@@ -11,7 +11,6 @@
 #include "SSGameplayAbility.h"
 #include "SSAttributeSet.h"
 #include "SamuraiSoul.h"
-#include <GameplayEffectTypes.h>
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -19,18 +18,17 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> BodyMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Character/Mesh/SK_GhostSamurai_katana.SK_GhostSamurai_katana'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_BODY(TEXT("/Script/Engine.SkeletalMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Character/Mesh/SK_GhostSamurai_katana.SK_GhostSamurai_katana'"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
 
-	if (true == BodyMesh.Succeeded())
+	if (true == SK_BODY.Succeeded())
 	{
-		GetMesh()->SetSkeletalMesh(BodyMesh.Object);
+		GetMesh()->SetSkeletalMesh(SK_BODY.Object);
 	}
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
-
-	if (true == CharacterAnim.Succeeded())
+	if (true == ANIM_SAMURAI.Succeeded())
 	{
-		GetMesh()->SetAnimInstanceClass(CharacterAnim.Class);
+		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
 	}
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -87.5f });
@@ -46,12 +44,6 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 
 	Arm->TargetArmLength = 500.f;
 	Arm->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
-
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComp"));
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-
-	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 
 	JumpMaxCount = 1;
 
@@ -76,6 +68,8 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
+
+	MyAniminstance = Cast<USSSamuraiAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 // Called when the game starts or when spawned
@@ -106,6 +100,8 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Jump);
 
+	PlayerInputComponent->BindAction("Slash", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Slash);
+
 	PlayerInputComponent->BindAction("Equip", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Equip);
 	PlayerInputComponent->BindAction("Dodge", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Dodge);
 
@@ -124,77 +120,45 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	}
 }
 
-UAbilitySystemComponent* ASSSamuraiCharacter::GetAbilitySystemComponent() const
+void ASSSamuraiCharacter::PostInitializeComponents()
 {
-	return AbilitySystemComponent;
-}
-
-void ASSSamuraiCharacter::InitializeAttributes()
-{
-	//1
-	if (nullptr != AbilitySystemComponent 
-		&& nullptr != DefaultAttributeEffect)
-	{
-		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-		EffectContext.AddSourceObject(this);
-
-		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributeEffect, 1, EffectContext);
-
-		if (SpecHandle.IsValid())
-		{
-			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-		}
-	}
-}
-
-void ASSSamuraiCharacter::GiveAbilities()
-{
-	//2
-	if (true == HasAuthority()
-		&& nullptr != AbilitySystemComponent)
-	{
-		for (TSubclassOf<USSGameplayAbility>& StartUpAbility : DefaultAbilities)
-		{
-			AbilitySystemComponent->GiveAbility(
-				FGameplayAbilitySpec(StartUpAbility, 1, static_cast<int32>(StartUpAbility.GetDefaultObject()->AbilityInputID), this));
-		}
-	}
-}
-
-void ASSSamuraiCharacter::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
-
-	//Server Gas Init
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-
-	InitializeAttributes();
-	GiveAbilities();
+	Super::PostInitializeComponents();
 }
 
 void ASSSamuraiCharacter::OnRep_PlayerState()
 {
+	//Replication no idea
 	Super::OnRep_PlayerState();
 
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	InitializeAttributes();
+	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	//InitializeAttributes();
 
-	if (nullptr != AbilitySystemComponent 
-		&& nullptr != InputComponent)
-	{
-		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "ESSAbilityInputID",
-			static_cast<int32>(ESSAbilityInputID::Confirm), static_cast<int32>(ESSAbilityInputID::Cancel));
-		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
-	}
+	//if (nullptr != AbilitySystemComponent 
+	//	&& nullptr != InputComponent)
+	//{
+	//	const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "ESSAbilityInputID",
+	//		static_cast<int32>(ESSAbilityInputID::Confirm), static_cast<int32>(ESSAbilityInputID::Cancel));
+	//	AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
+	//}
 }
 
 void ASSSamuraiCharacter::FowardBackMove(float Value)
 {
+	if (true == bIsSlash)
+	{
+		return;
+	}
+
 	AddMovementInput(FRotationMatrix(FRotator(0.f, GetController()->GetControlRotation().Yaw, 0.f)).GetUnitAxis(EAxis::X), Value);
 }
 
 void ASSSamuraiCharacter::RightLeftMove(float Value)
 {
+	if (true == bIsSlash)
+	{
+		return;
+	}
+
 	AddMovementInput(FRotationMatrix(FRotator(0.f, GetController()->GetControlRotation().Yaw, 0.f)).GetUnitAxis(EAxis::Y), Value);
 }
 
@@ -202,9 +166,7 @@ void ASSSamuraiCharacter::Equip()
 {
 	bIsEquip = !bIsEquip;
 
-	USSSamuraiAnimInstance* AnimInstance = Cast<USSSamuraiAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (nullptr == AnimInstance)
+	if (nullptr == MyAniminstance)
 	{
 		return;
 	}
@@ -213,12 +175,12 @@ void ASSSamuraiCharacter::Equip()
 	{
 		if (0.1f < GetVelocity().Size())
 		{
-			AnimInstance->PlayEquipMontage();
+			MyAniminstance->PlayEquipMontage();
 		}
 
 		else
 		{
-			AnimInstance->PlayEquipRootMontage();
+			MyAniminstance->PlayEquipRootMontage();
 		}
 	}
 
@@ -226,12 +188,12 @@ void ASSSamuraiCharacter::Equip()
 	{
 		if (0.1f < GetVelocity().Size())
 		{
-			AnimInstance->PlayUnarmMontage();
+			MyAniminstance->PlayUnarmMontage();
 		}
 
 		else
 		{
-			AnimInstance->PlayUnarmRootMontage();
+			MyAniminstance->PlayUnarmRootMontage();
 		}
 	}
 
@@ -244,14 +206,22 @@ void ASSSamuraiCharacter::Dodge()
 		return;
 	}
 
-	USSSamuraiAnimInstance* AnimInstance = Cast<USSSamuraiAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (nullptr == AnimInstance)
+	if (nullptr == MyAniminstance)
 	{
 		return;
 	}
 
-	AnimInstance->PlayDodgeMontage();
+	MyAniminstance->PlayDodgeMontage();
+}
+
+void ASSSamuraiCharacter::Slash()
+{
+	if (nullptr == MyAniminstance)
+	{
+		return;
+	}
+
+	MyAniminstance->PlaySlashMontage();
 }
 
 void ASSSamuraiCharacter::Run()

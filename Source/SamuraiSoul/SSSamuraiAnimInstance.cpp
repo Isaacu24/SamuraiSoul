@@ -11,6 +11,7 @@ USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> DODGE_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Dodge.AM_Dodge'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EQUIP_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Equip.AM_Equip'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> UNARM_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Unarm.AM_Unarm'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> SLASH_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Slash.AM_Slash'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EQUIP_MONTAGE_ROOT(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Equip_ROOT.AM_Equip_ROOT'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> UNARM_MONTAGE_ROOT(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Unarm_ROOT.AM_Unarm_ROOT'"));
 
@@ -27,6 +28,11 @@ USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 	if (true == UNARM_MONTAGE.Succeeded())
 	{
 		UnarmMontage = UNARM_MONTAGE.Object;
+	}
+
+	if (true == SLASH_MONTAGE.Succeeded())
+	{
+		SlashMontage = SLASH_MONTAGE.Object;
 	}
 
 	if (true == EQUIP_MONTAGE_ROOT.Succeeded())
@@ -95,6 +101,11 @@ void USSSamuraiAnimInstance::PlayEquipMontage()
 void USSSamuraiAnimInstance::PlayUnarmMontage()
 {
 	Montage_Play(UnarmMontage, 1.0f);
+}
+
+void USSSamuraiAnimInstance::PlaySlashMontage()
+{
+	Montage_Play(SlashMontage, 1.0f);
 }
 
 void USSSamuraiAnimInstance::PlayEquipRootMontage()

@@ -20,6 +20,8 @@ public:
 	void PlayDodgeMontage();
 	void PlayEquipMontage();
 	void PlayUnarmMontage();
+	void PlaySlashMontage();
+
 	void PlayEquipRootMontage();
 	void PlayUnarmRootMontage();
 
@@ -64,4 +66,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UAnimMontage> UnarmRootMontage;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+		TObjectPtr<UAnimMontage> SlashMontage;
 };
