@@ -51,9 +51,9 @@ void USSSamuraiAnimInstance::NativeBeginPlay()
 	Super::NativeBeginPlay();
 }
 
-void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void USSSamuraiAnimInstance::NativeInitializeAnimation()
 {
-	Super::NativeUpdateAnimation(DeltaSeconds);
+	Super::NativeInitializeAnimation();
 
 	APawn* Pawn = TryGetPawnOwner();
 
@@ -62,30 +62,33 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		return;
 	}
 
-	Speed = Pawn->GetVelocity().Size();
+	MyCharacter = Cast<ASSSamuraiCharacter>(Pawn);
+	MyCharacter->MEquipDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipMontage);
+	MyCharacter->MEquipRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipRootMontage);
+	MyCharacter->MUnarmDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmMontage);
+	MyCharacter->MUnarmRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmRootMontage);
+	MyCharacter->MDodgeDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayDodgeMontage);
+	MyCharacter->MSlashDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlaySlashMontage);
+}
+
+void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	Speed = MyCharacter->GetVelocity().Size();
 	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Red, FString::SanitizeFloat(Speed));
 
-	Direction = CalculateDirection(Pawn->GetVelocity(), Pawn->GetActorRotation());
-
-	ASSSamuraiCharacter* MyCharacter = Cast<ASSSamuraiCharacter>(Pawn);
+	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
 
 	IsCrouch = MyCharacter->IsCrouch();
 	IsAir = MyCharacter->GetCharacterMovement()->IsFalling();
-	IsLastEquip = IsEquip;
 	IsEquip = MyCharacter->IsEquip();
 }
 
 
 void USSSamuraiAnimInstance::AnimNotify_DodgeEnd()
 {
-	APawn* Pawn = TryGetPawnOwner();
 
-	if (false == IsValid(Pawn))
-	{
-		return;
-	}
-
-	ASSSamuraiCharacter* MyCharacter = Cast<ASSSamuraiCharacter>(Pawn);
 }
 
 void USSSamuraiAnimInstance::PlayDodgeMontage()

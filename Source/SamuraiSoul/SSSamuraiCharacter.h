@@ -6,6 +6,13 @@
 #include "SSCharacterBase.h"
 #include "SSSamuraiCharacter.generated.h"
 
+DECLARE_DELEGATE(FEquipDelegate);
+DECLARE_DELEGATE(FUnarmDelegate);
+DECLARE_DELEGATE(FEquipRootDelegate);
+DECLARE_DELEGATE(FUnarmRootDelegate);
+DECLARE_DELEGATE(FDodgeDelegate);
+DECLARE_DELEGATE(FSlashDelegate);
+
 UCLASS()
 class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase
 {
@@ -19,7 +26,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -40,6 +47,13 @@ public:
 		return bIsEquip;
 	}
 
+	FEquipDelegate MEquipDelegate;
+	FUnarmDelegate MUnarmDelegate;
+	FEquipRootDelegate MEquipRootDelegate;
+	FUnarmRootDelegate MUnarmRootDelegate;
+	FDodgeDelegate MDodgeDelegate;
+	FSlashDelegate MSlashDelegate;
+
 private:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UCameraComponent> Camera;
@@ -54,7 +68,7 @@ private:
 	bool bIsEquip = false;
 
 	UPROPERTY()
-		bool bIsSlash = false;
+	bool bIsSlash = false;
 
 	UPROPERTY()
 	FTimerHandle DodgeTimerHandle;
@@ -62,9 +76,9 @@ private:
 	UPROPERTY()
 	FTimerHandle DodgeEndTimerHandle;
 
-	UPROPERTY()
-		TObjectPtr<class USSSamuraiAnimInstance> MyAniminstance;
-	
+	//UPROPERTY()
+	//TObjectPtr<class USSSamuraiAnimInstance> MyAniminstance;
+
 private:
 	void FowardBackMove(float Value);
 	void RightLeftMove(float Value);

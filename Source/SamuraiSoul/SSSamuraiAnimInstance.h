@@ -27,46 +27,46 @@ public:
 
 protected:
 	virtual void NativeBeginPlay() override;
+	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
 	UFUNCTION()
 	void AnimNotify_DodgeEnd();
+	
+	UPROPERTY()
+	TObjectPtr<class ASSSamuraiCharacter> MyCharacter;
 
-public:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	float Speed = 0.f;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	float Direction = 0.f;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	bool IsCrouch = false;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	bool IsAir = false;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	bool IsEquip = false;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
-	bool IsLastEquip = false;
-
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	TObjectPtr<UAnimMontage> DodgeMontage;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	TObjectPtr<UAnimMontage> EquipMontage;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	TObjectPtr<UAnimMontage> UnarmMontage;
 	
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	TObjectPtr<UAnimMontage> EquipRootMontage;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	TObjectPtr<UAnimMontage> UnarmRootMontage;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-		TObjectPtr<UAnimMontage> SlashMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
+	TObjectPtr<UAnimMontage> SlashMontage;
 };

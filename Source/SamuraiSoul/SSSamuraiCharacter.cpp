@@ -68,8 +68,6 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
-
-	MyAniminstance = Cast<USSSamuraiAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 // Called when the game starts or when spawned
@@ -123,6 +121,8 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 void ASSSamuraiCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	//MyAniminstance = Cast<USSSamuraiAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void ASSSamuraiCharacter::OnRep_PlayerState()
@@ -166,21 +166,23 @@ void ASSSamuraiCharacter::Equip()
 {
 	bIsEquip = !bIsEquip;
 
-	if (nullptr == MyAniminstance)
-	{
-		return;
-	}
+	//if (nullptr == MyAniminstance)
+	//{
+	//	return;
+	//}
 
 	if (true == bIsEquip)
 	{
 		if (0.1f < GetVelocity().Size())
 		{
-			MyAniminstance->PlayEquipMontage();
+			//MyAniminstance->PlayEquipMontage();
+			MEquipDelegate.Execute();
 		}
 
 		else
 		{
-			MyAniminstance->PlayEquipRootMontage();
+			//MyAniminstance->PlayEquipRootMontage();
+			MEquipRootDelegate.Execute();
 		}
 	}
 
@@ -188,12 +190,14 @@ void ASSSamuraiCharacter::Equip()
 	{
 		if (0.1f < GetVelocity().Size())
 		{
-			MyAniminstance->PlayUnarmMontage();
+			//MyAniminstance->PlayUnarmMontage();
+			MUnarmDelegate.Execute();
 		}
 
 		else
 		{
-			MyAniminstance->PlayUnarmRootMontage();
+			//MyAniminstance->PlayUnarmRootMontage();
+			MUnarmRootDelegate.Execute();
 		}
 	}
 
@@ -206,22 +210,24 @@ void ASSSamuraiCharacter::Dodge()
 		return;
 	}
 
-	if (nullptr == MyAniminstance)
-	{
-		return;
-	}
+	//if (nullptr == MyAniminstance)
+	//{
+	//	return;
+	//}
 
-	MyAniminstance->PlayDodgeMontage();
+	//MyAniminstance->PlayDodgeMontage();
+	MDodgeDelegate.Execute();
 }
 
 void ASSSamuraiCharacter::Slash()
 {
-	if (nullptr == MyAniminstance)
-	{
-		return;
-	}
+	//if (nullptr == MyAniminstance)
+	//{
+	//	return;
+	//}
 
-	MyAniminstance->PlaySlashMontage();
+	//MyAniminstance->PlaySlashMontage();
+	MSlashDelegate.Execute();
 }
 
 void ASSSamuraiCharacter::Run()
