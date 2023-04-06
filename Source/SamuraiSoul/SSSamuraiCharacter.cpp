@@ -2,15 +2,26 @@
 
 
 #include "SSSamuraiCharacter.h"
-#include <Camera/CameraComponent.h>
-#include <GameFramework/SpringArmComponent.h>
-#include <Components/CapsuleComponent.h>
-#include <GameFramework/CharacterMovementComponent.h>
-#include "SSSamuraiAnimInstance.h"
-#include "AbilitySystemComponent.h"
-#include "SSGameplayAbility.h"
-#include "SSAttributeSet.h"
+
 #include "SamuraiSoul.h"
+
+#include "SSSamuraiAnimInstance.h"
+#include <Camera/CameraComponent.h>
+#include <Components/CapsuleComponent.h>
+#include <GameFramework/SpringArmComponent.h>
+#include <GameFramework/CharacterMovementComponent.h>
+
+#include "SSAttributeSet.h"
+#include "SSGameplayAbility.h"
+#include "GameplayEffectTypes.h"
+#include "AbilitySystemComponent.h"
+#include "SSAbilitySystemComponent.h"
+
+#include "SSInputConfigData.h"
+#include "InputMappingContext.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "Components/InputComponent.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -20,6 +31,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_BODY(TEXT("/Script/Engine.SkeletalMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Character/Mesh/SK_GhostSamurai_katana.SK_GhostSamurai_katana'"));
 	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> INPUT_CONTEXT(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/MyContent/Input/IMC_SamuraiCharacter.IMC_SamuraiCharacter'"));
 
 	if (true == SK_BODY.Succeeded())
 	{
@@ -29,6 +41,12 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	if (true == ANIM_SAMURAI.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
+	}
+
+	if (INPUT_CONTEXT.Succeeded())
+	{
+		InputMappingContext = INPUT_CONTEXT.Object;
+		//InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputAction"));
 	}
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -87.5f });
@@ -75,14 +93,19 @@ void ASSSamuraiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(InputMappingContext, 0);
+		}
+	}
 }
 
 // Called every frame
 void ASSSamuraiCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//UE_LOG(LogTemp, Log, TEXT("Character is Die :: %s"), bIsEquip ? TEXT("true") : TEXT("false"));
 }
 
 // Called to bind functionality to input
@@ -90,24 +113,18 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("FowardBackMove", this, &ASSSamuraiCharacter::FowardBackMove);
-	PlayerInputComponent->BindAxis("RightLeftMove", this, &ASSSamuraiCharacter::RightLeftMove);
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		//NativeinputAction
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Move"))),
+			ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Move);
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"))),
+			ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
 
-	PlayerInputComponent->BindAxis("LookUp", this, &ASSSamuraiCharacter::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Turn", this, &ASSSamuraiCharacter::AddControllerYawInput);
-
-	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Jump);
-
-	PlayerInputComponent->BindAction("Slash", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Slash);
-
-	PlayerInputComponent->BindAction("Equip", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Equip);
-	PlayerInputComponent->BindAction("Dodge", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Dodge);
-
-	PlayerInputComponent->BindAction("Run", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::Run);
-	PlayerInputComponent->BindAction("UnRun", EInputEvent::IE_Released, this, &ASSSamuraiCharacter::UnRun);
-
-	PlayerInputComponent->BindAction("Crouch", EInputEvent::IE_Pressed, this, &ASSSamuraiCharacter::CrouchStart);
-	PlayerInputComponent->BindAction("UnCrouch", EInputEvent::IE_Released, this, &ASSSamuraiCharacter::CrouchEnd);
+		//AbilityInputAction
+		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
+		//	ETriggerEvent::Triggered, AbilitySystemComponent, &UAbilitySystemComponent::AbilityLocalInputPressed, static_cast<int32>(ESSAbilityInputID::Jump));
+	}
 
 	if (nullptr != AbilitySystemComponent
 		&& nullptr != InputComponent)
@@ -121,8 +138,6 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 void ASSSamuraiCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
-	//MyAniminstance = Cast<USSSamuraiAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void ASSSamuraiCharacter::OnRep_PlayerState()
@@ -142,46 +157,48 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 	//}
 }
 
-void ASSSamuraiCharacter::FowardBackMove(float Value)
+void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 {
-	if (true == bIsSlash)
-	{
-		return;
-	}
+	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	AddMovementInput(FRotationMatrix(FRotator(0.f, GetController()->GetControlRotation().Yaw, 0.f)).GetUnitAxis(EAxis::X), Value);
+	if (Controller != nullptr)
+	{
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		AddMovementInput(ForwardDirection, MovementVector.Y);
+		AddMovementInput(RightDirection, MovementVector.X);
+	}
 }
 
-void ASSSamuraiCharacter::RightLeftMove(float Value)
+void ASSSamuraiCharacter::Look(const FInputActionValue& Value)
 {
-	if (true == bIsSlash)
-	{
-		return;
-	}
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	AddMovementInput(FRotationMatrix(FRotator(0.f, GetController()->GetControlRotation().Yaw, 0.f)).GetUnitAxis(EAxis::Y), Value);
+	if (Controller != nullptr)
+	{
+		AddControllerYawInput(LookAxisVector.X);
+		AddControllerPitchInput(LookAxisVector.Y);
+	}
 }
 
 void ASSSamuraiCharacter::Equip()
 {
 	bIsEquip = !bIsEquip;
 
-	//if (nullptr == MyAniminstance)
-	//{
-	//	return;
-	//}
-
 	if (true == bIsEquip)
 	{
 		if (0.1f < GetVelocity().Size())
 		{
-			//MyAniminstance->PlayEquipMontage();
 			MEquipDelegate.Execute();
 		}
 
 		else
 		{
-			//MyAniminstance->PlayEquipRootMontage();
 			MEquipRootDelegate.Execute();
 		}
 	}
@@ -190,13 +207,11 @@ void ASSSamuraiCharacter::Equip()
 	{
 		if (0.1f < GetVelocity().Size())
 		{
-			//MyAniminstance->PlayUnarmMontage();
 			MUnarmDelegate.Execute();
 		}
 
 		else
 		{
-			//MyAniminstance->PlayUnarmRootMontage();
 			MUnarmRootDelegate.Execute();
 		}
 	}
@@ -210,23 +225,11 @@ void ASSSamuraiCharacter::Dodge()
 		return;
 	}
 
-	//if (nullptr == MyAniminstance)
-	//{
-	//	return;
-	//}
-
-	//MyAniminstance->PlayDodgeMontage();
 	MDodgeDelegate.Execute();
 }
 
 void ASSSamuraiCharacter::Slash()
 {
-	//if (nullptr == MyAniminstance)
-	//{
-	//	return;
-	//}
-
-	//MyAniminstance->PlaySlashMontage();
 	MSlashDelegate.Execute();
 }
 

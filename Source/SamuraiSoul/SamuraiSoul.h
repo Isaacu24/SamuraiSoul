@@ -10,5 +10,22 @@ enum class ESSAbilityInputID : uint8
 	None,
 	Confirm,
 	Cancel,
+	Idle,
+	Move,
+	Jump,
+	Dodge,
+	Slash
+};
+
+UENUM(BlueprintType)
+enum class ESSAbilityID : uint8
+{
+	None,
+	Confirm,
+	Cancel,
+	Idle,
+	Move,
+	Jump,
+	Dodge,
 	Slash
 };

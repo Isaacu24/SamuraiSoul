@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
+#include "InputActionValue.h"
 #include "SSSamuraiCharacter.generated.h"
 
 DECLARE_DELEGATE(FEquipDelegate);
@@ -61,6 +62,12 @@ private:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class USpringArmComponent> Arm;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class USSInputConfigData> InputActions;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputMappingContext> InputMappingContext;
+
 	UPROPERTY()
 	bool bIsCrouch = false;
 
@@ -80,8 +87,8 @@ private:
 	//TObjectPtr<class USSSamuraiAnimInstance> MyAniminstance;
 
 private:
-	void FowardBackMove(float Value);
-	void RightLeftMove(float Value);
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
 	void Equip();
 

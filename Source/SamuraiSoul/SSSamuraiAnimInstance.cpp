@@ -63,17 +63,26 @@ void USSSamuraiAnimInstance::NativeInitializeAnimation()
 	}
 
 	MyCharacter = Cast<ASSSamuraiCharacter>(Pawn);
-	MyCharacter->MEquipDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipMontage);
-	MyCharacter->MEquipRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipRootMontage);
-	MyCharacter->MUnarmDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmMontage);
-	MyCharacter->MUnarmRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmRootMontage);
-	MyCharacter->MDodgeDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayDodgeMontage);
-	MyCharacter->MSlashDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlaySlashMontage);
+
+	if (true == IsValid(MyCharacter))
+	{
+		MyCharacter->MEquipDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipMontage);
+		MyCharacter->MEquipRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipRootMontage);
+		MyCharacter->MUnarmDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmMontage);
+		MyCharacter->MUnarmRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmRootMontage);
+		MyCharacter->MDodgeDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayDodgeMontage);
+		MyCharacter->MSlashDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlaySlashMontage);
+	}
 }
 
 void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	if (false == IsValid(MyCharacter))
+	{
+		return;
+	}
 
 	Speed = MyCharacter->GetVelocity().Size();
 	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Red, FString::SanitizeFloat(Speed));
