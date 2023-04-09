@@ -90,7 +90,7 @@ private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
-	void Equip();
+	void EquipAndUnarm();
 
 	void Dodge();
 
@@ -101,4 +101,22 @@ private:
 
 	void CrouchStart();
 	void CrouchEnd();
+
+	void HandleRunActionPressed();
+	void HandleRunActionReleased();
+
+	void HandleDodgeActionPressed();
+	void HandleDodgeActionReleased();
+
+	void HandleEquipAndUnarmActionPressed();
+	void HandleEquipAndUnarmActionReleased();
+
+	void HandleCrouchActionPressed();
+	void HandleCrouchActionReleased();
+
+	void HandleJumpActionPressed();
+	void HandleJumpActionReleased();
+
+	void HandleSlashActionPressed();
+	void HandleSlashActionReleased();
 };

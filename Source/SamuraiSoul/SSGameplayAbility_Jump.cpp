@@ -3,6 +3,7 @@
 
 #include "SSGameplayAbility_Jump.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "SSSamuraiCharacter.h"
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {
@@ -33,7 +34,16 @@ void USSGameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle H
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+
+	if (nullptr != Character)
+	{
+		Character->Jump();
+	}
+
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
+
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 }
 
 void USSGameplayAbility_Jump::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)

@@ -46,7 +46,9 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	if (INPUT_CONTEXT.Succeeded())
 	{
 		InputMappingContext = INPUT_CONTEXT.Object;
-		//InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputAction"));
+
+		//InputAction's is null! Must be Overridden in the Character Blueprint Class.
+		InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputActions"));
 	}
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -87.5f });
@@ -118,20 +120,46 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		//NativeinputAction
 		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Move"))),
 			ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Move);
+
 		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"))),
 			ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
 
 		//AbilityInputAction
-		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
-		//	ETriggerEvent::Triggered, AbilitySystemComponent, &UAbilitySystemComponent::AbilityLocalInputPressed, static_cast<int32>(ESSAbilityInputID::Jump));
-	}
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleJumpActionPressed);
 
-	if (nullptr != AbilitySystemComponent
-		&& nullptr != InputComponent)
-	{
-		const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "ESSAbilityInputID",
-			static_cast<int32>(ESSAbilityInputID::Confirm), static_cast<int32>(ESSAbilityInputID::Cancel));
-		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleJumpActionReleased);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleRunActionPressed);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleRunActionReleased);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleDodgeActionPressed);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleDodgeActionReleased);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleCrouchActionPressed);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleCrouchActionReleased);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleSlashActionPressed);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleSlashActionReleased);
 	}
 }
 
@@ -145,31 +173,28 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 	//Replication no idea
 	Super::OnRep_PlayerState();
 
-	//AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	//InitializeAttributes();
-
-	//if (nullptr != AbilitySystemComponent 
-	//	&& nullptr != InputComponent)
-	//{
-	//	const FGameplayAbilityInputBinds Binds("Confirm", "Cancel", "ESSAbilityInputID",
-	//		static_cast<int32>(ESSAbilityInputID::Confirm), static_cast<int32>(ESSAbilityInputID::Cancel));
-	//	AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
-	//}
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitializeAttributes();
 }
 
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 {
+	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
+		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
+		// get forward vector
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-
+	
+		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
+		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
@@ -177,16 +202,18 @@ void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 
 void ASSSamuraiCharacter::Look(const FInputActionValue& Value)
 {
+	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
+		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
 
-void ASSSamuraiCharacter::Equip()
+void ASSSamuraiCharacter::EquipAndUnarm()
 {
 	bIsEquip = !bIsEquip;
 
@@ -254,5 +281,65 @@ void ASSSamuraiCharacter::CrouchEnd()
 	bIsCrouch = false;
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 
+}
+
+void ASSSamuraiCharacter::HandleRunActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Run));
+}
+
+void ASSSamuraiCharacter::HandleRunActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Run));
+}
+
+void ASSSamuraiCharacter::HandleDodgeActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Dodge));
+}
+
+void ASSSamuraiCharacter::HandleDodgeActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Dodge));
+}
+
+void ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::EquipAndUnarm));
+}
+
+void ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::EquipAndUnarm));
+}
+
+void ASSSamuraiCharacter::HandleCrouchActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Crouch));
+}
+
+void ASSSamuraiCharacter::HandleCrouchActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Crouch));
+}
+
+void ASSSamuraiCharacter::HandleJumpActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Jump));
+}
+
+void ASSSamuraiCharacter::HandleJumpActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Jump));
+}
+
+void ASSSamuraiCharacter::HandleSlashActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Slash));
+}
+
+void ASSSamuraiCharacter::HandleSlashActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Slash));
 }
 

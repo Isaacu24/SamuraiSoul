@@ -12,8 +12,11 @@ enum class ESSAbilityInputID : uint8
 	Cancel,
 	Idle,
 	Move,
+	Run,
 	Jump,
+	Crouch,
 	Dodge,
+	EquipAndUnarm,
 	Slash
 };
 
@@ -25,7 +28,10 @@ enum class ESSAbilityID : uint8
 	Cancel,
 	Idle,
 	Move,
+	Run,
 	Jump,
+	Crouch,
 	Dodge,
+	EquipAndUnarm,
 	Slash
 };
