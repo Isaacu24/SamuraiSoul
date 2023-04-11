@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "SamuraiSoul.h"
+#include "../SamuraiSoul.h"
 #include "SSGameplayAbility.generated.h"
 
 /**

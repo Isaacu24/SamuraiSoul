@@ -3,23 +3,25 @@
 
 #include "SSGameplayAbility_Jump.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "SSSamuraiCharacter.h"
+#include "../SSSamuraiCharacter.h"
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {
 	AbilityID = ESSAbilityID::Jump;
 	AbilityInputID = ESSAbilityInputID::Jump;
 
-	// 이렇게 태그를 지정해두면, 이후에 해당 태그를 가진 어빌리티들을 비활성할 수도 있음. ex. 마나가 없으니 마나를 사용하는 스킬은 모두 꺼라.
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.UseSP")));
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.UseSP.Jump")));
+	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
+
+	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Dodge")));
 }
 
 void USSGameplayAbility_Jump::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 
-	// 멀티플레이 환경에서 이 함수를 활용해서 디버깅 가능.
+	// Multyplay Debuging
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 

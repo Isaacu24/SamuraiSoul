@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "SSGameplayAbility.h"
-#include "MySSGameplayAbility_Run.generated.h"
+#include "SSGameplayAbility_Run.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API UMySSGameplayAbility_Run : public USSGameplayAbility
+class SAMURAISOUL_API USSGameplayAbility_Run : public USSGameplayAbility
 {
 	GENERATED_BODY()
 	
 public:
-	UMySSGameplayAbility_Run();
+	USSGameplayAbility_Run();
 
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 	virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
@@ -25,5 +25,4 @@ public:
 
 	/* CommitCost()는 어빌리티가 활성되기 전에 비용 지불이 가능한지 확인하고 지불함. 반면에 ApplyCost()는 어빌리티가 활성된 후 지불이 가능한지 확인하고 지불함. */
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
-
 };

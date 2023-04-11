@@ -29,10 +29,6 @@ public:
 		FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, Health);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Stamina)
-		FGameplayAttributeData Stamina;
-	ATTRIBUTE_ACCESSORS(USSAttributeSet, Stamina);
-
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_AttackPower)
 		FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, AttackPower);
@@ -49,9 +45,6 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
-
-	UFUNCTION()
-	virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
 
 	UFUNCTION()
 	virtual void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower);

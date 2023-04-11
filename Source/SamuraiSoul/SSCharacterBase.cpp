@@ -3,8 +3,8 @@
 
 #include "SSCharacterBase.h"
 #include "AbilitySystemComponent.h"
-#include "SSGameplayAbility.h"
-#include "SSAttributeSet.h"
+#include "Abilities/SSGameplayAbility.h"
+#include "Abilities/SSAttributeSet.h"
 #include "SamuraiSoul.h"
 
 // Sets default values

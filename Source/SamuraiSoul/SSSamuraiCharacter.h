@@ -48,6 +48,14 @@ public:
 		return bIsEquip;
 	}
 
+	void Run();
+	void UnRun();
+	void Dodge();
+	void CrouchStart();
+	void CrouchEnd();
+	void EquipAndUnarm();
+	void Slash();
+
 	FEquipDelegate MEquipDelegate;
 	FUnarmDelegate MUnarmDelegate;
 	FEquipRootDelegate MEquipRootDelegate;
@@ -89,18 +97,6 @@ private:
 private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-
-	void EquipAndUnarm();
-
-	void Dodge();
-
-	void Slash();
-
-	void Run();
-	void UnRun();
-
-	void CrouchStart();
-	void CrouchEnd();
 
 	void HandleRunActionPressed();
 	void HandleRunActionReleased();
