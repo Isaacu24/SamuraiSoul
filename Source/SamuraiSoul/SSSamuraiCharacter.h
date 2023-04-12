@@ -7,12 +7,7 @@
 #include "InputActionValue.h"
 #include "SSSamuraiCharacter.generated.h"
 
-DECLARE_DELEGATE(FEquipDelegate);
-DECLARE_DELEGATE(FUnarmDelegate);
-DECLARE_DELEGATE(FEquipRootDelegate);
-DECLARE_DELEGATE(FUnarmRootDelegate);
-DECLARE_DELEGATE(FDodgeDelegate);
-DECLARE_DELEGATE(FSlashDelegate);
+DECLARE_DELEGATE(FAnimDelegate);
 
 UCLASS()
 class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase
@@ -43,7 +38,7 @@ public:
 		return bIsCrouch;
 	}
 
-	bool IsEquip() const
+	bool IsEquip() 
 	{
 		return bIsEquip;
 	}
@@ -56,12 +51,12 @@ public:
 	void EquipAndUnarm();
 	void Slash();
 
-	FEquipDelegate MEquipDelegate;
-	FUnarmDelegate MUnarmDelegate;
-	FEquipRootDelegate MEquipRootDelegate;
-	FUnarmRootDelegate MUnarmRootDelegate;
-	FDodgeDelegate MDodgeDelegate;
-	FSlashDelegate MSlashDelegate;
+	FAnimDelegate MEquipDelegate;
+	FAnimDelegate MUnarmDelegate;
+	FAnimDelegate MEquipRootDelegate;
+	FAnimDelegate MUnarmRootDelegate;
+	FAnimDelegate MDodgeDelegate;
+	FAnimDelegate MSlashDelegate;
 
 private:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))

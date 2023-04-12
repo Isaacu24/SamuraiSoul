@@ -13,11 +13,11 @@ struct FTagBindingInputAction
 {
 	GENERATED_BODY()
 
-		UPROPERTY(EditDefaultsOnly)
-		const UInputAction* InputAction = nullptr;
+	UPROPERTY(EditDefaultsOnly)
+	const UInputAction* InputAction = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, meta = (Categories = "InputTag"))
-		FGameplayTag InputTag;
+	FGameplayTag InputTag;
 };
 
 UCLASS()

@@ -25,4 +25,23 @@ public:
 
 	/* CommitCost()는 어빌리티가 활성되기 전에 비용 지불이 가능한지 확인하고 지불함. 반면에 ApplyCost()는 어빌리티가 활성된 후 지불이 가능한지 확인하고 지불함. */
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
+
+	UFUNCTION()
+		void AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+		void AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+		void AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+		void AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+		void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload);
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> DodgeMontage;
 };

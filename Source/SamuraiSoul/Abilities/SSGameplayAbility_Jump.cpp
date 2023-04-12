@@ -10,11 +10,9 @@ USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 	AbilityID = ESSAbilityID::Jump;
 	AbilityInputID = ESSAbilityInputID::Jump;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
-
-	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
-	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Dodge")));
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
+	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
 void USSGameplayAbility_Jump::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)

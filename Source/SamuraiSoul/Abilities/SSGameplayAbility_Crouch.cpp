@@ -9,8 +9,9 @@ USSGameplayAbility_Crouch::USSGameplayAbility_Crouch()
 	AbilityID = ESSAbilityID::Crouch;
 	AbilityInputID = ESSAbilityInputID::Crouch;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Crouch")));
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Crouch")));
+	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
 void USSGameplayAbility_Crouch::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)

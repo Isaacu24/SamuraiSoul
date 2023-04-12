@@ -10,8 +10,9 @@ USSGameplayAbility_Run::USSGameplayAbility_Run()
 	AbilityID = ESSAbilityID::Run;
 	AbilityInputID = ESSAbilityInputID::Run;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Run")));
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Run")));
+	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
 void USSGameplayAbility_Run::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)

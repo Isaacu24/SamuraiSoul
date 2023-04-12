@@ -24,4 +24,26 @@ public:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
+
+	UFUNCTION()
+	void AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	void AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	void AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	void AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload);
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> EquipMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> UnarmMontage;
 };
