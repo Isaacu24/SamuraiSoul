@@ -16,7 +16,7 @@ void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeque
 	FVector EndVector = MeshComp->GetSocketLocation(TEXT("Weapon_rSocket_0"));
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery1);
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	TArray<AActor*> ActorsToIgnore = { nullptr };
 	TArray<FHitResult> OutHits = { FHitResult() };
 

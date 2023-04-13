@@ -18,6 +18,21 @@ class SAMURAISOUL_API USSGameplayAbility : public UGameplayAbility
 public:
 	USSGameplayAbility();
 
+	UFUNCTION()
+	virtual void AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	virtual void AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	virtual void AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	virtual void AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload);
+
+	UFUNCTION()
+	virtual void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload);
+
 	UPROPERTY(BlueprintReadOnly, EditAnyWhere, Category = "Ability")
 	ESSAbilityInputID AbilityInputID = ESSAbilityInputID::None;
 	

@@ -65,26 +65,6 @@ void USSGameplayAbility_Slash::ApplyCost(const FGameplayAbilitySpecHandle Handle
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ApplyCost: %s"), *GetName()));
 }
 
-void USSGameplayAbility_Slash::AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-}
-
-void USSGameplayAbility_Slash::AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-}
-
-void USSGameplayAbility_Slash::AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-}
-
-void USSGameplayAbility_Slash::AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-}
-
 void USSGameplayAbility_Slash::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
 	//AnimNotify State Liking

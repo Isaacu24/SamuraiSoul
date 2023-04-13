@@ -38,9 +38,15 @@ public:
 		return bIsCrouch;
 	}
 
-	bool IsEquip() 
+	bool IsEquip() const 
 	{
 		return bIsEquip;
+	}
+
+	void SwitchIsEquip()
+	{
+		bool Temp = bIsEquip;
+		bIsEquip = !bIsEquip;
 	}
 
 	void Run();

@@ -67,29 +67,6 @@ void USSGameplayAbility_Dodege::ApplyCost(const FGameplayAbilitySpecHandle Handl
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ApplyCost: %s"), *GetName()));
 }
 
-void USSGameplayAbility_Dodege::AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-}
-
-void USSGameplayAbility_Dodege::AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-
-}
-
-void USSGameplayAbility_Dodege::AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-
-}
-
-void USSGameplayAbility_Dodege::AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-
-}
-
 void USSGameplayAbility_Dodege::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
 }

@@ -25,20 +25,7 @@ public:
 
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
 
-	UFUNCTION()
-	void AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload);
-
-	UFUNCTION()
-	void AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload);
-
-	UFUNCTION()
-	void AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload);
-
-	UFUNCTION()
-	void AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload);
-
-	UFUNCTION()
-	void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload);
+	void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
@@ -46,4 +33,10 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAnimMontage> UnarmMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> EquipRootMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> UnarmRootMontage;
 };

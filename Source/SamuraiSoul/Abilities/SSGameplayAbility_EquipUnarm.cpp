@@ -19,14 +19,12 @@ USSGameplayAbility_EquipUnarm::USSGameplayAbility_EquipUnarm()
 void USSGameplayAbility_EquipUnarm::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
-
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 
 void USSGameplayAbility_EquipUnarm::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
-
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
 
@@ -41,44 +39,85 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 	if (nullptr != Character)
 	{
 		bIsEquip = Character->IsEquip();
+		Character->SwitchIsEquip();
 	}
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
 		if (nullptr != EquipMontage
+			&& nullptr != EquipRootMontage
 			&& false == bIsEquip)
 		{
-			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, EquipMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+			if (0.1f <= Character->GetVelocity().Size())
+			{
+				//Not Root Anim Montage
+				USSAbilityTask_PlayMontageAndWait* Task
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, EquipMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
 
-			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-			Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-			Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
+				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
+				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
+				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
+				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
+				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
 
-			Task->ReadyForActivation();
+				Task->ReadyForActivation();
+			}
+
+			else
+			{
+				//Root Anim Montage
+				USSAbilityTask_PlayMontageAndWait* Task
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, EquipRootMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+
+				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
+				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
+				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
+				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
+				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
+
+				Task->ReadyForActivation();
+			}
+
 		}
 
+
 		if (nullptr != UnarmMontage
+			&& nullptr != UnarmRootMontage
 			&& true == bIsEquip)
 		{
-			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, UnarmMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+			if (0.1f <= Character->GetVelocity().Size())
+			{
+				//Not Root Anim Montage
+				USSAbilityTask_PlayMontageAndWait* Task
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, UnarmMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
 
-			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-			Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-			Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
+				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
+				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
+				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
+				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
+				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
 
-			Task->ReadyForActivation();
+				Task->ReadyForActivation();
+			}
+
+			else
+			{
+				//Root Anim Montage
+				USSAbilityTask_PlayMontageAndWait* Task
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, UnarmRootMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+
+				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
+				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
+				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
+				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
+				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
+
+				Task->ReadyForActivation();
+			}
 		}
 	}
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
-
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 }
 
 void USSGameplayAbility_EquipUnarm::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -95,26 +134,7 @@ void USSGameplayAbility_EquipUnarm::ApplyCost(const FGameplayAbilitySpecHandle H
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ApplyCost: %s"), *GetName()));
 }
 
-void USSGameplayAbility_EquipUnarm::AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-}
-
-void USSGameplayAbility_EquipUnarm::AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-}
-
-void USSGameplayAbility_EquipUnarm::AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-}
-
-void USSGameplayAbility_EquipUnarm::AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload)
-{
-	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-}
-
 void USSGameplayAbility_EquipUnarm::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
+
 }

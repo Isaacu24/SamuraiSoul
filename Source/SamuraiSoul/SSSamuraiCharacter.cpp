@@ -124,6 +124,18 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"))),
 			ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
 
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::Run);
+
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::UnRun);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::CrouchStart);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::CrouchEnd);
+
 		//AbilityInputAction
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
 			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleJumpActionPressed);
@@ -132,11 +144,11 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleJumpActionReleased);
 
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"))),
-			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleRunActionPressed);
+		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"))),
+		//	ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleRunActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
-			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleRunActionReleased);
+		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
+		//	ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleRunActionReleased);
 
 
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
@@ -153,11 +165,11 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased);
 
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
-			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleCrouchActionPressed);
+		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
+		//	ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleCrouchActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
-			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleCrouchActionReleased);
+		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
+		//	ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleCrouchActionReleased);
 
 
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
