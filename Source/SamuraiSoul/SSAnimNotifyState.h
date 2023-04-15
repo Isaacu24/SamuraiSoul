@@ -23,5 +23,9 @@ public:
 	USSAnimNotifyState();
 
 	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference) override;
+	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+
+	UPROPERTY()
+	TSet<AActor*> ActorsToIgnore;
 	
 };

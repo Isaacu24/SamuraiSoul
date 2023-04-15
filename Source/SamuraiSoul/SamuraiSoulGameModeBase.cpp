@@ -6,5 +6,4 @@
 
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 {
-	//DefaultPawnClass = ASSSamuraiCharacter::StaticClass();
 }

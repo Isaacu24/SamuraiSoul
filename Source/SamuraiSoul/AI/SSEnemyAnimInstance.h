@@ -16,5 +16,19 @@ class SAMURAISOUL_API USSEnemyAnimInstance : public UAnimInstance
 
 public:
 	USSEnemyAnimInstance();
+
+	void PlayHitMontage();
+	void PlayDeathMontage();
+
+protected:
+	virtual void NativeBeginPlay() override;
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> HitMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> DeathMontage;
 };

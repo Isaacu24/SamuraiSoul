@@ -6,6 +6,10 @@
 #include "SSEnemyCharacterBase.h"
 #include "SSEnemyCharacter.generated.h"
 
+class UGameplayEffect;
+
+DECLARE_DELEGATE(FAnimDelegate);
+
 /**
  * 
  */
@@ -16,5 +20,13 @@ class SAMURAISOUL_API ASSEnemyCharacter : public ASSEnemyCharacterBase
 
 public:
 	ASSEnemyCharacter();
-	
+
+	void DamageCheck();
+
+	FAnimDelegate HitDelegate;
+	FAnimDelegate DeathDelegate;
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TSubclassOf<UGameplayEffect> DamageEffect;
 };

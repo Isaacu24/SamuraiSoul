@@ -34,6 +34,7 @@ private:
 	UFUNCTION()
 	void AnimNotify_DodgeEnd();
 	
+	//없어지는 게 아니면 상관없다.
 	UPROPERTY()
 	TObjectPtr<class ASSSamuraiCharacter> MyCharacter;
 

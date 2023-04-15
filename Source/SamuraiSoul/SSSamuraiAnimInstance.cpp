@@ -66,6 +66,7 @@ void USSSamuraiAnimInstance::NativeInitializeAnimation()
 
 	if (true == IsValid(MyCharacter))
 	{
+		//의존관계가 명확해보이지 않음. 샘플 게임을 찾아보자.
 		MyCharacter->MEquipDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipMontage);
 		MyCharacter->MEquipRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipRootMontage);
 		MyCharacter->MUnarmDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmMontage);

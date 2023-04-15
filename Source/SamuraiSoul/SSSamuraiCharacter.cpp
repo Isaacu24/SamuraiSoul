@@ -95,9 +95,14 @@ void ASSSamuraiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+
+	if (nullptr != PlayerController)
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = 
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+		if (nullptr != Subsystem)
 		{
 			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
@@ -297,7 +302,6 @@ void ASSSamuraiCharacter::CrouchEnd()
 {
 	bIsCrouch = false;
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
-
 }
 
 void ASSSamuraiCharacter::HandleRunActionPressed()

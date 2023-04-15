@@ -2,6 +2,8 @@
 
 #include "SSAnimNotifyState.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "AI/SSEnemyCharacter.h"
+#include "AbilitySystemComponent.h"
 
 USSAnimNotifyState::USSAnimNotifyState()
 {
@@ -17,8 +19,27 @@ void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeque
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
-	TArray<AActor*> ActorsToIgnore = { nullptr };
 	TArray<FHitResult> OutHits = { FHitResult() };
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true);
+
+	//다른 사람이 봐도 부담스럽다
+	//직관적, 최선
+	for (FHitResult Result : OutHits)
+	{
+		ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
+
+		if (nullptr != Enemy
+			&& nullptr == ActorsToIgnore.Find(Enemy))
+		{
+			Enemy->DamageCheck();
+			ActorsToIgnore.Add(Enemy);
+		}
+	}
 }
+
+void USSAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+{
+	ActorsToIgnore.Empty();
+}
+
