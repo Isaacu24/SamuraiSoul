@@ -1,34 +1,32 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SSAnimNotifyState.h"
+
+#include "SSAnimNotifyState_Attack.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "AI/SSEnemyCharacter.h"
-#include "SSSamuraiCharacter.h"
+#include "../AI/SSEnemyCharacter.h"
+#include "../Player/SSSamuraiCharacter.h"
 #include "AbilitySystemComponent.h"
 
-USSAnimNotifyState::USSAnimNotifyState()
+USSAnimNotifyState_Attack::USSAnimNotifyState_Attack()
 {
-
 }
 
-
-void USSAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
+void USSAnimNotifyState_Attack::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
 	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(MeshComp->GetOwner());
-	
+
 	if (nullptr != Character)
 	{
 		bIsPlayer = true;
 	}
-	
+
 	else
 	{
 		bIsPlayer = false;
 	}
 }
 
-void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
-	float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
+void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
 	FVector StartVector = MeshComp->GetSocketLocation(TEXT("Weapon_rSocket"));
 	FVector EndVector = MeshComp->GetSocketLocation(TEXT("Weapon_rSocket_0"));
@@ -67,8 +65,7 @@ void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeque
 	}
 }
 
-void USSAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
+void USSAnimNotifyState_Attack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	ActorsToIgnore.Empty();
 }
-

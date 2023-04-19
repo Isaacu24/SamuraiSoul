@@ -3,7 +3,7 @@
 
 #include "SSGameplayAbility_Jump.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "../SSSamuraiCharacter.h"
+#include "../Player/SSSamuraiCharacter.h"
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {
@@ -13,6 +13,11 @@ USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
 	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+}
+
+USSGameplayAbility_Jump* USSGameplayAbility_Jump::NewJumpAbilityTask(UGameplayAbility* OwningAbility, FName TaskInstanceName, AActor* InAvatar)
+{
+	return nullptr;
 }
 
 void USSGameplayAbility_Jump::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
@@ -26,10 +31,10 @@ void USSGameplayAbility_Jump::InputPressed(const FGameplayAbilitySpecHandle Hand
 void USSGameplayAbility_Jump::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
+	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
-
 
 void USSGameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -42,7 +47,6 @@ void USSGameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle H
 		Character->Jump();
 	}
 	
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
 }
 

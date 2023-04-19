@@ -23,19 +23,4 @@ public:
 	virtual void ExternalCancel() override;
 	virtual FString GetDebugString() const override;
 	virtual void OnDestroy(bool AbilityEnded) override;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnCompleted;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnBlendOut;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnInterrupted;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnCancelled;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate EventReceived;
 };

@@ -5,8 +5,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "../SSSamuraiCharacter.h"
-#include "../SSSamuraiAnimInstance.h"
+#include "../Player/SSSamuraiCharacter.h"
+#include "../Player/SSSamuraiAnimInstance.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {

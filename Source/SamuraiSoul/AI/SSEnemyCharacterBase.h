@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../SSCharacterBase.h"
+#include "../Player/SSCharacterBase.h"
 #include "SSEnemyCharacterBase.generated.h"
 
 /**

@@ -25,7 +25,7 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
 	}
 
-	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -88.5f });
+	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
 }
 

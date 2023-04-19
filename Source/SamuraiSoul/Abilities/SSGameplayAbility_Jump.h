@@ -19,6 +19,8 @@ public:
 
 	//virtual void TickAbility() override;
 
+	static USSGameplayAbility_Jump* NewJumpAbilityTask(UGameplayAbility* OwningAbility, FName TaskInstanceName, AActor* InAvatar);
+
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 	virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 

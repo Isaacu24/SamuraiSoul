@@ -3,9 +3,9 @@
 
 #include "SSCharacterBase.h"
 #include "AbilitySystemComponent.h"
-#include "Abilities/SSGameplayAbility.h"
-#include "Abilities/SSAttributeSet.h"
-#include "SamuraiSoul.h"
+#include "../Abilities/SSGameplayAbility.h"
+#include "../Abilities/SSAttributeSet.h"
+#include "../SamuraiSoul.h"
 
 // Sets default values
 ASSCharacterBase::ASSCharacterBase()

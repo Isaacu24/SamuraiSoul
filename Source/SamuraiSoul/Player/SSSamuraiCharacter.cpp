@@ -3,7 +3,7 @@
 
 #include "SSSamuraiCharacter.h"
 
-#include "SamuraiSoul.h"
+#include "../SamuraiSoul.h"
 
 #include "SSSamuraiAnimInstance.h"
 #include <Camera/CameraComponent.h>
@@ -11,13 +11,13 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 
-#include "Abilities/SSAttributeSet.h"
-#include "Abilities/SSGameplayAbility.h"
+#include "../Abilities/SSAttributeSet.h"
+#include "../Abilities/SSGameplayAbility.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemComponent.h"
-#include "Abilities/SSAbilitySystemComponent.h"
+#include "../Abilities/SSAbilitySystemComponent.h"
 
-#include "SSInputConfigData.h"
+#include "../Input/SSInputConfigData.h"
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
@@ -51,7 +51,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 		InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputActions"));
 	}
 
-	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -88.5f });
+	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -62,8 +62,12 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	Arm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(Arm);
 
-	Arm->TargetArmLength = 500.f;
-	Arm->SetRelativeRotation(FRotator(-20.f, 0.f, 0.f));
+	Arm->TargetArmLength = 700.f;
+	Arm->SetRelativeRotation(FRotator(-50.f, 0.f, 0.f));
+
+	FVector SpringArmLocation = Arm->GetRelativeLocation();
+	SpringArmLocation.Z += 15.f; 
+	Arm->SetRelativeLocation(SpringArmLocation);
 
 	JumpMaxCount = 1;
 
@@ -113,6 +117,11 @@ void ASSSamuraiCharacter::BeginPlay()
 void ASSSamuraiCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->TickComponent(DeltaTime, ELevelTick::LEVELTICK_All, nullptr);
+	}
 }
 
 // Called to bind functionality to input

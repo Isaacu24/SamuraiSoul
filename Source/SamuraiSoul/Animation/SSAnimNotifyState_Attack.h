@@ -3,24 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "SSAnimNotifyState.generated.h"
-
-class UAnimSequenceBase;
-class USkeletalMeshComponent;
-struct FAnimNotifyEvent;
-struct FBranchingPointNotifyPayload;
+#include "SSAnimNotifyState.h"
+#include "SSAnimNotifyState_Attack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API USSAnimNotifyState : public UAnimNotifyState
+class SAMURAISOUL_API USSAnimNotifyState_Attack : public USSAnimNotifyState
 {
 	GENERATED_BODY()
 
 public:
-	USSAnimNotifyState();
+	USSAnimNotifyState_Attack();
 
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference) override;

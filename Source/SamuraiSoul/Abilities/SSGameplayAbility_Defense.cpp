@@ -4,7 +4,8 @@
 #include "SSGameplayAbility_Defense.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "../SSSamuraiCharacter.h"
+#include "SSAbilityTask_PlayMontageAndWait.h"
+#include "../Player/SSSamuraiCharacter.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 {
@@ -34,19 +35,52 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
-	/*ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
 
-	if (nullptr != Character)
+	bool bIsEquip = false;
+
+	if (nullptr == Character)
 	{
-		Character->SwitchIsDefense();
+		return;
+	}
 
-		bool IsDefense = Character->IsDefense();
-
-		if (false == IsDefense)
+	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
+	{
+		if (nullptr != DefenseMontage
+			&& nullptr != DefenseRootMontage)
 		{
-			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			if (0.1f <= Character->GetVelocity().Size())
+			{
+				//Not Root Anim Montage
+				USSAbilityTask_PlayMontageAndWait* Task
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+
+				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
+				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
+				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
+				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
+				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
+
+				Task->ReadyForActivation();
+			}
+
+			else
+			{
+				//Root Anim Montage
+				USSAbilityTask_PlayMontageAndWait* Task
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseRootMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+
+				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
+				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
+				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
+				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
+				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
+
+				Task->ReadyForActivation();
+			}
+
 		}
-	}*/
+	}
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
 }
