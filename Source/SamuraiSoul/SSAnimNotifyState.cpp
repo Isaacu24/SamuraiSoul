@@ -3,6 +3,7 @@
 #include "SSAnimNotifyState.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "AI/SSEnemyCharacter.h"
+#include "SSSamuraiCharacter.h"
 #include "AbilitySystemComponent.h"
 
 USSAnimNotifyState::USSAnimNotifyState()
@@ -11,7 +12,22 @@ USSAnimNotifyState::USSAnimNotifyState()
 }
 
 
-void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, 
+void USSAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
+{
+	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(MeshComp->GetOwner());
+	
+	if (nullptr != Character)
+	{
+		bIsPlayer = true;
+	}
+	
+	else
+	{
+		bIsPlayer = false;
+	}
+}
+
+void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
 	float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
 	FVector StartVector = MeshComp->GetSocketLocation(TEXT("Weapon_rSocket"));
@@ -23,17 +39,30 @@ void USSAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeque
 
 	UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true);
 
-	//다른 사람이 봐도 부담스럽다
-	//직관적, 최선
 	for (FHitResult Result : OutHits)
 	{
-		ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
-
-		if (nullptr != Enemy
-			&& nullptr == ActorsToIgnore.Find(Enemy))
+		if (true == bIsPlayer)
 		{
-			Enemy->DamageCheck();
-			ActorsToIgnore.Add(Enemy);
+			ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
+
+			if (nullptr != Enemy
+				&& nullptr == ActorsToIgnore.Find(Enemy))
+			{
+				Enemy->DamageCheck();
+				ActorsToIgnore.Add(Enemy);
+			}
+		}
+
+		else
+		{
+			ASSSamuraiCharacter* Player = Cast<ASSSamuraiCharacter>(Result.GetActor());
+
+			if (nullptr != Player
+				&& nullptr == ActorsToIgnore.Find(Player))
+			{
+				//Player->DamageCheck();
+				ActorsToIgnore.Add(Player);
+			}
 		}
 	}
 }

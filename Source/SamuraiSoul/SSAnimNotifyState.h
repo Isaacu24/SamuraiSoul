@@ -22,10 +22,13 @@ class SAMURAISOUL_API USSAnimNotifyState : public UAnimNotifyState
 public:
 	USSAnimNotifyState();
 
+	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
 
 	UPROPERTY()
+	bool bIsPlayer;
+
+	UPROPERTY()
 	TSet<AActor*> ActorsToIgnore;
-	
 };

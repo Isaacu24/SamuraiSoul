@@ -18,7 +18,8 @@ enum class ESSAbilityInputID : uint8
 	Crouch,
 	Dodge,
 	EquipUnarm,
-	Slash
+	Slash,
+	Defense
 };
 
 UENUM(BlueprintType)
@@ -34,5 +35,6 @@ enum class ESSAbilityID : uint8
 	Crouch,
 	Dodge,
 	EquipUnarm,
-	Slash
+	Slash,
+	Defense
 };

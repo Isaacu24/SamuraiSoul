@@ -51,7 +51,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 		InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputActions"));
 	}
 
-	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -87.5f });
+	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -88.5f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -148,20 +148,11 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleJumpActionReleased);
 
-
-		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"))),
-		//	ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleRunActionPressed);
-
-		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
-		//	ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleRunActionReleased);
-
-
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
 			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleDodgeActionPressed);
 
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleDodgeActionReleased);
-
 
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"))),
 			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed);
@@ -169,19 +160,17 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased);
 
-
-		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
-		//	ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleCrouchActionPressed);
-
-		//EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
-		//	ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleCrouchActionReleased);
-
-
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
 			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleSlashActionPressed);
 
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleSlashActionReleased);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleDefenseActionPressed);
+
+		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleDefenseActionReleased);
 	}
 }
 
@@ -235,60 +224,23 @@ void ASSSamuraiCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void ASSSamuraiCharacter::EquipAndUnarm()
+void ASSSamuraiCharacter::Run()
 {
-	bIsEquip = !bIsEquip;
-
-	if (true == bIsEquip)
-	{
-		if (0.1f < GetVelocity().Size())
-		{
-			MEquipDelegate.Execute();
-		}
-
-		else
-		{
-			MEquipRootDelegate.Execute();
-		}
-	}
-
-	else
-	{
-		if (0.1f < GetVelocity().Size())
-		{
-			MUnarmDelegate.Execute();
-		}
-
-		else
-		{
-			MUnarmRootDelegate.Execute();
-		}
-	}
-
-}
-
-void ASSSamuraiCharacter::Dodge()
-{
-	if (false == bIsEquip)
+	if (true == bIsCrouch)
 	{
 		return;
 	}
 
-	MDodgeDelegate.Execute();
-}
-
-void ASSSamuraiCharacter::Slash()
-{
-	MSlashDelegate.Execute();
-}
-
-void ASSSamuraiCharacter::Run()
-{
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
 void ASSSamuraiCharacter::UnRun()
 {
+	if (true == bIsCrouch)
+	{
+		return;
+	}
+
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 }
 
@@ -361,6 +313,16 @@ void ASSSamuraiCharacter::HandleSlashActionPressed()
 
 void ASSSamuraiCharacter::HandleSlashActionReleased()
 {
-	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Slash));
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Slash));
+}
+
+void ASSSamuraiCharacter::HandleDefenseActionPressed()
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Defense));
+}
+
+void ASSSamuraiCharacter::HandleDefenseActionReleased()
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Defense));
 }
 

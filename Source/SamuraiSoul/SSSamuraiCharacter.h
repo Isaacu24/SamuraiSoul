@@ -43,26 +43,25 @@ public:
 		return bIsEquip;
 	}
 
+	bool IsDefense() const
+	{
+		return bIsDefense;
+	}
+
 	void SwitchIsEquip()
 	{
-		bool Temp = bIsEquip;
 		bIsEquip = !bIsEquip;
+	}
+
+	void SwitchIsDefense()
+	{
+		bIsDefense = !bIsDefense;
 	}
 
 	void Run();
 	void UnRun();
-	void Dodge();
 	void CrouchStart();
 	void CrouchEnd();
-	void EquipAndUnarm();
-	void Slash();
-
-	FAnimDelegate MEquipDelegate;
-	FAnimDelegate MUnarmDelegate;
-	FAnimDelegate MEquipRootDelegate;
-	FAnimDelegate MUnarmRootDelegate;
-	FAnimDelegate MDodgeDelegate;
-	FAnimDelegate MSlashDelegate;
 
 private:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -81,19 +80,10 @@ private:
 	bool bIsCrouch = false;
 
 	UPROPERTY()
+	bool bIsDefense = false;
+
+	UPROPERTY()
 	bool bIsEquip = false;
-
-	UPROPERTY()
-	bool bIsSlash = false;
-
-	UPROPERTY()
-	FTimerHandle DodgeTimerHandle;
-
-	UPROPERTY()
-	FTimerHandle DodgeEndTimerHandle;
-
-	//UPROPERTY()
-	//TObjectPtr<class USSSamuraiAnimInstance> MyAniminstance;
 
 private:
 	void Move(const FInputActionValue& Value);
@@ -116,4 +106,7 @@ private:
 
 	void HandleSlashActionPressed();
 	void HandleSlashActionReleased();
+
+	void HandleDefenseActionPressed();
+	void HandleDefenseActionReleased();
 };

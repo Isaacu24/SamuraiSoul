@@ -5,9 +5,13 @@
 #include "SSEnemyAnimInstance.h"
 #include "../Abilities/SSAttributeSet.h"
 #include "AbilitySystemComponent.h"
+#include <Components/CapsuleComponent.h>
+#include <GameFramework/CharacterMovementComponent.h>
 
 ASSEnemyCharacter::ASSEnemyCharacter()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> BODY_MESH(TEXT("/Script/Engine.SkeletalMesh'/Game/MyContent/Mesh/Enemy/Samurai/SK_EnemySamurai_Katana.SK_EnemySamurai_Katana'"));
 	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/AI/AB_SSEnemyCharacter.AB_SSEnemyCharacter_C'"));
 
@@ -21,8 +25,22 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
 	}
 
-	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -87.5f });
+	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -88.5f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
+}
+
+void ASSEnemyCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	StabTime += DeltaTime;
+
+	if (10.f <= StabTime
+		&& 0.f < Attributes->GetHealth())
+	{
+		StabTime = 0.f;
+		StabDelegate.Execute();
+	}
 }
 
 void ASSEnemyCharacter::DamageCheck()
@@ -51,7 +69,25 @@ void ASSEnemyCharacter::DamageCheck()
 			if (0.f >= Attributes->GetHealth())
 			{
 				DeathDelegate.Execute();
+
+				//USkeletalMeshComponent* MyMesh = GetMesh();
+
+				//if (!MyMesh)
+				//	return;
+
+				//MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+
+				//MyMesh->SetSimulatePhysics(true);
+				//MyMesh->WakeAllRigidBodies();
+
+				//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+				////SetMovementMode(EMovementMode::MOVE_None);
+
+				//MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
+				//MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
 			}
 		}
 	}
 }
+

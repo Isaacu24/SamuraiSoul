@@ -8,42 +8,6 @@
 
 USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> DODGE_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Dodge.AM_Dodge'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> EQUIP_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Equip.AM_Equip'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> UNARM_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Unarm.AM_Unarm'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> SLASH_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Slash.AM_Slash'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> EQUIP_MONTAGE_ROOT(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Equip_ROOT.AM_Equip_ROOT'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> UNARM_MONTAGE_ROOT(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Player/AM_Unarm_ROOT.AM_Unarm_ROOT'"));
-
-	if (true == DODGE_MONTAGE.Succeeded())
-	{
-		DodgeMontage = DODGE_MONTAGE.Object;
-	}
-
-	if (true == EQUIP_MONTAGE.Succeeded())
-	{
-		EquipMontage = EQUIP_MONTAGE.Object;
-	}
-
-	if (true == UNARM_MONTAGE.Succeeded())
-	{
-		UnarmMontage = UNARM_MONTAGE.Object;
-	}
-
-	if (true == SLASH_MONTAGE.Succeeded())
-	{
-		SlashMontage = SLASH_MONTAGE.Object;
-	}
-
-	if (true == EQUIP_MONTAGE_ROOT.Succeeded())
-	{
-		EquipRootMontage = EQUIP_MONTAGE_ROOT.Object;
-	}
-
-	if (true == UNARM_MONTAGE_ROOT.Succeeded())
-	{
-		UnarmRootMontage = UNARM_MONTAGE_ROOT.Object;
-	}
 }
 
 void USSSamuraiAnimInstance::NativeBeginPlay()
@@ -56,24 +20,7 @@ void USSSamuraiAnimInstance::NativeInitializeAnimation()
 	Super::NativeInitializeAnimation();
 
 	APawn* Pawn = TryGetPawnOwner();
-
-	if (false == IsValid(Pawn))
-	{
-		return;
-	}
-
 	MyCharacter = Cast<ASSSamuraiCharacter>(Pawn);
-
-	if (true == IsValid(MyCharacter))
-	{
-		//의존관계가 명확해보이지 않음. 샘플 게임을 찾아보자.
-		MyCharacter->MEquipDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipMontage);
-		MyCharacter->MEquipRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayEquipRootMontage);
-		MyCharacter->MUnarmDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmMontage);
-		MyCharacter->MUnarmRootDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayUnarmRootMontage);
-		MyCharacter->MDodgeDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlayDodgeMontage);
-		MyCharacter->MSlashDelegate.BindUObject(this, &USSSamuraiAnimInstance::PlaySlashMontage);
-	}
 }
 
 void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -90,43 +37,36 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
 
-	IsCrouch = MyCharacter->IsCrouch();
-	IsAir = MyCharacter->GetCharacterMovement()->IsFalling();
-	IsEquip = MyCharacter->IsEquip();
+	bIsCrouch = MyCharacter->IsCrouch();
+	bIsAir = MyCharacter->GetCharacterMovement()->IsFalling();
+	bIsEquip = MyCharacter->IsEquip();
+	bIsDefense = MyCharacter->IsDefense();
+
+	if (false == bIsFristDefense)
+	{ 
+		if (true == bIsDefense)
+		{
+			bIsFristDefense = true;
+		}
+	}
+
+	if (false == bIsDefense)
+	{
+		bIsFristDefense = false;
+	}
 }
 
-
-void USSSamuraiAnimInstance::AnimNotify_DodgeEnd()
+FName USSSamuraiAnimInstance::GetAttackMontageSectionName(int32 Section)
 {
-
+	return FName(*FString::Printf(TEXT("Slash%d"), Section));
 }
 
-void USSSamuraiAnimInstance::PlayDodgeMontage()
+void USSSamuraiAnimInstance::JumpToAttackMontageSection(int32 NewSection, UAnimMontage* Montage)
 {
-	Montage_Play(DodgeMontage, 1.0f);
+	Montage_JumpToSection(GetAttackMontageSectionName(NewSection), Montage);
 }
 
-void USSSamuraiAnimInstance::PlayEquipMontage()
+void USSSamuraiAnimInstance::AnimNotify_NextSlashCheck()
 {
-	Montage_Play(EquipMontage, 1.0f);
-}
-
-void USSSamuraiAnimInstance::PlayUnarmMontage()
-{
-	Montage_Play(UnarmMontage, 1.0f);
-}
-
-void USSSamuraiAnimInstance::PlaySlashMontage()
-{
-	Montage_Play(SlashMontage, 1.0f);
-}
-
-void USSSamuraiAnimInstance::PlayEquipRootMontage()
-{
-	Montage_Play(EquipRootMontage, 1.0f);
-}
-
-void USSSamuraiAnimInstance::PlayUnarmRootMontage()
-{
-	Montage_Play(UnarmRootMontage, 1.0f);
+	OnNextAttackCheck.Broadcast();
 }

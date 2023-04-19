@@ -25,8 +25,14 @@ public:
 
 	FAnimDelegate HitDelegate;
 	FAnimDelegate DeathDelegate;
+	FAnimDelegate StabDelegate;
+
+	virtual void Tick(float DeltaTime) override;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TSubclassOf<UGameplayEffect> DamageEffect;
+
+	UPROPERTY()
+	float StabTime;
 };

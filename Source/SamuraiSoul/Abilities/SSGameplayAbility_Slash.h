@@ -29,7 +29,33 @@ public:
 
 	void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
+	void AttackStartComboState();		//공격이 시작 될 때 불러주는 함수
+
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAnimMontage> SlashMontage;
+
+	UPROPERTY()
+	class USSSamuraiAnimInstance* AnimInstance;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool bIsAttacking;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool bCanNextCombo;		// 다음 콤보로 진행이 가능한가?
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool bIsComboInputOn;	// 콤보가 입력되었는가?
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	int32 CurrentCombo;		// 현재 진행중인 콤보의 번호
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	int32 MaxCombo;			// 최대치 콤보 개수
+
+	UPROPERTY()
+	bool bIsBind;
 };

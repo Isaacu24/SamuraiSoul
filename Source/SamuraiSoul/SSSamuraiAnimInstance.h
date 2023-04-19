@@ -6,6 +6,9 @@
 #include "Animation/AnimInstance.h"
 #include "SSSamuraiAnimInstance.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnNextAttackCheckDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheckDelegate);
+
 /**
  * 
  */
@@ -17,13 +20,14 @@ class SAMURAISOUL_API USSSamuraiAnimInstance : public UAnimInstance
 public:
 	USSSamuraiAnimInstance();
 
-	void PlayDodgeMontage();
-	void PlayEquipMontage();
-	void PlayUnarmMontage();
-	void PlaySlashMontage();
+	//다음 어택 몽타주로 이동
+	FName GetAttackMontageSectionName(int32 Section);
+	void JumpToAttackMontageSection(int32 NewSection, UAnimMontage* Montage);
 
-	void PlayEquipRootMontage();
-	void PlayUnarmRootMontage();
+	UFUNCTION()
+	void AnimNotify_NextSlashCheck();
+
+	FOnNextAttackCheckDelegate OnNextAttackCheck;
 
 protected:
 	virtual void NativeBeginPlay() override;
@@ -31,10 +35,6 @@ protected:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-	UFUNCTION()
-	void AnimNotify_DodgeEnd();
-	
-	//없어지는 게 아니면 상관없다.
 	UPROPERTY()
 	TObjectPtr<class ASSSamuraiCharacter> MyCharacter;
 
@@ -45,29 +45,17 @@ private:
 	float Direction = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	bool IsCrouch = false;
+	bool bIsCrouch = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	bool IsAir = false;
+	bool bIsAir = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	bool IsEquip = false;
+	bool bIsEquip = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	TObjectPtr<UAnimMontage> DodgeMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	bool bIsDefense = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	TObjectPtr<UAnimMontage> EquipMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	TObjectPtr<UAnimMontage> UnarmMontage;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	TObjectPtr<UAnimMontage> EquipRootMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	TObjectPtr<UAnimMontage> UnarmRootMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	TObjectPtr<UAnimMontage> SlashMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	bool bIsFristDefense = false;
 };

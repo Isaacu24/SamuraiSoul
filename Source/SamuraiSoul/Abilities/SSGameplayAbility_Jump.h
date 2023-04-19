@@ -17,6 +17,8 @@ class SAMURAISOUL_API USSGameplayAbility_Jump : public USSGameplayAbility
 public:
 	USSGameplayAbility_Jump();
 
+	//virtual void TickAbility() override;
+
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 	virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 

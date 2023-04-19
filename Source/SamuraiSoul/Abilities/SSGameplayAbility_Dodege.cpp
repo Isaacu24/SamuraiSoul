@@ -35,6 +35,15 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+
+	if (nullptr == Character
+		|| false == Character->IsEquip())
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		return;
+	}
+
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
 		if (nullptr != DodgeMontage)

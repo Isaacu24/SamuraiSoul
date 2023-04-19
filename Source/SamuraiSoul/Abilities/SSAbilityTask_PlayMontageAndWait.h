@@ -3,39 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/Tasks/AbilityTask.h"
+#include "SSAbilityTask.h"
 #include "SSAbilityTask_PlayMontageAndWait.generated.h"
 
 class USSAbilitySystemComponent;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSSPlayMontageAndWaitForEventDelegate, FGameplayTag, EventTag, FGameplayEventData, EventData);
-
 UCLASS()
-class SAMURAISOUL_API USSAbilityTask_PlayMontageAndWait : public UAbilityTask
+class SAMURAISOUL_API USSAbilityTask_PlayMontageAndWait : public USSAbilityTask
 {
 	GENERATED_BODY()
 
 public:
 	USSAbilityTask_PlayMontageAndWait(const FObjectInitializer& ObjectInitializer);
+
 	virtual void Activate() override;
 	virtual void ExternalCancel() override;
 	virtual FString GetDebugString() const override;
 	virtual void OnDestroy(bool AbilityEnded) override;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnCompleted;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnBlendOut;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnInterrupted;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate OnCancelled;
-
-	UPROPERTY(BlueprintAssignable)
-	FSSPlayMontageAndWaitForEventDelegate EventReceived;
 
 public:
 
