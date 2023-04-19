@@ -191,7 +191,7 @@ USSAbilitySystemComponent* USSAbilityTask_PlayMontageAndWait::GetTargetASC()
 	return Cast<USSAbilitySystemComponent>(AbilitySystemComponent);
 }
 
-void USSAbilityTask_PlayMontageAndWait::	(UAnimMontage* Montage, bool bInterrupted)
+void USSAbilityTask_PlayMontageAndWait::OnMontageBlendingOut(UAnimMontage* Montage, bool bInterrupted)
 {
 	if (Ability && Ability->GetCurrentMontage() == MontageToPlay)
 	{
