@@ -43,19 +43,9 @@ public:
 		return bIsEquip;
 	}
 
-	bool IsDefense() const
-	{
-		return bIsDefense;
-	}
-
 	void SwitchIsEquip()
 	{
 		bIsEquip = !bIsEquip;
-	}
-
-	void SwitchIsDefense()
-	{
-		bIsDefense = !bIsDefense;
 	}
 
 	void Run();
@@ -78,9 +68,6 @@ private:
 
 	UPROPERTY()
 	bool bIsCrouch = false;
-
-	UPROPERTY()
-	bool bIsDefense = false;
 
 	UPROPERTY()
 	bool bIsEquip = false;

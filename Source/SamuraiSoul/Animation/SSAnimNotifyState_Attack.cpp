@@ -6,6 +6,7 @@
 #include "../AI/SSEnemyCharacter.h"
 #include "../Player/SSSamuraiCharacter.h"
 #include "AbilitySystemComponent.h"
+#include <Components/CapsuleComponent.h>
 
 USSAnimNotifyState_Attack::USSAnimNotifyState_Attack()
 {
@@ -35,7 +36,7 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 	TArray<FHitResult> OutHits = { FHitResult() };
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true);
+	UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
 	for (FHitResult Result : OutHits)
 	{

@@ -5,5 +5,5 @@
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
-	
+
 }

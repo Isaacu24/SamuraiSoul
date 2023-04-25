@@ -56,12 +56,8 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
-
-	RootComponent = GetCapsuleComponent();
-
 	Arm->SetupAttachment(RootComponent);
-	Camera->SetupAttachment(Arm);
-
+	Camera->SetupAttachment(Arm, USpringArmComponent::SocketName);
 	Arm->TargetArmLength = 700.f;
 	Arm->SetRelativeRotation(FRotator(-50.f, 0.f, 0.f));
 
@@ -70,8 +66,6 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	Arm->SetRelativeLocation(SpringArmLocation);
 
 	JumpMaxCount = 1;
-
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSSamuraiCharacter"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 	GetCharacterMovement()->JumpZVelocity = 500.0f;

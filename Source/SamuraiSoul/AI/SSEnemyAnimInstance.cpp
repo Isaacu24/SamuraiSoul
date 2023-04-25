@@ -51,6 +51,7 @@ void USSEnemyAnimInstance::NativeInitializeAnimation()
 		MyCharacter->HitDelegate.BindUObject(this, &USSEnemyAnimInstance::PlayHitMontage);
 		MyCharacter->DeathDelegate.BindUObject(this, &USSEnemyAnimInstance::PlayDeathMontage);
 		MyCharacter->StabDelegate.BindUObject(this, &USSEnemyAnimInstance::PlayStabMontage);
+		MyCharacter->AttackFailDelegate.BindUObject(this, &USSEnemyAnimInstance::PlayAttackFailMontage);
 	}
 }
 
@@ -67,6 +68,11 @@ void USSEnemyAnimInstance::PlayHitMontage()
 void USSEnemyAnimInstance::PlayDeathMontage()
 {
 	Montage_Play(DeathMontage, 1.0f);
+}
+
+void USSEnemyAnimInstance::PlayAttackFailMontage()
+{
+	Montage_Play(AttackFailMontage, 1.0f);
 }
 
 void USSEnemyAnimInstance::AnimNotify_RagdollDeath()

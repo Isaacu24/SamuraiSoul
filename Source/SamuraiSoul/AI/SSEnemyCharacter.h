@@ -8,8 +8,6 @@
 
 class UGameplayEffect;
 
-DECLARE_DELEGATE(FAnimDelegate);
-
 /**
  * 
  */
@@ -21,18 +19,11 @@ class SAMURAISOUL_API ASSEnemyCharacter : public ASSEnemyCharacterBase
 public:
 	ASSEnemyCharacter();
 
-	void DamageCheck();
-
-	FAnimDelegate HitDelegate;
-	FAnimDelegate DeathDelegate;
 	FAnimDelegate StabDelegate;
 
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TSubclassOf<UGameplayEffect> DamageEffect;
-
 	UPROPERTY()
 	float StabTime;
 };

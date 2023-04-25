@@ -20,5 +20,14 @@ public:
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
-	
+
+private:
+	UPROPERTY()
+	bool bIsPlayer;
+
+	UPROPERTY()
+	TObjectPtr<class ASSCharacterBase> Character;
+
+	UPROPERTY()
+	TSet<AActor*> ActorsToIgnore;
 };

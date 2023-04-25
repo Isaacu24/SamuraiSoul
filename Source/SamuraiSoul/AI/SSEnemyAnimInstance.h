@@ -20,6 +20,7 @@ public:
 	void PlayHitMontage();
 	void PlayDeathMontage();
 	void PlayStabMontage();
+	void PlayAttackFailMontage();
 
 	UFUNCTION()
 	void AnimNotify_RagdollDeath();
@@ -41,4 +42,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAnimMontage> StabMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	TObjectPtr<UAnimMontage> AttackFailMontage;
 };
