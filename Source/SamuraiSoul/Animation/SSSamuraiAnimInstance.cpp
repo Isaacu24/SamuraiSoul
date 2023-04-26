@@ -5,9 +5,13 @@
 #include "../Character/SSSamuraiCharacter.h"
 #include <GameFramework/CharacterMovementComponent.h>
 
-
 USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 {
+	bIsCrouch = false;
+	bIsAir = false;
+	bIsEquip = false;
+	bIsDefense = false;
+	bIsFristDefense = false;
 }
 
 void USSSamuraiAnimInstance::NativeBeginPlay()

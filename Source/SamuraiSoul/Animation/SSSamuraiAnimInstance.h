@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
+#include "SSCharacterAnimInstance.h"
 #include "SSSamuraiAnimInstance.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnNextAttackCheckDelegate);
@@ -13,7 +13,7 @@ DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheckDelegate);
  * 
  */
 UCLASS()
-class SAMURAISOUL_API USSSamuraiAnimInstance : public UAnimInstance
+class SAMURAISOUL_API USSSamuraiAnimInstance : public USSCharacterAnimInstance
 {
 	GENERATED_BODY()
 	
@@ -45,17 +45,17 @@ private:
 	float Direction = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	bool bIsCrouch = false;
+	uint8 bIsCrouch : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	bool bIsAir = false;
+	uint8 bIsAir : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	bool bIsEquip = false;
+	uint8 bIsEquip : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	bool bIsDefense = false;
+	uint8 bIsDefense : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	bool bIsFristDefense = false;
+	uint8 bIsFristDefense : 1;
 };

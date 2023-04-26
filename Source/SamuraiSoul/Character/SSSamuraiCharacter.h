@@ -67,10 +67,10 @@ private:
 	TObjectPtr<class UInputMappingContext> InputMappingContext;
 
 	UPROPERTY()
-	bool bIsCrouch = false;
+	uint8 bIsCrouch : 1;
 
 	UPROPERTY()
-	bool bIsEquip = false;
+	uint8 bIsEquip : 1;
 
 private:
 	void Move(const FInputActionValue& Value);

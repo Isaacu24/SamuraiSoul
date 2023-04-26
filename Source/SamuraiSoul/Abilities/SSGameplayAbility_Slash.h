@@ -57,5 +57,5 @@ private:
 	int32 MaxCombo;			// 최대치 콤보 개수
 
 	UPROPERTY()
-	bool bIsBind;
+	uint8 bIsBind : 1;
 };

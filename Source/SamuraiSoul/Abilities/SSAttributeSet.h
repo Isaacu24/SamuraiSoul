@@ -26,11 +26,11 @@ public:
 	USSAttributeSet();
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
-		FGameplayAttributeData Health;
+	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, Health);
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_AttackPower)
-		FGameplayAttributeData AttackPower;
+	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, AttackPower);
 
 	// 이펙트가 적용된 후에 자동으로 호출되는 함수

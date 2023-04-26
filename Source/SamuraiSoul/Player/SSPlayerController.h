@@ -13,5 +13,10 @@ UCLASS()
 class SAMURAISOUL_API ASSPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
+public:
+	ASSPlayerController();
+
+protected:
+	virtual void BeginPlay();
 };

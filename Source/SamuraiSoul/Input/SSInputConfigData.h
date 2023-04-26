@@ -31,8 +31,8 @@ public:
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputActions"))
-		TArray<FTagBindingInputAction> NativeInputActions;
+	TArray<FTagBindingInputAction> NativeInputActions;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputActions"))
-		TArray<FTagBindingInputAction> AbilityInputActions;
+	TArray<FTagBindingInputAction> AbilityInputActions;
 };

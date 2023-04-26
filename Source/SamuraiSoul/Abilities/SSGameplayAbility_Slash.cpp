@@ -18,6 +18,8 @@ USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 
 	MaxCombo = 3;
+
+	bIsBind = false;
 }
 
 void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)

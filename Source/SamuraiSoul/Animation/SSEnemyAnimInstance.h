@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
+#include "SSCharacterAnimInstance.h"
 #include "SSEnemyAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API USSEnemyAnimInstance : public UAnimInstance
+class SAMURAISOUL_API USSEnemyAnimInstance : public USSCharacterAnimInstance
 {
 	GENERATED_BODY()
 

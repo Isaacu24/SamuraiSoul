@@ -23,7 +23,7 @@ public:
 
 private:
 	UPROPERTY()
-	bool bIsPlayer;
+	uint8 bIsPlayer : 1;
 
 	UPROPERTY()
 	TObjectPtr<class ASSCharacterBase> Character;

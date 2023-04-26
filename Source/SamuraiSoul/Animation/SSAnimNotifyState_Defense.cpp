@@ -10,6 +10,7 @@
 
 USSAnimNotifyState_Defense::USSAnimNotifyState_Defense()
 {
+	bIsPlayer = false;
 }
 
 void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)

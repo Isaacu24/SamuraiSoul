@@ -61,7 +61,7 @@ public:
 
 	void SwitchIsDefense()
 	{
-		bIsDefense = !bIsDefense;
+		bIsDefense = ~bIsDefense;
 	}
 
 	FAnimDelegate HitDelegate;
@@ -86,10 +86,10 @@ protected:
 	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
 
 	UPROPERTY()
-	bool bIsDefense = false;
+	uint8 bIsDefense : 1;
 
 	UPROPERTY()
-	bool bIsAttack = false;
+	uint8 bIsAttack : 1;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
