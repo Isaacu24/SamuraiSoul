@@ -3,8 +3,8 @@
 
 #include "SSAnimNotifyState_Attack.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "../AI/SSEnemyCharacter.h"
-#include "../Player/SSSamuraiCharacter.h"
+#include "../Character/SSEnemyCharacter.h"
+#include "../Character/SSSamuraiCharacter.h"
 #include "AbilitySystemComponent.h"
 #include <Components/CapsuleComponent.h>
 
@@ -14,17 +14,19 @@ USSAnimNotifyState_Attack::USSAnimNotifyState_Attack()
 
 void USSAnimNotifyState_Attack::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(MeshComp->GetOwner());
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
 
 	if (nullptr != Character)
 	{
 		bIsPlayer = true;
+		Character->SetIsAttack(true);
 	}
 
 	else
 	{
 		bIsPlayer = false;
 	}
+
 }
 
 void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
@@ -40,27 +42,30 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 
 	for (FHitResult Result : OutHits)
 	{
-		if (true == bIsPlayer)
+		if (nullptr != Result.GetActor())
 		{
-			ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
-
-			if (nullptr != Enemy
-				&& nullptr == ActorsToIgnore.Find(Enemy))
+			if (true == bIsPlayer)
 			{
-				Enemy->DamageCheck();
-				ActorsToIgnore.Add(Enemy);
+				ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
+
+				if (nullptr != Enemy
+					&& nullptr == ActorsToIgnore.Find(Enemy))
+				{
+					Enemy->DamageCheck();
+					ActorsToIgnore.Add(Enemy);
+				}
 			}
-		}
 
-		else
-		{
-			ASSSamuraiCharacter* Player = Cast<ASSSamuraiCharacter>(Result.GetActor());
-
-			if (nullptr != Player
-				&& nullptr == ActorsToIgnore.Find(Player))
+			else
 			{
-				//Player->DamageCheck();
-				ActorsToIgnore.Add(Player);
+				ASSSamuraiCharacter* Player = Cast<ASSSamuraiCharacter>(Result.GetActor());
+
+				if (nullptr != Player
+					&& nullptr == ActorsToIgnore.Find(Player))
+				{
+					//Player->DamageCheck();
+					ActorsToIgnore.Add(Player);
+				}
 			}
 		}
 	}
@@ -69,4 +74,11 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 void USSAnimNotifyState_Attack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	ActorsToIgnore.Empty();
+
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+
+	if (nullptr != Character)
+	{
+		Character->SetIsAttack(false);
+	}
 }

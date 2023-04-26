@@ -2,7 +2,7 @@
 
 
 #include "SamuraiSoulGameModeBase.h"
-#include "Player/SSSamuraiCharacter.h"
+#include "../Character/SSSamuraiCharacter.h"
 
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 {

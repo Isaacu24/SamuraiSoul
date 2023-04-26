@@ -49,6 +49,16 @@ public:
 		return bIsDefense;
 	}
 
+	bool IsAttack() const
+	{
+		return bIsAttack;
+	}
+
+	void SetIsAttack(bool Value)
+	{
+		bIsAttack = Value;
+	}
+
 	void SwitchIsDefense()
 	{
 		bIsDefense = !bIsDefense;
@@ -77,6 +87,9 @@ protected:
 
 	UPROPERTY()
 	bool bIsDefense = false;
+
+	UPROPERTY()
+	bool bIsAttack = false;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))

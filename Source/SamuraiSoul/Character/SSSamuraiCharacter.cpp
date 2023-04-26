@@ -3,9 +3,9 @@
 
 #include "SSSamuraiCharacter.h"
 
-#include "../SamuraiSoul.h"
+#include "../Game/SamuraiSoul.h"
 
-#include "SSSamuraiAnimInstance.h"
+#include "../Animation/SSSamuraiAnimInstance.h"
 #include <Camera/CameraComponent.h>
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/SpringArmComponent.h>

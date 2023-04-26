@@ -2,7 +2,7 @@
 
 
 #include "SSEnemyCharacter.h"
-#include "SSEnemyAnimInstance.h"
+#include "../Animation/SSEnemyAnimInstance.h"
 #include "../Abilities/SSAttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include <Components/CapsuleComponent.h>

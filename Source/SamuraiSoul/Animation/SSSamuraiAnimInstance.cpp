@@ -2,7 +2,7 @@
 
 
 #include "SSSamuraiAnimInstance.h"
-#include "SSSamuraiCharacter.h"
+#include "../Character/SSSamuraiCharacter.h"
 #include <GameFramework/CharacterMovementComponent.h>
 
 

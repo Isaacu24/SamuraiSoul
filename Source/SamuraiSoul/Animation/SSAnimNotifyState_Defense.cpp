@@ -3,9 +3,9 @@
 
 #include "SSAnimNotifyState_Defense.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "../AI/SSEnemyCharacter.h"
-#include "../Player/SSCharacterBase.h"
-#include "../Player/SSSamuraiCharacter.h"
+#include "../Character/SSEnemyCharacter.h"
+#include "../Character/SSCharacterBase.h"
+#include "../Character/SSSamuraiCharacter.h"
 #include "AbilitySystemComponent.h"
 
 USSAnimNotifyState_Defense::USSAnimNotifyState_Defense()
@@ -19,56 +19,29 @@ void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 
 void USSAnimNotifyState_Defense::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
-	FVector StartVector = MeshComp->GetSocketLocation(TEXT("head"));
-	FVector EndVector = MeshComp->GetSocketLocation(TEXT("ball_r"));
+	FVector OffsetVector = MeshComp->GetOwner()->GetActorForwardVector() * 30.f;
 
-	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	FVector StartVector = MeshComp->GetSocketLocation(TEXT("head")) + OffsetVector;
+	FVector EndVector = MeshComp->GetSocketLocation(TEXT("ball_r")) + OffsetVector;
 
-	if (nullptr == Character)
+	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel3);
+
+	TArray<FHitResult> OutHits = { FHitResult() };
+
+	bool bHit = UKismetSystemLibrary::BoxTraceMulti(MeshComp, StartVector, EndVector, FVector(10.f, 50.f, 10.f), MeshComp->GetOwner()->GetActorRotation(), TraceChannel, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
+
+	for (FHitResult Result : OutHits)
 	{
-		return;
-	}
+		ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
 
-	float AttackRange = 200.0f;
-	float AttackRadius = 50.0f;
-
-	FHitResult HitResult;
-	FCollisionQueryParams Params(NAME_None, false, MeshComp->GetOwner());
-
-	bool bResult = MeshComp->GetWorld()->SweepSingleByChannel(
-		HitResult,
-		StartVector,
-		EndVector,
-		FQuat::Identity,
-		ECollisionChannel::ECC_Pawn,
-		FCollisionShape::MakeSphere(150.0f),
-		Params);
-
-	if (true == bResult)
-	{
-		if (nullptr != HitResult.GetActor())
+		if (nullptr != Enemy
+			&& nullptr == ActorsToIgnore.Find(Enemy)
+			&& true == Enemy->IsAttack())
 		{
-			ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(HitResult.GetActor());
-
-			if (nullptr != Enemy
-				&& nullptr == ActorsToIgnore.Find(Enemy))
-			{
-				Enemy->AttackFail();
-				ActorsToIgnore.Add(Enemy);
-			}
+			Enemy->AttackFail();
+			ActorsToIgnore.Add(Enemy);
 		}
 	}
-//
-//#if ENABLE_DRAW_DEBUG
-//	FVector TraceVec = StartVector * AttackRange;
-//	FVector Center = MeshComp->GetOwner()->GetActorLocation() + TraceVec * 0.5f;
-//	float HalfHeight = AttackRange * 0.5f + AttackRadius;
-//	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
-//	FColor DrawColor = bResult ? FColor::Green : FColor::Red;
-//	float DebugLifeTime = 5.0f;
-//
-//	DrawDebugCapsule(MeshComp->GetWorld(), Center, HalfHeight, AttackRadius, CapsuleRot, DrawColor, false, DebugLifeTime);
-//#endif
 }
 
 void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)

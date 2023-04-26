@@ -2,7 +2,7 @@
 
 
 #include "SSEnemyAnimInstance.h"
-#include "SSEnemyCharacter.h"
+#include "../Character/SSEnemyCharacter.h"
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 
@@ -90,12 +90,12 @@ void USSEnemyAnimInstance::AnimNotify_RagdollDeath()
 	if (!MyMesh)
 		return;
 
+	MyCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
 
 	MyMesh->SetSimulatePhysics(true);
 	MyMesh->WakeAllRigidBodies();
-
-	MyCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	//SetMovementMode(EMovementMode::MOVE_None);
 

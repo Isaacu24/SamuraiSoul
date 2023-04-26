@@ -6,7 +6,7 @@
 #include "../Abilities/SSGameplayAbility.h"
 #include <Components/CapsuleComponent.h>
 #include "../Abilities/SSAttributeSet.h"
-#include "../SamuraiSoul.h"
+#include "../Game/SamuraiSoul.h"
 
 // Sets default values
 ASSCharacterBase::ASSCharacterBase()
@@ -20,7 +20,8 @@ ASSCharacterBase::ASSCharacterBase()
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSSamuraiCharacter"));
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
+	GetMesh()->SetCollisionProfileName("CharacterMesh");
 }
 
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const

@@ -3,7 +3,7 @@
 
 #include "SSGameplayAbility_Jump.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "../Player/SSSamuraiCharacter.h"
+#include "../Character/SSSamuraiCharacter.h"
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {

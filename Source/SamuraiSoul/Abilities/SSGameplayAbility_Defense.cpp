@@ -5,7 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
-#include "../Player/SSSamuraiCharacter.h"
+#include "../Character/SSSamuraiCharacter.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 {
