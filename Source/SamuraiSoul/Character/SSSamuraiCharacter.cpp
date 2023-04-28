@@ -21,7 +21,9 @@
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
-#include "Components/InputComponent.h"
+#include <Components/InputComponent.h>
+
+#include "../Weapon/SSWeaponActor.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()

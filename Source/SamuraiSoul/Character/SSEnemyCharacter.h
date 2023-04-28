@@ -26,4 +26,5 @@ public:
 private:
 	UPROPERTY()
 	float StabTime;
+	uint8 bIsLog : 1;
 };

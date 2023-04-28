@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
+#include "Kismet/KismetSystemLibrary.h"
 
 ASSEnemyCharacter::ASSEnemyCharacter()
 {
@@ -27,6 +28,8 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
+
+	bIsLog = false;
 }
 
 void ASSEnemyCharacter::Tick(float DeltaTime)
@@ -35,10 +38,18 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 
 	StabTime += DeltaTime;
 
+	if (8.f <= StabTime
+		&& false == bIsLog)
+	{
+		bIsLog = true;
+		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EnemyAttacck!")));
+	}
+
 	if (10.f <= StabTime
 		&& 0.f < Attributes->GetHealth())
 	{
 		StabTime = 0.f;
+		bIsLog = false;
 		StabDelegate.Execute();
 	}
 }

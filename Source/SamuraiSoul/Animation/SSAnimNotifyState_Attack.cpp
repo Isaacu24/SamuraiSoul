@@ -34,12 +34,30 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 {
 	FVector StartVector = MeshComp->GetSocketLocation(TEXT("Weapon_rSocket"));
 	FVector EndVector = MeshComp->GetSocketLocation(TEXT("Weapon_rSocket_0"));
+	
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
 
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
-	TArray<FHitResult> OutHits = { FHitResult() };
+	if (nullptr == Character)
+	{
+		return;
+	}
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
+	float AttackRadius = 10.0f;
+
+	TArray<struct FHitResult> OutHits = { FHitResult() };
+	FCollisionQueryParams Params(NAME_None, false, MeshComp->GetOwner());
+
+	bool bResult = MeshComp->GetWorld()->SweepMultiByChannel(
+		OutHits,
+		StartVector,
+		EndVector,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(150.0f),
+		Params);
+
+	DrawDebugSphere(MeshComp->GetWorld(), StartVector, AttackRadius, 12, FColor::Red, false, 2.0f);
+	DrawDebugSphere(MeshComp->GetWorld(), EndVector, AttackRadius, 12, FColor::Red, false, 2.0f);
 
 	for (FHitResult Result : OutHits)
 	{
@@ -70,6 +88,8 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 			}
 		}
 	}
+
+	//UKismetSystemLibrary::SphereTraceMultiForObjects(MeshComp, StartVector, EndVector, 20.f, ObjectTypes, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 }
 
 void USSAnimNotifyState_Attack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)

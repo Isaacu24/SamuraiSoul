@@ -21,7 +21,7 @@ ASSCharacterBase::ASSCharacterBase()
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
-	GetMesh()->SetCollisionProfileName("CharacterMesh");
+	//GetMesh()->SetCollisionProfileName("CharacterMesh");
 }
 
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const

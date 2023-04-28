@@ -20,29 +20,28 @@ void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 
 void USSAnimNotifyState_Defense::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
 {
-	FVector OffsetVector = MeshComp->GetOwner()->GetActorForwardVector() * 30.f;
+	//FVector OffsetVector = MeshComp->GetOwner()->GetActorForwardVector() * 30.f;
 
-	FVector StartVector = MeshComp->GetSocketLocation(TEXT("head")) + OffsetVector;
-	FVector EndVector = MeshComp->GetSocketLocation(TEXT("ball_r")) + OffsetVector;
+	//FVector StartVector = MeshComp->GetSocketLocation(TEXT("head")) + OffsetVector;
+	//FVector EndVector = MeshComp->GetSocketLocation(TEXT("ball_r")) + OffsetVector;
 
-	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel3);
+	//ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_GameTraceChannel2);
 
-	TArray<FHitResult> OutHits = { FHitResult() };
+	//TArray<FHitResult> OutHits = { FHitResult() };
 
-	bool bHit = UKismetSystemLibrary::BoxTraceMulti(MeshComp, StartVector, EndVector, FVector(10.f, 50.f, 10.f), MeshComp->GetOwner()->GetActorRotation(), TraceChannel, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
+	//bool bHit = UKismetSystemLibrary::BoxTraceMulti(MeshComp, StartVector, EndVector, FVector(10.f, 50.f, 10.f), MeshComp->GetOwner()->GetActorRotation(), TraceChannel, false, ActorsToIgnore.Array(), EDrawDebugTrace::ForDuration, OutHits, true, FLinearColor::Red, FLinearColor::Green, 0.5f);
 
-	for (FHitResult Result : OutHits)
-	{
-		ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
+	//for (FHitResult Result : OutHits)
+	//{
+	//	ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(Result.GetActor());
 
-		if (nullptr != Enemy
-			&& nullptr == ActorsToIgnore.Find(Enemy)
-			&& true == Enemy->IsAttack())
-		{
-			Enemy->AttackFail();
-			ActorsToIgnore.Add(Enemy);
-		}
-	}
+	//	if (nullptr != Enemy
+	//		&& nullptr == ActorsToIgnore.Find(Enemy))
+	//	{
+	//		Enemy->AttackFail();
+	//		ActorsToIgnore.Add(Enemy);
+	//	}
+	//}
 }
 
 void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
