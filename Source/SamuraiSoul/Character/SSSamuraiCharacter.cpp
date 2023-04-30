@@ -3,27 +3,28 @@
 
 #include "SSSamuraiCharacter.h"
 
-#include "../Game/SamuraiSoul.h"
+#include "Game/SamuraiSoul.h"
 
-#include "../Animation/SSSamuraiAnimInstance.h"
+#include "Animation/SSSamuraiAnimInstance.h"
 #include <Camera/CameraComponent.h>
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/SpringArmComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 
-#include "../Abilities/SSAttributeSet.h"
-#include "../Abilities/SSGameplayAbility.h"
+#include "Abilities/SSAttributeSet.h"
+#include "Abilities/SSGameplayAbility.h"
 #include "GameplayEffectTypes.h"
 #include "AbilitySystemComponent.h"
-#include "../Abilities/SSAbilitySystemComponent.h"
+#include "Abilities/SSAbilitySystemComponent.h"
 
-#include "../Input/SSInputConfigData.h"
+#include "Input/SSInputConfigData.h"
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
 
-#include "../Weapon/SSWeaponActor.h"
+#include "Item/Weapon/SSWeapon.h"
+#include "SSCharacterControlData.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -32,8 +33,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_BODY(TEXT("/Script/Engine.SkeletalMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Character/Mesh/SK_GhostSamurai_katana.SK_GhostSamurai_katana'"));
-	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> INPUT_CONTEXT(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/MyContent/Input/IMC_SamuraiCharacter.IMC_SamuraiCharacter'"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
 
 	if (true == SK_BODY.Succeeded())
 	{
@@ -45,27 +45,17 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
 	}
 
-	if (INPUT_CONTEXT.Succeeded())
-	{
-		InputMappingContext = INPUT_CONTEXT.Object;
-
-		//InputAction's is null! Must be Overridden in the Character Blueprint Class.
-		InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputActions"));
-	}
-
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Arm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
-	Arm->SetupAttachment(RootComponent);
-	Camera->SetupAttachment(Arm, USpringArmComponent::SocketName);
-	Arm->TargetArmLength = 700.f;
-	Arm->SetRelativeRotation(FRotator(-50.f, 0.f, 0.f));
+	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
+	CameraArm->SetupAttachment(RootComponent);
+	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
 
-	FVector SpringArmLocation = Arm->GetRelativeLocation();
+	FVector SpringArmLocation = CameraArm->GetRelativeLocation();
 	SpringArmLocation.Z += 15.f; 
-	Arm->SetRelativeLocation(SpringArmLocation);
+	CameraArm->SetRelativeLocation(SpringArmLocation);
 
 	JumpMaxCount = 1;
 
@@ -76,37 +66,42 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	// ControlRotation(Controller) -> SpringArm
-	Arm->bUsePawnControlRotation = true;
-
-	// Controller -> SpringArm
-	Arm->bInheritPitch = true;
-	Arm->bInheritYaw = true;
-	Arm->bInheritRoll = false;
-
-	// Movement Component -> Pawn
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
+
+	InputActions = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputActions"));
+
+	ControlType = ECharacterControlType::Keyboard;
 }
 
 // Called when the game starts or when spawned
 void ASSSamuraiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	APlayerController* PlayerController = Cast<APlayerController>(Controller);
 
-	if (nullptr != PlayerController)
+	if (nullptr != WeaponActor)
 	{
-		UEnhancedInputLocalPlayerSubsystem* Subsystem = 
-			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		Weapon = GetWorld()->SpawnActor<ASSWeapon>(WeaponActor);
 
-		if (nullptr != Subsystem)
+		if (nullptr != Weapon)
 		{
-			Subsystem->AddMappingContext(InputMappingContext, 0);
+			Weapon->Equip(GetMesh(), FName("Weapon_rSocket"));
 		}
 	}
+
+	SetCharacterControl(ControlType);
+}
+
+void ASSSamuraiCharacter::SetCharacterControlData(const USSCharacterControlData* ControlData)
+{
+	Super::SetCharacterControlData(ControlData);
+
+	CameraArm->TargetArmLength = ControlData->TargetArmLength;
+	CameraArm->SetRelativeRotation(ControlData->RelativeRotaion);
+	CameraArm->bUsePawnControlRotation = ControlData->bUsePawnControlRotation;
+	CameraArm->bInheritPitch = ControlData->bInheritPitch;
+	CameraArm->bInheritYaw = ControlData->bInheritYaw;
+	CameraArm->bInheritRoll = ControlData->bInheritRoll;
+	CameraArm->bDoCollisionTest = ControlData->bDoCollisionTest;
 }
 
 // Called every frame
@@ -140,11 +135,14 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::UnRun);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
 			ETriggerEvent::Started, this, &ASSSamuraiCharacter::CrouchStart);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::CrouchEnd);
+		
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.ChangeControl"))),
+			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::ChangeCharacterControl);
 
 		//AbilityInputAction
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
@@ -261,14 +259,48 @@ void ASSSamuraiCharacter::CrouchEnd()
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 }
 
-void ASSSamuraiCharacter::HandleRunActionPressed()
+void ASSSamuraiCharacter::ChangeCharacterControl()
 {
-	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Run));
+	switch (ControlType)
+	{
+	case ECharacterControlType::Keyboard:
+		SetCharacterControl(ECharacterControlType::Gamepad);
+		break;
+	case ECharacterControlType::Gamepad:
+		SetCharacterControl(ECharacterControlType::Keyboard);
+		break;
+	default:
+		break;
+	}
 }
 
-void ASSSamuraiCharacter::HandleRunActionReleased()
+void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterControlType)
 {
-	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Run));
+	USSCharacterControlData* NewCharacterControl = CharacterControlMap[CharacterControlType];
+	check(NewCharacterControl);
+
+	SetCharacterControlData(NewCharacterControl);
+
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+
+	if (nullptr != PlayerController)
+	{
+		UEnhancedInputLocalPlayerSubsystem* Subsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+		if (nullptr != Subsystem)
+		{
+			Subsystem->ClearAllMappings();
+			UInputMappingContext* NewMappingContext = NewCharacterControl->InputMappingContext;
+
+			if (nullptr != NewMappingContext)
+			{
+				Subsystem->AddMappingContext(NewMappingContext, 0);
+			}
+		}
+	}
+
+	ControlType = CharacterControlType;
 }
 
 void ASSSamuraiCharacter::HandleDodgeActionPressed()
@@ -289,16 +321,6 @@ void ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed()
 void ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased()
 {
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::EquipUnarm));
-}
-
-void ASSSamuraiCharacter::HandleCrouchActionPressed()
-{
-	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Crouch));
-}
-
-void ASSSamuraiCharacter::HandleCrouchActionReleased()
-{
-	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Crouch));
 }
 
 void ASSSamuraiCharacter::HandleJumpActionPressed()

@@ -3,10 +3,12 @@
 
 #include "SSCharacterBase.h"
 #include "AbilitySystemComponent.h"
-#include "../Abilities/SSGameplayAbility.h"
+#include "Abilities/SSGameplayAbility.h"
 #include <Components/CapsuleComponent.h>
-#include "../Abilities/SSAttributeSet.h"
-#include "../Game/SamuraiSoul.h"
+#include <GameFramework/CharacterMovementComponent.h>
+#include "Abilities/SSAttributeSet.h"
+#include "Game/SamuraiSoul.h"
+#include "SSCharacterControlData.h"
 
 // Sets default values
 ASSCharacterBase::ASSCharacterBase()
@@ -20,8 +22,23 @@ ASSCharacterBase::ASSCharacterBase()
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
+	//GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
 	//GetMesh()->SetCollisionProfileName("CharacterMesh");
+
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> KEYBOARDCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/CharacterControl/ABC_Keyboard.ABC_Keyboard'"));
+
+	if (nullptr != KEYBOARDCONTROLDATA.Object)
+	{
+		CharacterControlMap.Add({ ECharacterControlType::Keyboard, KEYBOARDCONTROLDATA.Object });
+	}
+
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> QUATERCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/CharacterControl/ABC_Gamepad.ABC_Gamepad'"));
+
+	if (nullptr != QUATERCONTROLDATA.Object)
+	{
+		CharacterControlMap.Add({ ECharacterControlType::Gamepad, QUATERCONTROLDATA.Object });
+	}
+
 }
 
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
@@ -33,6 +50,17 @@ UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
 void ASSCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ASSCharacterBase::SetCharacterControlData(const USSCharacterControlData* ControlData)
+{
+	//Pawn
+	bUseControllerRotationYaw = ControlData->bUseControllerRotationYaw;
+
+	// CharacterMovement
+	GetCharacterMovement()->bOrientRotationToMovement = ControlData->bOrientRotationToMovement;
+	GetCharacterMovement()->bUseControllerDesiredRotation = ControlData->bUseControllerDesiredRotation;
+	GetCharacterMovement()->RotationRate = ControlData->RotationRate;
 }
 
 void ASSCharacterBase::InitializeAttributes()
@@ -106,54 +134,54 @@ void ASSCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void ASSCharacterBase::DamageCheck()
 {
-	if (0.f >= Attributes->GetHealth())
-	{
-		return;
-	}
+	//if (0.f >= Attributes->GetHealth())
+	//{
+	//	return;
+	//}
 
-	if (nullptr != AbilitySystemComponent
-		&& nullptr != DamageEffect)
-	{
-		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-		EffectContext.AddSourceObject(this);
+	//if (nullptr != AbilitySystemComponent
+	//	&& nullptr != DamageEffect)
+	//{
+	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	//	EffectContext.AddSourceObject(this);
 
-		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
 
-		if (SpecHandle.IsValid())
-		{
-			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-			UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
+	//	if (SpecHandle.IsValid())
+	//	{
+	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
 
-			//Hit Ability
-			HitDelegate.Execute();
+	//		//Hit Ability
+	//		HitDelegate.Execute();
 
-			if (0.f >= Attributes->GetHealth())
-			{
-				DeathDelegate.Execute();
+	//		if (0.f >= Attributes->GetHealth())
+	//		{
+	//			DeathDelegate.Execute();
 
-				//USkeletalMeshComponent* MyMesh = GetMesh();
+	//			//USkeletalMeshComponent* MyMesh = GetMesh();
 
-				//if (!MyMesh)
-				//	return;
+	//			//if (!MyMesh)
+	//			//	return;
 
-				//MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+	//			//MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
 
-				//MyMesh->SetSimulatePhysics(true);
-				//MyMesh->WakeAllRigidBodies();
+	//			//MyMesh->SetSimulatePhysics(true);
+	//			//MyMesh->WakeAllRigidBodies();
 
-				//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//			//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-				////SetMovementMode(EMovementMode::MOVE_None);
+	//			////SetMovementMode(EMovementMode::MOVE_None);
 
-				//MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
-				//MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
-			}
-		}
-	}
+	//			//MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
+	//			//MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
+	//		}
+	//	}
+	//}
 }
 
 void ASSCharacterBase::AttackFail()
 {
-	AttackFailDelegate.Execute();
+	//AttackFailDelegate.Execute();
 }
 

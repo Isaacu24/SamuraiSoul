@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "SSWeaponActor.generated.h"
+#include "../SSItem.h"
+#include "SSWeapon.generated.h"
 
 class UPrimitiveComponent;
 class AActor;
@@ -14,27 +14,25 @@ class USceneComponent;
 class UStaticMeshComponent;
 
 UCLASS()
-class SAMURAISOUL_API ASSWeaponActor : public AActor
+class SAMURAISOUL_API ASSWeapon : public ASSItem
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASSWeaponActor();
+	ASSWeapon();
+
+	void Equip(USceneComponent* InParent, FName InSocketName);
+
+	UFUNCTION()
+	void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	UFUNCTION()
-	void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	//UFUNCTION()
-	//void OnSphereOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 private:
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Mesh;
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
@@ -45,7 +43,4 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> ColliderEnd;
-
-	//UPROPERTY(VisibleAnywhere, Category = Weapon)
-	//TObjectPtr<USphereComponent> Sphere;
 };

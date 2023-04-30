@@ -13,6 +13,14 @@ class USSAttributeSet;
 class UGameplayEffect;
 class USSGameplayAbility;
 class UInputComponent;
+class USSCharacterControlData;
+
+UENUM()
+enum class ECharacterControlType : uint8
+{
+	Keyboard,
+	Gamepad
+};
 
 DECLARE_DELEGATE(FAnimDelegate);
 
@@ -72,6 +80,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData);
+
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -84,6 +94,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
+
+	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowParivateAccess = "true"))
+	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
 
 	UPROPERTY()
 	uint8 bIsDefense : 1;

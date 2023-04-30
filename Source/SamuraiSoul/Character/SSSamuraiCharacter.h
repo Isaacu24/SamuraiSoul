@@ -7,6 +7,13 @@
 #include "InputActionValue.h"
 #include "SSSamuraiCharacter.generated.h"
 
+class USSCharacterControlData;
+class UCameraComponent;
+class USSInputConfigData;
+class USpringArmComponent;
+class UInputMappingContext;
+class ASSWeapon;
+
 DECLARE_DELEGATE(FAnimDelegate);
 
 UCLASS()
@@ -21,6 +28,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData) override;
 
 public:
 	// Called every frame
@@ -53,21 +62,30 @@ public:
 	void CrouchStart();
 	void CrouchEnd();
 
+	void ChangeCharacterControl();
+	void SetCharacterControl(ECharacterControlType CharacterControlType);
+
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UCameraComponent> Camera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCameraComponent> Camera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class USpringArmComponent> Arm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USpringArmComponent> CameraArm;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class USSInputConfigData> InputActions;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSInputConfigData> InputActions;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputMappingContext> InputMappingContext;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputMappingContext> KeyboardMappingContext;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputMappingContext> GamepadMappingContext;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<ASSWeapon> WeaponActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class ASSWeaponActor> WeaponActor;
+	TObjectPtr<ASSWeapon> Weapon;
 
 	UPROPERTY()
 	uint8 bIsCrouch : 1;
@@ -75,21 +93,17 @@ private:
 	UPROPERTY()
 	uint8 bIsEquip : 1;
 
+	ECharacterControlType ControlType;
+
 private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-
-	void HandleRunActionPressed();
-	void HandleRunActionReleased();
 
 	void HandleDodgeActionPressed();
 	void HandleDodgeActionReleased();
 
 	void HandleEquipAndUnarmActionPressed();
 	void HandleEquipAndUnarmActionReleased();
-
-	void HandleCrouchActionPressed();
-	void HandleCrouchActionReleased();
 
 	void HandleJumpActionPressed();
 	void HandleJumpActionReleased();
