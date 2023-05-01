@@ -24,6 +24,7 @@
 #include <Components/InputComponent.h>
 
 #include "Item/Weapon/SSWeapon.h"
+#include "Component/SSCombatComponent.h"
 #include "SSCharacterControlData.h"
 
 // Sets default values
@@ -52,10 +53,12 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	CameraArm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
-
+	
 	FVector SpringArmLocation = CameraArm->GetRelativeLocation();
 	SpringArmLocation.Z += 15.f; 
 	CameraArm->SetRelativeLocation(SpringArmLocation);
+
+	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
 
 	JumpMaxCount = 1;
 

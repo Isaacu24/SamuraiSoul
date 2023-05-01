@@ -13,6 +13,7 @@ class USSInputConfigData;
 class USpringArmComponent;
 class UInputMappingContext;
 class ASSWeapon;
+class USSCombatComponent;
 
 DECLARE_DELEGATE(FAnimDelegate);
 
@@ -86,6 +87,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon> Weapon;
+
+	UPROPERTY()
+	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY()
 	uint8 bIsCrouch : 1;

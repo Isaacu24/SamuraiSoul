@@ -2,8 +2,9 @@
 
 
 #include "SSEnemyCharacterBase.h"
+#include "Component/SSCombatComponent.h"
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
-
+	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
 }

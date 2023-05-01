@@ -6,6 +6,8 @@
 #include "SSCharacterBase.h"
 #include "SSEnemyCharacterBase.generated.h"
 
+class USSCombatComponent;
+
 /**
  * 
  */
@@ -16,5 +18,9 @@ class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase
 
 public:
 	ASSEnemyCharacterBase();
+
+protected:
+	UPROPERTY()
+	TObjectPtr<USSCombatComponent> CombatComponent;
 	
 };
