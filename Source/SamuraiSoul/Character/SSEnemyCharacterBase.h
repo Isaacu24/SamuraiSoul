@@ -19,8 +19,10 @@ class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase
 public:
 	ASSEnemyCharacterBase();
 
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return CombatComponent;
+	}
+
 protected:
-	UPROPERTY()
-	TObjectPtr<USSCombatComponent> CombatComponent;
-	
 };

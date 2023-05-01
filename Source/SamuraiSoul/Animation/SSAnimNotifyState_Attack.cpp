@@ -70,8 +70,8 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 				if (nullptr != Enemy
 					&& nullptr == ActorsToIgnore.Find(Enemy))
 				{
-					Enemy->DamageCheck();
-					ActorsToIgnore.Add(Enemy);
+					//Enemy->DamageCheck();
+					//ActorsToIgnore.Add(Enemy);
 				}
 			}
 

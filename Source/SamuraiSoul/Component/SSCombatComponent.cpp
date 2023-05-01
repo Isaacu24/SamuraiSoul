@@ -22,16 +22,16 @@ void USSCombatComponent::BeginPlay()
 	// ...
 	
 }
-
-void USSCombatComponent::AttackEvent()
-{
-}
-
-void USSCombatComponent::HitEvent()
-{
-	//switch(EAttckType)
-	//to do
-}
+//
+//void USSCombatComponent::AttackEvent()
+//{
+//}
+//
+//void USSCombatComponent::HitEvent()
+//{
+//	//switch(EAttckType)
+//	//to do
+//}
 
 
 // Called every frame

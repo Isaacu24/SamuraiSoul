@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Interface/SSCombatInterface.h"
 #include <GameplayEffectTypes.h>
 #include "SSCharacterBase.generated.h"
 
@@ -25,7 +26,7 @@ enum class ECharacterControlType : uint8
 DECLARE_DELEGATE(FAnimDelegate);
 
 UCLASS()
-class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface
+class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSCombatInterface
 {
 	GENERATED_BODY()
 
@@ -46,11 +47,9 @@ public:
 	virtual void OnRep_Controller() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	virtual void DamageCheck();
-
-	virtual void AttackFail();
-
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	virtual USSCombatComponent* GetCombatComponent() const override;
 
 	bool IsDefense() const
 	{
@@ -97,6 +96,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowParivateAccess = "true"))
 	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
+
+	UPROPERTY()
+	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY()
 	uint8 bIsDefense : 1;

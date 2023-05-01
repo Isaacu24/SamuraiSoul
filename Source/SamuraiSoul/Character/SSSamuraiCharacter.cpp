@@ -58,7 +58,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	SpringArmLocation.Z += 15.f; 
 	CameraArm->SetRelativeLocation(SpringArmLocation);
 
-	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
+	CombatComponent->AttackEvent.BindUObject(this, &ASSSamuraiCharacter::AttackEvent);
 
 	JumpMaxCount = 1;
 
@@ -88,6 +88,7 @@ void ASSSamuraiCharacter::BeginPlay()
 		if (nullptr != Weapon)
 		{
 			Weapon->Equip(GetMesh(), FName("Weapon_rSocket"));
+			Weapon->SetOwner(this);
 		}
 	}
 
@@ -304,6 +305,15 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 	}
 
 	ControlType = CharacterControlType;
+}
+
+void ASSSamuraiCharacter::AttackEvent()
+{
+
+}
+
+void ASSSamuraiCharacter::HitEvent()
+{
 }
 
 void ASSSamuraiCharacter::HandleDodgeActionPressed()

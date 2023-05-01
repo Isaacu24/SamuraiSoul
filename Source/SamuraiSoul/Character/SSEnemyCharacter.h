@@ -23,6 +23,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void AttackEvent();
+	void HitEvent();
+
 private:
 	UPROPERTY()
 	float StabTime;

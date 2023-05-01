@@ -43,6 +43,11 @@ public:
 
 	virtual void OnRep_PlayerState() override;
 
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return CombatComponent;
+	}
+
 	bool IsCrouch() const
 	{
 		return bIsCrouch;
@@ -66,6 +71,9 @@ public:
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
 
+	void AttackEvent();
+	void HitEvent();
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> Camera;
@@ -87,9 +95,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon> Weapon;
-
-	UPROPERTY()
-	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY()
 	uint8 bIsCrouch : 1;
@@ -118,3 +123,4 @@ private:
 	void HandleDefenseActionPressed();
 	void HandleDefenseActionReleased();
 };
+

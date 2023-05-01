@@ -6,5 +6,4 @@
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
-	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
 }

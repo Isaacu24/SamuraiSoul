@@ -9,6 +9,7 @@
 #include "Abilities/SSAttributeSet.h"
 #include "Game/SamuraiSoul.h"
 #include "SSCharacterControlData.h"
+#include "Component/SSCombatComponent.h"
 
 // Sets default values
 ASSCharacterBase::ASSCharacterBase()
@@ -21,6 +22,8 @@ ASSCharacterBase::ASSCharacterBase()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
+
+	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
 
 	//GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
 	//GetMesh()->SetCollisionProfileName("CharacterMesh");
@@ -44,6 +47,11 @@ ASSCharacterBase::ASSCharacterBase()
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+USSCombatComponent* ASSCharacterBase::GetCombatComponent() const
+{
+	return nullptr;
 }
 
 // Called when the game starts or when spawned
@@ -131,57 +139,57 @@ void ASSCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-
-void ASSCharacterBase::DamageCheck()
-{
-	//if (0.f >= Attributes->GetHealth())
-	//{
-	//	return;
-	//}
-
-	//if (nullptr != AbilitySystemComponent
-	//	&& nullptr != DamageEffect)
-	//{
-	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	//	EffectContext.AddSourceObject(this);
-
-	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
-
-	//	if (SpecHandle.IsValid())
-	//	{
-	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
-
-	//		//Hit Ability
-	//		HitDelegate.Execute();
-
-	//		if (0.f >= Attributes->GetHealth())
-	//		{
-	//			DeathDelegate.Execute();
-
-	//			//USkeletalMeshComponent* MyMesh = GetMesh();
-
-	//			//if (!MyMesh)
-	//			//	return;
-
-	//			//MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
-
-	//			//MyMesh->SetSimulatePhysics(true);
-	//			//MyMesh->WakeAllRigidBodies();
-
-	//			//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	//			////SetMovementMode(EMovementMode::MOVE_None);
-
-	//			//MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
-	//			//MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
-	//		}
-	//	}
-	//}
-}
-
-void ASSCharacterBase::AttackFail()
-{
-	//AttackFailDelegate.Execute();
-}
-
+//
+//void ASSCharacterBase::DamageCheck()
+//{
+//	//if ( 0.f >= Attributes->GetHealth())
+//	//{
+//	//	return;
+//	//}
+//
+//	//if (nullptr != AbilitySystemComponent
+//	//	&& nullptr != DamageEffect)
+//	//{
+//	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+//	//	EffectContext.AddSourceObject(this);
+//
+//	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+//
+//	//	if (SpecHandle.IsValid())
+//	//	{
+//	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+//	//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
+//
+//	//		//Hit Ability
+//	//		HitDelegate.Execute();
+//
+//	//		if (0.f >= Attributes->GetHealth())
+//	//		{
+//	//			DeathDelegate.Execute();
+//
+//	//			//USkeletalMeshComponent* MyMesh = GetMesh();
+//
+//	//			//if (!MyMesh)
+//	//			//	return;
+//
+//	//			//MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+//
+//	//			//MyMesh->SetSimulatePhysics(true);
+//	//			//MyMesh->WakeAllRigidBodies();
+//
+//	//			//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+//
+//	//			////SetMovementMode(EMovementMode::MOVE_None);
+//
+//	//			//MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
+//	//			//MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
+//	//		}
+//	//	}
+//	//}
+//}
+//
+//void ASSCharacterBase::AttackFail()
+//{
+//	//AttackFailDelegate.Execute();
+//}
+//

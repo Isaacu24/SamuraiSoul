@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "SSCombatComponent.generated.h"
 
+DECLARE_DELEGATE(FAnimDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAMURAISOUL_API USSCombatComponent : public UActorComponent
@@ -15,11 +16,11 @@ class SAMURAISOUL_API USSCombatComponent : public UActorComponent
 public:	
 	USSCombatComponent();
 
+	FAnimDelegate AttackEvent;
+	FAnimDelegate HitEvent;
+
 protected:
 	virtual void BeginPlay() override;
-
-	void AttackEvent();
-	void HitEvent();
 
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
