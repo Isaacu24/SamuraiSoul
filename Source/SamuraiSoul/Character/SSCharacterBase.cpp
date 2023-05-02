@@ -28,14 +28,14 @@ ASSCharacterBase::ASSCharacterBase()
 	//GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
 	//GetMesh()->SetCollisionProfileName("CharacterMesh");
 
-	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> KEYBOARDCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/CharacterControl/ABC_Keyboard.ABC_Keyboard'"));
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> KEYBOARDCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Keyboard.DA_Keyboard'"));
 
 	if (nullptr != KEYBOARDCONTROLDATA.Object)
 	{
 		CharacterControlMap.Add({ ECharacterControlType::Keyboard, KEYBOARDCONTROLDATA.Object });
 	}
 
-	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> QUATERCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/CharacterControl/ABC_Gamepad.ABC_Gamepad'"));
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> QUATERCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Gamepad.DA_Gamepad'"));
 
 	if (nullptr != QUATERCONTROLDATA.Object)
 	{

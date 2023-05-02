@@ -29,7 +29,8 @@ public:
 
 	void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
-	void AttackStartComboState();		//공격이 시작 될 때 불러주는 함수
+	//공격이 시작 될 때 불러주는 함수
+	void AttackStartComboState();		
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
