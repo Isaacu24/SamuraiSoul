@@ -44,16 +44,6 @@ ASSCharacterBase::ASSCharacterBase()
 
 }
 
-UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
-{
-	return AbilitySystemComponent;
-}
-
-USSCombatComponent* ASSCharacterBase::GetCombatComponent() const
-{
-	return nullptr;
-}
-
 // Called when the game starts or when spawned
 void ASSCharacterBase::BeginPlay()
 {

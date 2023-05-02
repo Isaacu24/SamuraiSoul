@@ -13,7 +13,6 @@ class USSInputConfigData;
 class USpringArmComponent;
 class UInputMappingContext;
 class ASSWeapon;
-class USSCombatComponent;
 
 DECLARE_DELEGATE(FAnimDelegate);
 
@@ -30,6 +29,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void PostInitializeComponents() override;
+
 	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData) override;
 
 public:
@@ -39,14 +40,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual void PostInitializeComponents() override;
-
 	virtual void OnRep_PlayerState() override;
-
-	virtual USSCombatComponent* GetCombatComponent() const override
-	{
-		return CombatComponent;
-	}
 
 	bool IsCrouch() const
 	{
@@ -88,13 +82,7 @@ private:
 	TObjectPtr<UInputMappingContext> KeyboardMappingContext;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputMappingContext> GamepadMappingContext;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<ASSWeapon> WeaponActor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ASSWeapon> Weapon;
+	TObjectPtr<UInputMappingContext> GamepadMappingContext;	
 
 	UPROPERTY()
 	uint8 bIsCrouch : 1;

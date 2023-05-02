@@ -23,7 +23,6 @@
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
 
-#include "Item/Weapon/SSWeapon.h"
 #include "Component/SSCombatComponent.h"
 #include "SSCharacterControlData.h"
 
@@ -58,8 +57,6 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	SpringArmLocation.Z += 15.f; 
 	CameraArm->SetRelativeLocation(SpringArmLocation);
 
-	CombatComponent->AttackEvent.BindUObject(this, &ASSSamuraiCharacter::AttackEvent);
-
 	JumpMaxCount = 1;
 
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
@@ -81,18 +78,15 @@ void ASSSamuraiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (nullptr != WeaponActor)
-	{
-		Weapon = GetWorld()->SpawnActor<ASSWeapon>(WeaponActor);
-
-		if (nullptr != Weapon)
-		{
-			Weapon->Equip(GetMesh(), FName("Weapon_rSocket"));
-			Weapon->SetOwner(this);
-		}
-	}
-
 	SetCharacterControl(ControlType);
+}
+
+void ASSSamuraiCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+	CombatComponent->AttackEvent.BindUObject(this, &ASSSamuraiCharacter::AttackEvent);
 }
 
 void ASSSamuraiCharacter::SetCharacterControlData(const USSCharacterControlData* ControlData)
@@ -179,11 +173,6 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleDefenseActionReleased);
 	}
-}
-
-void ASSSamuraiCharacter::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
 }
 
 void ASSSamuraiCharacter::OnRep_PlayerState()

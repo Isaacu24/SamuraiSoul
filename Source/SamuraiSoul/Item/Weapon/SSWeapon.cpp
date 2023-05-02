@@ -14,23 +14,7 @@
 // Sets default values
 ASSWeapon::ASSWeapon()
 {
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
-	Mesh->SetCollisionProfileName("NoCollision");
 
-	WeaponCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Collider"));
-	WeaponCollider->SetupAttachment(Mesh);
-	WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	WeaponCollider->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	WeaponCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-	WeaponCollider->bHiddenInGame = false;
-
-	ColliderStart = CreateDefaultSubobject<USceneComponent>(TEXT("Collider Start"));
-	ColliderStart->SetupAttachment(Mesh);
-	ColliderEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Collider End"));
-	ColliderEnd->SetupAttachment(Mesh);
-
-	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon::OnBoxOverlapBegin);
 }
 
 void ASSWeapon::Equip(USceneComponent* InParent, FName InSocketName)
@@ -98,6 +82,5 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Weapon: "), *Name), true, true, FLinearColor(1.0, 0.0, 1.0));
 		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
 	}
-
 }
 

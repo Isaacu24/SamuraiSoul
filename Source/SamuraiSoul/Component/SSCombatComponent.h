@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "SSCombatComponent.generated.h"
 
+class ASSWeapon;
+class USceneComponent;
+
 DECLARE_DELEGATE(FAnimDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -19,9 +22,14 @@ public:
 	FAnimDelegate AttackEvent;
 	FAnimDelegate HitEvent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ASSWeapon> Weapon;
+
 protected:
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	void EquipWeapon(USceneComponent* InParent, FName InSocketName);
 };

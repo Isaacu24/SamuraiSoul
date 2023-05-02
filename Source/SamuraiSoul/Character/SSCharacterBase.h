@@ -47,9 +47,15 @@ public:
 	virtual void OnRep_Controller() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
-	virtual USSCombatComponent* GetCombatComponent() const override;
+	virtual UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const override
+	{
+		return AbilitySystemComponent;
+	}
+
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return CombatComponent;
+	}
 
 	bool IsDefense() const
 	{

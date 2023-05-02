@@ -2,6 +2,8 @@
 
 
 #include "Component/SSCombatComponent.h"
+#include "Item/Weapon/SSWeapon.h"
+#include "Item/Weapon/SSWeapon_Katana.h"
 
 // Sets default values for this component's properties
 USSCombatComponent::USSCombatComponent()
@@ -18,11 +20,9 @@ USSCombatComponent::USSCombatComponent()
 void USSCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
-//
+
+//분기를 웨폰에 둔다. 무기의 타입에 따라 정하기
 //void USSCombatComponent::AttackEvent()
 //{
 //}
@@ -40,6 +40,17 @@ void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketName)
+{
+	Weapon = GetWorld()->SpawnActor<ASSWeapon_Katana>();
+
+	if (nullptr != Weapon)
+	{
+		Weapon->Equip(InParent, InSocketName);
+		Weapon->SetOwner(GetOwner());
+	}
 }
 
 
