@@ -2,11 +2,12 @@
 
 
 #include "SSGameplayAbility_Slash.h"
-#include "Kismet/KismetSystemLibrary.h"
+#include <Kismet/KismetSystemLibrary.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "../Character/SSSamuraiCharacter.h"
-#include "../Animation/SSSamuraiAnimInstance.h"
+#include "Character/SSSamuraiCharacter.h"
+#include "Animation/SSSamuraiAnimInstance.h"
+#include "DataAsset/SSComboActionData.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {
@@ -16,30 +17,35 @@ USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Slash")));
 	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Slash")));
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
-
-	MaxCombo = 3;
-
-	bIsBind = false;
 }
 
 void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 
-	if (true == bIsAttacking)
+	if (0 == CurrentCombo)
 	{
-		if (true == bCanNextCombo)
-		{
-			bIsComboInputOn = true;
-		}
+		CurrentCombo = 1;
+		ComboTimerHandle.Invalidate();
+		SetComboCheckTimer();
 	}
 
 	else
 	{
-		AttackStartComboState();
-		bIsAttacking = true;
+		if (false == ComboTimerHandle.IsValid())
+		{
+			HasNextComboCommand = false;
+		}
+
+		else
+		{
+			HasNextComboCommand = true;
+		}
+
+		return;
 	}
+
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Slash::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
@@ -54,36 +60,12 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 
 	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
 
-	if (nullptr == AnimInstance
-		|| false == IsValid(AnimInstance))
+	if (nullptr == Character)
 	{
-		AnimInstance = Cast<USSSamuraiAnimInstance>(ActorInfo->GetAnimInstance());
-	}
-
-	if (nullptr == Character
-		|| false == Character->IsEquip())
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 
-	if (nullptr != AnimInstance
-		&& false == bIsBind)
-	{
-		bIsBind = true;
-
-		AnimInstance->OnMontageEnded.AddDynamic(this, &USSGameplayAbility_Slash::OnAttackMontageEnded);
-		AnimInstance->OnNextAttackCheck.AddLambda([this]() -> void
-			{
-				bCanNextCombo = false;
-
-				if (true == bIsComboInputOn)
-				{
-					AttackStartComboState();
-					AnimInstance->JumpToAttackMontageSection(CurrentCombo, SlashMontage);
-				}
-			});
-	}
+	AnimInstance = Character->GetMesh()->GetAnimInstance();
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
@@ -108,6 +90,10 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ensure(CurrentCombo != 0);
+	CurrentCombo = 0;
+
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 
@@ -122,18 +108,33 @@ void USSGameplayAbility_Slash::AbilityEventReceived(FGameplayTag EventTag, FGame
 	//AnimNotify State Liking
 }
 
-void USSGameplayAbility_Slash::AttackStartComboState()
+void USSGameplayAbility_Slash::SetComboCheckTimer()
 {
-	bCanNextCombo = true;
-	bIsComboInputOn = false;
-	//1부터 MaxCombo사이의 값으로 조정하여 집어넣어준다.
-	CurrentCombo = FMath::Clamp<int32>(CurrentCombo + 1, 1, MaxCombo);
+	int32 ComboIndex = CurrentCombo - 1;
+	ensure(SlashComboData->EffectiveFrameCount.IsValidIndex(ComboIndex));
+
+	const float AttackSpeedRate = 1.0f;
+	float ComboEffectiveTime = (SlashComboData->EffectiveFrameCount[ComboIndex] / SlashComboData->FrameRate) / AttackSpeedRate;
+	
+	if (ComboEffectiveTime > 0.f)
+	{
+		GetWorld()->GetTimerManager().SetTimer(ComboTimerHandle, this, &USSGameplayAbility_Slash::ComboCheck, ComboEffectiveTime, false);
+	}
+
 }
 
-void USSGameplayAbility_Slash::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+void USSGameplayAbility_Slash::ComboCheck()
 {
-	bIsAttacking = false;
-	bIsComboInputOn = false;
-	bCanNextCombo = false;
-	CurrentCombo = 0;
+	ComboTimerHandle.Invalidate();
+
+	if (true == HasNextComboCommand)
+	{
+		CurrentCombo = FMath::Clamp(CurrentCombo + 1, 1, SlashComboData->MaxComboCount);
+		FName NextSection = *FString::Printf(TEXT("%s%d"), *SlashComboData->MontageSectionNamePrefix, CurrentCombo);
+		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);
+
+		SetComboCheckTimer();
+		HasNextComboCommand = false;		 
+	}
 }
+
