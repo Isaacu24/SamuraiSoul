@@ -28,12 +28,10 @@ ASSWeapon_Katana::ASSWeapon_Katana()
 
 	WeaponCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Collider"));
 	WeaponCollider->SetupAttachment(Mesh);
-	//WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	WeaponCollider->SetCollisionProfileName("SSWeapon");
-	/*
-	WeaponCollider->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	WeaponCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-	*/
+	//WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//WeaponCollider->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	//WeaponCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	WeaponCollider->SetRelativeLocation(FVector{ 0.f, 53.5f, 0.f });
 	WeaponCollider->SetBoxExtent(FVector{ 4.f, 45.f, 4.f });
 	WeaponCollider->bHiddenInGame = false;

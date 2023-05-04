@@ -4,6 +4,7 @@
 #include "Component/SSCombatComponent.h"
 #include "Item/Weapon/SSWeapon.h"
 #include "Item/Weapon/SSWeapon_Katana.h"
+#include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include "Character/SSCharacterBase.h"
 #include <Components/CapsuleComponent.h>
 
@@ -42,8 +43,6 @@ void USSCombatComponent::BeginPlay()
 void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketName)
@@ -55,6 +54,21 @@ void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketNa
 		Weapon->Equip(InParent, InSocketName);
 		Weapon->SetOwner(GetOwner());
 	}
+}
+
+void USSCombatComponent::EquipDefenseBarrier()
+{
+	DefenseBarrier = GetWorld()->SpawnActor<ASSWeapon_DefenseBarrier>();
+
+	if (nullptr != Weapon)
+	{
+		DefenseBarrier->SetOwner(GetOwner());
+	}
+
+	//Barrier Off
+	DefenseBarrier->SetActorHiddenInGame(true);
+	DefenseBarrier->SetActorEnableCollision(false);
+	DefenseBarrier->SetActorTickEnabled(false);
 }
 
 void USSCombatComponent::OnExecutionEvent()

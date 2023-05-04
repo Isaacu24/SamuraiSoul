@@ -86,6 +86,7 @@ void ASSSamuraiCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+	CombatComponent->EquipDefenseBarrier();
 	CombatComponent->AttackEvent.BindUObject(this, &ASSSamuraiCharacter::AttackEvent);
 }
 

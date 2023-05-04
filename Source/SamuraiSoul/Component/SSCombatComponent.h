@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon> Weapon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ASSWeapon> DefenseBarrier;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> ExecutionMontage;
 
@@ -45,4 +48,5 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void EquipWeapon(USceneComponent* InParent, FName InSocketName);
+	void EquipDefenseBarrier();
 };
