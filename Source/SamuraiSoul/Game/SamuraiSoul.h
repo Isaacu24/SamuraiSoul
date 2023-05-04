@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 
-//통상의 구조체랑 이넘을 몰아넣자
 UENUM(BlueprintType)
 enum class ESSAbilityInputID : uint8
 {
@@ -29,4 +28,11 @@ enum class ESSAbilityID : uint8
 	EquipUnarm,
 	Slash,
 	Defense
+};
+
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	Slash,
+	Stab
 };

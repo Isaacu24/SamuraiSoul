@@ -2,6 +2,7 @@
 
 
 #include "SSWeapon.h"
+#include "Game/SamuraiSoul.h"
 #include "DrawDebugHelpers.h"
 #include <Components/BoxComponent.h>
 #include <Components/SphereComponent.h>
@@ -34,30 +35,16 @@ void ASSWeapon::BeginPlay()
 
 void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(OtherActor);
-
-	if (nullptr == Enemy)
-	{
-		return;
-	}
-
-	Enemy->GetCombatComponent()->HitEvent.Execute();
-
 	const FVector Start = ColliderStart->GetComponentLocation();
 	const FVector End = ColliderEnd->GetComponentLocation();
 
+	FHitResult OutHit;
 	TArray<AActor*> ActorsToIgnore = {}; 
 	ActorsToIgnore.Add(this);
-
 	if (nullptr != GetOwner())
 	{
-		//Interface
-		ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(GetOwner());
-		Character->GetCombatComponent()->AttackEvent.Execute();
-
 		ActorsToIgnore.Add(GetOwner());
 	}
-	FHitResult OutHit;
 
 	UKismetSystemLibrary::BoxTraceSingle(
 		this, 
@@ -82,5 +69,20 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Weapon: "), *Name), true, true, FLinearColor(1.0, 0.0, 1.0));
 		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
 	}
+
+	ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(OtherActor);
+	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(GetOwner());
+
+	if (nullptr == Enemy
+		|| nullptr == Character)
+	{
+		return;
+	}
+
+	//Enemy->GetCombatComponent()->HitEvent.Execute(EWeaponType::Slash);
+	Enemy->GetCombatComponent()->ExecutedEvent.Execute();
+	//Character->GetCombatComponent()->ExecutionEvent.Execute();
+	//Character->GetCombatComponent()->AttackEvent.Execute(EWeaponType::Slash);
+
 }
 

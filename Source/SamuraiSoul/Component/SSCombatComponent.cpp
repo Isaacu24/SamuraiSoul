@@ -4,6 +4,8 @@
 #include "Component/SSCombatComponent.h"
 #include "Item/Weapon/SSWeapon.h"
 #include "Item/Weapon/SSWeapon_Katana.h"
+#include "Character/SSCharacterBase.h"
+#include <Components/CapsuleComponent.h>
 
 // Sets default values for this component's properties
 USSCombatComponent::USSCombatComponent()
@@ -12,27 +14,29 @@ USSCombatComponent::USSCombatComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
-}
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTION_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Execution.AM_Execution'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTED_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Executed.AM_Executed'"));
 
+	if (true == EXECUTION_MONTAGE.Succeeded())
+	{
+		ExecutionMontage = EXECUTION_MONTAGE.Object;
+	}
+
+	if (true == EXECUTED_MONTAGE.Succeeded())
+	{
+		ExecutedMontage = EXECUTED_MONTAGE.Object;
+	}
+
+}
 
 // Called when the game starts
 void USSCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ExecutionEvent.BindUObject(this, &USSCombatComponent::OnExecutionEvent);
+	ExecutedEvent.BindUObject(this, &USSCombatComponent::OnExecutedEvent);
 }
-
-//분기를 웨폰에 둔다. 무기의 타입에 따라 정하기
-//void USSCombatComponent::AttackEvent()
-//{
-//}
-//
-//void USSCombatComponent::HitEvent()
-//{
-//	//switch(EAttckType)
-//	//to do
-//}
-
 
 // Called every frame
 void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -53,5 +57,35 @@ void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketNa
 	}
 }
 
+void USSCombatComponent::OnExecutionEvent()
+{
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+		if(nullptr != AnimInstance)
+		{
+			AnimInstance->Montage_Play(ExecutionMontage);
+		}
+	}
+}
+
+void USSCombatComponent::OnExecutedEvent()
+{
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
+		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+		if (nullptr != AnimInstance)
+		{
+			AnimInstance->Montage_Play(ExecutedMontage);
+		}
+	}
+}
 
 

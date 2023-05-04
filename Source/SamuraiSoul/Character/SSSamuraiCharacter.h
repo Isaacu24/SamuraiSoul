@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/SamuraiSoul.h"
 #include "SSCharacterBase.h"
 #include "InputActionValue.h"
 #include "SSSamuraiCharacter.generated.h"
@@ -65,8 +66,8 @@ public:
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
 
-	void AttackEvent();
-	void HitEvent();
+	void AttackEvent(EWeaponType Type);
+	void HitEvent(EWeaponType Type);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))

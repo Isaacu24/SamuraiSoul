@@ -25,8 +25,8 @@ ASSCharacterBase::ASSCharacterBase()
 
 	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
 
-	//GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCharacter"));
-	//GetMesh()->SetCollisionProfileName("CharacterMesh");
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
+	GetMesh()->SetCollisionProfileName("NoCollision");
 
 	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> KEYBOARDCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Keyboard.DA_Keyboard'"));
 

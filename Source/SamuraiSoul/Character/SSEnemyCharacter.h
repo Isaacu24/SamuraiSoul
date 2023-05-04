@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SSEnemyCharacterBase.h"
+#include "Game/SamuraiSoul.h"
 #include "SSEnemyCharacter.generated.h"
 
 class UGameplayEffect;
@@ -23,8 +24,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	void AttackEvent();
-	void HitEvent();
+	void AttackEvent(EWeaponType Type);
+	void HitEvent(EWeaponType Type);
 
 private:
 	UPROPERTY()

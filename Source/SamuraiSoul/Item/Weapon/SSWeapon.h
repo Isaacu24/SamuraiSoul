@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../SSItem.h"
+#include "Game/SamuraiSoul.h"
 #include "SSWeapon.generated.h"
 
 class UPrimitiveComponent;

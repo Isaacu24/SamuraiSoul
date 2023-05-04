@@ -296,12 +296,12 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 	ControlType = CharacterControlType;
 }
 
-void ASSSamuraiCharacter::AttackEvent()
+void ASSSamuraiCharacter::AttackEvent(EWeaponType Type)
 {
 
 }
 
-void ASSSamuraiCharacter::HitEvent()
+void ASSSamuraiCharacter::HitEvent(EWeaponType Type)
 {
 }
 

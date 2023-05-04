@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/SamuraiSoul.h"
 #include "Components/ActorComponent.h"
 #include "SSCombatComponent.generated.h"
 
 class ASSWeapon;
 class USceneComponent;
 
-DECLARE_DELEGATE(FAnimDelegate);
+DECLARE_DELEGATE_OneParam(FCombatDelegate, EWeaponType Type);
+DECLARE_DELEGATE(FExecuteDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SAMURAISOUL_API USSCombatComponent : public UActorComponent
@@ -19,11 +21,22 @@ class SAMURAISOUL_API USSCombatComponent : public UActorComponent
 public:	
 	USSCombatComponent();
 
-	FAnimDelegate AttackEvent;
-	FAnimDelegate HitEvent;
+	FCombatDelegate AttackEvent;
+	FCombatDelegate HitEvent;
+	FExecuteDelegate ExecutionEvent;
+	FExecuteDelegate ExecutedEvent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon> Weapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
+	TObjectPtr<UAnimMontage> ExecutionMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
+	TObjectPtr<UAnimMontage> ExecutedMontage;
+
+	void OnExecutionEvent();
+	void OnExecutedEvent();
 
 protected:
 	virtual void BeginPlay() override;

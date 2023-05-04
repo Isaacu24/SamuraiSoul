@@ -2,6 +2,7 @@
 
 
 #include "SSEnemyCharacter.h"
+#include "Game/SamuraiSoul.h"
 #include "../Animation/SSEnemyAnimInstance.h"
 #include "../Abilities/SSAttributeSet.h"
 #include "AbilitySystemComponent.h"
@@ -53,17 +54,35 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 	{
 		StabTime = 0.f;
 		bIsLog = false;
-		StabDelegate.Execute();
+		//StabDelegate.Execute();
 	}
 }
 
-void ASSEnemyCharacter::AttackEvent()
+void ASSEnemyCharacter::AttackEvent(EWeaponType Type)
 {
-
+	switch (Type)
+	{
+	case EWeaponType::Slash:
+		break;
+	case EWeaponType::Stab:
+		break;
+	default:
+		break;
+	}
 }
 
-void ASSEnemyCharacter::HitEvent()
+void ASSEnemyCharacter::HitEvent(EWeaponType Type)
 {
+	switch (Type)
+	{
+	case EWeaponType::Slash:
+		break;
+	case EWeaponType::Stab:
+		break;
+	default:
+		break;
+	}
+
 	if (0.f >= Attributes->GetHealth())
 	{
 		return;
@@ -97,3 +116,4 @@ void ASSEnemyCharacter::HitEvent()
 			//}
 	}
 }
+

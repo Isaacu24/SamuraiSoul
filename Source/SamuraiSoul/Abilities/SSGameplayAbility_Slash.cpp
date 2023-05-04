@@ -5,7 +5,7 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "Character/SSSamuraiCharacter.h"
+#include "Character/SSCharacterBase.h"
 #include "Animation/SSSamuraiAnimInstance.h"
 #include "DataAsset/SSComboActionData.h"
 
@@ -58,7 +58,7 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 
 	if (nullptr == Character)
 	{
@@ -91,7 +91,7 @@ void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handl
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ensure(CurrentCombo != 0);
+	//ensure(CurrentCombo != 0);
 	CurrentCombo = 0;
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
