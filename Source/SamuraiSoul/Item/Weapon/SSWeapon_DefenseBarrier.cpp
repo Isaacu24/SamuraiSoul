@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Item/Weapon/ASSWeapon_DefenseBarrier.h"
+#include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 
 // Sets default values
 ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
