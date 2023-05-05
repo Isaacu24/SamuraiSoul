@@ -23,7 +23,6 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	WeaponCollider->SetBoxExtent(FVector{ 75.f, 5.f, 100.f });
 	WeaponCollider->bHiddenInGame = false;
 	OnParry();
-	//WeaponCollider->IgnoreActorWhenMoving(this, true);
 
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnBoxOverlapBegin);
 }
@@ -69,6 +68,7 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 
 	if (nullptr != Weapon)
 	{
+		ASSCharacterBase* MyOwner = Cast<ASSCharacterBase>(GetOwner());
 		ASSCharacterBase* Character = Cast<ASSCharacterBase>(OtherActor->GetOwner());
 
 		if (nullptr != Character)
@@ -76,6 +76,7 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 			if (nullptr != Character->GetCombatComponent())
 			{
 				Character->GetCombatComponent()->ExecutedEvent.Execute();
+				MyOwner->GetCombatComponent()->ExecutionEvent.Execute();
 			}
 		}
 	}
