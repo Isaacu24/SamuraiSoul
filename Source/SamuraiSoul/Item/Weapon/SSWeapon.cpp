@@ -80,7 +80,7 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	}
 
 	//Enemy->GetCombatComponent()->HitEvent.Execute(EWeaponType::Slash);
-	Enemy->GetCombatComponent()->ExecutedEvent.Execute();
+	//Enemy->GetCombatComponent()->ExecutedEvent.Execute();
 	//Character->GetCombatComponent()->ExecutionEvent.Execute();
 	//Character->GetCombatComponent()->AttackEvent.Execute(EWeaponType::Slash);
 

@@ -108,6 +108,10 @@ void USSCombatComponent::OnDefense()
 	DefenseBarrier->SetActorHiddenInGame(false);
 	DefenseBarrier->SetActorEnableCollision(true);
 	DefenseBarrier->SetActorTickEnabled(true);
+
+	Weapon->SetActorHiddenInGame(true);
+	Weapon->SetActorEnableCollision(false);
+	Weapon->SetActorTickEnabled(false);
 }
 
 void USSCombatComponent::OffDefense()
@@ -120,6 +124,10 @@ void USSCombatComponent::OffDefense()
 	DefenseBarrier->SetActorHiddenInGame(true);
 	DefenseBarrier->SetActorEnableCollision(false);
 	DefenseBarrier->SetActorTickEnabled(false);
+
+	Weapon->SetActorHiddenInGame(false);
+	Weapon->SetActorEnableCollision(true);
+	Weapon->SetActorTickEnabled(true);
 }
 
 

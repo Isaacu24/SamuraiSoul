@@ -4,7 +4,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "../Character/SSSamuraiCharacter.h"
+#include "Character/SSSamuraiCharacter.h"
 
 USSGameplayAbility_EquipUnarm::USSGameplayAbility_EquipUnarm()
 {

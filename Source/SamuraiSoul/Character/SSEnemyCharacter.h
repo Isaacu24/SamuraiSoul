@@ -22,6 +22,8 @@ public:
 
 	FAnimDelegate StabDelegate;
 
+	virtual void BeginPlay() override;
+
 	virtual void Tick(float DeltaTime) override;
 
 	void AttackEvent(EWeaponType Type);

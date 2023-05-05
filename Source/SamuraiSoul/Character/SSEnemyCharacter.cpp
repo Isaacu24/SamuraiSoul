@@ -36,6 +36,15 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	bIsLog = false;
 }
 
+void ASSEnemyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+	CombatComponent->EquipDefenseBarrier();
+	CombatComponent->AttackEvent.BindUObject(this, &ASSEnemyCharacter::AttackEvent);
+}
+
 void ASSEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -54,7 +63,7 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 	{
 		StabTime = 0.f;
 		bIsLog = false;
-		//StabDelegate.Execute();
+		StabDelegate.Execute();
 	}
 }
 

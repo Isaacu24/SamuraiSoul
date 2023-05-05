@@ -3,11 +3,14 @@
 
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include <Components/BoxComponent.h>
+#include <Kismet/KismetSystemLibrary.h>
+#include "Character/SSEnemyCharacter.h"
+#include "Component/SSCombatComponent.h"
 
 // Sets default values
 ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
@@ -19,13 +22,15 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	WeaponCollider->SetRelativeRotation(FRotator{ 0.f, 90.f, 0.f });
 	WeaponCollider->SetBoxExtent(FVector{ 75.f, 5.f, 100.f });
 	WeaponCollider->bHiddenInGame = false;
+	OnParry();
+	//WeaponCollider->IgnoreActorWhenMoving(this, true);
 
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnBoxOverlapBegin);
 }
 
 void ASSWeapon_DefenseBarrier::OnParry()
 {
-	//WeaponCollider->SetCollisionProfileName("Parry");
+	WeaponCollider->SetCollisionProfileName("SSWeapon");
 	WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
@@ -39,11 +44,6 @@ void ASSWeapon_DefenseBarrier::OffDefense()
 void ASSWeapon_DefenseBarrier::BeginPlay()
 {
 	Super::BeginPlay();
-	
-}
-
-void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
 
 }
 
@@ -61,3 +61,23 @@ void ASSWeapon_DefenseBarrier::Tick(float DeltaTime)
 	}
 }
 
+void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Error, TEXT("Actor: %s"), *OtherActor->GetName());
+
+	ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+
+	if (nullptr != Weapon)
+	{
+		ASSCharacterBase* Character = Cast<ASSCharacterBase>(OtherActor->GetOwner());
+
+		if (nullptr != Character)
+		{
+			if (nullptr != Character->GetCombatComponent())
+			{
+				Character->GetCombatComponent()->ExecutedEvent.Execute();
+			}
+		}
+	}
+
+}
