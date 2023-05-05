@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
+#include "Component/SSCombatComponent.h"
 #include "Character/SSSamuraiCharacter.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
@@ -43,6 +44,8 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 	{
 		return;
 	}
+
+	Character->GetCombatComponent()->OnDefense();
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
@@ -88,6 +91,14 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+
+	if (nullptr != Character)
+	{
+		Character->GetCombatComponent()->OffDefense();
+	}
+
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 

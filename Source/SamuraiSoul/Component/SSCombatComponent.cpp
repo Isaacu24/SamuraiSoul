@@ -63,12 +63,8 @@ void USSCombatComponent::EquipDefenseBarrier()
 	if (nullptr != Weapon)
 	{
 		DefenseBarrier->SetOwner(GetOwner());
+		OffDefense();
 	}
-
-	//Barrier Off
-	DefenseBarrier->SetActorHiddenInGame(true);
-	DefenseBarrier->SetActorEnableCollision(false);
-	DefenseBarrier->SetActorTickEnabled(false);
 }
 
 void USSCombatComponent::OnExecutionEvent()
@@ -100,6 +96,30 @@ void USSCombatComponent::OnExecutedEvent()
 			AnimInstance->Montage_Play(ExecutedMontage);
 		}
 	}
+}
+
+void USSCombatComponent::OnDefense()
+{
+	if (nullptr == DefenseBarrier)
+	{
+		return;
+	}
+
+	DefenseBarrier->SetActorHiddenInGame(false);
+	DefenseBarrier->SetActorEnableCollision(true);
+	DefenseBarrier->SetActorTickEnabled(true);
+}
+
+void USSCombatComponent::OffDefense()
+{
+	if (nullptr == DefenseBarrier)
+	{
+		return;
+	}
+
+	DefenseBarrier->SetActorHiddenInGame(true);
+	DefenseBarrier->SetActorEnableCollision(false);
+	DefenseBarrier->SetActorTickEnabled(false);
 }
 
 

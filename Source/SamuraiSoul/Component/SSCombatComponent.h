@@ -41,6 +41,9 @@ public:
 	void OnExecutionEvent();
 	void OnExecutedEvent();
 
+	void OnDefense();
+	void OffDefense();
+
 protected:
 	virtual void BeginPlay() override;
 

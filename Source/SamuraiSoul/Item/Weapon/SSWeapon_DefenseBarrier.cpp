@@ -19,7 +19,6 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	WeaponCollider->SetRelativeRotation(FRotator{ 0.f, 90.f, 0.f });
 	WeaponCollider->SetBoxExtent(FVector{ 75.f, 5.f, 100.f });
 	WeaponCollider->bHiddenInGame = false;
-	OffDefense();
 
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnBoxOverlapBegin);
 }
