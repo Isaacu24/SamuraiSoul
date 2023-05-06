@@ -8,11 +8,8 @@
 #include "Character/SSCharacterBase.h"
 #include <Components/CapsuleComponent.h>
 
-// Sets default values for this component's properties
 USSCombatComponent::USSCombatComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTION_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Execution.AM_Execution'"));
@@ -27,19 +24,19 @@ USSCombatComponent::USSCombatComponent()
 	{
 		ExecutedMontage = EXECUTED_MONTAGE.Object;
 	}
-
 }
 
-// Called when the game starts
 void USSCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ExecutionEvent.BindUObject(this, &USSCombatComponent::OnExecutionEvent);
-	ExecutedEvent.BindUObject(this, &USSCombatComponent::OnExecutedEvent);
+	HitEvent.BindUObject(this, &ThisClass::Hit);
+	DeathEvent.BindUObject(this, &ThisClass::Die);
+
+	ExecutionEvent.BindUObject(this, &ThisClass::Execution);
+	ExecutedEvent.BindUObject(this, &ThisClass::Executed);
 }
 
-// Called every frame
 void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -64,37 +61,6 @@ void USSCombatComponent::EquipDefenseBarrier()
 	{
 		DefenseBarrier->SetOwner(GetOwner());
 		OffDefense();
-	}
-}
-
-void USSCombatComponent::OnExecutionEvent()
-{
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
-
-		if(nullptr != AnimInstance)
-		{
-			AnimInstance->Montage_Play(ExecutionMontage);
-		}
-	}
-}
-
-void USSCombatComponent::OnExecutedEvent()
-{
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
-		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
-
-		if (nullptr != AnimInstance)
-		{
-			AnimInstance->Montage_Play(ExecutedMontage);
-		}
 	}
 }
 
@@ -131,3 +97,83 @@ void USSCombatComponent::OffDefense()
 }
 
 
+void USSCombatComponent::Hit()
+{
+	//Play Hit Montage
+
+	//if (0.f >= Attributes->GetHealth())
+	//{
+	//	return;
+	//}
+
+	//if (nullptr != AbilitySystemComponent
+	//	&& nullptr != DamageEffect)
+	//{
+	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	//	EffectContext.AddSourceObject(this);
+
+	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+
+	//	if (SpecHandle.IsValid())
+	//	{
+	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
+
+	//		if (0.f >= Attributes->GetHealth())
+	//		{
+	//			USkeletalMeshComponent* MyMesh = GetMesh();
+
+	//			if (!MyMesh)
+	//				return;
+
+	//			MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+
+	//			MyMesh->SetSimulatePhysics(true);
+	//			MyMesh->WakeAllRigidBodies();
+
+	//			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//			//SetMovementMode(EMovementMode::MOVE_None);
+
+	//			MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
+	//			MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
+	//		}
+	//	}
+	//}
+}
+
+void USSCombatComponent::Die()
+{
+	//Play Death Montage
+}
+
+void USSCombatComponent::Execution()
+{
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+		if (nullptr != AnimInstance)
+		{
+			AnimInstance->Montage_Play(ExecutionMontage);
+		}
+	}
+}
+
+void USSCombatComponent::Executed()
+{
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
+		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+		if (nullptr != AnimInstance)
+		{
+			AnimInstance->Montage_Play(ExecutedMontage);
+		}
+	}
+}

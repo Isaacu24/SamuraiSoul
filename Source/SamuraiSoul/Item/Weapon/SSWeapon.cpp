@@ -6,28 +6,15 @@
 #include "DrawDebugHelpers.h"
 #include <Components/BoxComponent.h>
 #include <Components/SphereComponent.h>
-#include "Character/SSSamuraiCharacter.h"
-#include "Character/SSCharacterBase.h"
 #include <Kismet/KismetSystemLibrary.h>
-#include "Character/SSEnemyCharacter.h"
+#include "Interface/SSCombatInterface.h"
 #include "Component/SSCombatComponent.h"
 
-// Sets default values
 ASSWeapon::ASSWeapon()
 {
 
 }
 
-void ASSWeapon::Equip(USceneComponent* InParent, FName InSocketName)
-{
-	if (nullptr != InParent)
-	{
-		FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
-		AttachToComponent(InParent, TransformRules, InSocketName);
-	}
-}
-
-// Called when the game starts or when spawned
 void ASSWeapon::BeginPlay()
 {
 	Super::BeginPlay();
@@ -41,6 +28,7 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	FHitResult OutHit;
 	TArray<AActor*> ActorsToIgnore = {}; 
 	ActorsToIgnore.Add(this);
+
 	if (nullptr != GetOwner())
 	{
 		ActorsToIgnore.Add(GetOwner());
@@ -62,27 +50,34 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		FLinearColor::Green,
 		1.f
 	);
-
+	
 	if (nullptr != OutHit.GetActor())
 	{
-		FString Name = OutHit.GetActor()->GetName();
-		UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Weapon: "), *Name), true, true, FLinearColor(1.0, 0.0, 1.0));
 		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
 	}
 
-	ASSEnemyCharacter* Enemy = Cast<ASSEnemyCharacter>(OtherActor);
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(GetOwner());
+	ISSCombatInterface* Enemy = Cast<ISSCombatInterface>(OtherActor);
+	ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
 
-	if (nullptr == Enemy
-		|| nullptr == Character)
+	if (nullptr != Enemy)
 	{
-		return;
+		Enemy->GetCombatComponent()->HitEvent.Execute();
 	}
 
-	//Enemy->GetCombatComponent()->HitEvent.Execute(EWeaponType::Slash);
-	//Enemy->GetCombatComponent()->ExecutedEvent.Execute();
-	//Character->GetCombatComponent()->ExecutionEvent.Execute();
-	//Character->GetCombatComponent()->AttackEvent.Execute(EWeaponType::Slash);
 
+	if (nullptr == MyOwner)
+	{
+		//MyOwner->GetCombatComponent()->AttackEvent.Execute();
+	}
 }
+
+void ASSWeapon::Equip(USceneComponent* InParent, FName InSocketName)
+{
+	if (nullptr != InParent)
+	{
+		FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+		AttachToComponent(InParent, TransformRules, InSocketName);
+	}
+}
+
 

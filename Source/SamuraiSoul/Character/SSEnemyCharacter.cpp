@@ -31,8 +31,6 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
 
-	CombatComponent->HitEvent.BindUObject(this, &ASSEnemyCharacter::HitEvent);
-
 	bIsLog = false;
 }
 
@@ -42,7 +40,6 @@ void ASSEnemyCharacter::BeginPlay()
 
 	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
 	CombatComponent->EquipDefenseBarrier();
-	CombatComponent->AttackEvent.BindUObject(this, &ASSEnemyCharacter::AttackEvent);
 }
 
 void ASSEnemyCharacter::Tick(float DeltaTime)
@@ -64,65 +61,6 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 		StabTime = 0.f;
 		bIsLog = false;
 		StabDelegate.Execute();
-	}
-}
-
-void ASSEnemyCharacter::AttackEvent(EWeaponType Type)
-{
-	switch (Type)
-	{
-	case EWeaponType::Slash:
-		break;
-	case EWeaponType::Stab:
-		break;
-	default:
-		break;
-	}
-}
-
-void ASSEnemyCharacter::HitEvent(EWeaponType Type)
-{
-	switch (Type)
-	{
-	case EWeaponType::Slash:
-		break;
-	case EWeaponType::Stab:
-		break;
-	default:
-		break;
-	}
-
-	if (0.f >= Attributes->GetHealth())
-	{
-		return;
-	}
-
-	if (nullptr != AbilitySystemComponent)
-	{
-		HitDelegate.Execute();
-		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
-
-			//if (0.f >= Attributes->GetHealth())
-			//{
-			//	DeathDelegate.Execute();
-
-			//	USkeletalMeshComponent* MyMesh = GetMesh();
-
-			//	if (!MyMesh)
-			//		return;
-
-			//	MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
-
-			//	MyMesh->SetSimulatePhysics(true);
-			//	MyMesh->WakeAllRigidBodies();
-
-			//	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-			//	//SetMovementMode(EMovementMode::MOVE_None);
-
-			//	MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
-			//	MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
-			//}
 	}
 }
 

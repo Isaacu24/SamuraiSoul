@@ -9,6 +9,8 @@
 
 class UGameplayEffect;
 
+DECLARE_DELEGATE(FAnimDelegate);
+
 /**
  * 
  */
@@ -25,9 +27,6 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
-	void AttackEvent(EWeaponType Type);
-	void HitEvent(EWeaponType Type);
 
 private:
 	UPROPERTY()

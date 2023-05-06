@@ -66,9 +66,6 @@ public:
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
 
-	void AttackEvent(EWeaponType Type);
-	void HitEvent(EWeaponType Type);
-
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> Camera;
@@ -79,13 +76,16 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSInputConfigData> InputActions;
 
+	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowParivateAccess = "true"))
+	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
+	
+	ECharacterControlType ControlType;
+
 	UPROPERTY()
 	uint8 bIsCrouch : 1;
 
 	UPROPERTY()
 	uint8 bIsEquip : 1;
-
-	ECharacterControlType ControlType;
 
 private:
 	void Move(const FInputActionValue& Value);

@@ -34,6 +34,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_BODY(TEXT("/Script/Engine.SkeletalMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Character/Mesh/SK_GhostSamurai_katana.SK_GhostSamurai_katana'"));
 	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> KEYBOARDCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Keyboard.DA_Keyboard'"));
 
 	if (true == SK_BODY.Succeeded())
 	{
@@ -43,6 +44,18 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	if (true == ANIM_SAMURAI.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
+	}
+
+	if (nullptr != KEYBOARDCONTROLDATA.Object)
+	{
+		CharacterControlMap.Add({ ECharacterControlType::Keyboard, KEYBOARDCONTROLDATA.Object });
+	}
+
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> QUATERCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Gamepad.DA_Gamepad'"));
+
+	if (nullptr != QUATERCONTROLDATA.Object)
+	{
+		CharacterControlMap.Add({ ECharacterControlType::Gamepad, QUATERCONTROLDATA.Object });
 	}
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
@@ -87,7 +100,6 @@ void ASSSamuraiCharacter::PostInitializeComponents()
 
 	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
 	CombatComponent->EquipDefenseBarrier();
-	CombatComponent->AttackEvent.BindUObject(this, &ASSSamuraiCharacter::AttackEvent);
 }
 
 void ASSSamuraiCharacter::SetCharacterControlData(const USSCharacterControlData* ControlData)
@@ -295,15 +307,6 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 	}
 
 	ControlType = CharacterControlType;
-}
-
-void ASSSamuraiCharacter::AttackEvent(EWeaponType Type)
-{
-
-}
-
-void ASSSamuraiCharacter::HitEvent(EWeaponType Type)
-{
 }
 
 void ASSSamuraiCharacter::HandleDodgeActionPressed()

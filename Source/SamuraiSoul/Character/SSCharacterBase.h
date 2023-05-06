@@ -11,9 +11,9 @@
 
 class UAbilitySystemComponent;
 class USSAttributeSet;
-class UGameplayEffect;
 class USSGameplayAbility;
 class UInputComponent;
+class UGameplayEffect;
 class USSCharacterControlData;
 
 UENUM()
@@ -22,8 +22,6 @@ enum class ECharacterControlType : uint8
 	Keyboard,
 	Gamepad
 };
-
-DECLARE_DELEGATE(FAnimDelegate);
 
 UCLASS()
 class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSCombatInterface
@@ -62,24 +60,10 @@ public:
 		return bIsDefense;
 	}
 
-	bool IsAttack() const
-	{
-		return bIsAttack;
-	}
-
-	void SetIsAttack(bool Value)
-	{
-		bIsAttack = Value;
-	}
-
 	void SwitchIsDefense()
 	{
 		bIsDefense = ~bIsDefense;
 	}
-
-	FAnimDelegate HitDelegate;
-	FAnimDelegate DeathDelegate;
-	FAnimDelegate AttackFailDelegate;
 
 protected:
 	// Called when the game starts or when spawned
@@ -100,19 +84,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
 
-	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowParivateAccess = "true"))
-	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
-
 	UPROPERTY()
 	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY()
 	uint8 bIsDefense : 1;
-
-	UPROPERTY()
-	uint8 bIsAttack : 1;
-
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TSubclassOf<UGameplayEffect> DamageEffect;
 };

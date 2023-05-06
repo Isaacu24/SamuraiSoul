@@ -6,16 +6,13 @@
 #include "Item/Weapon/SSWeapon.h"
 #include "SSWeapon_Katana.generated.h"
 
-class UPrimitiveComponent;
 class AActor;
 class UBoxComponent;
-class USphereComponent;
 class USceneComponent;
+class USphereComponent;
+class UPrimitiveComponent;
 class UStaticMeshComponent;
 
-/**
- * 
- */
 UCLASS()
 class SAMURAISOUL_API ASSWeapon_Katana : public ASSWeapon
 {

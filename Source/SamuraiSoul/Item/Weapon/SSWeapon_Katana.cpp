@@ -16,22 +16,19 @@ ASSWeapon_Katana::ASSWeapon_Katana()
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SK_WEAPON(TEXT("/Script/Engine.StaticMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Weapon/Mesh/Katana/SM_Katana01.SM_Katana01'"));
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
-	Mesh->SetCollisionProfileName("NoCollision");
-
+	
 	if (true == SK_WEAPON.Succeeded())
 	{
 		Mesh->SetStaticMesh(SK_WEAPON.Object);
 	}
 
+	Mesh->SetupAttachment(GetRootComponent());
+	Mesh->SetCollisionProfileName("NoCollision");
 	Mesh->SetVisibility(false);
 
 	WeaponCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Collider"));
 	WeaponCollider->SetupAttachment(Mesh);
 	WeaponCollider->SetCollisionProfileName("SSWeapon");
-	//WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	//WeaponCollider->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	//WeaponCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	WeaponCollider->SetRelativeLocation(FVector{ 0.f, 53.5f, 0.f });
 	WeaponCollider->SetBoxExtent(FVector{ 4.f, 45.f, 4.f });
 	WeaponCollider->bHiddenInGame = false;

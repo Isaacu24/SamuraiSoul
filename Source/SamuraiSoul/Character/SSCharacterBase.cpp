@@ -11,10 +11,8 @@
 #include "SSCharacterControlData.h"
 #include "Component/SSCombatComponent.h"
 
-// Sets default values
 ASSCharacterBase::ASSCharacterBase()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	AbilitySystemComponent = CreateDefaultSubobject<USSAbilitySystemComponent>(TEXT("AbilitySystemComp"));
@@ -27,24 +25,8 @@ ASSCharacterBase::ASSCharacterBase()
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
 	GetMesh()->SetCollisionProfileName("NoCollision");
-
-	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> KEYBOARDCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Keyboard.DA_Keyboard'"));
-
-	if (nullptr != KEYBOARDCONTROLDATA.Object)
-	{
-		CharacterControlMap.Add({ ECharacterControlType::Keyboard, KEYBOARDCONTROLDATA.Object });
-	}
-
-	static ConstructorHelpers::FObjectFinder<USSCharacterControlData> QUATERCONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Gamepad.DA_Gamepad'"));
-
-	if (nullptr != QUATERCONTROLDATA.Object)
-	{
-		CharacterControlMap.Add({ ECharacterControlType::Gamepad, QUATERCONTROLDATA.Object });
-	}
-
 }
 
-// Called when the game starts or when spawned
 void ASSCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -117,69 +99,13 @@ void ASSCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
-// Called every frame
 void ASSCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void ASSCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
-//
-//void ASSCharacterBase::DamageCheck()
-//{
-//	//if ( 0.f >= Attributes->GetHealth())
-//	//{
-//	//	return;
-//	//}
-//
-//	//if (nullptr != AbilitySystemComponent
-//	//	&& nullptr != DamageEffect)
-//	//{
-//	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-//	//	EffectContext.AddSourceObject(this);
-//
-//	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
-//
-//	//	if (SpecHandle.IsValid())
-//	//	{
-//	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-//	//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
-//
-//	//		//Hit Ability
-//	//		HitDelegate.Execute();
-//
-//	//		if (0.f >= Attributes->GetHealth())
-//	//		{
-//	//			DeathDelegate.Execute();
-//
-//	//			//USkeletalMeshComponent* MyMesh = GetMesh();
-//
-//	//			//if (!MyMesh)
-//	//			//	return;
-//
-//	//			//MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
-//
-//	//			//MyMesh->SetSimulatePhysics(true);
-//	//			//MyMesh->WakeAllRigidBodies();
-//
-//	//			//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-//
-//	//			////SetMovementMode(EMovementMode::MOVE_None);
-//
-//	//			//MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
-//	//			//MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
-//	//		}
-//	//	}
-//	//}
-//}
-//
-//void ASSCharacterBase::AttackFail()
-//{
-//	//AttackFailDelegate.Execute();
-//}
-//

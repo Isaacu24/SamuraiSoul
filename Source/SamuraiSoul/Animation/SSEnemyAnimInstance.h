@@ -17,10 +17,7 @@ class SAMURAISOUL_API USSEnemyAnimInstance : public USSCharacterAnimInstance
 public:
 	USSEnemyAnimInstance();
 
-	void PlayHitMontage();
-	void PlayDeathMontage();
 	void PlayStabMontage();
-	void PlayAttackFailMontage();
 
 	UFUNCTION()
 	void AnimNotify_RagdollDeath();
@@ -34,15 +31,7 @@ protected:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TObjectPtr<UAnimMontage> HitMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TObjectPtr<UAnimMontage> DeathMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAnimMontage> StabMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TObjectPtr<UAnimMontage> AttackFailMontage;
 };

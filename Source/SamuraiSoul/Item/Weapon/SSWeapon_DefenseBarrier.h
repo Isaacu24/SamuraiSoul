@@ -12,20 +12,14 @@ class SAMURAISOUL_API ASSWeapon_DefenseBarrier : public ASSWeapon
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASSWeapon_DefenseBarrier();
 
-	void OnParry();
-	void OffDefense();
-
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };
