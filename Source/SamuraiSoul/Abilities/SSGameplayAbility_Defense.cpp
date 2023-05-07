@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
+#include "SSAbilityTask.h"
 #include "Component/SSCombatComponent.h"
 #include "Character/SSSamuraiCharacter.h"
 
@@ -21,21 +22,19 @@ USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 void USSGameplayAbility_Defense::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
-
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Defense::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
-
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	
+
 	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
 
 	bool bIsEquip = false;
@@ -97,6 +96,12 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Han
 	if (nullptr != Character)
 	{
 		Character->GetCombatComponent()->OffDefense();
+
+		if (nullptr != Character->GetMesh()->GetAnimInstance())
+		{
+			Character->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseMontage);
+			Character->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseRootMontage);
+		}
 	}
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
@@ -110,4 +115,5 @@ void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle Hand
 
 void USSGameplayAbility_Defense::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
+
 }

@@ -8,19 +8,7 @@
 
 USSEnemyAnimInstance::USSEnemyAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> HIT_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Hit.AM_Hit'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> DEATH_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Death.AM_Death'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> STAB_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Stab.AM_Stab'"));
-
-	if (true == HIT_MONTAGE.Succeeded())
-	{
-		HitMontage = HIT_MONTAGE.Object;
-	}
-
-	if (true == DEATH_MONTAGE.Succeeded())
-	{
-		DeathMontage = DEATH_MONTAGE.Object;
-	}
 
 	if (true == STAB_MONTAGE.Succeeded())
 	{
