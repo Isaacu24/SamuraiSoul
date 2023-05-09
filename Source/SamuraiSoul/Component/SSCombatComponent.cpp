@@ -8,6 +8,9 @@
 #include "Character/SSCharacterBase.h"
 #include <Components/CapsuleComponent.h>
 
+#include "GameplayAbilitySpecHandle.h"
+#include "AbilitySystemComponent.h"
+
 USSCombatComponent::USSCombatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -29,6 +32,13 @@ USSCombatComponent::USSCombatComponent()
 	if (true == HIT_MONTAGE.Succeeded())
 	{
 		HitMontage = HIT_MONTAGE.Object;
+	}
+
+	static ConstructorHelpers::FClassFinder<UGameplayAbility> AbilityClassFinder(TEXT("/Script/Engine.Blueprint'/Game/MyContent/Abilities/BP_SSGameplayAbility_Execution.BP_SSGameplayAbility_Execution_C'"));
+
+	if (AbilityClassFinder.Succeeded())
+	{
+		ExecutionAbility = AbilityClassFinder.Class;
 	}
 }
 
@@ -180,13 +190,24 @@ void USSCombatComponent::Execution()
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
-	if (nullptr != Character)
+	if (nullptr == Character)
 	{
-		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+		return;
+	}
 
-		if (nullptr != AnimInstance)
+	UAbilitySystemComponent* AbilitySystemComponent = Character->GetAbilitySystemComponent();
+
+	if (nullptr != AbilitySystemComponent)
+	{
+		if (nullptr != ExecutionAbility)
 		{
-			AnimInstance->Montage_Play(ExecutionMontage);
+			FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(ExecutionAbility);
+
+			if (nullptr != AbilitySpec)
+			{
+				AbilitySystemComponent->CancelAbilities();
+				AbilitySystemComponent->TryActivateAbility(AbilitySpec->Handle);
+			}
 		}
 	}
 }

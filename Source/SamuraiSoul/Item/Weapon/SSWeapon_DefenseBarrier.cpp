@@ -54,11 +54,16 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 		ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
 		ISSCombatInterface* Enemy = Cast<ISSCombatInterface>(OtherActor->GetOwner());
 
+		if (MyOwner == Enemy)
+		{
+			return;
+		}
+
 		if (nullptr != MyOwner
 			&& nullptr != Enemy)
 		{
 			if (nullptr != MyOwner->GetCombatComponent()
-				&& nullptr != Enemy->GetCombatComponent())
+				&& nullptr != Enemy->GetCombatComponent())	
 			{
 				MyOwner->GetCombatComponent()->ExecutionEvent.Execute();
 				Enemy->GetCombatComponent()->ExecutedEvent.Execute();

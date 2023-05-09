@@ -10,6 +10,7 @@
 class ASSWeapon;
 class USceneComponent;
 class UGameplayEffect;
+class UGameplayAbility;
 
 //DECLARE_DELEGATE_OneParam(FCombatDelegate, EWeaponType Type);
 //DECLARE_DELEGATE(FExecuteDelegate);
@@ -73,6 +74,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayAbility> ExecutionAbility;
 	
 	bool HasExecutionCommand;
 };

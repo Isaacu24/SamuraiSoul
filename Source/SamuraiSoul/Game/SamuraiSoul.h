@@ -27,7 +27,8 @@ enum class ESSAbilityID : uint8
 	Dodge,
 	EquipUnarm,
 	Slash,
-	Defense
+	Defense,
+	Execution
 };
 
 UENUM(BlueprintType)
