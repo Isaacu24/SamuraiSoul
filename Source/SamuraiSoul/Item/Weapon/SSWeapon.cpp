@@ -9,6 +9,7 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "Interface/SSCombatInterface.h"
 #include "Component/SSCombatComponent.h"
+#include <Engine/StaticMeshActor.h>
 
 ASSWeapon::ASSWeapon()
 {
@@ -28,7 +29,6 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	FHitResult OutHit;
 	TArray<AActor*> ActorsToIgnore = {}; 
 	ActorsToIgnore.Add(this);
-
 	if (nullptr != GetOwner())
 	{
 		ActorsToIgnore.Add(GetOwner());
@@ -40,7 +40,7 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		End, 
 		FVector(5.f, 5.f, 5.f), 
 		ColliderStart->GetComponentRotation(),
-		ETraceTypeQuery::TraceTypeQuery1,
+		ETraceTypeQuery::TraceTypeQuery3,
 		false,
 		ActorsToIgnore,
 		EDrawDebugTrace::ForDuration,
@@ -56,8 +56,14 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
 	}
 
-	ISSCombatInterface* Enemy = Cast<ISSCombatInterface>(OtherActor);
 	ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
+	ISSCombatInterface* Enemy = nullptr;
+
+	if (OtherActor != GetOwner())
+	{
+		Enemy = Cast<ISSCombatInterface>(OtherActor);
+	}
+
 
 	if (nullptr != Enemy)
 	{
@@ -78,6 +84,11 @@ void ASSWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 		FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 		AttachToComponent(InParent, TransformRules, InSocketName);
 	}
+}
+
+void ASSWeapon::SetEnemyWeapon()
+{
+	WeaponCollider->SetCollisionProfileName("EnemyWeapon");
 }
 
 

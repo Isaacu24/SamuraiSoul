@@ -40,6 +40,7 @@ void ASSEnemyCharacter::BeginPlay()
 
 	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
 	CombatComponent->EquipDefenseBarrier();
+	CombatComponent->SetEnemyWeapon();
 }
 
 void ASSEnemyCharacter::Tick(float DeltaTime)

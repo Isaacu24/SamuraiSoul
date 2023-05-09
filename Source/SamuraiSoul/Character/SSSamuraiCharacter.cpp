@@ -26,6 +26,11 @@
 #include "Component/SSCombatComponent.h"
 #include "SSCharacterControlData.h"
 
+#include <Kismet/KismetSystemLibrary.h>
+#include <Kismet/KismetMathLibrary.h>
+#include "SSEnemyCharacterBase.h"
+#include <Math/UnrealMathUtility.h>
+
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
 {
@@ -60,6 +65,8 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
 	GetMesh()->SetRelativeRotation(FRotator{ 0.f, -90.f, 0.f });
+
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
@@ -265,6 +272,66 @@ void ASSSamuraiCharacter::CrouchEnd()
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 }
 
+void ASSSamuraiCharacter::LockOn()
+{
+	//const FVector Start = GetActorLocation();
+	//const FVector End = Start + (Camera->GetForwardVector() * 1000.f);
+
+	//FHitResult OutHit;
+	//TArray<AActor*> ActorsToIgnore = {};
+	//ActorsToIgnore.Add(this);
+	//if (nullptr != GetOwner())
+	//{
+	//	ActorsToIgnore.Add(GetOwner());
+	//}
+
+	//TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes = {};
+	//ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel3));
+
+	//UKismetSystemLibrary::SphereTraceSingleForObjects(
+	//	this,
+	//	Start,
+	//	End,
+	//	300.f,
+	//	ObjectTypes,
+	//	false,
+	//	ActorsToIgnore,
+	//	EDrawDebugTrace::ForDuration,
+	//	OutHit,
+	//	true,
+	//	FLinearColor::Red,
+	//	FLinearColor::Green,
+	//	1.f
+	//);
+
+	//FVector EnemyPos = FVector::Zero();
+	//
+	//if (nullptr != OutHit.GetActor())
+	//{
+	//	ASSEnemyCharacterBase* Enemy = Cast<ASSEnemyCharacterBase>(OutHit.GetActor());
+
+	//	if(nullptr != Enemy)
+	//	{
+	//		EnemyPos = Enemy->GetActorLocation();
+
+	//		FVector TargetPos = FVector(EnemyPos.X, EnemyPos.Y, EnemyPos.Z - 150.f);
+	//		FRotator PlayerRot = GetActorRotation();
+
+	//		FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetPos);
+	//		FRotator LookRot = FMath::RInterpTo(PlayerRot, Rotator, GetWorld()->GetDeltaSeconds(), 0.1f);
+
+	//		GetController()->SetControlRotation(FRotator(PlayerRot.Roll, LookRot.Pitch, LookRot.Yaw));
+
+	//		CameraArm->TargetArmLength = 400.f;
+	//	}
+	//}
+}
+
+void ASSSamuraiCharacter::LockOff()
+{
+	CameraArm->TargetArmLength = 600.f;
+}
+
 void ASSSamuraiCharacter::ChangeCharacterControl()
 {
 	switch (ControlType)
@@ -351,11 +418,13 @@ void ASSSamuraiCharacter::HandleSlashActionReleased()
 
 void ASSSamuraiCharacter::HandleDefenseActionPressed()
 {
+	LockOn();
 	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Defense));
 }
 
 void ASSSamuraiCharacter::HandleDefenseActionReleased()
 {
+	LockOff();
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Defense));
 }
 

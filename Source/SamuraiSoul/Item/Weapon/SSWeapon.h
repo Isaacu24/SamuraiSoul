@@ -24,6 +24,8 @@ public:
 
 	void Equip(USceneComponent* InParent, FName InSocketName);
 
+	void SetEnemyWeapon();
+
 protected:
 	virtual void BeginPlay() override;
 

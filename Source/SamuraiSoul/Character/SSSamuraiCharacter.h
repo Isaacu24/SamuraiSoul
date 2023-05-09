@@ -53,6 +53,11 @@ public:
 		return bIsEquip;
 	}
 
+	bool IsLockOn() const
+	{
+		return bIsLockOn;
+	}
+
 	void SwitchIsEquip()
 	{
 		bIsEquip = ~bIsEquip;
@@ -62,6 +67,9 @@ public:
 	void UnRun();
 	void CrouchStart();
 	void CrouchEnd();
+
+	void LockOn();
+	void LockOff();
 
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
@@ -86,6 +94,9 @@ private:
 
 	UPROPERTY()
 	uint8 bIsEquip : 1;
+
+	UPROPERTY()
+	uint8 bIsLockOn : 1;
 
 private:
 	void Move(const FInputActionValue& Value);

@@ -15,7 +15,7 @@ class UGameplayEffect;
 //DECLARE_DELEGATE(FExecuteDelegate);
 DECLARE_DELEGATE(FCombatDelegate);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), Blueprintable)
 class SAMURAISOUL_API USSCombatComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -30,29 +30,16 @@ public:
 	FCombatDelegate ExecutionEvent;
 	FCombatDelegate ExecutedEvent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ASSWeapon> Weapon;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ASSWeapon> DefenseBarrier;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
-	TObjectPtr<UAnimMontage> ExecutionMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
-	TObjectPtr<UAnimMontage> ExecutedMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TSubclassOf<UGameplayEffect> DamageEffect;
-
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void EquipWeapon(USceneComponent* InParent, FName InSocketName);
 	void EquipDefenseBarrier();
+	void SetEnemyWeapon();
 
 	void Hit();
 	void Die();
+	void ChangeRagdoll();
 
 	void Execution();
 	void Executed();
@@ -60,7 +47,32 @@ public:
 	void OnDefense();
 	void OffDefense();
 
+	FORCEINLINE void SetExecutionCommand(bool Value)
+	{
+		HasExecutionCommand = Value;
+	}
+
 protected:
 	virtual void BeginPlay() override;
 
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ASSWeapon> Weapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ASSWeapon> DefenseBarrier;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> ExecutionMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> ExecutedMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> HitMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> DamageEffect;
+	
+	bool HasExecutionCommand;
 };

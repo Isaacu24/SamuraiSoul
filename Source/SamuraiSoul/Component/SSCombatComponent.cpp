@@ -12,6 +12,7 @@ USSCombatComponent::USSCombatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> HIT_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Hit.AM_Hit'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTION_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Execution.AM_Execution'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTED_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Executed.AM_Executed'"));
 
@@ -23,6 +24,11 @@ USSCombatComponent::USSCombatComponent()
 	if (true == EXECUTED_MONTAGE.Succeeded())
 	{
 		ExecutedMontage = EXECUTED_MONTAGE.Object;
+	}
+
+	if (true == HIT_MONTAGE.Succeeded())
+	{
+		HitMontage = HIT_MONTAGE.Object;
 	}
 }
 
@@ -48,8 +54,8 @@ void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketNa
 
 	if (nullptr != Weapon)
 	{
-		Weapon->Equip(InParent, InSocketName);
 		Weapon->SetOwner(GetOwner());
+		Weapon->Equip(InParent, InSocketName);
 	}
 }
 
@@ -62,6 +68,11 @@ void USSCombatComponent::EquipDefenseBarrier()
 		DefenseBarrier->SetOwner(GetOwner());
 		OffDefense();
 	}
+}
+
+void USSCombatComponent::SetEnemyWeapon()
+{
+	Weapon->SetEnemyWeapon();
 }
 
 void USSCombatComponent::OnDefense()
@@ -99,6 +110,18 @@ void USSCombatComponent::OffDefense()
 
 void USSCombatComponent::Hit()
 {
+	//ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	//if (nullptr != Character)
+	//{
+	//	UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+	//	if (nullptr != AnimInstance)
+	//	{
+	//		AnimInstance->Montage_Play(HitMontage);
+	//	}
+	//}
+
 	//Play Hit Montage
 
 	//if (0.f >= Attributes->GetHealth())
@@ -121,22 +144,7 @@ void USSCombatComponent::Hit()
 
 	//		if (0.f >= Attributes->GetHealth())
 	//		{
-	//			USkeletalMeshComponent* MyMesh = GetMesh();
 
-	//			if (!MyMesh)
-	//				return;
-
-	//			MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
-
-	//			MyMesh->SetSimulatePhysics(true);
-	//			MyMesh->WakeAllRigidBodies();
-
-	//			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	//			//SetMovementMode(EMovementMode::MOVE_None);
-
-	//			MyMesh->AddImpulse((GetVelocity() / 2.f)* MyMesh->GetMass());
-	//			MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
 	//		}
 	//	}
 	//}
@@ -145,6 +153,27 @@ void USSCombatComponent::Hit()
 void USSCombatComponent::Die()
 {
 	//Play Death Montage
+}
+
+void USSCombatComponent::ChangeRagdoll()
+{
+	ACharacter* Character = Cast<ACharacter>(GetOwner());
+	USkeletalMeshComponent* MyMesh = Character->GetMesh();
+
+	if (!MyMesh)
+	{
+		return;
+	}
+
+	MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+
+	MyMesh->SetSimulatePhysics(true);
+	MyMesh->WakeAllRigidBodies();
+
+	Character->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	MyMesh->AddImpulse((Character->GetVelocity() / 2.f) * MyMesh->GetMass());
+	MyMesh->AddRadialImpulse(Character->GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
 }
 
 void USSCombatComponent::Execution()

@@ -3,7 +3,9 @@
 
 #include "SSEnemyCharacterBase.h"
 #include "Component/SSCombatComponent.h"
+#include <Components/CapsuleComponent.h>
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Enemy"));
 }

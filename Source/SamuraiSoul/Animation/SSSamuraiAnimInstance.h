@@ -57,5 +57,8 @@ private:
 	uint8 bIsDefense : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
+	uint8 bIsLockOn : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	uint8 bIsFristDefense : 1;
 };

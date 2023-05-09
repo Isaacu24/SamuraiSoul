@@ -45,6 +45,7 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsAir = MyCharacter->GetCharacterMovement()->IsFalling();
 	bIsEquip = MyCharacter->IsEquip();
 	bIsDefense = MyCharacter->IsDefense();
+	bIsLockOn= MyCharacter->IsLockOn();
 
 	if (false == bIsFristDefense)
 	{ 

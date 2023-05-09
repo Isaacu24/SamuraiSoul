@@ -47,4 +47,5 @@ void USSAnimNotifyState_Defense::NotifyTick(USkeletalMeshComponent* MeshComp, UA
 void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	ActorsToIgnore.Empty();
+
 }
