@@ -11,6 +11,7 @@ class ASSWeapon;
 class USceneComponent;
 class UGameplayEffect;
 class UGameplayAbility;
+class ISSCombatInterface;
 
 //DECLARE_DELEGATE_OneParam(FCombatDelegate, EWeaponType Type);
 //DECLARE_DELEGATE(FExecuteDelegate);
@@ -48,10 +49,15 @@ public:
 	void OnDefense();
 	void OffDefense();
 
-	FORCEINLINE void SetExecutionCommand(bool Value)
-	{
-		HasExecutionCommand = Value;
-	}
+	//ISSCombatInterface* GetEnemy()
+	//{
+	//	return Enemy;
+	//}
+
+	//void SetEnemy(ISSCombatInterface* Character)
+	//{
+	//	Enemy = Character;
+	//}
 
 protected:
 	virtual void BeginPlay() override;
@@ -77,6 +83,7 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> ExecutionAbility;
-	
-	bool HasExecutionCommand;
+
+	//UPROPERTY()
+	//TObjectPtr<ISSCombatInterface> Enemy;
 };

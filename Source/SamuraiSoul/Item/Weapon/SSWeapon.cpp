@@ -50,7 +50,7 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 		FLinearColor::Green,
 		1.f
 	);
-	
+
 	if (nullptr != OutHit.GetActor())
 	{
 		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
@@ -63,7 +63,6 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	{
 		Enemy = Cast<ISSCombatInterface>(OtherActor);
 	}
-
 
 	if (nullptr != Enemy)
 	{

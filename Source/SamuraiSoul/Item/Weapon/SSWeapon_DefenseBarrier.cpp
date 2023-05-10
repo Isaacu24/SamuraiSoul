@@ -47,6 +47,17 @@ void ASSWeapon_DefenseBarrier::BeginPlay()
 
 void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	FVector A = GetOwner()->GetActorForwardVector();
+	FVector B = OtherActor->GetOwner()->GetActorForwardVector();
+
+	float ReturnValue = FVector::DotProduct(A, B);
+	UE_LOG(LogTemp, Log, TEXT("Dot Return Value: %f"), ReturnValue);
+
+	if (0.5f <= ReturnValue)
+	{
+		return;
+	}
+
 	ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
 
 	if (nullptr != Weapon)
@@ -65,6 +76,7 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 			if (nullptr != MyOwner->GetCombatComponent()
 				&& nullptr != Enemy->GetCombatComponent())	
 			{
+				//MyOwner->GetCombatComponent()->SetEnemy(Enemy);
 				MyOwner->GetCombatComponent()->ExecutionEvent.Execute();
 				Enemy->GetCombatComponent()->ExecutedEvent.Execute();
 			}

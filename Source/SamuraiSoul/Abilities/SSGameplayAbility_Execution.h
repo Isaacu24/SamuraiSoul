@@ -6,6 +6,8 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "SSGameplayAbility_Execution.generated.h"
 
+class ASSCharacterBase;
+
 /**
  * 
  */
@@ -27,7 +29,19 @@ public:
 
 	virtual void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
+	void Execution();
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> ExecutionMontage;
+
+	FTimerHandle ExecutionTimerHandle;
+	bool HasExecutionCommand;
+
+	UPROPERTY()
+	TObjectPtr<UAnimInstance> AnimInstance;
+
+	//UPROPERTY()
+	//TObjectPtr<ASSCharacterBase> Enemy;
+
 };

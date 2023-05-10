@@ -137,4 +137,3 @@ void USSGameplayAbility_Slash::ComboCheck()
 		HasNextComboCommand = false;		 
 	}
 }
-
