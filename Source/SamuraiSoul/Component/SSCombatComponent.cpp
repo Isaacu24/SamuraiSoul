@@ -252,9 +252,10 @@ void USSCombatComponent::ChangeRagdoll()
 	MyMesh->AddRadialImpulse(Character->GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
 }
 
-void USSCombatComponent::Parry(ISSCombatInterface* Opponent)
+void USSCombatComponent::Parry(AActor* Opponent)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	Enemy = Opponent;
 
 	if (nullptr != Character)
 	{
@@ -272,9 +273,8 @@ void USSCombatComponent::Parry(ISSCombatInterface* Opponent)
 	}
 }
 
-void USSCombatComponent::Rebound(ISSCombatInterface* Opponent)
+void USSCombatComponent::Rebound(AActor* Opponent)
 {
-	Instigator = Opponent;
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
 	if (nullptr != Character)

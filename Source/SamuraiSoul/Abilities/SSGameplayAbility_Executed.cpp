@@ -7,7 +7,6 @@
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Character/SSCharacterBase.h"
 #include <Components/CapsuleComponent.h>
-#include "Component/SSCombatComponent.h"
 
 USSGameplayAbility_Executed::USSGameplayAbility_Executed()
 {
@@ -44,8 +43,7 @@ void USSGameplayAbility_Executed::ActivateAbility(const FGameplayAbilitySpecHand
 
 	Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
 	AnimInstance = Character->GetMesh()->GetAnimInstance();
-	Instigator = Character->GetCombatComponent()->GetInstigator();
-
+	
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
 		if (nullptr != ExecutedMontage)
@@ -69,7 +67,6 @@ void USSGameplayAbility_Executed::ActivateAbility(const FGameplayAbilitySpecHand
 void USSGameplayAbility_Executed::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	UE_LOG(LogTemp, Log, TEXT("EndAbility"));
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 

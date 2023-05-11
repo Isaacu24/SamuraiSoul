@@ -94,7 +94,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<USSCombatComponent> CombatComponent;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMotionWarpingComponent> MotionWarpComponent;
 
 	UPROPERTY()

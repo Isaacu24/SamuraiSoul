@@ -6,6 +6,7 @@
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Character/SSCharacterBase.h"
 #include "DataAsset/SSComboActionData.h"
+#include "Component/SSCombatComponent.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {
@@ -54,13 +55,12 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	AnimInstance = Character->GetMesh()->GetAnimInstance();
 
 	if (nullptr == Character)
 	{
 		return;
 	}
-
-	AnimInstance = Character->GetMesh()->GetAnimInstance();
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{

@@ -42,8 +42,8 @@ public:
 	void Die();
 	void ChangeRagdoll();
 
-	void Parry(ISSCombatInterface* Opponent);
-	void Rebound(ISSCombatInterface* Opponent);
+	void Parry(AActor* Opponent);
+	void Rebound(AActor* Opponent);
 
 	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
 	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
@@ -65,11 +65,8 @@ public:
 		return IsRebound;
 	}
 
-	ISSCombatInterface* GetInstigator() const
-	{
-		return Instigator;
-	}
-
+	UPROPERTY()
+	AActor* Enemy;
 
 protected:
 	virtual void BeginPlay() override;
@@ -96,7 +93,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> ReboundMontage;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
 
@@ -105,9 +101,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> ExecutedAbility;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ISSCombatInterface> Instigator;
 
 	UPROPERTY()
 	uint8 IsParry : 1;

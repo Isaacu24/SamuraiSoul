@@ -43,6 +43,17 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		return;
 	}
 
+	if (nullptr != Character->GetCombatComponent()->Enemy)
+	{
+		FMotionWarpingTarget Target = {};
+		Target.Name = FName("Enemy");
+		Target.Location = Character->GetCombatComponent()->Enemy->GetActorLocation();
+
+		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
+
+		Character->GetCombatComponent()->Enemy = nullptr;
+	}
+
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
 		if (nullptr != ExecutionMontage)

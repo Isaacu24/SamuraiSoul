@@ -26,15 +26,10 @@ public:
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
 	virtual void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
-	void Executed();
-
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> ExecutedMontage;
 
 	UPROPERTY()
 	TObjectPtr<UAnimInstance> AnimInstance;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<class ISSCombatInterface> Instigator;
 };
