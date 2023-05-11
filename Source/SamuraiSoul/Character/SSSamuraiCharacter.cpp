@@ -408,12 +408,28 @@ void ASSSamuraiCharacter::HandleJumpActionReleased()
 
 void ASSSamuraiCharacter::HandleSlashActionPressed()
 {
-	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Slash));
+	if (true == GetCombatComponent()->GetIsParry())
+	{
+		AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Execution));
+	}
+
+	else
+	{
+		AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Slash));
+	}
 }
 
 void ASSSamuraiCharacter::HandleSlashActionReleased()
 {
-	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Slash));
+	if (true == GetCombatComponent()->GetIsParry())
+	{
+		AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Execution));
+	}
+
+	else
+	{
+		AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Slash));
+	}
 }
 
 void ASSSamuraiCharacter::HandleDefenseActionPressed()

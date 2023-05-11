@@ -23,8 +23,5 @@ public:
 
 private:
 	UPROPERTY()
-	uint8 bIsPlayer : 1;
-
-	UPROPERTY()
-	TSet<AActor*> ActorsToIgnore;
+	TObjectPtr<class ASSCharacterBase> Character;
 };

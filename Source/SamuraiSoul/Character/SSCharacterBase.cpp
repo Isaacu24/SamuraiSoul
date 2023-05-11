@@ -9,19 +9,21 @@
 #include "Abilities/SSAttributeSet.h"
 #include "Game/SamuraiSoul.h"
 #include "SSCharacterControlData.h"
+#include "MotionWarpingComponent.h"
 #include "Component/SSCombatComponent.h"
 
 ASSCharacterBase::ASSCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	AbilitySystemComponent = CreateDefaultSubobject<USSAbilitySystemComponent>(TEXT("AbilitySystemComp"));
+	AbilitySystemComponent = CreateDefaultSubobject<USSAbilitySystemComponent>(TEXT("AbilitySystem Component"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 
 	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
+	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
 	GetMesh()->SetCollisionProfileName("NoCollision");

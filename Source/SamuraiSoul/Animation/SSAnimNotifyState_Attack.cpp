@@ -3,31 +3,26 @@
 
 #include "SSAnimNotifyState_Attack.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "../Character/SSEnemyCharacter.h"
-#include "../Character/SSSamuraiCharacter.h"
-#include "AbilitySystemComponent.h"
-#include <Components/CapsuleComponent.h>
+#include "Character/SSCharacterBase.h"
+#include "Component/SSCombatComponent.h"
 
 USSAnimNotifyState_Attack::USSAnimNotifyState_Attack()
 {
-	bIsPlayer = false;
 }
 
 void USSAnimNotifyState_Attack::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
-	//ASSCharacterBase* Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	if (nullptr == MeshComp->GetOwner())
+	{
+		return;
+	}
 
-	//if (nullptr != Character)
-	//{
-	//	bIsPlayer = true;
-	//	Character->SetIsAttack(true);
-	//}
+	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
 
-	//else
-	//{
-	//	bIsPlayer = false;
-	//}
-
+	if (nullptr != Character)
+	{
+		Character->GetCombatComponent()->OnWeapon();
+	}
 }
 
 void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
@@ -94,12 +89,15 @@ void USSAnimNotifyState_Attack::NotifyTick(USkeletalMeshComponent* MeshComp, UAn
 
 void USSAnimNotifyState_Attack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
-	//ActorsToIgnore.Empty();
+	if (nullptr == MeshComp->GetOwner())
+	{
+		return;
+	}
 
-	//ASSCharacterBase* Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
 
-	//if (nullptr != Character)
-	//{
-	//	Character->SetIsAttack(false);
-	//}
+	if (nullptr != Character)
+	{
+		Character->GetCombatComponent()->OffWeapon();
+	}
 }

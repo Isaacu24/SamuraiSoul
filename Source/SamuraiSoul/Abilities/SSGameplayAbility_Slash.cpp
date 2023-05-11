@@ -2,11 +2,9 @@
 
 
 #include "SSGameplayAbility_Slash.h"
-#include <Kismet/KismetSystemLibrary.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Character/SSCharacterBase.h"
-#include "Animation/SSSamuraiAnimInstance.h"
 #include "DataAsset/SSComboActionData.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
@@ -44,14 +42,11 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
 
 		return;
 	}
-
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Slash::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -83,8 +78,6 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 			Task->ReadyForActivation();
 		}
 	}
-
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -93,14 +86,11 @@ void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handl
 
 	//ensure(CurrentCombo != 0);
 	CurrentCombo = 0;
-
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Slash::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ApplyCost: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Slash::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
@@ -131,7 +121,7 @@ void USSGameplayAbility_Slash::ComboCheck()
 	{
 		CurrentCombo = FMath::Clamp(CurrentCombo + 1, 1, SlashComboData->MaxComboCount);
 		FName NextSection = *FString::Printf(TEXT("%s%d"), *SlashComboData->MontageSectionNamePrefix, CurrentCombo);
-		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);
+		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);	
 
 		SetComboCheckTimer();
 		HasNextComboCommand = false;		 

@@ -7,13 +7,15 @@
 #include "AbilitySystemInterface.h"
 #include "Interface/SSCombatInterface.h"
 #include <GameplayEffectTypes.h>
+#include <MotionWarpingComponent.h>
 #include "SSCharacterBase.generated.h"
 
-class UAbilitySystemComponent;
 class USSAttributeSet;
-class USSGameplayAbility;
 class UInputComponent;
 class UGameplayEffect;
+class USSGameplayAbility;
+class UMotionWarpingComponent;
+class UAbilitySystemComponent;
 class USSCharacterControlData;
 
 UENUM()
@@ -55,6 +57,11 @@ public:
 		return CombatComponent;
 	}
 
+	UMotionWarpingComponent* GetMotionWarpingComponent() const
+	{
+		return MotionWarpComponent;
+	}
+
 	bool IsDefense() const
 	{
 		return bIsDefense;
@@ -86,6 +93,9 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<USSCombatComponent> CombatComponent;
+
+	UPROPERTY()
+	TObjectPtr<UMotionWarpingComponent> MotionWarpComponent;
 
 	UPROPERTY()
 	uint8 bIsDefense : 1;

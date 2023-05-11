@@ -12,9 +12,11 @@ class USceneComponent;
 class UGameplayEffect;
 class UGameplayAbility;
 class ISSCombatInterface;
+class ASSWeapon_DefenseBarrier;
 
 //DECLARE_DELEGATE_OneParam(FCombatDelegate, EWeaponType Type);
 //DECLARE_DELEGATE(FExecuteDelegate);
+
 DECLARE_DELEGATE(FCombatDelegate);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), Blueprintable)
@@ -29,9 +31,6 @@ public:
 	FCombatDelegate HitEvent;
 	FCombatDelegate DeathEvent;
 
-	FCombatDelegate ExecutionEvent;
-	FCombatDelegate ExecutedEvent;
-
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -43,21 +42,34 @@ public:
 	void Die();
 	void ChangeRagdoll();
 
-	void Execution();
-	void Executed();
+	void Parry(ISSCombatInterface* Opponent);
+	void Rebound(ISSCombatInterface* Opponent);
+
+	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
+	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
 
 	void OnDefense();
 	void OffDefense();
+	void ChangeDefenseType(EDefenseType Type);
 
-	//ISSCombatInterface* GetEnemy()
-	//{
-	//	return Enemy;
-	//}
+	void OnWeapon();
+	void OffWeapon();
 
-	//void SetEnemy(ISSCombatInterface* Character)
-	//{
-	//	Enemy = Character;
-	//}
+	bool GetIsParry() const
+	{
+		return IsParry;
+	}
+
+	bool GetIsRebound() const
+	{
+		return IsRebound;
+	}
+
+	ISSCombatInterface* GetInstigator() const
+	{
+		return Instigator;
+	}
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -67,7 +79,7 @@ private:
 	TObjectPtr<ASSWeapon> Weapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ASSWeapon> DefenseBarrier;
+	TObjectPtr<ASSWeapon_DefenseBarrier> DefenseBarrier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> ExecutionMontage;
@@ -78,12 +90,28 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> HitMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> ParryMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> ReboundMontage;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> ExecutionAbility;
 
-	//UPROPERTY()
-	//TObjectPtr<ISSCombatInterface> Enemy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayAbility> ExecutedAbility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ISSCombatInterface> Instigator;
+
+	UPROPERTY()
+	uint8 IsParry : 1;
+
+	UPROPERTY()
+	uint8 IsRebound : 1;
 };

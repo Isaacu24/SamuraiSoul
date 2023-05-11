@@ -27,6 +27,11 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnBoxOverlapBegin);
 }
 
+void ASSWeapon_DefenseBarrier::ChangeDefenseType(EDefenseType Type)
+{
+	DefenseType = Type;
+}
+
 void ASSWeapon_DefenseBarrier::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -47,39 +52,48 @@ void ASSWeapon_DefenseBarrier::BeginPlay()
 
 void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	FVector A = GetOwner()->GetActorForwardVector();
-	FVector B = OtherActor->GetOwner()->GetActorForwardVector();
-
-	float ReturnValue = FVector::DotProduct(A, B);
-	UE_LOG(LogTemp, Log, TEXT("Dot Return Value: %f"), ReturnValue);
-
-	if (0.5f <= ReturnValue)
+	switch (DefenseType)
 	{
-		return;
-	}
-
-	ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
-
-	if (nullptr != Weapon)
+	case EDefenseType::Defense:
+		break;
+	case EDefenseType::Parry:
 	{
-		ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
-		ISSCombatInterface* Enemy = Cast<ISSCombatInterface>(OtherActor->GetOwner());
+		FVector A = GetOwner()->GetActorForwardVector();
+		FVector B = OtherActor->GetOwner()->GetActorForwardVector();
 
-		if (MyOwner == Enemy)
+		float ReturnValue = FVector::DotProduct(A, B);
+
+		if (0.5f <= ReturnValue)
 		{
 			return;
 		}
 
-		if (nullptr != MyOwner
-			&& nullptr != Enemy)
+		ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+
+		if (nullptr != Weapon)
 		{
-			if (nullptr != MyOwner->GetCombatComponent()
-				&& nullptr != Enemy->GetCombatComponent())	
+			ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
+			ISSCombatInterface* Enemy = Cast<ISSCombatInterface>(OtherActor->GetOwner());
+
+			if (MyOwner == Enemy)
 			{
-				//MyOwner->GetCombatComponent()->SetEnemy(Enemy);
-				MyOwner->GetCombatComponent()->ExecutionEvent.Execute();
-				Enemy->GetCombatComponent()->ExecutedEvent.Execute();
+				return;
+			}
+
+			if (nullptr != MyOwner
+				&& nullptr != Enemy)
+			{
+				if (nullptr != MyOwner->GetCombatComponent()
+					&& nullptr != Enemy->GetCombatComponent())
+				{
+					MyOwner->GetCombatComponent()->Parry(Enemy);
+					Enemy->GetCombatComponent()->Rebound(MyOwner);
+				}
 			}
 		}
+	}
+		break;
+	default:
+		break;
 	}
 }

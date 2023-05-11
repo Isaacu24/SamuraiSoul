@@ -26,6 +26,8 @@ public:
 
 	void SetEnemyWeapon();
 
+	void CollisionHiddenInGame(bool Value);
+
 protected:
 	virtual void BeginPlay() override;
 

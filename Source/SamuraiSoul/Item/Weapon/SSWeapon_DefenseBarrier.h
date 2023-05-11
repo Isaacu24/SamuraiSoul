@@ -14,6 +14,8 @@ class SAMURAISOUL_API ASSWeapon_DefenseBarrier : public ASSWeapon
 public:	
 	ASSWeapon_DefenseBarrier();
 
+	void ChangeDefenseType(EDefenseType Type);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -22,4 +24,8 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	EDefenseType DefenseType;
+
 };

@@ -12,7 +12,7 @@
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
 	AbilityID = ESSAbilityID::Execution;
-	AbilityInputID = ESSAbilityInputID::Slash;
+	AbilityInputID = ESSAbilityInputID::Execution;
 
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Execution")));
 	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Execution")));
@@ -22,8 +22,6 @@ USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
-
-	HasExecutionCommand = true;
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
@@ -45,9 +43,6 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		return;
 	}
 
-	//Enemy = Cast<ASSCharacterBase>(Character->GetCombatComponent()->GetEnemy());
-	AnimInstance = Character->GetMesh()->GetAnimInstance();
-		
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
 		if (nullptr != ExecutionMontage)
@@ -64,9 +59,6 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 			Task->ReadyForActivation();
 		}
 	}
-
-	ExecutionTimerHandle.Invalidate();
-	GetWorld()->GetTimerManager().SetTimer(ExecutionTimerHandle, this, &USSGameplayAbility_Execution::Execution, 0.5f, false);
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
 }
@@ -86,17 +78,4 @@ void USSGameplayAbility_Execution::ApplyCost(const FGameplayAbilitySpecHandle Ha
 void USSGameplayAbility_Execution::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
 
-}
-
-void USSGameplayAbility_Execution::Execution()
-{
-	if (false == HasExecutionCommand)
-	{
-		return;
-	}
-
-	HasExecutionCommand = false;
-	ExecutionTimerHandle.Invalidate();
-	AnimInstance->Montage_JumpToSection(FName("Execution"), ExecutionMontage);
-	//Enemy->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Executed"), ExecutionMontage);
 }

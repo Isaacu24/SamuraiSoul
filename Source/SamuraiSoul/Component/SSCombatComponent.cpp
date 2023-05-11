@@ -10,6 +10,7 @@
 
 #include "GameplayAbilitySpecHandle.h"
 #include "AbilitySystemComponent.h"
+#include "Abilities/SSGameplayAbility_Executed.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -18,6 +19,8 @@ USSCombatComponent::USSCombatComponent()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> HIT_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Hit.AM_Hit'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTION_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Execution.AM_Execution'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTED_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Executed.AM_Executed'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> PARRY_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Parry.AM_Parry'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> REBOUND_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Rebound.AM_Rebound'"));
 
 	if (true == EXECUTION_MONTAGE.Succeeded())
 	{
@@ -34,11 +37,21 @@ USSCombatComponent::USSCombatComponent()
 		HitMontage = HIT_MONTAGE.Object;
 	}
 
-	static ConstructorHelpers::FClassFinder<UGameplayAbility> AbilityClassFinder(TEXT("/Script/Engine.Blueprint'/Game/MyContent/Abilities/BP_SSGameplayAbility_Execution.BP_SSGameplayAbility_Execution_C'"));
-
-	if (AbilityClassFinder.Succeeded())
+	if (true == PARRY_MONTAGE.Succeeded())
 	{
-		ExecutionAbility = AbilityClassFinder.Class;
+		ParryMontage = PARRY_MONTAGE.Object;
+	}
+
+	if (true == REBOUND_MONTAGE.Succeeded())
+	{
+		ReboundMontage = REBOUND_MONTAGE.Object;
+	}
+
+	static ConstructorHelpers::FClassFinder<UGameplayAbility> ExecutedAbilityClass(TEXT("/Script/Engine.Blueprint'/Game/MyContent/Abilities/BP_SSGameplayAbility_Executed.BP_SSGameplayAbility_Executed_C'"));
+
+	if (ExecutedAbilityClass.Succeeded())
+	{
+		ExecutedAbility = ExecutedAbilityClass.Class;
 	}
 }
 
@@ -48,9 +61,6 @@ void USSCombatComponent::BeginPlay()
 
 	HitEvent.BindUObject(this, &ThisClass::Hit);
 	DeathEvent.BindUObject(this, &ThisClass::Die);
-
-	ExecutionEvent.BindUObject(this, &ThisClass::Execution);
-	ExecutedEvent.BindUObject(this, &ThisClass::Executed);
 }
 
 void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -66,6 +76,7 @@ void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketNa
 	{
 		Weapon->SetOwner(GetOwner());
 		Weapon->Equip(InParent, InSocketName);
+		OffWeapon();
 	}
 }
 
@@ -95,10 +106,6 @@ void USSCombatComponent::OnDefense()
 	DefenseBarrier->SetActorHiddenInGame(false);
 	DefenseBarrier->SetActorEnableCollision(true);
 	DefenseBarrier->SetActorTickEnabled(true);
-
-	Weapon->SetActorHiddenInGame(true);
-	Weapon->SetActorEnableCollision(false);
-	Weapon->SetActorTickEnabled(false);
 }
 
 void USSCombatComponent::OffDefense()
@@ -111,15 +118,74 @@ void USSCombatComponent::OffDefense()
 	DefenseBarrier->SetActorHiddenInGame(true);
 	DefenseBarrier->SetActorEnableCollision(false);
 	DefenseBarrier->SetActorTickEnabled(false);
+}
 
-	Weapon->SetActorHiddenInGame(false);
+void USSCombatComponent::ChangeDefenseType(EDefenseType Type) 
+{
+	DefenseBarrier->ChangeDefenseType(Type);
+}
+
+void USSCombatComponent::OnWeapon()
+{
+	if (nullptr == Weapon)
+	{
+		return;
+	}
+
+	Weapon->CollisionHiddenInGame(true);
 	Weapon->SetActorEnableCollision(true);
 	Weapon->SetActorTickEnabled(true);
 }
 
+void USSCombatComponent::OffWeapon()
+{
+	if (nullptr == Weapon)
+	{	
+		return;
+	}
+
+	Weapon->CollisionHiddenInGame(false);
+	Weapon->SetActorEnableCollision(false);
+	Weapon->SetActorTickEnabled(false);
+}
 
 void USSCombatComponent::Hit()
 {
+	if (true == IsRebound)
+	{
+		ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+		if (nullptr == Character)
+		{
+			return;
+		}
+
+		UAbilitySystemComponent* AbilitySystemComponent = Character->GetAbilitySystemComponent();
+
+		if (nullptr != AbilitySystemComponent)
+		{
+			if (nullptr == ExecutedAbility)
+			{
+				return;
+			}
+
+			FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(ExecutedAbility);
+
+			if (nullptr == AbilitySpec)
+			{
+				return;
+			}
+
+			AbilitySystemComponent->CancelAbilities();
+			AbilitySystemComponent->TryActivateAbility(AbilitySpec->Handle);
+		}
+	}
+
+	else
+	{
+
+	}
+
 	//ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
 	//if (nullptr != Character)
@@ -186,44 +252,53 @@ void USSCombatComponent::ChangeRagdoll()
 	MyMesh->AddRadialImpulse(Character->GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
 }
 
-void USSCombatComponent::Execution()
-{
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	if (nullptr == Character)
-	{
-		return;
-	}
-
-	UAbilitySystemComponent* AbilitySystemComponent = Character->GetAbilitySystemComponent();
-
-	if (nullptr != AbilitySystemComponent)
-	{
-		if (nullptr != ExecutionAbility)
-		{
-			FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(ExecutionAbility);
-
-			if (nullptr != AbilitySpec)
-			{
-				AbilitySystemComponent->CancelAbilities();
-				AbilitySystemComponent->TryActivateAbility(AbilitySpec->Handle);
-			}
-		}
-	}
-}
-
-void USSCombatComponent::Executed()
+void USSCombatComponent::Parry(ISSCombatInterface* Opponent)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
 	if (nullptr != Character)
 	{
-		Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
 		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
 
 		if (nullptr != AnimInstance)
 		{
-			AnimInstance->Montage_Play(ExecutedMontage);
+			AnimInstance->Montage_Play(ParryMontage);
+
+			IsParry = true;
+			FOnMontageEnded ParryEndDelegate;
+			ParryEndDelegate.BindUObject(this, &USSCombatComponent::ParryEnd);
+			AnimInstance->Montage_SetEndDelegate(ParryEndDelegate, ParryMontage);
 		}
 	}
+}
+
+void USSCombatComponent::Rebound(ISSCombatInterface* Opponent)
+{
+	Instigator = Opponent;
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+		if (nullptr != AnimInstance)
+		{
+			AnimInstance->Montage_Play(ReboundMontage);
+			
+			IsRebound = true;
+			FOnMontageEnded ReboundEndDelegate;
+			ReboundEndDelegate.BindUObject(this, &USSCombatComponent::ReboundEnd);
+			AnimInstance->Montage_SetEndDelegate(ReboundEndDelegate, ReboundMontage);
+		}
+	}
+}
+
+void USSCombatComponent::ParryEnd(UAnimMontage* Montage, bool bInterrupted)
+{
+	IsParry = false;
+}
+
+void USSCombatComponent::ReboundEnd(UAnimMontage* Montage, bool bInterrupted)
+{
+	IsRebound = false;
 }

@@ -3,19 +3,27 @@
 
 #include "SSAnimNotifyState_Defense.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "../Character/SSEnemyCharacter.h"
-#include "../Character/SSCharacterBase.h"
-#include "../Character/SSSamuraiCharacter.h"
-#include "AbilitySystemComponent.h"
+#include "Character/SSCharacterBase.h"
+#include "Component/SSCombatComponent.h"
 
 USSAnimNotifyState_Defense::USSAnimNotifyState_Defense()
 {
-	bIsPlayer = false;
 }
 
 void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
+	if (nullptr == MeshComp->GetOwner())
+	{
+		return;
+	}
 
+	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	
+	if (nullptr != Character)
+	{
+		Character->GetCombatComponent()->OnDefense();
+		Character->GetCombatComponent()->ChangeDefenseType(EDefenseType::Parry);
+	}
 }
 
 void USSAnimNotifyState_Defense::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
@@ -46,6 +54,15 @@ void USSAnimNotifyState_Defense::NotifyTick(USkeletalMeshComponent* MeshComp, UA
 
 void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
-	ActorsToIgnore.Empty();
+	if (nullptr == MeshComp->GetOwner())
+	{
+		return;
+	}
 
+	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+
+	if (nullptr != Character)
+	{
+		Character->GetCombatComponent()->ChangeDefenseType(EDefenseType::Defense);
+	}
 }

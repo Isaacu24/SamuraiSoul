@@ -14,7 +14,8 @@ enum class ESSAbilityInputID : uint8
 	Dodge,
 	EquipUnarm,
 	Slash,
-	Defense
+	Defense,
+	Execution
 };
 
 UENUM(BlueprintType)
@@ -28,7 +29,8 @@ enum class ESSAbilityID : uint8
 	EquipUnarm,
 	Slash,
 	Defense,
-	Execution
+	Execution,
+	Executed
 };
 
 UENUM(BlueprintType)
@@ -36,4 +38,12 @@ enum class EWeaponType : uint8
 {
 	Slash,
 	Stab
+};
+
+UENUM(BlueprintType)
+enum class EDefenseType : uint8
+{
+	Defense,
+	Parry
+	//Defelect
 };
