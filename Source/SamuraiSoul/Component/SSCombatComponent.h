@@ -28,8 +28,6 @@ public:
 	USSCombatComponent();
 
 	FCombatDelegate AttackEvent;
-	FCombatDelegate HitEvent;
-	FCombatDelegate DeathEvent;
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -39,8 +37,6 @@ public:
 	void SetEnemyWeapon();
 
 	void Hit();
-	void Die();
-	void ChangeRagdoll();
 
 	void Parry(AActor* Opponent);
 	void Rebound(AActor* Opponent);
@@ -65,8 +61,15 @@ public:
 		return IsRebound;
 	}
 
-	UPROPERTY()
-	AActor* Enemy;
+	AActor* GetEnemy() const
+	{
+		return Enemy;
+	}
+
+	void SetEnemy(AActor* Actor)
+	{
+		Enemy = Actor;
+	}
 
 protected:
 	virtual void BeginPlay() override;
@@ -107,4 +110,8 @@ private:
 
 	UPROPERTY()
 	uint8 IsRebound : 1;
+
+	UPROPERTY()
+	AActor* Enemy;
+
 };

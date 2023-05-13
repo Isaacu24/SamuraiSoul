@@ -47,6 +47,8 @@ public:
 	virtual void OnRep_Controller() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	void Die();
+
 	virtual UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const override
 	{
 		return AbilitySystemComponent;
@@ -95,7 +97,7 @@ protected:
 	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UMotionWarpingComponent> MotionWarpComponent;
+	TObjectPtr<class UMotionWarpingComponent> MotionWarpComponent;
 
 	UPROPERTY()
 	uint8 bIsDefense : 1;

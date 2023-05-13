@@ -58,9 +58,6 @@ USSCombatComponent::USSCombatComponent()
 void USSCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	HitEvent.BindUObject(this, &ThisClass::Hit);
-	DeathEvent.BindUObject(this, &ThisClass::Die);
 }
 
 void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -120,7 +117,7 @@ void USSCombatComponent::OffDefense()
 	DefenseBarrier->SetActorTickEnabled(false);
 }
 
-void USSCombatComponent::ChangeDefenseType(EDefenseType Type) 
+void USSCombatComponent::ChangeDefenseType(EDefenseType Type)
 {
 	DefenseBarrier->ChangeDefenseType(Type);
 }
@@ -140,7 +137,7 @@ void USSCombatComponent::OnWeapon()
 void USSCombatComponent::OffWeapon()
 {
 	if (nullptr == Weapon)
-	{	
+	{
 		return;
 	}
 
@@ -183,73 +180,43 @@ void USSCombatComponent::Hit()
 
 	else
 	{
+		ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
+		if (nullptr != Character)
+		{
+			UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+
+			if (nullptr != AnimInstance)
+			{
+				AnimInstance->Montage_Play(HitMontage);
+			}
+		}
+
+		//if (0.f >= Character->Attributes->GetHealth())
+		//{
+		//	return;
+		//}
+
+		//if (nullptr != Character->GetAbilitySystemComponent()
+		//	&& nullptr != DamageEffect)
+		//{
+		//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+		//	EffectContext.AddSourceObject(this);
+
+		//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+
+		//	if (SpecHandle.IsValid())
+		//	{
+		//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
+
+		//		if (0.f >= Attributes->GetHealth())
+		//		{
+		//			Character->Die();
+		//		}
+		//	}
+		//}
 	}
-
-	//ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	//if (nullptr != Character)
-	//{
-	//	UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
-
-	//	if (nullptr != AnimInstance)
-	//	{
-	//		AnimInstance->Montage_Play(HitMontage);
-	//	}
-	//}
-
-	//Play Hit Montage
-
-	//if (0.f >= Attributes->GetHealth())
-	//{
-	//	return;
-	//}
-
-	//if (nullptr != AbilitySystemComponent
-	//	&& nullptr != DamageEffect)
-	//{
-	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	//	EffectContext.AddSourceObject(this);
-
-	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
-
-	//	if (SpecHandle.IsValid())
-	//	{
-	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
-
-	//		if (0.f >= Attributes->GetHealth())
-	//		{
-
-	//		}
-	//	}
-	//}
-}
-
-void USSCombatComponent::Die()
-{
-	//Play Death Montage
-}
-
-void USSCombatComponent::ChangeRagdoll()
-{
-	ACharacter* Character = Cast<ACharacter>(GetOwner());
-	USkeletalMeshComponent* MyMesh = Character->GetMesh();
-
-	if (!MyMesh)
-	{
-		return;
-	}
-
-	MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
-
-	MyMesh->SetSimulatePhysics(true);
-	MyMesh->WakeAllRigidBodies();
-
-	Character->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	MyMesh->AddImpulse((Character->GetVelocity() / 2.f) * MyMesh->GetMass());
-	MyMesh->AddRadialImpulse(Character->GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
 }
 
 void USSCombatComponent::Parry(AActor* Opponent)
@@ -284,7 +251,7 @@ void USSCombatComponent::Rebound(AActor* Opponent)
 		if (nullptr != AnimInstance)
 		{
 			AnimInstance->Montage_Play(ReboundMontage);
-			
+
 			IsRebound = true;
 			FOnMontageEnded ReboundEndDelegate;
 			ReboundEndDelegate.BindUObject(this, &USSCombatComponent::ReboundEnd);

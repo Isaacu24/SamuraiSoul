@@ -88,7 +88,7 @@ void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 
 	if (nullptr != Enemy)
 	{
-		Enemy->GetCombatComponent()->HitEvent.Execute();
+		Enemy->GetCombatComponent()->Hit();
 	}
 
 	if (nullptr == MyOwner)
