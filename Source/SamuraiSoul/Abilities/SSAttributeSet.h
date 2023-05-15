@@ -39,7 +39,6 @@ public:
 	// 속성이 변경된 후에 자동으로 호출되는 함수
 	void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 
-
 	//레플레이션 관련 함수들
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

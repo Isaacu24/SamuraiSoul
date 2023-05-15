@@ -69,7 +69,6 @@ public:
 	void CrouchEnd();
 
 	void LockOn();
-	void LockOff();
 
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
@@ -86,6 +85,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowParivateAccess = "true"))
 	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
+
+	UPROPERTY()
+	TObjectPtr<AActor> LockOnTarget;
 	
 	ECharacterControlType ControlType;
 

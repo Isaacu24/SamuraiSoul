@@ -15,6 +15,7 @@ public:
 	ASSWeapon_DefenseBarrier();
 
 	void ChangeDefenseType(EDefenseType Type);
+	bool CheckAttackDirection(FVector A, FVector B);
 
 protected:
 	virtual void BeginPlay() override;

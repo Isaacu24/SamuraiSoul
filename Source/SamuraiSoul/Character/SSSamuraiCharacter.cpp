@@ -127,9 +127,20 @@ void ASSSamuraiCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (AbilitySystemComponent)
+	if (nullptr != AbilitySystemComponent)
 	{
 		AbilitySystemComponent->TickComponent(DeltaTime, ELevelTick::LEVELTICK_All, nullptr);
+	}
+
+	if (true == bIsLockOn
+		&& nullptr != LockOnTarget)
+	{
+		FVector TargetPos = LockOnTarget->GetActorLocation();
+		FVector Pos = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
+		FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
+		FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);
+
+		GetController()->SetControlRotation(InterpRot);
 	}
 }
 
@@ -158,7 +169,10 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::CrouchEnd);
-		
+
+		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.LockOn"))),
+			ETriggerEvent::Started, this, &ASSSamuraiCharacter::LockOn);
+
 		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.ChangeControl"))),
 			ETriggerEvent::Completed, this, &ASSSamuraiCharacter::ChangeCharacterControl);
 
@@ -229,6 +243,11 @@ void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 
 void ASSSamuraiCharacter::Look(const FInputActionValue& Value)
 {
+	if (true == bIsLockOn)
+	{
+		return;
+	}
+
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -274,62 +293,49 @@ void ASSSamuraiCharacter::CrouchEnd()
 
 void ASSSamuraiCharacter::LockOn()
 {
-	//const FVector Start = GetActorLocation();
-	//const FVector End = Start + (Camera->GetForwardVector() * 1000.f);
+	const FVector Start = GetActorLocation();
+	//const FVector End = Start; /** (GetActorForwardVector() * -1000.f);*/
 
-	//FHitResult OutHit;
-	//TArray<AActor*> ActorsToIgnore = {};
-	//ActorsToIgnore.Add(this);
-	//if (nullptr != GetOwner())
-	//{
-	//	ActorsToIgnore.Add(GetOwner());
-	//}
+	FHitResult OutHit;
+	TArray<AActor*> ActorsToIgnore = {};
+	ActorsToIgnore.Add(this);
 
-	//TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes = {};
-	//ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel3));
+	if (nullptr != GetOwner())
+	{
+		ActorsToIgnore.Add(GetOwner());
+	}
 
-	//UKismetSystemLibrary::SphereTraceSingleForObjects(
-	//	this,
-	//	Start,
-	//	End,
-	//	300.f,
-	//	ObjectTypes,
-	//	false,
-	//	ActorsToIgnore,
-	//	EDrawDebugTrace::ForDuration,
-	//	OutHit,
-	//	true,
-	//	FLinearColor::Red,
-	//	FLinearColor::Green,
-	//	1.f
-	//);
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes = {};
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel3));
 
-	//FVector EnemyPos = FVector::Zero();
-	//
-	//if (nullptr != OutHit.GetActor())
-	//{
-	//	ASSEnemyCharacterBase* Enemy = Cast<ASSEnemyCharacterBase>(OutHit.GetActor());
+	UKismetSystemLibrary::SphereTraceSingleForObjects(
+		this,
+		Start,
+		Start,
+		1000.f,
+		ObjectTypes,
+		false,
+		ActorsToIgnore,
+		EDrawDebugTrace::ForDuration,
+		OutHit,
+		true,
+		FLinearColor::Red,
+		FLinearColor::Green,
+		1.f
+	);
 
-	//	if(nullptr != Enemy)
-	//	{
-	//		EnemyPos = Enemy->GetActorLocation();
+	if(nullptr != OutHit.GetActor())
+	{
+		bIsLockOn = true;
+		LockOnTarget = OutHit.GetActor();
+		bUseControllerRotationYaw = true;
+	}
 
-	//		FVector TargetPos = FVector(EnemyPos.X, EnemyPos.Y, EnemyPos.Z - 150.f);
-	//		FRotator PlayerRot = GetActorRotation();
-
-	//		FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetPos);
-	//		FRotator LookRot = FMath::RInterpTo(PlayerRot, Rotator, GetWorld()->GetDeltaSeconds(), 0.1f);
-
-	//		GetController()->SetControlRotation(FRotator(PlayerRot.Roll, LookRot.Pitch, LookRot.Yaw));
-
-	//		CameraArm->TargetArmLength = 400.f;
-	//	}
-	//}
-}
-
-void ASSSamuraiCharacter::LockOff()
-{
-	CameraArm->TargetArmLength = 600.f;
+	else
+	{
+		bIsLockOn = false;
+		bUseControllerRotationYaw = false;
+	}
 }
 
 void ASSSamuraiCharacter::ChangeCharacterControl()
@@ -410,6 +416,7 @@ void ASSSamuraiCharacter::HandleSlashActionPressed()
 {
 	if (true == GetCombatComponent()->GetIsParry())
 	{
+		bIsLockOn = false;
 		AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Execution));
 	}
 
@@ -422,7 +429,7 @@ void ASSSamuraiCharacter::HandleSlashActionPressed()
 void ASSSamuraiCharacter::HandleSlashActionReleased()
 {
 	if (true == GetCombatComponent()->GetIsParry())
-	{
+	{		
 		AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Execution));
 	}
 
@@ -434,13 +441,11 @@ void ASSSamuraiCharacter::HandleSlashActionReleased()
 
 void ASSSamuraiCharacter::HandleDefenseActionPressed()
 {
-	LockOn();
 	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Defense));
 }
 
 void ASSSamuraiCharacter::HandleDefenseActionReleased()
 {
-	LockOff();
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Defense));
 }
 

@@ -32,6 +32,18 @@ void ASSWeapon_DefenseBarrier::ChangeDefenseType(EDefenseType Type)
 	DefenseType = Type;
 }
 
+bool ASSWeapon_DefenseBarrier::CheckAttackDirection(FVector A, FVector B)
+{
+	float ReturnValue = FVector::DotProduct(A, B);
+
+	if (0.5f <= ReturnValue)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void ASSWeapon_DefenseBarrier::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -61,9 +73,7 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 		FVector A = GetOwner()->GetActorForwardVector();
 		FVector B = OtherActor->GetOwner()->GetActorForwardVector();
 
-		float ReturnValue = FVector::DotProduct(A, B);
-
-		if (0.5f <= ReturnValue)
+		if (false == CheckAttackDirection(A, B))
 		{
 			return;
 		}

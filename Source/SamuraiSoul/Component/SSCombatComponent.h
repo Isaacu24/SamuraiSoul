@@ -61,14 +61,14 @@ public:
 		return IsRebound;
 	}
 
-	AActor* GetEnemy() const
+	AActor* GetTarget() const
 	{
-		return Enemy;
+		return Target;
 	}
 
-	void SetEnemy(AActor* Actor)
+	void SetTarget(AActor* Actor)
 	{
-		Enemy = Actor;
+		Target = Actor;
 	}
 
 protected:
@@ -80,12 +80,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon_DefenseBarrier> DefenseBarrier;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> ExecutionMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> ExecutedMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> HitMontage;
@@ -112,6 +106,6 @@ private:
 	uint8 IsRebound : 1;
 
 	UPROPERTY()
-	AActor* Enemy;
+	TObjectPtr<AActor> Target;
 
 };

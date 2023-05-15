@@ -17,20 +17,8 @@ USSCombatComponent::USSCombatComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> HIT_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Hit.AM_Hit'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTION_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Execution.AM_Execution'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> EXECUTED_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Executed.AM_Executed'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> PARRY_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Parry.AM_Parry'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> REBOUND_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Rebound.AM_Rebound'"));
-
-	if (true == EXECUTION_MONTAGE.Succeeded())
-	{
-		ExecutionMontage = EXECUTION_MONTAGE.Object;
-	}
-
-	if (true == EXECUTED_MONTAGE.Succeeded())
-	{
-		ExecutedMontage = EXECUTED_MONTAGE.Object;
-	}
 
 	if (true == HIT_MONTAGE.Succeeded())
 	{
@@ -148,10 +136,10 @@ void USSCombatComponent::OffWeapon()
 
 void USSCombatComponent::Hit()
 {
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
 	if (true == IsRebound)
 	{
-		ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
 		if (nullptr == Character)
 		{
 			return;
@@ -180,8 +168,6 @@ void USSCombatComponent::Hit()
 
 	else
 	{
-		ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
 		if (nullptr != Character)
 		{
 			UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
@@ -192,37 +178,37 @@ void USSCombatComponent::Hit()
 			}
 		}
 
-		//if (0.f >= Character->Attributes->GetHealth())
+		//if (0.f >= Character->GetAbilitySystemComponent()->GetAttributeSet()->GetH)
 		//{
 		//	return;
 		//}
 
-		//if (nullptr != Character->GetAbilitySystemComponent()
-		//	&& nullptr != DamageEffect)
-		//{
-		//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-		//	EffectContext.AddSourceObject(this);
+		/*if (nullptr != Character->GetAbilitySystemComponent()
+			&& nullptr != DamageEffect)
+		{
+			FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+			EffectContext.AddSourceObject(this);
 
-		//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+			FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
 
-		//	if (SpecHandle.IsValid())
-		//	{
-		//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-		//		UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
+			if (SpecHandle.IsValid())
+			{
+				FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+				UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
 
-		//		if (0.f >= Attributes->GetHealth())
-		//		{
-		//			Character->Die();
-		//		}
-		//	}
-		//}
+				if (0.f >= Attributes->GetHealth())
+				{
+					Character->Die();
+				}
+			}
+		}*/
 	}
 }
 
 void USSCombatComponent::Parry(AActor* Opponent)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-	Enemy = Opponent;
+	Target = Opponent;
 
 	if (nullptr != Character)
 	{

@@ -43,16 +43,16 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		return;
 	}
 
-	if (nullptr != Character->GetCombatComponent()->GetEnemy())
+	if (nullptr != Character->GetCombatComponent()->GetTarget())
 	{
 		FMotionWarpingTarget Target = {};
 		Target.Name = FName("Target");
-		Target.Location = Character->GetCombatComponent()->GetEnemy()->GetActorLocation();
-		Target.Rotation = Character->GetCombatComponent()->GetEnemy()->GetActorRotation();
+		Target.Location = Character->GetCombatComponent()->GetTarget()->GetActorLocation();
+		Target.Rotation = Character->GetCombatComponent()->GetTarget()->GetActorRotation();
 		Target.Rotation.Yaw += 180.f;
 
 		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
-		Character->GetCombatComponent()->SetEnemy(nullptr);
+		Character->GetCombatComponent()->SetTarget(nullptr);
 	}
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))

@@ -5,6 +5,7 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "../Character/SSSamuraiCharacter.h"
+#include <Components/CapsuleComponent.h>
 
 USSGameplayAbility_Dodege::USSGameplayAbility_Dodege()
 {
