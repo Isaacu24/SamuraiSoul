@@ -21,17 +21,32 @@ ASSCharacterBase::ASSCharacterBase()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
-
-	CombatComponent = CreateDefaultSubobject<USSCombatComponent>("Combat Component");
+	
+	CombatComponent = CreateDefaultSubobject<USSCombatComponent>(TEXT("Combat Component"));
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
 	GetMesh()->SetCollisionProfileName("NoCollision");
 }
 
+float ASSCharacterBase::GetHealth() const
+{
+	if (false == Attributes)
+	{
+		return 1.f;
+	}
+
+	return Attributes->GetHealth();
+}
+
 void ASSCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ASSCharacterBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 }
 
 void ASSCharacterBase::SetCharacterControlData(const USSCharacterControlData* ControlData)

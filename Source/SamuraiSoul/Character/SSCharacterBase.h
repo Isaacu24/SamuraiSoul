@@ -74,9 +74,13 @@ public:
 		bIsDefense = ~bIsDefense;
 	}
 
+	float GetHealth() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void PostInitializeComponents() override;
 
 	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData);
 
@@ -93,7 +97,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

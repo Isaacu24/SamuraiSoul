@@ -105,8 +105,11 @@ void ASSSamuraiCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
-	CombatComponent->EquipDefenseBarrier();
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+		CombatComponent->EquipDefenseBarrier();
+	}
 }
 
 void ASSSamuraiCharacter::SetCharacterControlData(const USSCharacterControlData* ControlData)

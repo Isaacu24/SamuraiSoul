@@ -11,6 +11,7 @@
 #include "GameplayAbilitySpecHandle.h"
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility_Executed.h"
+#include "Abilities/SSAttributeSet.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -178,30 +179,20 @@ void USSCombatComponent::Hit()
 			}
 		}
 
-		//if (0.f >= Character->GetAbilitySystemComponent()->GetAttributeSet()->GetH)
-		//{
-		//	return;
-		//}
+		FGameplayEffectContextHandle EffectContext = Character->GetAbilitySystemComponent()->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
 
-		/*if (nullptr != Character->GetAbilitySystemComponent()
-			&& nullptr != DamageEffect)
+		FGameplayEffectSpecHandle SpecHandle = Character->GetAbilitySystemComponent()->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+
+		if (SpecHandle.IsValid())
 		{
-			FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-			EffectContext.AddSourceObject(this);
+			FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
-			FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
-
-			if (SpecHandle.IsValid())
+			if (0.f >= Character->GetHealth())
 			{
-				FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-				UE_LOG(LogTemp, Log, TEXT("Enemy HP: %f"), Attributes->GetHealth());
-
-				if (0.f >= Attributes->GetHealth())
-				{
-					Character->Die();
-				}
+				Character->Die();
 			}
-		}*/
+		}
 	}
 }
 

@@ -16,16 +16,16 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> BODY_MESH(TEXT("/Script/Engine.SkeletalMesh'/Game/MyContent/Mesh/Enemy/Samurai/SK_EnemySamurai_Katana.SK_EnemySamurai_Katana'"));
-	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/AI/AB_SSEnemyCharacter.AB_SSEnemyCharacter_C'"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_ENEMY(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/AI/AB_SSEnemyCharacter.AB_SSEnemyCharacter_C'"));
 
 	if (true == BODY_MESH.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(BODY_MESH.Object);
 	}
 
-	if (true == ANIM_SAMURAI.Succeeded())
+	if (true == ANIM_ENEMY.Succeeded())
 	{
-		GetMesh()->SetAnimInstanceClass(ANIM_SAMURAI.Class);
+		GetMesh()->SetAnimInstanceClass(ANIM_ENEMY.Class);
 	}
 
 	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
@@ -38,9 +38,12 @@ void ASSEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
-	CombatComponent->EquipDefenseBarrier();
-	CombatComponent->SetEnemyWeapon();
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+		CombatComponent->EquipDefenseBarrier();
+		CombatComponent->SetEnemyWeapon();
+	}
 }
 
 void ASSEnemyCharacter::Tick(float DeltaTime)
