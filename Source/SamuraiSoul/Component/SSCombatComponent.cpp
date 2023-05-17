@@ -12,6 +12,7 @@
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility_Executed.h"
 #include "Abilities/SSAttributeSet.h"
+#include <Kismet/KismetMathLibrary.h>
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -135,17 +136,24 @@ void USSCombatComponent::OffWeapon()
 	Weapon->SetActorTickEnabled(false);
 }
 
-void USSCombatComponent::Hit()
+void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
+	if (nullptr == Character)
+	{
+		return;
+	}
+
+	FVector Normal = HitResult.ImpactNormal;
+	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
+	Rotator.Pitch = 0.f;
+	Rotator.Roll= 0.f;
+
+	Character->SetActorRotation(Rotator);
+
 	if (true == IsRebound)
 	{
-		if (nullptr == Character)
-		{
-			return;
-		}
-
 		UAbilitySystemComponent* AbilitySystemComponent = Character->GetAbilitySystemComponent();
 
 		if (nullptr != AbilitySystemComponent)
@@ -169,14 +177,11 @@ void USSCombatComponent::Hit()
 
 	else
 	{
-		if (nullptr != Character)
-		{
-			UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
+		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
 
-			if (nullptr != AnimInstance)
-			{
-				AnimInstance->Montage_Play(HitMontage);
-			}
+		if (nullptr != AnimInstance)
+		{
+			AnimInstance->Montage_Play(HitMontage);
 		}
 
 		FGameplayEffectContextHandle EffectContext = Character->GetAbilitySystemComponent()->MakeEffectContext();

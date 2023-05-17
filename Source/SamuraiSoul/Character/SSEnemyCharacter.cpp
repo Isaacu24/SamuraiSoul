@@ -3,12 +3,8 @@
 
 #include "SSEnemyCharacter.h"
 #include "Game/SamuraiSoul.h"
-#include "Animation/SSEnemyAnimInstance.h"
-#include "Abilities/SSAttributeSet.h"
-#include "AbilitySystemComponent.h"
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
-#include "Kismet/KismetSystemLibrary.h"
 #include "Component/SSCombatComponent.h"
 #include "AI/SSEnemyAIController.h"
 
@@ -36,8 +32,6 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	GetCharacterMovement()->MaxWalkSpeed = 100.f;
-
-	bIsLog = false;
 }
 
 void ASSEnemyCharacter::BeginPlay()
@@ -55,22 +49,16 @@ void ASSEnemyCharacter::BeginPlay()
 void ASSEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
-	//StabTime += DeltaTime;
+void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished)
+{
+	Super::SetAIAttackDelegate(InOnAttackFinished);
+}
 
-	//if (8.f <= StabTime
-	//	&& false == bIsLog)
-	//{
-	//	bIsLog = true;
-	//	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EnemyAttacck!")));
-	//}
-
-	//if (10.f <= StabTime
-	//	&& 0.f < Attributes->GetHealth())
-	//{
-	//	StabTime = 0.f;
-	//	bIsLog = false;
-	//	StabDelegate.Execute();
-	//}
+void ASSEnemyCharacter::AttackByAI()
+{
+	//Super::AttackByAI();
+	//StabDelegate.Execute();
 }
 

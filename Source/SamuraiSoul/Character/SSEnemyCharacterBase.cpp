@@ -9,3 +9,33 @@ ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Enemy"));
 }
+
+float ASSEnemyCharacterBase::GetAIPatrolRadius()
+{
+	return 800.0f;
+}
+
+float ASSEnemyCharacterBase::GetAIDetectRange()
+{
+	return 400.0f;
+}
+
+float ASSEnemyCharacterBase::GetAIAttackRange()
+{
+	return 50.0f;
+}
+
+float ASSEnemyCharacterBase::GetAITurnSpeed()
+{
+	return 0.0f;
+}
+
+void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished)
+{
+	OnAttackFinished = InOnAttackFinished;
+}
+
+void ASSEnemyCharacterBase::AttackByAI()
+{
+
+}

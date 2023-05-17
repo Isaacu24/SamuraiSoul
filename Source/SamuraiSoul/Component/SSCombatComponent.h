@@ -36,7 +36,7 @@ public:
 	void EquipDefenseBarrier();
 	void SetEnemyWeapon();
 
-	void Hit();
+	void Hit(const FHitResult& HitResult);
 
 	void Parry(AActor* Opponent);
 	void Rebound(AActor* Opponent);
