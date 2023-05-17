@@ -14,4 +14,19 @@ class SAMURAISOUL_API ASSEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
 	
+public:
+	ASSEnemyAIController();
+
+	void RunAI();
+	void StopAI();
+
+protected:
+	virtual void OnPossess(APawn* InPawn) override;
+
+private:
+	UPROPERTY()
+	TObjectPtr<class UBlackboardData> BBAsset;
+
+	UPROPERTY()
+	TObjectPtr<class UBehaviorTree> BTAsset;
 };

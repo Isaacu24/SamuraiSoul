@@ -36,13 +36,7 @@ protected:
 
 private:
 	UPROPERTY()
-	TObjectPtr<class ASSSamuraiCharacter> MyCharacter;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	float Speed = 0.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	float Direction = 0.f;
+	TObjectPtr<class ASSSamuraiCharacter> OwnerCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	uint8 bIsCrouch : 1;

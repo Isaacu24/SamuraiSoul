@@ -24,20 +24,6 @@ void USSEnemyAnimInstance::NativeBeginPlay()
 void USSEnemyAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-
-	APawn* Pawn = TryGetPawnOwner();
-
-	if (false == IsValid(Pawn))
-	{
-		return;
-	}
-
-	ASSEnemyCharacter* MyCharacter = Cast<ASSEnemyCharacter>(Pawn);
-
-	if (nullptr != MyCharacter)
-	{
-		MyCharacter->StabDelegate.BindUObject(this, &USSEnemyAnimInstance::PlayStabMontage);
-	}
 }
 
 void USSEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -47,14 +33,11 @@ void USSEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void USSEnemyAnimInstance::AnimNotify_RagdollDeath()
 {
-	APawn* Pawn = TryGetPawnOwner();
-
-	if (false == IsValid(Pawn))
+	if (false == IsValid(MyCharacter))
 	{
 		return;
 	}
 
-	ASSEnemyCharacter* MyCharacter = Cast<ASSEnemyCharacter>(Pawn);
 	USkeletalMeshComponent* MyMesh = MyCharacter->GetMesh();
 
 	if (!MyMesh)

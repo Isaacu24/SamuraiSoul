@@ -22,9 +22,6 @@ void USSSamuraiAnimInstance::NativeBeginPlay()
 void USSSamuraiAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-
-	APawn* Pawn = TryGetPawnOwner();
-	MyCharacter = Cast<ASSSamuraiCharacter>(Pawn);
 }
 
 void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -36,16 +33,18 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		return;
 	}
 
+	OwnerCharacter = Cast<ASSSamuraiCharacter>(MyCharacter);
+
 	Speed = MyCharacter->GetVelocity().Size();
 	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Red, FString::SanitizeFloat(Speed));
 
 	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
 
-	bIsCrouch = MyCharacter->IsCrouch();
-	bIsAir = MyCharacter->GetCharacterMovement()->IsFalling();
-	bIsEquip = MyCharacter->IsEquip();
-	bIsDefense = MyCharacter->IsDefense();
-	bIsLockOn= MyCharacter->IsLockOn();
+	bIsCrouch = OwnerCharacter->IsCrouch();
+	bIsAir = OwnerCharacter->GetCharacterMovement()->IsFalling();
+	bIsEquip = OwnerCharacter->IsEquip();
+	bIsDefense = OwnerCharacter->IsDefense();
+	bIsLockOn= OwnerCharacter->IsLockOn(); // ?
 
 	if (false == bIsFristDefense)
 	{ 
