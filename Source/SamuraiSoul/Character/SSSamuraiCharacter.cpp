@@ -3,19 +3,14 @@
 
 #include "SSSamuraiCharacter.h"
 
-#include "Game/SamuraiSoul.h"
-
-#include "Animation/SSSamuraiAnimInstance.h"
 #include <Camera/CameraComponent.h>
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/SpringArmComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 
-#include "Abilities/SSAttributeSet.h"
-#include "Abilities/SSGameplayAbility.h"
-#include "GameplayEffectTypes.h"
-#include "AbilitySystemComponent.h"
-#include "Abilities/SSAbilitySystemComponent.h"
+#include <Kismet/KismetSystemLibrary.h>
+#include <Kismet/KismetMathLibrary.h>
+#include <Math/UnrealMathUtility.h>
 
 #include "Input/SSInputConfigData.h"
 #include "InputMappingContext.h"
@@ -23,13 +18,9 @@
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
 
+#include "Abilities/SSAbilitySystemComponent.h"
 #include "Component/SSCombatComponent.h"
 #include "SSCharacterControlData.h"
-
-#include <Kismet/KismetSystemLibrary.h>
-#include <Kismet/KismetMathLibrary.h>
-#include "SSEnemyCharacterBase.h"
-#include <Math/UnrealMathUtility.h>
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -107,7 +98,7 @@ void ASSSamuraiCharacter::PostInitializeComponents()
 
 	if (nullptr != CombatComponent)
 	{
-		CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName("Weapon_rSocket"));
 		CombatComponent->EquipDefenseBarrier();
 	}
 }

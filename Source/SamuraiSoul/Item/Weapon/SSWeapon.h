@@ -14,6 +14,8 @@ class USphereComponent;
 class UPrimitiveComponent;
 class UStaticMeshComponent;
 
+DECLARE_DELEGATE_TwoParams(FWeaponCollisionOverlap, AActor* /*InActor*/, const FHitResult& /*OutHit*/);
+
 UCLASS()
 class SAMURAISOUL_API ASSWeapon : public ASSItem
 {
@@ -22,11 +24,18 @@ class SAMURAISOUL_API ASSWeapon : public ASSItem
 public:	
 	ASSWeapon();
 
+	FWeaponCollisionOverlap OnWeaponOverlap;
+
+	void Attack();
+
 	void Equip(USceneComponent* InParent, FName InSocketName);
-
 	void SetEnemyWeapon();
-
 	void CollisionHiddenInGame(bool Value);
+
+	FORCEINLINE EWeaponType GetWeaponType() const
+	{
+		return WeaponType;
+	}
 
 protected:
 	virtual void BeginPlay() override;
@@ -45,5 +54,5 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> ColliderEnd;
 
-private:
+	EWeaponType WeaponType;
 };

@@ -11,13 +11,9 @@ class ASSWeapon;
 class USceneComponent;
 class UGameplayEffect;
 class UGameplayAbility;
+class ASSCharacterBase;
 class ISSCombatInterface;
 class ASSWeapon_DefenseBarrier;
-
-//DECLARE_DELEGATE_OneParam(FCombatDelegate, EWeaponType Type);
-//DECLARE_DELEGATE(FExecuteDelegate);
-
-DECLARE_DELEGATE(FCombatDelegate);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), Blueprintable)
 class SAMURAISOUL_API USSCombatComponent : public UActorComponent
@@ -27,15 +23,21 @@ class SAMURAISOUL_API USSCombatComponent : public UActorComponent
 public:	
 	USSCombatComponent();
 
-	FCombatDelegate AttackEvent;
+	virtual void BeginPlay() override;
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void EquipWeapon(USceneComponent* InParent, FName InSocketName);
+	void EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName);
 	void EquipDefenseBarrier();
-	void SetEnemyWeapon();
 
+	//Enemy Function
+	void SetEnemyWeapon();
+	void AttackByAI();
+
+	void ActivateAbility(TSubclassOf<UGameplayAbility> Ability, ASSCharacterBase* InCharacter);
+
+	void Attack(AActor* InActor, const FHitResult& HitResult);
 	void Hit(const FHitResult& HitResult);
 
 	void Parry(AActor* Opponent);
@@ -46,7 +48,7 @@ public:
 
 	void OnDefense();
 	void OffDefense();
-	void ChangeDefenseType(EDefenseType Type);
+	void ChangeDefenseState(EDefenseState Type);
 
 	void OnWeapon();
 	void OffWeapon();
@@ -72,9 +74,6 @@ public:
 	}
 
 protected:
-	virtual void BeginPlay() override;
-
-private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon> Weapon;
 

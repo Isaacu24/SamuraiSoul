@@ -48,6 +48,11 @@ USSCombatComponent::USSCombatComponent()
 void USSCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (nullptr != Weapon)
+	{
+		Weapon->OnWeaponOverlap.BindUObject(this, &USSCombatComponent::Attack);
+	}
 }
 
 void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -55,15 +60,26 @@ void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void USSCombatComponent::EquipWeapon(USceneComponent* InParent, FName InSocketName)
+void USSCombatComponent::EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName)
 {
-	Weapon = GetWorld()->SpawnActor<ASSWeapon_Katana>();
-
-	if (nullptr != Weapon)
+	switch (Type)
 	{
-		Weapon->SetOwner(GetOwner());
-		Weapon->Equip(InParent, InSocketName);
-		OffWeapon();
+	case EWeaponType::None:
+		break;
+
+	case EWeaponType::Katana:
+		Weapon = GetWorld()->SpawnActor<ASSWeapon_Katana>();
+
+		if (nullptr != Weapon)
+		{
+			Weapon->SetOwner(GetOwner());
+			Weapon->Equip(InParent, InSocketName);
+			OffWeapon();
+		}
+		break;
+
+	case EWeaponType::Bow:
+		break;
 	}
 }
 
@@ -81,6 +97,45 @@ void USSCombatComponent::EquipDefenseBarrier()
 void USSCombatComponent::SetEnemyWeapon()
 {
 	Weapon->SetEnemyWeapon();
+}
+
+// AI 
+void USSCombatComponent::AttackByAI()
+{
+	switch (Weapon->GetWeaponType())
+	{
+	case EWeaponType::Katana:
+		// Active Ability
+		break;
+	case EWeaponType::Bow:
+		// Active Ability
+		break;
+	default:
+		break;
+	}
+}
+
+void USSCombatComponent::ActivateAbility(TSubclassOf<UGameplayAbility> Ability, ASSCharacterBase* InCharacter)
+{
+	if (nullptr == Ability)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* AbilitySystemComponent = InCharacter->GetAbilitySystemComponent();
+
+	if (nullptr != AbilitySystemComponent)
+	{
+		FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(Ability);
+
+		if (nullptr == AbilitySpec)
+		{
+			return;
+		}
+
+		AbilitySystemComponent->CancelAbilities();
+		AbilitySystemComponent->TryActivateAbility(AbilitySpec->Handle);
+	}
 }
 
 void USSCombatComponent::OnDefense()
@@ -107,9 +162,9 @@ void USSCombatComponent::OffDefense()
 	DefenseBarrier->SetActorTickEnabled(false);
 }
 
-void USSCombatComponent::ChangeDefenseType(EDefenseType Type)
+void USSCombatComponent::ChangeDefenseState(EDefenseState Type)
 {
-	DefenseBarrier->ChangeDefenseType(Type);
+	DefenseBarrier->ChangeDefenseState(Type);
 }
 
 void USSCombatComponent::OnWeapon()
@@ -136,43 +191,38 @@ void USSCombatComponent::OffWeapon()
 	Weapon->SetActorTickEnabled(false);
 }
 
+void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult)
+{
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(InActor);
+
+	ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
+	ISSCombatInterface* Enemy = nullptr;
+
+	if (InActor != GetOwner())
+	{
+		Enemy = Cast<ISSCombatInterface>(InActor);
+	}
+
+	if (nullptr != Enemy)
+	{
+		Hit(HitResult);
+	}
+}
+
 void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
-	if (nullptr == Character)
-	{
-		return;
-	}
-
 	FVector Normal = HitResult.ImpactNormal;
 	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
 	Rotator.Pitch = 0.f;
-	Rotator.Roll= 0.f;
+	Rotator.Roll = 0.f;
 
 	Character->SetActorRotation(Rotator);
 
 	if (true == IsRebound)
 	{
-		UAbilitySystemComponent* AbilitySystemComponent = Character->GetAbilitySystemComponent();
-
-		if (nullptr != AbilitySystemComponent)
-		{
-			if (nullptr == ExecutedAbility)
-			{
-				return;
-			}
-
-			FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(ExecutedAbility);
-
-			if (nullptr == AbilitySpec)
-			{
-				return;
-			}
-
-			AbilitySystemComponent->CancelAbilities();
-			AbilitySystemComponent->TryActivateAbility(AbilitySpec->Handle);
-		}
+		ActivateAbility(ExecutedAbility, Character);
 	}
 
 	else

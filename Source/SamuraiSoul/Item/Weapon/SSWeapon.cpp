@@ -26,6 +26,11 @@ void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 
 }
 
+void ASSWeapon::Attack()
+{
+	// Active Ability
+}
+
 void ASSWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 {
 	if (nullptr != InParent)

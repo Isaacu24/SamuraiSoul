@@ -36,12 +36,14 @@ enum class ESSAbilityID : uint8
 UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
-	Slash,
-	Stab
+	None,
+	Katana,
+	Bow,
+	Defense
 };
 
 UENUM(BlueprintType)
-enum class EDefenseType : uint8
+enum class EDefenseState : uint8
 {
 	Defense,
 	Parry

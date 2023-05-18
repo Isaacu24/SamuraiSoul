@@ -7,7 +7,6 @@
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include "Abilities/SSAttributeSet.h"
-#include "Game/SamuraiSoul.h"
 #include "SSCharacterControlData.h"
 #include "MotionWarpingComponent.h"
 #include "Component/SSCombatComponent.h"
@@ -22,7 +21,6 @@ ASSCharacterBase::ASSCharacterBase()
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 	
-	CombatComponent = CreateDefaultSubobject<USSCombatComponent>(TEXT("Combat Component"));
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));

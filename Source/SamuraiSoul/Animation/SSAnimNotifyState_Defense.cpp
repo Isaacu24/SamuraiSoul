@@ -22,7 +22,7 @@ void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 	if (nullptr != Character)
 	{
 		Character->GetCombatComponent()->OnDefense();
-		Character->GetCombatComponent()->ChangeDefenseType(EDefenseType::Parry);
+		Character->GetCombatComponent()->ChangeDefenseState(EDefenseState::Parry);
 	}
 }
 
@@ -63,6 +63,6 @@ void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAn
 
 	if (nullptr != Character)
 	{
-		Character->GetCombatComponent()->ChangeDefenseType(EDefenseType::Defense);
+		Character->GetCombatComponent()->ChangeDefenseState(EDefenseState::Defense);
 	}
 }

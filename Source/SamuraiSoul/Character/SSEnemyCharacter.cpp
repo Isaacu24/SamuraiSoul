@@ -4,8 +4,8 @@
 #include "SSEnemyCharacter.h"
 #include "Game/SamuraiSoul.h"
 #include <Components/CapsuleComponent.h>
-#include <GameFramework/CharacterMovementComponent.h>
 #include "Component/SSCombatComponent.h"
+#include <GameFramework/CharacterMovementComponent.h>
 #include "AI/SSEnemyAIController.h"
 
 ASSEnemyCharacter::ASSEnemyCharacter()
@@ -40,7 +40,7 @@ void ASSEnemyCharacter::BeginPlay()
 
 	if (nullptr != CombatComponent)
 	{
-		CombatComponent->EquipWeapon(GetMesh(), FName("Weapon_rSocket"));
+		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName("Weapon_rSocket"));
 		CombatComponent->EquipDefenseBarrier();
 		CombatComponent->SetEnemyWeapon();
 	}
@@ -58,7 +58,6 @@ void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAttackFinished& In
 
 void ASSEnemyCharacter::AttackByAI()
 {
-	//Super::AttackByAI();
-	//StabDelegate.Execute();
+	CombatComponent->AttackByAI();
 }
 

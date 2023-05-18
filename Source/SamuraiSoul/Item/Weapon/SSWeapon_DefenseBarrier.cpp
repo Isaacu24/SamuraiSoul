@@ -25,9 +25,11 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	WeaponCollider->bHiddenInGame = false;
 
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnBoxOverlapBegin);
+
+	WeaponType = EWeaponType::Defense;
 }
 
-void ASSWeapon_DefenseBarrier::ChangeDefenseType(EDefenseType Type)
+void ASSWeapon_DefenseBarrier::ChangeDefenseState(EDefenseState Type)
 {
 	DefenseType = Type;
 }
@@ -66,9 +68,9 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 {
 	switch (DefenseType)
 	{
-	case EDefenseType::Defense:
+	case EDefenseState::Defense:
 		break;
-	case EDefenseType::Parry:
+	case EDefenseState::Parry:
 	{
 		FVector A = GetOwner()->GetActorForwardVector();
 		FVector B = OtherActor->GetOwner()->GetActorForwardVector();

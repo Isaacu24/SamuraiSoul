@@ -41,6 +41,8 @@ ASSWeapon_Katana::ASSWeapon_Katana()
 	ColliderEnd->SetRelativeLocation(FVector{ 0.f, 100.f, 0.f });
 
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_Katana::OnBoxOverlapBegin);
+
+	WeaponType = EWeaponType::Katana;
 }
 
 void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -78,21 +80,5 @@ void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
 	}
 
-	ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
-	ISSCombatInterface* Enemy = nullptr;
-
-	if (OtherActor != GetOwner())
-	{
-		Enemy = Cast<ISSCombatInterface>(OtherActor);
-	}
-
-	if (nullptr != Enemy)
-	{
-		Enemy->GetCombatComponent()->Hit(OutHit);
-	}
-
-	if (nullptr == MyOwner)
-	{
-		//MyOwner->GetCombatComponent()->AttackEvent.Execute();
-	}
+	OnWeaponOverlap.ExecuteIfBound(OtherActor, OutHit);
 }
