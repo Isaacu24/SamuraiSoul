@@ -12,7 +12,6 @@ class USceneComponent;
 class UGameplayEffect;
 class UGameplayAbility;
 class ASSCharacterBase;
-class ISSCombatInterface;
 class ASSWeapon_DefenseBarrier;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), Blueprintable)
@@ -20,7 +19,7 @@ class SAMURAISOUL_API USSCombatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	USSCombatComponent();
 
 	virtual void BeginPlay() override;
@@ -31,13 +30,9 @@ public:
 	void EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName);
 	void EquipDefenseBarrier();
 
-	//Enemy Function
-	void SetEnemyWeapon();
-	void AttackByAI();
-
 	void ActivateAbility(TSubclassOf<UGameplayAbility> Ability, ASSCharacterBase* InCharacter);
 
-	void Attack(AActor* InActor, const FHitResult& HitResult);
+	void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	void Hit(const FHitResult& HitResult);
 
 	void Parry(AActor* Opponent);
@@ -46,12 +41,12 @@ public:
 	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
 	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
 
-	void OnDefense();
-	void OffDefense();
-	void ChangeDefenseState(EDefenseState Type);
+	void OnDefense() const;
+	void OffDefense() const;
+	void ChangeDefenseState(EDefenseState Type) const;
 
-	void OnWeapon();
-	void OffWeapon();
+	void OnWeapon() const;
+	void OffWeapon() const;
 
 	bool GetIsParry() const
 	{
@@ -93,9 +88,6 @@ protected:
 	TSubclassOf<UGameplayEffect> DamageEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> ExecutionAbility;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> ExecutedAbility;
 
 	UPROPERTY()
@@ -106,5 +98,4 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AActor> Target;
-
 };

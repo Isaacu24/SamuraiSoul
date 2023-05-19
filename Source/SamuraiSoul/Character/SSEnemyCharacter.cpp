@@ -4,7 +4,7 @@
 #include "SSEnemyCharacter.h"
 #include "Game/SamuraiSoul.h"
 #include <Components/CapsuleComponent.h>
-#include "Component/SSCombatComponent.h"
+#include "Component/SSEnemyCombatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
 #include "AI/SSEnemyAIController.h"
 
@@ -30,6 +30,8 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 
 	AIControllerClass = ASSEnemyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	
+	CombatComponent = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 100.f;
 }
@@ -58,6 +60,6 @@ void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAttackFinished& In
 
 void ASSEnemyCharacter::AttackByAI()
 {
-	CombatComponent->AttackByAI();
+	//CombatComponent->AttackByAI();
 }
 

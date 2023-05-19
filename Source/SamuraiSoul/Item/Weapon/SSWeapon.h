@@ -20,13 +20,11 @@ UCLASS()
 class SAMURAISOUL_API ASSWeapon : public ASSItem
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	ASSWeapon();
 
 	FWeaponCollisionOverlap OnWeaponOverlap;
-
-	void Attack();
 
 	void Equip(USceneComponent* InParent, FName InSocketName);
 	void SetEnemyWeapon();
@@ -40,8 +38,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
+	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
+	                               const FHitResult&    SweepResult);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Mesh;
 

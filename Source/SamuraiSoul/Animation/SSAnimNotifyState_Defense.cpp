@@ -3,7 +3,7 @@
 
 #include "SSAnimNotifyState_Defense.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Character/SSCharacterBase.h"
+#include "Interface/SSCombatInterface.h"
 #include "Component/SSCombatComponent.h"
 
 USSAnimNotifyState_Defense::USSAnimNotifyState_Defense()
@@ -17,12 +17,12 @@ void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 		return;
 	}
 
-	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
-	
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
+
 	if (nullptr != Character)
 	{
-		Character->GetCombatComponent()->OnDefense();
-		Character->GetCombatComponent()->ChangeDefenseState(EDefenseState::Parry);
+		Combatable->GetCombatComponent()->OnDefense();
+		Combatable->GetCombatComponent()->ChangeDefenseState(EDefenseState::Parry);
 	}
 }
 
@@ -59,10 +59,10 @@ void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAn
 		return;
 	}
 
-	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
 
 	if (nullptr != Character)
 	{
-		Character->GetCombatComponent()->ChangeDefenseState(EDefenseState::Defense);
+		Combatable->GetCombatComponent()->ChangeDefenseState(EDefenseState::Defense);
 	}
 }

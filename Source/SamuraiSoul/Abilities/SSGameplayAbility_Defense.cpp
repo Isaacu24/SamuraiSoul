@@ -85,10 +85,12 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Han
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
 	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
-	if (nullptr != Character)
+	if (nullptr != Character
+		&& nullptr != Combatable)
 	{
-		Character->GetCombatComponent()->OffDefense();
+		Combatable->GetCombatComponent()->OffDefense();
 
 		if (nullptr != Character->GetMesh()->GetAnimInstance())
 		{

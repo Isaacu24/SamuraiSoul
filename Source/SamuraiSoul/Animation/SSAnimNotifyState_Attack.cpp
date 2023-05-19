@@ -3,8 +3,8 @@
 
 #include "SSAnimNotifyState_Attack.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Character/SSCharacterBase.h"
 #include "Component/SSCombatComponent.h"
+#include "Interface/SSCombatInterface.h"
 
 USSAnimNotifyState_Attack::USSAnimNotifyState_Attack()
 {
@@ -16,12 +16,12 @@ void USSAnimNotifyState_Attack::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 	{
 		return;
 	}
+	
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
 
-	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
-
-	if (nullptr != Character)
+	if (nullptr != Combatable)
 	{
-		Character->GetCombatComponent()->OnWeapon();
+		Combatable->GetCombatComponent()->OnWeapon();
 	}
 }
 
@@ -94,10 +94,10 @@ void USSAnimNotifyState_Attack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAni
 		return;
 	}
 
-	Character = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
 
-	if (nullptr != Character)
+	if (nullptr != Combatable)
 	{
-		Character->GetCombatComponent()->OffWeapon();
+		Combatable->GetCombatComponent()->OffWeapon();
 	}
 }

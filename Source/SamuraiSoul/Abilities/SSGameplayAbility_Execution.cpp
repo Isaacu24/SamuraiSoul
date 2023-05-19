@@ -8,6 +8,7 @@
 #include "Character/SSCharacterBase.h"
 #include "Animation/SSSamuraiAnimInstance.h"
 #include "Component/SSCombatComponent.h"
+#include "Interface/SSCombatInterface.h"
 
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
@@ -37,22 +38,24 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
-	if (nullptr == Character)
+	if (nullptr == Character
+		&& nullptr == Combatable)
 	{
 		return;
 	}
 
-	if (nullptr != Character->GetCombatComponent()->GetTarget())
+	if (nullptr != Combatable->GetCombatComponent()->GetTarget())
 	{
 		FMotionWarpingTarget Target = {};
 		Target.Name = FName("Target");
-		Target.Location = Character->GetCombatComponent()->GetTarget()->GetActorLocation();
-		Target.Rotation = Character->GetCombatComponent()->GetTarget()->GetActorRotation();
+		Target.Location = Combatable->GetCombatComponent()->GetTarget()->GetActorLocation();
+		Target.Rotation = Combatable->GetCombatComponent()->GetTarget()->GetActorRotation();
 		Target.Rotation.Yaw += 180.f;
 
 		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
-		Character->GetCombatComponent()->SetTarget(nullptr);
+		Combatable->GetCombatComponent()->SetTarget(nullptr);
 	}
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))

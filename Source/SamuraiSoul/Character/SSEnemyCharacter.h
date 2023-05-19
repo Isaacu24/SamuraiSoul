@@ -22,8 +22,6 @@ class SAMURAISOUL_API ASSEnemyCharacter : public ASSEnemyCharacterBase
 public:
 	ASSEnemyCharacter();
 
-	FAnimDelegate StabDelegate;
-
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 

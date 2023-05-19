@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
+#include "../Interface/SSCombatInterface.h"
 #include "../Interface/SSCharacterAIInterface.h"
 #include "SSEnemyCharacterBase.generated.h"
 
-class USSCombatComponent;
+class USSEnemyCombatComponent;
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public ISSCharacterAIInterface
+class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public ISSCharacterAIInterface, public ISSCombatInterface
 {
 	GENERATED_BODY()
 
@@ -21,6 +22,11 @@ public:
 	ASSEnemyCharacterBase();
 
 protected:
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return static_cast<USSCombatComponent*>(CombatComponent);
+	}
+
 	virtual float GetAIPatrolRadius() override;
 	virtual float GetAIDetectRange() override;
 	virtual float GetAIAttackRange() override;
@@ -29,5 +35,9 @@ protected:
 	virtual void SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
 
+protected:
 	FAICharacterAttackFinished OnAttackFinished;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
 };

@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "AbilitySystemInterface.h"
-#include "Interface/SSCombatInterface.h"
 #include <GameplayEffectTypes.h>
+#include "AbilitySystemInterface.h"
 #include <MotionWarpingComponent.h>
+#include "GameFramework/Character.h"
 #include "SSCharacterBase.generated.h"
 
 class USSAttributeSet;
@@ -26,7 +25,7 @@ enum class ECharacterControlType : uint8
 };
 
 UCLASS()
-class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSCombatInterface
+class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -52,11 +51,6 @@ public:
 	virtual UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const override
 	{
 		return AbilitySystemComponent;
-	}
-
-	virtual USSCombatComponent* GetCombatComponent() const override
-	{
-		return CombatComponent;
 	}
 
 	UMotionWarpingComponent* GetMotionWarpingComponent() const
@@ -96,9 +90,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USSCombatComponent> CombatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UMotionWarpingComponent> MotionWarpComponent;

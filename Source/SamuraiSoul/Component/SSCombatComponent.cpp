@@ -6,43 +6,15 @@
 #include "Item/Weapon/SSWeapon_Katana.h"
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include "Character/SSCharacterBase.h"
-#include <Components/CapsuleComponent.h>
 
-#include "GameplayAbilitySpecHandle.h"
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility_Executed.h"
-#include "Abilities/SSAttributeSet.h"
 #include <Kismet/KismetMathLibrary.h>
+#include "Interface/SSCombatInterface.h"
 
 USSCombatComponent::USSCombatComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
-
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> HIT_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Hit.AM_Hit'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> PARRY_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Parry.AM_Parry'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> REBOUND_MONTAGE(TEXT("/Script/Engine.AnimMontage'/Game/MyContent/Animation/Character/AM_Rebound.AM_Rebound'"));
-
-	if (true == HIT_MONTAGE.Succeeded())
-	{
-		HitMontage = HIT_MONTAGE.Object;
-	}
-
-	if (true == PARRY_MONTAGE.Succeeded())
-	{
-		ParryMontage = PARRY_MONTAGE.Object;
-	}
-
-	if (true == REBOUND_MONTAGE.Succeeded())
-	{
-		ReboundMontage = REBOUND_MONTAGE.Object;
-	}
-
-	static ConstructorHelpers::FClassFinder<UGameplayAbility> ExecutedAbilityClass(TEXT("/Script/Engine.Blueprint'/Game/MyContent/Abilities/BP_SSGameplayAbility_Executed.BP_SSGameplayAbility_Executed_C'"));
-
-	if (ExecutedAbilityClass.Succeeded())
-	{
-		ExecutedAbility = ExecutedAbilityClass.Class;
-	}
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void USSCombatComponent::BeginPlay()
@@ -64,22 +36,22 @@ void USSCombatComponent::EquipWeapon(EWeaponType Type, USceneComponent* InParent
 {
 	switch (Type)
 	{
-	case EWeaponType::None:
-		break;
+		case EWeaponType::None:
+			break;
 
-	case EWeaponType::Katana:
-		Weapon = GetWorld()->SpawnActor<ASSWeapon_Katana>();
+		case EWeaponType::Katana:
+			Weapon = GetWorld()->SpawnActor<ASSWeapon_Katana>();
 
-		if (nullptr != Weapon)
-		{
-			Weapon->SetOwner(GetOwner());
-			Weapon->Equip(InParent, InSocketName);
-			OffWeapon();
-		}
-		break;
+			if (nullptr != Weapon)
+			{
+				Weapon->SetOwner(GetOwner());
+				Weapon->Equip(InParent, InSocketName);
+				OffWeapon();
+			}
+			break;
 
-	case EWeaponType::Bow:
-		break;
+		case EWeaponType::Bow:
+			break;
 	}
 }
 
@@ -94,27 +66,6 @@ void USSCombatComponent::EquipDefenseBarrier()
 	}
 }
 
-void USSCombatComponent::SetEnemyWeapon()
-{
-	Weapon->SetEnemyWeapon();
-}
-
-// AI 
-void USSCombatComponent::AttackByAI()
-{
-	switch (Weapon->GetWeaponType())
-	{
-	case EWeaponType::Katana:
-		// Active Ability
-		break;
-	case EWeaponType::Bow:
-		// Active Ability
-		break;
-	default:
-		break;
-	}
-}
-
 void USSCombatComponent::ActivateAbility(TSubclassOf<UGameplayAbility> Ability, ASSCharacterBase* InCharacter)
 {
 	if (nullptr == Ability)
@@ -126,7 +77,7 @@ void USSCombatComponent::ActivateAbility(TSubclassOf<UGameplayAbility> Ability, 
 
 	if (nullptr != AbilitySystemComponent)
 	{
-		FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(Ability);
+		const FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(Ability);
 
 		if (nullptr == AbilitySpec)
 		{
@@ -138,7 +89,7 @@ void USSCombatComponent::ActivateAbility(TSubclassOf<UGameplayAbility> Ability, 
 	}
 }
 
-void USSCombatComponent::OnDefense()
+void USSCombatComponent::OnDefense() const
 {
 	if (nullptr == DefenseBarrier)
 	{
@@ -150,7 +101,7 @@ void USSCombatComponent::OnDefense()
 	DefenseBarrier->SetActorTickEnabled(true);
 }
 
-void USSCombatComponent::OffDefense()
+void USSCombatComponent::OffDefense() const
 {
 	if (nullptr == DefenseBarrier)
 	{
@@ -162,12 +113,12 @@ void USSCombatComponent::OffDefense()
 	DefenseBarrier->SetActorTickEnabled(false);
 }
 
-void USSCombatComponent::ChangeDefenseState(EDefenseState Type)
+void USSCombatComponent::ChangeDefenseState(EDefenseState Type) const
 {
 	DefenseBarrier->ChangeDefenseState(Type);
 }
 
-void USSCombatComponent::OnWeapon()
+void USSCombatComponent::OnWeapon() const
 {
 	if (nullptr == Weapon)
 	{
@@ -179,7 +130,7 @@ void USSCombatComponent::OnWeapon()
 	Weapon->SetActorTickEnabled(true);
 }
 
-void USSCombatComponent::OffWeapon()
+void USSCombatComponent::OffWeapon() const
 {
 	if (nullptr == Weapon)
 	{
@@ -191,21 +142,20 @@ void USSCombatComponent::OffWeapon()
 	Weapon->SetActorTickEnabled(false);
 }
 
-void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult)
+void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) const
 {
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(InActor);
+	const ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
+	const ISSCombatInterface* Enemy   = Cast<ISSCombatInterface>(InActor);
 
-	ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
-	ISSCombatInterface* Enemy = nullptr;
-
-	if (InActor != GetOwner())
+	if (nullptr == MyOwner
+		|| nullptr == Enemy)
 	{
-		Enemy = Cast<ISSCombatInterface>(InActor);
+		return;
 	}
 
-	if (nullptr != Enemy)
+	if (MyOwner != Enemy)
 	{
-		Hit(HitResult);
+		Enemy->GetCombatComponent()->Hit(HitResult);
 	}
 }
 
@@ -213,10 +163,11 @@ void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
-	FVector Normal = HitResult.ImpactNormal;
+	const FVector Normal = HitResult.ImpactNormal;
+
 	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
-	Rotator.Pitch = 0.f;
-	Rotator.Roll = 0.f;
+	Rotator.Pitch    = 0.f;
+	Rotator.Roll     = 0.f;
 
 	Character->SetActorRotation(Rotator);
 
@@ -237,11 +188,13 @@ void USSCombatComponent::Hit(const FHitResult& HitResult)
 		FGameplayEffectContextHandle EffectContext = Character->GetAbilitySystemComponent()->MakeEffectContext();
 		EffectContext.AddSourceObject(this);
 
-		FGameplayEffectSpecHandle SpecHandle = Character->GetAbilitySystemComponent()->MakeOutgoingSpec(DamageEffect, 1, EffectContext);
+		const FGameplayEffectSpecHandle SpecHandle = Character->GetAbilitySystemComponent()->
+		                                                        MakeOutgoingSpec(DamageEffect, 1, EffectContext);
 
 		if (SpecHandle.IsValid())
 		{
-			FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+			FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->
+			                                                  ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
 			if (0.f >= Character->GetHealth())
 			{
@@ -253,7 +206,8 @@ void USSCombatComponent::Hit(const FHitResult& HitResult)
 
 void USSCombatComponent::Parry(AActor* Opponent)
 {
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
 	Target = Opponent;
 
 	if (nullptr != Character)
@@ -274,7 +228,7 @@ void USSCombatComponent::Parry(AActor* Opponent)
 
 void USSCombatComponent::Rebound(AActor* Opponent)
 {
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
 	if (nullptr != Character)
 	{

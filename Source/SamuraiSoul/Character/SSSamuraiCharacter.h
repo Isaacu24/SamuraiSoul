@@ -3,22 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Game/SamuraiSoul.h"
 #include "SSCharacterBase.h"
 #include "InputActionValue.h"
+#include "Game/SamuraiSoul.h"
+#include "Interface/SSCombatInterface.h"
 #include "SSSamuraiCharacter.generated.h"
 
-class USSCharacterControlData;
+class ASSWeapon;
 class UCameraComponent;
 class USSInputConfigData;
 class USpringArmComponent;
 class UInputMappingContext;
-class ASSWeapon;
-
-DECLARE_DELEGATE(FAnimDelegate);
+class USSCharacterControlData;
 
 UCLASS()
-class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase
+class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase, public ISSCombatInterface
 {
 	GENERATED_BODY()
 
@@ -34,6 +33,11 @@ protected:
 
 	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData) override;
 
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return CombatComponent;
+	}
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -48,7 +52,7 @@ public:
 		return bIsCrouch;
 	}
 
-	bool IsEquip() const 
+	bool IsEquip() const
 	{
 		return bIsEquip;
 	}
@@ -63,8 +67,8 @@ public:
 		bIsEquip = ~bIsEquip;
 	}
 
-	void Run();
-	void UnRun();
+	void Run() const;
+	void UnRun() const;
 	void CrouchStart();
 	void CrouchEnd();
 
@@ -83,12 +87,15 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSInputConfigData> InputActions;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSCombatComponent> CombatComponent;
+
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowParivateAccess = "true"))
 	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
 
 	UPROPERTY()
 	TObjectPtr<AActor> LockOnTarget;
-	
+
 	ECharacterControlType ControlType;
 
 	UPROPERTY()
@@ -104,19 +111,18 @@ private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
-	void HandleDodgeActionPressed();
-	void HandleDodgeActionReleased();
+	void HandleDodgeActionPressed() const;
+	void HandleDodgeActionReleased() const;
 
-	void HandleEquipAndUnarmActionPressed();
-	void HandleEquipAndUnarmActionReleased();
+	void HandleEquipAndUnarmActionPressed() const;
+	void HandleEquipAndUnarmActionReleased() const;
 
-	void HandleJumpActionPressed();
-	void HandleJumpActionReleased();
+	void HandleJumpActionPressed() const;
+	void HandleJumpActionReleased() const;
 
 	void HandleSlashActionPressed();
-	void HandleSlashActionReleased();
+	void HandleSlashActionReleased() const;
 
-	void HandleDefenseActionPressed();
-	void HandleDefenseActionReleased();
+	void HandleDefenseActionPressed() const;
+	void HandleDefenseActionReleased() const;
 };
-

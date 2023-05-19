@@ -9,7 +9,6 @@
 #include "Abilities/SSAttributeSet.h"
 #include "SSCharacterControlData.h"
 #include "MotionWarpingComponent.h"
-#include "Component/SSCombatComponent.h"
 
 ASSCharacterBase::ASSCharacterBase()
 {
@@ -20,7 +19,7 @@ ASSCharacterBase::ASSCharacterBase()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
-	
+
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
@@ -53,9 +52,9 @@ void ASSCharacterBase::SetCharacterControlData(const USSCharacterControlData* Co
 	bUseControllerRotationYaw = ControlData->bUseControllerRotationYaw;
 
 	// CharacterMovement
-	GetCharacterMovement()->bOrientRotationToMovement = ControlData->bOrientRotationToMovement;
+	GetCharacterMovement()->bOrientRotationToMovement     = ControlData->bOrientRotationToMovement;
 	GetCharacterMovement()->bUseControllerDesiredRotation = ControlData->bUseControllerDesiredRotation;
-	GetCharacterMovement()->RotationRate = ControlData->RotationRate;
+	GetCharacterMovement()->RotationRate                  = ControlData->RotationRate;
 }
 
 void ASSCharacterBase::InitializeAttributes()
@@ -83,7 +82,8 @@ void ASSCharacterBase::GiveAbilities()
 		for (TSubclassOf<USSGameplayAbility>& StartUpAbility : DefaultAbilities)
 		{
 			AbilitySystemComponent->GiveAbility(
-				FGameplayAbilitySpec(StartUpAbility, 1, static_cast<int32>(StartUpAbility.GetDefaultObject()->AbilityInputID), this));
+			                                    FGameplayAbilitySpec(StartUpAbility, 1, static_cast<int32>(StartUpAbility.GetDefaultObject()->AbilityInputID),
+			                                                         this));
 		}
 	}
 }
@@ -142,5 +142,4 @@ void ASSCharacterBase::Tick(float DeltaTime)
 void ASSCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
