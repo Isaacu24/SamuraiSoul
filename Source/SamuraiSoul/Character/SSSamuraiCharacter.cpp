@@ -1,6 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SSSamuraiCharacter.h"
 
 #include <Camera/CameraComponent.h>
@@ -133,8 +131,8 @@ void ASSSamuraiCharacter::Tick(float DeltaTime)
 	if (true == bIsLockOn
 		&& nullptr != LockOnTarget)
 	{
-		FVector  TargetPos = LockOnTarget->GetActorLocation();
-		FVector  Pos       = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
+		FVector TargetPos  = LockOnTarget->GetActorLocation();
+		FVector Pos        = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
 		FRotator Rotator   = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
 		FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);
 
@@ -294,7 +292,7 @@ void ASSSamuraiCharacter::LockOn()
 	const FVector Start = GetActorLocation();
 	//const FVector End = Start; /** (GetActorForwardVector() * -1000.f);*/
 
-	FHitResult      OutHit;
+	FHitResult OutHit;
 	TArray<AActor*> ActorsToIgnore = {};
 	ActorsToIgnore.Add(this);
 
@@ -324,8 +322,13 @@ void ASSSamuraiCharacter::LockOn()
 
 	if (nullptr != OutHit.GetActor())
 	{
+		LockOnTarget = Cast<ASSCharacterBase>(OutHit.GetActor());
+		LockOnTarget->OnCharacterEnded.AddLambda([&]()
+		{
+			bIsLockOn = false;
+		});
+
 		bIsLockOn                 = true;
-		LockOnTarget              = OutHit.GetActor();
 		bUseControllerRotationYaw = true;
 	}
 

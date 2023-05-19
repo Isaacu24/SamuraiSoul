@@ -7,10 +7,10 @@
 
 USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 {
-	bIsCrouch = false;
-	bIsAir = false;
-	bIsEquip = false;
-	bIsDefense = false;
+	bIsCrouch       = false;
+	bIsAir          = false;
+	bIsEquip        = false;
+	bIsDefense      = false;
 	bIsFristDefense = false;
 }
 
@@ -40,14 +40,14 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
 
-	bIsCrouch = OwnerCharacter->IsCrouch();
-	bIsAir = OwnerCharacter->GetCharacterMovement()->IsFalling();
-	bIsEquip = OwnerCharacter->IsEquip();
+	bIsCrouch  = OwnerCharacter->IsCrouch();
+	bIsAir     = OwnerCharacter->GetCharacterMovement()->IsFalling();
+	bIsEquip   = OwnerCharacter->IsEquip();
 	bIsDefense = OwnerCharacter->IsDefense();
-	bIsLockOn= OwnerCharacter->IsLockOn(); // ?
+	bIsLockOn  = OwnerCharacter->IsLockOn(); // ?
 
 	if (false == bIsFristDefense)
-	{ 
+	{
 		if (true == bIsDefense)
 		{
 			bIsFristDefense = true;

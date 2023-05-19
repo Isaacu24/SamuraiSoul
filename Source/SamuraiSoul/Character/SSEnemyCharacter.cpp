@@ -3,7 +3,6 @@
 
 #include "SSEnemyCharacter.h"
 #include "Game/SamuraiSoul.h"
-#include <Components/CapsuleComponent.h>
 #include "Component/SSEnemyCombatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
 #include "AI/SSEnemyAIController.h"

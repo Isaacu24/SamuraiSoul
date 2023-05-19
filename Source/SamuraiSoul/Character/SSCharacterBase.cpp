@@ -114,7 +114,7 @@ void ASSCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
-void ASSCharacterBase::Die()
+void ASSCharacterBase::Die() const
 {
 	USkeletalMeshComponent* MyMesh = GetMesh();
 
@@ -123,7 +123,7 @@ void ASSCharacterBase::Die()
 		return;
 	}
 
-	MyMesh->SetCollisionProfileName(FName(TEXT("Ragdoll")));
+	MyMesh->SetCollisionProfileName(FName("Ragdoll"));
 
 	MyMesh->SetSimulatePhysics(true);
 	MyMesh->WakeAllRigidBodies();
@@ -132,6 +132,11 @@ void ASSCharacterBase::Die()
 
 	MyMesh->AddImpulse((GetVelocity() / 2.f) * MyMesh->GetMass());
 	MyMesh->AddRadialImpulse(GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);
+
+	if (true == OnCharacterEnded.IsBound())
+	{
+		OnCharacterEnded.Broadcast();
+	}
 }
 
 void ASSCharacterBase::Tick(float DeltaTime)

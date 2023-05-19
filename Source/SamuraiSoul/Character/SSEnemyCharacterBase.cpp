@@ -22,7 +22,7 @@ float ASSEnemyCharacterBase::GetAIDetectRange()
 
 float ASSEnemyCharacterBase::GetAIAttackRange()
 {
-	return 80.0f;
+	return 100.0f;
 }
 
 float ASSEnemyCharacterBase::GetAITurnSpeed()

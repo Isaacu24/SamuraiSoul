@@ -17,6 +17,8 @@ class UMotionWarpingComponent;
 class UAbilitySystemComponent;
 class USSCharacterControlData;
 
+DECLARE_MULTICAST_DELEGATE(FCharacterEndedDelegate);
+
 UENUM()
 enum class ECharacterControlType : uint8
 {
@@ -46,7 +48,7 @@ public:
 	virtual void OnRep_Controller() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	void Die();
+	void Die() const;
 
 	virtual UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const override
 	{
@@ -69,6 +71,8 @@ public:
 	}
 
 	float GetHealth() const;
+
+	FCharacterEndedDelegate OnCharacterEnded;
 
 protected:
 	// Called when the game starts or when spawned

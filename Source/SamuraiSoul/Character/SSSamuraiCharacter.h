@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
 #include "InputActionValue.h"
-#include "Game/SamuraiSoul.h"
 #include "Interface/SSCombatInterface.h"
 #include "SSSamuraiCharacter.generated.h"
 
@@ -94,7 +93,7 @@ private:
 	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
 
 	UPROPERTY()
-	TObjectPtr<AActor> LockOnTarget;
+	TObjectPtr<ASSCharacterBase> LockOnTarget;
 
 	ECharacterControlType ControlType;
 

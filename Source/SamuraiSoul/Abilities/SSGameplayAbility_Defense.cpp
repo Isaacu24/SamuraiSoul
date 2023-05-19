@@ -19,31 +19,35 @@ USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
-void USSGameplayAbility_Defense::InputPressed(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void USSGameplayAbility_Defense::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                               const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 }
 
-void USSGameplayAbility_Defense::InputReleased(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void USSGameplayAbility_Defense::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                                const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
 }
 
-void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo*  ActorInfo,
+void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                                  const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-
 	bool bIsEquip = false;
 
-	if (nullptr == Character)
+	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
+
+	if (nullptr == Character
+		|| nullptr == Combatable)
 	{
 		return;
 	}
+
+	Combatable->GetCombatComponent()->OnDefense();
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
@@ -85,12 +89,12 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 	}
 }
 
-void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                             const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ASSCharacterBase*   Character  = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr != Character
@@ -106,7 +110,7 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle    
 	}
 }
 
-void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                            const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
