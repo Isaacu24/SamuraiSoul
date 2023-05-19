@@ -8,7 +8,7 @@
 UBTService_Detect::UBTService_Detect()
 {
 	NodeName = TEXT("Detect");
-	Interval = 0.5f;
+	Interval = 1.0f;
 }
 
 void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -23,7 +23,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	FVector Center = ControllingPawn->GetActorLocation();
-	UWorld* World= ControllingPawn->GetWorld();
+	UWorld* World  = ControllingPawn->GetWorld();
 
 	if (nullptr == World)
 	{
@@ -40,17 +40,17 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	float DetectRadius = AIPawn->GetAIDetectRange();
 
 	TArray<FOverlapResult> OverlapResults = {};
-	FCollisionQueryParams CollisionQueryParam(SCENE_QUERY_STAT(Detect), false, ControllingPawn);
+	FCollisionQueryParams  CollisionQueryParam(SCENE_QUERY_STAT(Detect), false, ControllingPawn);
 
 	bool bResult = World->OverlapMultiByChannel(
-		OverlapResults,
-		Center,
-		FQuat::Identity,
-		ECollisionChannel::ECC_EngineTraceChannel2,
-		FCollisionShape::MakeSphere(DetectRadius),
-		CollisionQueryParam
-	);
-	
+	                                            OverlapResults,
+	                                            Center,
+	                                            FQuat::Identity,
+	                                            ECollisionChannel::ECC_EngineTraceChannel2,
+	                                            FCollisionShape::MakeSphere(DetectRadius),
+	                                            CollisionQueryParam
+	                                           );
+
 
 	if (true == bResult)
 	{
@@ -70,7 +70,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 			}
 		}
 
-		OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName("Target"), nullptr); 
+		OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName("Target"), nullptr);
 		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
 	}
 }

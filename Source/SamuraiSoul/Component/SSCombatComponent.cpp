@@ -8,7 +8,7 @@
 #include "Character/SSCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
-#include "Abilities/SSGameplayAbility_Executed.h"
+#include "Abilities/SSGameplayAbility.h"
 #include <Kismet/KismetMathLibrary.h>
 #include "Interface/SSCombatInterface.h"
 
@@ -66,14 +66,21 @@ void USSCombatComponent::EquipDefenseBarrier()
 	}
 }
 
-void USSCombatComponent::ActivateAbility(TSubclassOf<UGameplayAbility> Ability, ASSCharacterBase* InCharacter)
+void USSCombatComponent::ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const
 {
 	if (nullptr == Ability)
 	{
 		return;
 	}
 
-	UAbilitySystemComponent* AbilitySystemComponent = InCharacter->GetAbilitySystemComponent();
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr == Character)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* AbilitySystemComponent = Character->GetAbilitySystemComponent();
 
 	if (nullptr != AbilitySystemComponent)
 	{
@@ -162,8 +169,7 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	const FVector Normal = HitResult.ImpactNormal;
+	const FVector     Normal    = HitResult.ImpactNormal;
 
 	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
 	Rotator.Pitch    = 0.f;
@@ -173,7 +179,7 @@ void USSCombatComponent::Hit(const FHitResult& HitResult)
 
 	if (true == IsRebound)
 	{
-		ActivateAbility(ExecutedAbility, Character);
+		ActivateAbility(ExecutedAbility);
 	}
 
 	else

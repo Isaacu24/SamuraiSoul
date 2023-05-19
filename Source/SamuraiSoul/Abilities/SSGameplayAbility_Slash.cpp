@@ -7,10 +7,11 @@
 #include "Character/SSCharacterBase.h"
 #include "DataAsset/SSComboActionData.h"
 #include "Component/SSCombatComponent.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {
-	AbilityID = ESSAbilityID::Slash;
+	AbilityID      = ESSAbilityID::Slash;
 	AbilityInputID = ESSAbilityInputID::Slash;
 
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Slash")));
@@ -18,7 +19,8 @@ USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
-void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                            const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 
@@ -45,17 +47,19 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
 	}
 }
 
-void USSGameplayAbility_Slash::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+void USSGameplayAbility_Slash::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                             const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
 }
 
-void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                               const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-	AnimInstance = Character->GetMesh()->GetAnimInstance();
+	AnimInstance                = Character->GetMesh()->GetAnimInstance();
 
 	if (nullptr == Character)
 	{
@@ -66,7 +70,7 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	{
 		if (nullptr != SlashMontage)
 		{
-			USSAbilityTask_PlayMontageAndWait* Task 
+			USSAbilityTask_PlayMontageAndWait* Task
 				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, SlashMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
 
 			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
@@ -80,15 +84,25 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	}
 }
 
-void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                          const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(Character);
+
+	if (nullptr != AI)
+	{
+		AI->AttackEnd();
+	}
 
 	//ensure(CurrentCombo != 0);
 	CurrentCombo = 0;
 }
 
-void USSGameplayAbility_Slash::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
+void USSGameplayAbility_Slash::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                         const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
 }
@@ -104,13 +118,12 @@ void USSGameplayAbility_Slash::SetComboCheckTimer()
 	ensure(SlashComboData->EffectiveFrameCount.IsValidIndex(ComboIndex));
 
 	const float AttackSpeedRate = 1.0f;
-	float ComboEffectiveTime = (SlashComboData->EffectiveFrameCount[ComboIndex] / SlashComboData->FrameRate) / AttackSpeedRate;
-	
+	float ComboEffectiveTime    = (SlashComboData->EffectiveFrameCount[ComboIndex] / SlashComboData->FrameRate) / AttackSpeedRate;
+
 	if (ComboEffectiveTime > 0.f)
 	{
 		GetWorld()->GetTimerManager().SetTimer(ComboTimerHandle, this, &USSGameplayAbility_Slash::ComboCheck, ComboEffectiveTime, false);
 	}
-
 }
 
 void USSGameplayAbility_Slash::ComboCheck()
@@ -119,11 +132,11 @@ void USSGameplayAbility_Slash::ComboCheck()
 
 	if (true == HasNextComboCommand)
 	{
-		CurrentCombo = FMath::Clamp(CurrentCombo + 1, 1, SlashComboData->MaxComboCount);
+		CurrentCombo      = FMath::Clamp(CurrentCombo + 1, 1, SlashComboData->MaxComboCount);
 		FName NextSection = *FString::Printf(TEXT("%s%d"), *SlashComboData->MontageSectionNamePrefix, CurrentCombo);
-		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);	
+		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);
 
 		SetComboCheckTimer();
-		HasNextComboCommand = false;		 
+		HasNextComboCommand = false;
 	}
 }

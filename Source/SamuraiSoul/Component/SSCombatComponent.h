@@ -23,14 +23,12 @@ public:
 	USSCombatComponent();
 
 	virtual void BeginPlay() override;
-
-public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName);
 	void EquipDefenseBarrier();
 
-	void ActivateAbility(TSubclassOf<UGameplayAbility> Ability, ASSCharacterBase* InCharacter);
+	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
 
 	void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	void Hit(const FHitResult& HitResult);

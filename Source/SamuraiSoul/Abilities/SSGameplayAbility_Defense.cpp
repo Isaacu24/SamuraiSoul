@@ -6,11 +6,12 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "SSAbilityTask.h"
 #include "Component/SSCombatComponent.h"
-#include "Character/SSSamuraiCharacter.h"
+#include "Character/SSCharacterBase.h"
+#include "Interface/SSCombatInterface.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 {
-	AbilityID = ESSAbilityID::Defense;
+	AbilityID      = ESSAbilityID::Defense;
 	AbilityInputID = ESSAbilityInputID::Defense;
 
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Defense")));
@@ -18,21 +19,24 @@ USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
-void USSGameplayAbility_Defense::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+void USSGameplayAbility_Defense::InputPressed(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                              const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 }
 
-void USSGameplayAbility_Defense::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+void USSGameplayAbility_Defense::InputReleased(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                               const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
 }
 
-void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo*  ActorInfo,
+                                                 const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 
 	bool bIsEquip = false;
 
@@ -50,7 +54,8 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 			{
 				//Not Root Anim Montage
 				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseMontage, FGameplayTagContainer(), 1.f, NAME_None,
+					                                                                false);
 
 				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
 				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
@@ -65,7 +70,8 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 			{
 				//Root Anim Montage
 				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseRootMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseRootMontage, FGameplayTagContainer(), 1.f,
+					                                                                NAME_None, false);
 
 				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
 				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
@@ -75,16 +81,16 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 
 				Task->ReadyForActivation();
 			}
-
 		}
 	}
 }
 
-void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                            const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	ASSCharacterBase*   Character  = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr != Character
@@ -100,12 +106,12 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Han
 	}
 }
 
-void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
+void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                           const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
 }
 
 void USSGameplayAbility_Defense::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
-
 }

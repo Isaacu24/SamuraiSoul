@@ -22,5 +22,5 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> ExecutionAbility;
+	TSubclassOf<UGameplayAbility> SlashAbility;
 };

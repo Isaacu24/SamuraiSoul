@@ -6,7 +6,6 @@
 
 USSEnemyCombatComponent::USSEnemyCombatComponent()
 {
-
 }
 
 void USSEnemyCombatComponent::SetEnemyWeapon() const
@@ -19,13 +18,13 @@ void USSEnemyCombatComponent::AttackByAI() const
 {
 	switch (Weapon->GetWeaponType())
 	{
-	case EWeaponType::Katana:
-		// Active Ability
-		break;
-	case EWeaponType::Bow:
-		// Active Ability
-		break;
-	default:
-		break;
+		case EWeaponType::Katana:
+			ActivateAbility(SlashAbility);
+			break;
+		case EWeaponType::Bow:
+			// Active Ability
+			break;
+		default:
+			break;
 	}
 }

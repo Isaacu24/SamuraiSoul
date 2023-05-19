@@ -21,6 +21,8 @@ class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public IS
 public:
 	ASSEnemyCharacterBase();
 
+	FAICharacterAttackFinished OnAttackFinished;
+
 protected:
 	virtual USSCombatComponent* GetCombatComponent() const override
 	{
@@ -34,9 +36,7 @@ protected:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
-
-protected:
-	FAICharacterAttackFinished OnAttackFinished;
+	virtual void AttackEnd() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
