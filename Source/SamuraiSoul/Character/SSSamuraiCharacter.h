@@ -67,8 +67,8 @@ public:
 		bIsEquip = ~bIsEquip;
 	}
 
-	void Run() const;
-	void UnRun() const;
+	void Run();
+	void UnRun();
 	void CrouchStart();
 	void CrouchEnd();
 
@@ -111,18 +111,18 @@ private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
-	void HandleDodgeActionPressed() const;
-	void HandleDodgeActionReleased() const;
+	void HandleDodgeActionPressed();
+	void HandleDodgeActionReleased();
 
-	void HandleEquipAndUnarmActionPressed() const;
-	void HandleEquipAndUnarmActionReleased() const;
+	void HandleEquipAndUnarmActionPressed();
+	void HandleEquipAndUnarmActionReleased();
 
-	void HandleJumpActionPressed() const;
-	void HandleJumpActionReleased() const;
+	void HandleJumpActionPressed();
+	void HandleJumpActionReleased();
 
 	void HandleSlashActionPressed();
-	void HandleSlashActionReleased() const;
+	void HandleSlashActionReleased();
 
-	void HandleDefenseActionPressed() const;
-	void HandleDefenseActionReleased() const;
+	void HandleDefenseActionPressed();
+	void HandleDefenseActionReleased();
 };

@@ -257,7 +257,7 @@ void ASSSamuraiCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void ASSSamuraiCharacter::Run() const
+void ASSSamuraiCharacter::Run()
 {
 	if (true == bIsCrouch)
 	{
@@ -267,7 +267,7 @@ void ASSSamuraiCharacter::Run() const
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
-void ASSSamuraiCharacter::UnRun() const
+void ASSSamuraiCharacter::UnRun()
 {
 	if (true == bIsCrouch)
 	{
@@ -380,32 +380,32 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 	ControlType = CharacterControlType;
 }
 
-void ASSSamuraiCharacter::HandleDodgeActionPressed() const
+void ASSSamuraiCharacter::HandleDodgeActionPressed()
 {
 	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Dodge));
 }
 
-void ASSSamuraiCharacter::HandleDodgeActionReleased() const
+void ASSSamuraiCharacter::HandleDodgeActionReleased()
 {
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Dodge));
 }
 
-void ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed() const
+void ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed()
 {
 	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::EquipUnarm));
 }
 
-void ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased() const
+void ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased()
 {
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::EquipUnarm));
 }
 
-void ASSSamuraiCharacter::HandleJumpActionPressed() const
+void ASSSamuraiCharacter::HandleJumpActionPressed()
 {
 	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Jump));
 }
 
-void ASSSamuraiCharacter::HandleJumpActionReleased() const
+void ASSSamuraiCharacter::HandleJumpActionReleased()
 {
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Jump));
 }
@@ -424,7 +424,7 @@ void ASSSamuraiCharacter::HandleSlashActionPressed()
 	}
 }
 
-void ASSSamuraiCharacter::HandleSlashActionReleased() const
+void ASSSamuraiCharacter::HandleSlashActionReleased()
 {
 	if (true == GetCombatComponent()->GetIsParry())
 	{
@@ -437,12 +437,12 @@ void ASSSamuraiCharacter::HandleSlashActionReleased() const
 	}
 }
 
-void ASSSamuraiCharacter::HandleDefenseActionPressed() const
+void ASSSamuraiCharacter::HandleDefenseActionPressed()
 {
 	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(ESSAbilityInputID::Defense));
 }
 
-void ASSSamuraiCharacter::HandleDefenseActionReleased() const
+void ASSSamuraiCharacter::HandleDefenseActionReleased()
 {
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(ESSAbilityInputID::Defense));
 }
