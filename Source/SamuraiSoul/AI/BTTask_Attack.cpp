@@ -2,7 +2,6 @@
 
 
 #include "AI/BTTask_Attack.h"
-#include "BTTask_Attack.h"
 #include "AIController.h"
 #include "Interface/SSCharacterAIInterface.h"
 

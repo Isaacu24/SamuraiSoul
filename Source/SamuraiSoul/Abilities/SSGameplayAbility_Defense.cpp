@@ -2,11 +2,11 @@
 
 
 #include "SSGameplayAbility_Defense.h"
+#include <GameFramework/Character.h>
+#include "SSAbilityTask.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
-#include "SSAbilityTask.h"
 #include "Component/SSCombatComponent.h"
-#include "Character/SSCharacterBase.h"
 #include "Interface/SSCombatInterface.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
@@ -36,10 +36,8 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	bool bIsEquip = false;
-
-	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
+	const TWeakObjectPtr<AActor> Character = ActorInfo->OwnerActor;
+	const ISSCombatInterface* Combatable   = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr == Character
 		|| nullptr == Combatable)
@@ -54,7 +52,7 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 		if (nullptr != DefenseMontage
 			&& nullptr != DefenseRootMontage)
 		{
-			if (0.1f <= Character->GetVelocity().Size())
+			if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
 			{
 				//Not Root Anim Montage
 				USSAbilityTask_PlayMontageAndWait* Task
@@ -94,7 +92,7 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Han
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ACharacter* Character          = Cast<ACharacter>(ActorInfo->OwnerActor);
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr != Character

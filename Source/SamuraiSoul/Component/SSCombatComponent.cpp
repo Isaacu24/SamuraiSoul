@@ -169,7 +169,7 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-	const FVector     Normal    = HitResult.ImpactNormal;
+	const FVector Normal        = HitResult.ImpactNormal;
 
 	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
 	Rotator.Pitch    = 0.f;

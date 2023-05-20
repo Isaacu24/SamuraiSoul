@@ -30,9 +30,6 @@ public:
 
 	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
 
-	void Attack(AActor* InActor, const FHitResult& HitResult) const;
-	void Hit(const FHitResult& HitResult);
-
 	void Parry(AActor* Opponent);
 	void Rebound(AActor* Opponent);
 
@@ -65,6 +62,10 @@ public:
 	{
 		Target = Actor;
 	}
+
+protected:
+	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
+	virtual void Hit(const FHitResult& HitResult);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))

@@ -6,13 +6,12 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Character/SSCharacterBase.h"
-#include "Animation/SSSamuraiAnimInstance.h"
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatInterface.h"
 
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
-	AbilityID = ESSAbilityID::Execution;
+	AbilityID      = ESSAbilityID::Execution;
 	AbilityInputID = ESSAbilityInputID::Execution;
 
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Execution")));
@@ -20,24 +19,27 @@ USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
-void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                                const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 
-void USSGameplayAbility_Execution::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+void USSGameplayAbility_Execution::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                                 const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
 
-void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                                   const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr == Character
@@ -49,9 +51,9 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 	if (nullptr != Combatable->GetCombatComponent()->GetTarget())
 	{
 		FMotionWarpingTarget Target = {};
-		Target.Name = FName("Target");
-		Target.Location = Combatable->GetCombatComponent()->GetTarget()->GetActorLocation();
-		Target.Rotation = Combatable->GetCombatComponent()->GetTarget()->GetActorRotation();
+		Target.Name                 = FName("Target");
+		Target.Location             = Combatable->GetCombatComponent()->GetTarget()->GetActorLocation();
+		Target.Rotation             = Combatable->GetCombatComponent()->GetTarget()->GetActorRotation();
 		Target.Rotation.Yaw += 180.f;
 
 		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
@@ -63,7 +65,8 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		if (nullptr != ExecutionMontage)
 		{
 			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, ExecutionMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
+				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, ExecutionMontage, FGameplayTagContainer(), 1.f, NAME_None,
+				                                                                false);
 
 			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
 			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
@@ -78,13 +81,15 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
 }
 
-void USSGameplayAbility_Execution::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+void USSGameplayAbility_Execution::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                              const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 
-void USSGameplayAbility_Execution::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
+void USSGameplayAbility_Execution::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+                                             const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ApplyCost: %s"), *GetName()));
@@ -92,5 +97,4 @@ void USSGameplayAbility_Execution::ApplyCost(const FGameplayAbilitySpecHandle Ha
 
 void USSGameplayAbility_Execution::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
-
 }
