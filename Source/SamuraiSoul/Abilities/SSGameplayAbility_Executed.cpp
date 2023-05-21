@@ -46,7 +46,6 @@ void USSGameplayAbility_Executed::ActivateAbility(const FGameplayAbilitySpecHand
 	}
 
 	Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
-	AnimInstance = Character->GetMesh()->GetAnimInstance();
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{

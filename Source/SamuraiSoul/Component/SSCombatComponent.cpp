@@ -5,12 +5,13 @@
 #include "Item/Weapon/SSWeapon.h"
 #include "Item/Weapon/SSWeapon_Katana.h"
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
-#include "Character/SSCharacterBase.h"
+//#include "Character/SSCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility.h"
 #include <Kismet/KismetMathLibrary.h>
 #include "Interface/SSCombatInterface.h"
+#include "AbilitySystemInterface.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -73,7 +74,7 @@ void USSCombatComponent::ActivateAbility(const TSubclassOf<UGameplayAbility> Abi
 		return;
 	}
 
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	IAbilitySystemInterface* Character = Cast<IAbilitySystemInterface>(GetOwner());
 
 	if (nullptr == Character)
 	{
@@ -149,6 +150,16 @@ void USSCombatComponent::OffWeapon() const
 	Weapon->SetActorTickEnabled(false);
 }
 
+void USSCombatComponent::AddOrUpdateWarpTarget(const FMotionWarpingTarget& Target) const
+{
+	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
+	}
+}
+
 void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) const
 {
 	const ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
@@ -168,8 +179,8 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-	const FVector Normal        = HitResult.ImpactNormal;
+	ACharacter* Character = Cast<ACharacter>(GetOwner());
+	const FVector Normal  = HitResult.ImpactNormal;
 
 	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
 	Rotator.Pitch    = 0.f;

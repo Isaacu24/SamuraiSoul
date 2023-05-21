@@ -5,7 +5,7 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "Character/SSCharacterBase.h"
+#include <MotionWarpingComponent.h>
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatInterface.h"
 
@@ -39,25 +39,25 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
+	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(ActorInfo->OwnerActor);
 
-	if (nullptr == Character
-		|| nullptr == Combatable)
+	if (nullptr == Combatable)
 	{
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 
-	if (nullptr != Combatable->GetCombatComponent()->GetTarget())
+	AActor* ExecutionTarget = Combatable->GetCombatComponent()->GetTarget();
+
+	if (nullptr != ExecutionTarget)
 	{
 		FMotionWarpingTarget Target = {};
 		Target.Name                 = FName("Target");
-		Target.Location             = Combatable->GetCombatComponent()->GetTarget()->GetActorLocation();
-		Target.Rotation             = Combatable->GetCombatComponent()->GetTarget()->GetActorRotation();
+		Target.Location             = ExecutionTarget->GetActorLocation();
+		Target.Rotation             = ExecutionTarget->GetActorRotation();
 		Target.Rotation.Yaw += 180.f;
 
-		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
+		Combatable->GetCombatComponent()->AddOrUpdateWarpTarget(Target);
 		Combatable->GetCombatComponent()->SetTarget(nullptr);
 	}
 

@@ -57,13 +57,14 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
-	AnimInstance          = Character->GetMesh()->GetAnimInstance();
 
 	if (nullptr == Character)
 	{
 		Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
+
+	AnimInstance = Character->GetMesh()->GetAnimInstance();
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
@@ -88,8 +89,7 @@ void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handl
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ACharacter* Character       = Cast<ACharacter>(ActorInfo->OwnerActor);
-	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(Character);
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
 
 	if (nullptr != AI)
 	{
