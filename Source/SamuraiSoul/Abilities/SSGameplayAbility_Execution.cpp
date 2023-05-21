@@ -5,6 +5,7 @@
 #include <Kismet/KismetSystemLibrary.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
+#include "Character/SSCharacterBase.h"
 #include <MotionWarpingComponent.h>
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatInterface.h"
@@ -39,9 +40,11 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(ActorInfo->OwnerActor);
 
-	if (nullptr == Combatable)
+	if (nullptr == Character
+		|| nullptr == Combatable)
 	{
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
@@ -57,7 +60,7 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		Target.Rotation             = ExecutionTarget->GetActorRotation();
 		Target.Rotation.Yaw += 180.f;
 
-		Combatable->GetCombatComponent()->AddOrUpdateWarpTarget(Target);
+		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
 		Combatable->GetCombatComponent()->SetTarget(nullptr);
 	}
 

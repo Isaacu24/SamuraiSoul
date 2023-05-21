@@ -43,8 +43,6 @@ public:
 	void OnWeapon() const;
 	void OffWeapon() const;
 
-	void AddOrUpdateWarpTarget(const FMotionWarpingTarget& Target) const;
-
 	bool GetIsParry() const
 	{
 		return IsParry;
