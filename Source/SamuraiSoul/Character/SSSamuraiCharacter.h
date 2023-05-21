@@ -46,26 +46,6 @@ public:
 
 	virtual void OnRep_PlayerState() override;
 
-	bool IsCrouch() const
-	{
-		return bIsCrouch;
-	}
-
-	bool IsEquip() const
-	{
-		return bIsEquip;
-	}
-
-	bool IsLockOn() const
-	{
-		return bIsLockOn;
-	}
-
-	void SwitchIsEquip()
-	{
-		bIsEquip = ~bIsEquip;
-	}
-
 	void Run();
 	void UnRun();
 	void CrouchStart();
@@ -75,6 +55,25 @@ public:
 
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
+
+private:
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+
+	void HandleDodgeActionPressed();
+	void HandleDodgeActionReleased();
+
+	void HandleEquipAndUnarmActionPressed();
+	void HandleEquipAndUnarmActionReleased();
+
+	void HandleJumpActionPressed();
+	void HandleJumpActionReleased();
+
+	void HandleSlashActionPressed();
+	void HandleSlashActionReleased();
+
+	void HandleDefenseActionPressed();
+	void HandleDefenseActionReleased();
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -96,32 +95,4 @@ private:
 	TObjectPtr<ASSCharacterBase> LockOnTarget;
 
 	ECharacterControlType ControlType;
-
-	UPROPERTY()
-	uint8 bIsCrouch : 1;
-
-	UPROPERTY()
-	uint8 bIsEquip : 1;
-
-	UPROPERTY()
-	uint8 bIsLockOn : 1;
-
-private:
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-
-	void HandleDodgeActionPressed();
-	void HandleDodgeActionReleased();
-
-	void HandleEquipAndUnarmActionPressed();
-	void HandleEquipAndUnarmActionReleased();
-
-	void HandleJumpActionPressed();
-	void HandleJumpActionReleased();
-
-	void HandleSlashActionPressed();
-	void HandleSlashActionReleased();
-
-	void HandleDefenseActionPressed();
-	void HandleDefenseActionReleased();
 };

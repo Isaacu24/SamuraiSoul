@@ -4,7 +4,7 @@
 #include "SSGameplayAbility_Dodege.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "Character/SSSamuraiCharacter.h"
+#include "Interface/SSBehaviorInterface.h"
 
 USSGameplayAbility_Dodege::USSGameplayAbility_Dodege()
 {
@@ -33,7 +33,7 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	ISSBehaviorInterface* Character = Cast<ISSBehaviorInterface>(ActorInfo->OwnerActor);
 
 	if (nullptr == Character
 		|| false == Character->IsEquip())

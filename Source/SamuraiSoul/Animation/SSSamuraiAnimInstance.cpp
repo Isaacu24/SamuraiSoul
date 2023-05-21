@@ -2,7 +2,7 @@
 
 
 #include "SSSamuraiAnimInstance.h"
-#include "../Character/SSSamuraiCharacter.h"
+#include "Character/SSCharacterBase.h"
 #include <GameFramework/CharacterMovementComponent.h>
 
 USSSamuraiAnimInstance::USSSamuraiAnimInstance()
@@ -33,7 +33,7 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		return;
 	}
 
-	OwnerCharacter = Cast<ASSSamuraiCharacter>(MyCharacter);
+	OwnerCharacter = Cast<ASSCharacterBase>(MyCharacter);
 
 	Speed = MyCharacter->GetVelocity().Size();
 	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Red, FString::SanitizeFloat(Speed));
@@ -44,7 +44,7 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsAir     = OwnerCharacter->GetCharacterMovement()->IsFalling();
 	bIsEquip   = OwnerCharacter->IsEquip();
 	bIsDefense = OwnerCharacter->IsDefense();
-	bIsLockOn  = OwnerCharacter->IsLockOn(); // ?
+	bIsLockOn  = OwnerCharacter->IsLockOn();
 
 	if (false == bIsFristDefense)
 	{
@@ -70,7 +70,7 @@ void USSSamuraiAnimInstance::JumpToAttackMontageSection(int32 NewSection, UAnimM
 	Montage_JumpToSection(GetAttackMontageSectionName(NewSection), Montage);
 }
 
-void USSSamuraiAnimInstance::AnimNotify_NextSlashCheck()
+void USSSamuraiAnimInstance::AnimNotify_NextSlashCheck() const
 {
 	OnNextAttackCheck.Broadcast();
 }

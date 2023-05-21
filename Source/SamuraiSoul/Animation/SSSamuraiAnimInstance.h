@@ -16,7 +16,7 @@ UCLASS()
 class SAMURAISOUL_API USSSamuraiAnimInstance : public USSCharacterAnimInstance
 {
 	GENERATED_BODY()
-	
+
 public:
 	USSSamuraiAnimInstance();
 
@@ -25,7 +25,7 @@ public:
 	void JumpToAttackMontageSection(int32 NewSection, UAnimMontage* Montage);
 
 	UFUNCTION()
-	void AnimNotify_NextSlashCheck();
+	void AnimNotify_NextSlashCheck() const;
 
 	FOnNextAttackCheckDelegate OnNextAttackCheck;
 
@@ -36,7 +36,7 @@ protected:
 
 private:
 	UPROPERTY()
-	TObjectPtr<class ASSSamuraiCharacter> OwnerCharacter;
+	TObjectPtr<class ASSCharacterBase> OwnerCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
 	uint8 bIsCrouch : 1;

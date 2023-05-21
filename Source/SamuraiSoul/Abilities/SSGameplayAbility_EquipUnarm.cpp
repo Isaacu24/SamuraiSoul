@@ -3,7 +3,7 @@
 #include "SSGameplayAbility_EquipUnarm.h"
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "Character/SSSamuraiCharacter.h"
+#include "Interface/SSBehaviorInterface.h"
 
 USSGameplayAbility_EquipUnarm::USSGameplayAbility_EquipUnarm()
 {
@@ -32,7 +32,15 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSSamuraiCharacter* Character = Cast<ASSSamuraiCharacter>(ActorInfo->OwnerActor);
+	const TWeakObjectPtr<AActor> Owner = GetActorInfo().AvatarActor;
+
+	if (nullptr == Owner)
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		return;
+	}
+
+	ISSBehaviorInterface* Character = Cast<ISSBehaviorInterface>(Owner);
 
 	bool bIsEquip = false;
 
@@ -48,7 +56,7 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 			&& nullptr != EquipRootMontage
 			&& false == bIsEquip)
 		{
-			if (0.1f <= Character->GetVelocity().Size())
+			if (0.1f <= Owner->GetVelocity().Size())
 			{
 				//Not Root Anim Montage
 				USSAbilityTask_PlayMontageAndWait* Task
@@ -86,7 +94,7 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 			&& nullptr != UnarmRootMontage
 			&& true == bIsEquip)
 		{
-			if (0.1f <= Character->GetVelocity().Size())
+			if (0.1f <= Owner->GetVelocity().Size())
 			{
 				//Not Root Anim Montage
 				USSAbilityTask_PlayMontageAndWait* Task

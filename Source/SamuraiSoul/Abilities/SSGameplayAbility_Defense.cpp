@@ -36,12 +36,13 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const TWeakObjectPtr<AActor> Character = ActorInfo->OwnerActor;
+	const TWeakObjectPtr<AActor> Character = GetActorInfo().AvatarActor;
 	const ISSCombatInterface* Combatable   = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr == Character
 		|| nullptr == Combatable)
 	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 

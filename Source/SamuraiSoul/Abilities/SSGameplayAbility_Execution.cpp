@@ -43,8 +43,9 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
 
 	if (nullptr == Character
-		&& nullptr == Combatable)
+		|| nullptr == Combatable)
 	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 

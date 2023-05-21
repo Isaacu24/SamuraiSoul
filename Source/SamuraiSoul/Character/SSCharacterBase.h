@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include <GameplayEffectTypes.h>
 #include "AbilitySystemInterface.h"
+#include "Interface/SSBehaviorInterface.h"
 #include <MotionWarpingComponent.h>
 #include "GameFramework/Character.h"
 #include "SSCharacterBase.generated.h"
@@ -27,7 +28,7 @@ enum class ECharacterControlType : uint8
 };
 
 UCLASS()
-class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface
+class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSBehaviorInterface
 {
 	GENERATED_BODY()
 
@@ -60,19 +61,40 @@ public:
 		return MotionWarpComponent;
 	}
 
-	bool IsDefense() const
+	float GetHealth() const;
+
+	FCharacterEndedDelegate OnCharacterEnded;
+
+public:
+	virtual bool IsCrouch() const override
+	{
+		return bIsCrouch;
+	}
+
+	virtual bool IsEquip() const override
+	{
+		return bIsEquip;
+	}
+
+	virtual bool IsLockOn() const override
+	{
+		return bIsLockOn;
+	}
+
+	virtual void SwitchIsEquip() override
+	{
+		bIsEquip = ~bIsEquip;
+	}
+
+	virtual bool IsDefense() const override
 	{
 		return bIsDefense;
 	}
 
-	void SwitchIsDefense()
+	virtual void SwitchIsDefense() override
 	{
 		bIsDefense = ~bIsDefense;
 	}
-
-	float GetHealth() const;
-
-	FCharacterEndedDelegate OnCharacterEnded;
 
 protected:
 	// Called when the game starts or when spawned
@@ -96,6 +118,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UMotionWarpingComponent> MotionWarpComponent;
 
-	UPROPERTY()
+protected:
+	uint8 bIsCrouch : 1;
+	uint8 bIsEquip : 1;;
+	uint8 bIsLockOn : 1;
 	uint8 bIsDefense : 1;
 };

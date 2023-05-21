@@ -2,9 +2,9 @@
 
 
 #include "SSGameplayAbility_Slash.h"
+#include <GameFramework/Character.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "Character/SSCharacterBase.h"
 #include "DataAsset/SSComboActionData.h"
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
@@ -42,8 +42,6 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
 		{
 			HasNextComboCommand = true;
 		}
-
-		return;
 	}
 }
 
@@ -58,11 +56,12 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-	AnimInstance                = Character->GetMesh()->GetAnimInstance();
+	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
+	AnimInstance          = Character->GetMesh()->GetAnimInstance();
 
 	if (nullptr == Character)
 	{
+		Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;
 	}
 
@@ -89,7 +88,7 @@ void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handl
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ACharacter* Character       = Cast<ACharacter>(ActorInfo->OwnerActor);
 	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(Character);
 
 	if (nullptr != AI)
