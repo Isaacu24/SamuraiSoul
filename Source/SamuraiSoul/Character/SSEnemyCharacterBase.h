@@ -21,7 +21,8 @@ class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public IS
 public:
 	ASSEnemyCharacterBase();
 
-	FAICharacterAttackFinished OnAttackFinished;
+	FAICharacterAbilityFinished OnAttackFinished;
+	FAICharacterAbilityFinished OnExecutedFinished;
 
 protected:
 	virtual USSCombatComponent* GetCombatComponent() const override
@@ -34,9 +35,12 @@ protected:
 	virtual float GetAIAttackRange() override;
 	virtual float GetAITurnSpeed() override;
 
-	virtual void SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished) override;
+	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
 	virtual void AttackEnd() override;
+
+	virtual void RunBehaviorTree() const override;
+	virtual void StopBehaviorTree() const override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;

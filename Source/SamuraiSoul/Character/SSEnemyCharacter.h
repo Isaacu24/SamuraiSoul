@@ -23,8 +23,11 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished) override;
+	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
+
+	virtual void RunBehaviorTree() const override;
+	virtual void StopBehaviorTree() const override;
 
 private:
 };

@@ -39,7 +39,6 @@ bool UBTDecorator_AttackInRange::CalculateRawConditionValue(UBehaviorTreeCompone
 	const float AttackRangeWithRadius = AIPawn->GetAIAttackRange();
 
 	bResult = (DistanceToTarget <= AttackRangeWithRadius);
-	UE_LOG(LogTemp, Warning, TEXT("DistanceToTarget: %f, AttackRangeWithRadius: %f"), DistanceToTarget, AttackRangeWithRadius);
 	GEngine->AddOnScreenDebugMessage(2, 2.0f, FColor::Blue, FString::SanitizeFloat(DistanceToTarget));
 
 	return bResult;

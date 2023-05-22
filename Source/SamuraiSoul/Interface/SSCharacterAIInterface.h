@@ -14,7 +14,7 @@ class USSCharacterAIInterface : public UInterface
 };
 
 
-DECLARE_DELEGATE(FAICharacterAttackFinished);
+DECLARE_DELEGATE(FAICharacterAbilityFinished);
 
 /**
  * 
@@ -30,7 +30,10 @@ public:
 	virtual float GetAIAttackRange() = 0;
 	virtual float GetAITurnSpeed() = 0;
 
-	virtual void SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished) = 0;
+	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
 	virtual void AttackByAI() = 0;
 	virtual void AttackEnd() = 0;
+
+	virtual void RunBehaviorTree() const = 0;
+	virtual void StopBehaviorTree() const = 0;
 };

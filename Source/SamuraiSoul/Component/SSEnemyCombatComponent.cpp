@@ -3,6 +3,7 @@
 
 #include "Component/SSEnemyCombatComponent.h"
 #include "Item/Weapon/SSWeapon.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSEnemyCombatComponent::USSEnemyCombatComponent()
 {
@@ -26,5 +27,17 @@ void USSEnemyCombatComponent::AttackByAI() const
 			break;
 		default:
 			break;
+	}
+}
+
+void USSEnemyCombatComponent::Hit(const FHitResult& HitResult)
+{
+	Super::Hit(HitResult);
+
+	ISSCharacterAIInterface* Character = Cast<ISSCharacterAIInterface>(GetOwner());
+
+	if (nullptr != Character)
+	{
+		Character->StopBehaviorTree();
 	}
 }

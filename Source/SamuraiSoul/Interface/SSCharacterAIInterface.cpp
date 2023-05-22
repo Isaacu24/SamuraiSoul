@@ -2,5 +2,3 @@
 
 
 #include "Interface/SSCharacterAIInterface.h"
-
-// Add default functionality here for any ISSCharacterAIInterface functions that are not pure virtual.

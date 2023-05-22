@@ -23,14 +23,13 @@ class SAMURAISOUL_API ISSBehaviorInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual bool IsCrouch() const = 0;
-
-	virtual bool IsEquip() const = 0;
+	virtual bool IsHit() const = 0;
 
 	virtual bool IsLockOn() const = 0;
 
+	virtual bool IsEquip() const = 0;
 	virtual void SwitchIsEquip() = 0;
 
 	virtual bool IsDefense() const = 0;
-
 	virtual void SwitchIsDefense() = 0;
 };

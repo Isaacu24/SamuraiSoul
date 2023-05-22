@@ -13,12 +13,14 @@ UCLASS()
 class SAMURAISOUL_API ASSEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
 public:
 	ASSEnemyAIController();
 
 	void RunAI();
 	void StopAI();
+
+	void ReboundAI();
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;

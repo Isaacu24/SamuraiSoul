@@ -29,12 +29,10 @@ public:
 	void EquipDefenseBarrier();
 
 	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
+	void TakeDamageEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
 	void Parry(AActor* Opponent);
 	void Rebound(AActor* Opponent);
-
-	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
-	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
 
 	void OnDefense() const;
 	void OffDefense() const;
@@ -66,6 +64,9 @@ public:
 protected:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Hit(const FHitResult& HitResult);
+
+	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
+	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))

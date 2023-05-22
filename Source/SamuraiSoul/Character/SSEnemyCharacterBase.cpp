@@ -21,7 +21,7 @@ float ASSEnemyCharacterBase::GetAIDetectRange()
 
 float ASSEnemyCharacterBase::GetAIAttackRange()
 {
-	return 100.0f;
+	return 300.0f;
 }
 
 float ASSEnemyCharacterBase::GetAITurnSpeed()
@@ -29,7 +29,7 @@ float ASSEnemyCharacterBase::GetAITurnSpeed()
 	return 0.0f;
 }
 
-void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished)
+void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
 {
 	OnAttackFinished = InOnAttackFinished;
 }
@@ -41,4 +41,12 @@ void ASSEnemyCharacterBase::AttackByAI()
 void ASSEnemyCharacterBase::AttackEnd()
 {
 	OnAttackFinished.ExecuteIfBound();
+}
+
+void ASSEnemyCharacterBase::RunBehaviorTree() const
+{
+}
+
+void ASSEnemyCharacterBase::StopBehaviorTree() const
+{
 }

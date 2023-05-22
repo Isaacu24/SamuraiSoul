@@ -9,7 +9,6 @@
 
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility.h"
-#include <Kismet/KismetMathLibrary.h>
 #include "Interface/SSCombatInterface.h"
 #include "AbilitySystemInterface.h"
 
@@ -97,6 +96,38 @@ void USSCombatComponent::ActivateAbility(const TSubclassOf<UGameplayAbility> Abi
 	}
 }
 
+void USSCombatComponent::TakeDamageEffect(const TSubclassOf<UGameplayEffect> Effect) const
+{
+	if (nullptr == Effect)
+	{
+		return;
+	}
+
+	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	if (nullptr == Character)
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = Character->GetAbilitySystemComponent()->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	const FGameplayEffectSpecHandle SpecHandle = Character->GetAbilitySystemComponent()->
+	                                                        MakeOutgoingSpec(Effect, 1, EffectContext);
+
+	if (SpecHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->
+		                                                  ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+
+		if (0.f >= Character->GetHealth())
+		{
+			Character->Die();
+		}
+	}
+}
+
 void USSCombatComponent::OnDefense() const
 {
 	if (nullptr == DefenseBarrier)
@@ -170,13 +201,6 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 void USSCombatComponent::Hit(const FHitResult& HitResult)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-	const FVector Normal        = HitResult.ImpactNormal;
-
-	FRotator Rotator = UKismetMathLibrary::FindLookAtRotation(Character->GetActorLocation(), Normal);
-	Rotator.Pitch    = 0.f;
-	Rotator.Roll     = 0.f;
-
-	Character->SetActorRotation(Rotator);
 
 	if (true == IsRebound)
 	{
@@ -191,24 +215,9 @@ void USSCombatComponent::Hit(const FHitResult& HitResult)
 		{
 			AnimInstance->Montage_Play(HitMontage);
 		}
-
-		FGameplayEffectContextHandle EffectContext = Character->GetAbilitySystemComponent()->MakeEffectContext();
-		EffectContext.AddSourceObject(this);
-
-		const FGameplayEffectSpecHandle SpecHandle = Character->GetAbilitySystemComponent()->
-		                                                        MakeOutgoingSpec(DamageEffect, 1, EffectContext);
-
-		if (SpecHandle.IsValid())
-		{
-			FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->
-			                                                  ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-
-			if (0.f >= Character->GetHealth())
-			{
-				Character->Die();
-			}
-		}
 	}
+
+	TakeDamageEffect(DamageEffect);
 }
 
 void USSCombatComponent::Parry(AActor* Opponent)

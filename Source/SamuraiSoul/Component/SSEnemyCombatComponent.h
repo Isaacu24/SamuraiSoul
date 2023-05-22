@@ -21,6 +21,9 @@ public:
 	void AttackByAI() const;
 
 protected:
+	virtual void Hit(const FHitResult& HitResult);
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> SlashAbility;
 };

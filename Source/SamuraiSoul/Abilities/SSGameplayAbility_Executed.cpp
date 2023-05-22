@@ -7,6 +7,7 @@
 #include <Components/CapsuleComponent.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSGameplayAbility_Executed::USSGameplayAbility_Executed()
 {
@@ -72,6 +73,14 @@ void USSGameplayAbility_Executed::EndAbility(const FGameplayAbilitySpecHandle Ha
                                              const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AI)
+	{
+		AI->RunBehaviorTree();
+	}
+
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 

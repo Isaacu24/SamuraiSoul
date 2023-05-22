@@ -2,7 +2,6 @@
 
 
 #include "SSAnimNotifyState_Defense.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "Interface/SSCombatInterface.h"
 #include "Component/SSCombatComponent.h"
 
@@ -20,7 +19,7 @@ void USSAnimNotifyState_Defense::NotifyBegin(USkeletalMeshComponent* MeshComp, U
 
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
 
-	if (nullptr != Character)
+	if (nullptr != Combatable)
 	{
 		Combatable->GetCombatComponent()->OnDefense();
 		Combatable->GetCombatComponent()->ChangeDefenseState(EDefenseState::Parry);
@@ -42,7 +41,7 @@ void USSAnimNotifyState_Defense::NotifyEnd(USkeletalMeshComponent* MeshComp, UAn
 
 	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
 
-	if (nullptr != Character)
+	if (nullptr != Combatable)
 	{
 		Combatable->GetCombatComponent()->ChangeDefenseState(EDefenseState::Defense);
 	}

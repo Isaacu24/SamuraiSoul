@@ -70,6 +70,11 @@ public:
 		return bIsCrouch;
 	}
 
+	virtual bool IsHit() const override
+	{
+		return bIsHit;
+	}
+
 	virtual bool IsEquip() const override
 	{
 		return bIsEquip;
@@ -122,4 +127,5 @@ protected:
 	uint8 bIsEquip : 1;;
 	uint8 bIsLockOn : 1;
 	uint8 bIsDefense : 1;
+	uint8 bIsHit : 1;
 };

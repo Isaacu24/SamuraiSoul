@@ -54,7 +54,7 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished)
+void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
 {
 	Super::SetAIAttackDelegate(InOnAttackFinished);
 }
@@ -64,5 +64,35 @@ void ASSEnemyCharacter::AttackByAI()
 	if (nullptr != CombatComponent)
 	{
 		CombatComponent->AttackByAI();
+	}
+}
+
+void ASSEnemyCharacter::RunBehaviorTree() const
+{
+	Super::RunBehaviorTree();
+
+	if (nullptr != GetController())
+	{
+		ASSEnemyAIController* MyController = Cast<ASSEnemyAIController>(GetController());
+
+		if (nullptr != MyController)
+		{
+			MyController->RunAI();
+		}
+	}
+}
+
+void ASSEnemyCharacter::StopBehaviorTree() const
+{
+	Super::StopBehaviorTree();
+
+	if (nullptr != GetController())
+	{
+		ASSEnemyAIController* MyController = Cast<ASSEnemyAIController>(GetController());
+
+		if (nullptr != MyController)
+		{
+			MyController->StopAI();
+		}
 	}
 }

@@ -4,6 +4,8 @@
 #include "AI/BTTask_Attack.h"
 #include "AIController.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
@@ -27,7 +29,19 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 	}
 
-	FAICharacterAttackFinished OnAttackFinished;
+	const auto TargetObject   = OwnerComp.GetBlackboardComponent()->GetValueAsObject(TEXT("Target"));
+	const AActor* TargetActor = Cast<AActor>(TargetObject);
+
+	if (nullptr == TargetActor)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	FRotator Rotation = UKismetMathLibrary::FindLookAtRotation(ControllingPawn->GetActorLocation(), TargetActor->GetActorLocation());
+	Rotation.Pitch    = 0.f;
+	ControllingPawn->SetActorRotation(Rotation);
+
+	FAICharacterAbilityFinished OnAttackFinished;
 	OnAttackFinished.BindLambda(
 	                            [&]()
 	                            {
