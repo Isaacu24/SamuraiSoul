@@ -30,9 +30,9 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
-void USSEnemyCombatComponent::Hit(const FHitResult& HitResult)
+void USSEnemyCombatComponent::Hit(AActor* InActor)
 {
-	Super::Hit(HitResult);
+	Super::Hit(InActor);
 
 	ISSCharacterAIInterface* Character = Cast<ISSCharacterAIInterface>(GetOwner());
 

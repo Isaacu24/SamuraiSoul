@@ -4,7 +4,8 @@
 #include "Animation/SSAnimNotifyState_SlowTime.h"
 
 
-void USSAnimNotifyState_SlowTime::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
+void USSAnimNotifyState_SlowTime::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
+                                              const FAnimNotifyEventReference& EventReference)
 {
 	if (nullptr != MeshComp->GetOwner())
 	{
@@ -12,9 +13,9 @@ void USSAnimNotifyState_SlowTime::NotifyBegin(USkeletalMeshComponent* MeshComp, 
 	}
 }
 
-void USSAnimNotifyState_SlowTime::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime, const FAnimNotifyEventReference& EventReference)
+void USSAnimNotifyState_SlowTime::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
+                                             const FAnimNotifyEventReference& EventReference)
 {
-
 }
 
 void USSAnimNotifyState_SlowTime::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)

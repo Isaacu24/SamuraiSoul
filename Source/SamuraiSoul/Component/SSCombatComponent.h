@@ -63,7 +63,7 @@ public:
 
 protected:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
-	virtual void Hit(const FHitResult& HitResult);
+	virtual void Hit(AActor* InActor);
 
 	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
 	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
@@ -76,7 +76,10 @@ protected:
 	TObjectPtr<ASSWeapon_DefenseBarrier> DefenseBarrier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> HitMontage;
+	TObjectPtr<UAnimMontage> HitForwardMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> HitBackMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> ParryMontage;

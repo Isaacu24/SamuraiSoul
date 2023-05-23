@@ -194,13 +194,14 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 	if (MyOwner != Enemy)
 	{
-		Enemy->GetCombatComponent()->Hit(HitResult);
+		Enemy->GetCombatComponent()->Hit(GetOwner());
 	}
 }
 
-void USSCombatComponent::Hit(const FHitResult& HitResult)
+void USSCombatComponent::Hit(AActor* InActor)
 {
 	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	ASSCharacterBase* Enemy     = Cast<ASSCharacterBase>(InActor);
 
 	if (true == IsRebound)
 	{
@@ -209,11 +210,35 @@ void USSCombatComponent::Hit(const FHitResult& HitResult)
 
 	else
 	{
+		if (nullptr == Enemy
+			|| nullptr == Character)
+		{
+			return;
+		}
+
+		FVector A = Character->GetActorForwardVector();
+		A.Normalize();
+		FVector B = Enemy->GetActorForwardVector();
+		B.Normalize();
+
+		const float ReturnValue = FVector::DotProduct(A, B);
+
 		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
 
-		if (nullptr != AnimInstance)
+		if (0.0f <= ReturnValue)
 		{
-			AnimInstance->Montage_Play(HitMontage);
+			if (nullptr != AnimInstance)
+			{
+				AnimInstance->Montage_Play(HitBackMontage);
+			}
+		}
+
+		else
+		{
+			if (nullptr != AnimInstance)
+			{
+				AnimInstance->Montage_Play(HitForwardMontage);
+			}
 		}
 	}
 

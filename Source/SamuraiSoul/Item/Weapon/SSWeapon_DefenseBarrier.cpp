@@ -36,6 +36,7 @@ void ASSWeapon_DefenseBarrier::ChangeDefenseState(EDefenseState Type)
 bool ASSWeapon_DefenseBarrier::CheckAttackDirection(FVector A, FVector B)
 {
 	float ReturnValue = FVector::DotProduct(A, B);
+	GEngine->AddOnScreenDebugMessage(2, 2.0f, FColor::Blue, FString::SanitizeFloat(ReturnValue));
 
 	if (0.5f <= ReturnValue)
 	{
@@ -77,7 +78,10 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 		case EDefenseState::Parry:
 			{
 				FVector A = GetOwner()->GetActorForwardVector();
+				A.Normalize();
+
 				FVector B = OtherActor->GetOwner()->GetActorForwardVector();
+				B.Normalize();
 
 				if (false == CheckAttackDirection(A, B))
 				{

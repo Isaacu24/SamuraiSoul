@@ -21,7 +21,7 @@ public:
 	void AttackByAI() const;
 
 protected:
-	virtual void Hit(const FHitResult& HitResult);
+	virtual void Hit(AActor* InActor);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
