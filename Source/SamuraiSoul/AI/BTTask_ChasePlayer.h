@@ -3,19 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_FindPatrolPos.generated.h"
+#include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
+#include "BTTask_ChasePlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API UBTTask_FindPatrolPos : public UBTTaskNode
+class SAMURAISOUL_API UBTTask_ChasePlayer : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
 public:
-	UBTTask_FindPatrolPos();
-
+	UBTTask_ChasePlayer();
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

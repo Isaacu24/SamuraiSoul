@@ -1,0 +1,23 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "AI/BTTask_ChasePlayer.h"
+#include "SSEnemyAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+
+UBTTask_ChasePlayer::UBTTask_ChasePlayer()
+{
+	NodeName = TEXT("Chase Player");
+}
+
+EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+	FVector PalyerLocation           = Controller->GetBlackboardComponent()->GetValueAsVector(TEXT("TargetLocation"));
+
+	UAIBlueprintHelperLibrary::SimpleMoveToLocation(Controller, PalyerLocation);
+
+	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	return EBTNodeResult::Succeeded;
+}

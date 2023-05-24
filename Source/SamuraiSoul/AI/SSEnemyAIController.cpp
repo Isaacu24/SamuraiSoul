@@ -29,24 +29,20 @@ ASSEnemyAIController::ASSEnemyAIController()
 		BTAsset = BT_ASSET.Object;
 	}
 
-
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
 
 	AISenseConfigSight                                           = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
 	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
-	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = false;
-	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = false;
+	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
+	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
+	AISenseConfigSight->SightRadius                              = 1500.f;
+	AISenseConfigSight->LoseSightRadius                          = 2000.f;
+	AISenseConfigSight->PeripheralVisionAngleDegrees             = 90.0f;
+	AISenseConfigSight->SetMaxAge(5.0f);
 
-	AISenseConfigHearing                                           = CreateDefaultSubobject<UAISenseConfig_Hearing>("SenseHearing");
-	AISenseConfigHearing->DetectionByAffiliation.bDetectEnemies    = true;
-	AISenseConfigHearing->DetectionByAffiliation.bDetectFriendlies = false;
-	AISenseConfigHearing->DetectionByAffiliation.bDetectNeutrals   = false;
-
-	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
-	AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
 	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
-
 	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
 }
 
 void ASSEnemyAIController::RunAI()
@@ -92,6 +88,12 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 	if (nullptr != Player
 		&& true == Player->GetController()->IsPlayerController())
 	{
+		UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+		if (true == UseBlackboard(BBAsset, BlackboardPtr))
+		{
+			Blackboard->SetValueAsBool(TEXT("IsSeePlayer"), Stimulus.WasSuccessfullySensed());
+		}
 	}
 }
 
