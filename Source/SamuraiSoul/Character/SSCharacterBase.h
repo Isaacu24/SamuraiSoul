@@ -16,6 +16,7 @@ class USSGameplayAbility;
 class UMotionWarpingComponent;
 class UAbilitySystemComponent;
 class USSCharacterControlData;
+class UMotionWarpingComponent;
 
 DECLARE_MULTICAST_DELEGATE(FCharacterEndedDelegate);
 
@@ -120,7 +121,7 @@ protected:
 	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UMotionWarpingComponent> MotionWarpComponent;
+	TObjectPtr<UMotionWarpingComponent> MotionWarpComponent;
 
 protected:
 	uint8 bIsCrouch : 1;

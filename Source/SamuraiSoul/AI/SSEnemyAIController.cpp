@@ -5,6 +5,11 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Perception/AISense_Sight.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AIPerceptionComponent.h"
 
 ASSEnemyAIController::ASSEnemyAIController()
 {
@@ -23,6 +28,25 @@ ASSEnemyAIController::ASSEnemyAIController()
 	{
 		BTAsset = BT_ASSET.Object;
 	}
+
+
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
+
+	AISenseConfigSight                                           = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
+	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
+	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = false;
+	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = false;
+
+	AISenseConfigHearing                                           = CreateDefaultSubobject<UAISenseConfig_Hearing>("SenseHearing");
+	AISenseConfigHearing->DetectionByAffiliation.bDetectEnemies    = true;
+	AISenseConfigHearing->DetectionByAffiliation.bDetectFriendlies = false;
+	AISenseConfigHearing->DetectionByAffiliation.bDetectNeutrals   = false;
+
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
+	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+
+	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
 }
 
 void ASSEnemyAIController::RunAI()
@@ -58,6 +82,16 @@ void ASSEnemyAIController::ReboundAI()
 
 		bool RunResult = RunBehaviorTree(BTAsset);
 		ensure(RunResult);
+	}
+}
+
+void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)
+{
+	APawn* Player = Cast<APawn>(InActor);
+
+	if (nullptr != Player
+		&& true == Player->GetController()->IsPlayerController())
+	{
 	}
 }
 

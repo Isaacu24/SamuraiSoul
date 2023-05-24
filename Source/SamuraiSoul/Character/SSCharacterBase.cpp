@@ -18,8 +18,7 @@ ASSCharacterBase::ASSCharacterBase()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
-	Attributes = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
-
+	Attributes          = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));

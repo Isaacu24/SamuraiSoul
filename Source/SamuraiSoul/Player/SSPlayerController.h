@@ -19,4 +19,11 @@ public:
 
 protected:
 	virtual void BeginPlay();
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
+	TSubclassOf<class USSHUDWidget> HUDWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
+	TObjectPtr<class USSHUDWidget> HUDWidget;
 };

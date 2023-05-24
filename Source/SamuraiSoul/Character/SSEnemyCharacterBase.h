@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
-#include "../Interface/SSCombatInterface.h"
-#include "../Interface/SSCharacterAIInterface.h"
+#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCharacterAIInterface.h"
 #include "SSEnemyCharacterBase.generated.h"
 
 class USSEnemyCombatComponent;
@@ -30,10 +30,15 @@ protected:
 		return static_cast<USSCombatComponent*>(CombatComponent);
 	}
 
+
 	virtual float GetAIPatrolRadius() override;
 	virtual float GetAIDetectRange() override;
+	virtual float GetAISight() override;
 	virtual float GetAIAttackRange() override;
 	virtual float GetAITurnSpeed() override;
+
+	virtual void Run() override;
+	virtual void Walk() override;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;

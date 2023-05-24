@@ -67,6 +67,20 @@ void ASSEnemyCharacter::AttackByAI()
 	}
 }
 
+void ASSEnemyCharacter::Run()
+{
+	Super::Run();
+
+	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+}
+
+void ASSEnemyCharacter::Walk()
+{
+	Super::Walk();
+
+	GetCharacterMovement()->MaxWalkSpeed = 100.f;
+}
+
 void ASSEnemyCharacter::RunBehaviorTree() const
 {
 	Super::RunBehaviorTree();

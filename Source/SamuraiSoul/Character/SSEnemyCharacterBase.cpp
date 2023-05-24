@@ -16,17 +16,30 @@ float ASSEnemyCharacterBase::GetAIPatrolRadius()
 
 float ASSEnemyCharacterBase::GetAIDetectRange()
 {
-	return 400.0f;
+	return 800.0f;
+}
+
+float ASSEnemyCharacterBase::GetAISight()
+{
+	return 60.0f;
 }
 
 float ASSEnemyCharacterBase::GetAIAttackRange()
 {
-	return 300.0f;
+	return 250.0f;
 }
 
 float ASSEnemyCharacterBase::GetAITurnSpeed()
 {
 	return 0.0f;
+}
+
+void ASSEnemyCharacterBase::Run()
+{
+}
+
+void ASSEnemyCharacterBase::Walk()
+{
 }
 
 void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)

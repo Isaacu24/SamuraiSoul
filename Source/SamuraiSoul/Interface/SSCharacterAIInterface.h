@@ -27,8 +27,12 @@ class SAMURAISOUL_API ISSCharacterAIInterface
 public:
 	virtual float GetAIPatrolRadius() = 0;
 	virtual float GetAIDetectRange() = 0;
+	virtual float GetAISight() = 0;
 	virtual float GetAIAttackRange() = 0;
 	virtual float GetAITurnSpeed() = 0;
+
+	virtual void Run() = 0;
+	virtual void Walk() = 0;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
 	virtual void AttackByAI() = 0;

@@ -131,10 +131,10 @@ void ASSSamuraiCharacter::Tick(float DeltaTime)
 	if (true == bIsLockOn
 		&& nullptr != LockOnTarget)
 	{
-		FVector TargetPos  = LockOnTarget->GetActorLocation();
-		FVector Pos        = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
-		FRotator Rotator   = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
-		FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);
+		const FVector TargetPos  = LockOnTarget->GetActorLocation();
+		const FVector Pos        = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
+		const FRotator Rotator   = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
+		const FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);
 
 		GetController()->SetControlRotation(InterpRot);
 	}

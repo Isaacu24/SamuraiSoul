@@ -20,4 +20,5 @@ public:
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
+	bool CheckSight(const FVector& A, const FVector& B, float Sight);
 };

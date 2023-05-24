@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "SSEnemyCharacterBase.h"
-#include "Game/SamuraiSoul.h"
 #include "SSEnemyCharacter.generated.h"
 
 class UGameplayEffect;
@@ -25,6 +24,9 @@ public:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
+
+	virtual void Run() override;
+	virtual void Walk() override;
 
 	virtual void RunBehaviorTree() const override;
 	virtual void StopBehaviorTree() const override;
