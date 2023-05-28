@@ -4,7 +4,7 @@
 #include "SSEnemyCharacterBase.h"
 #include "SSEnemyCharacter.generated.h"
 
-class UGameplayEffect;
+class USSUserWidget;
 
 DECLARE_DELEGATE(FAnimDelegate);
 
@@ -20,6 +20,7 @@ public:
 	ASSEnemyCharacter();
 
 	virtual void BeginPlay() override;
+	virtual void PostInitializeComponents() override;
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
@@ -31,5 +32,7 @@ public:
 	virtual void RunBehaviorTree() const override;
 	virtual void StopBehaviorTree() const override;
 
-private:
+	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget) override;
+
+	virtual void Die() const override;
 };

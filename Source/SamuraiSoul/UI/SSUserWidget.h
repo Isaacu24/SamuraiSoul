@@ -13,5 +13,14 @@ UCLASS()
 class SAMURAISOUL_API USSUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
+	FORCEINLINE void SetOwningActor(AActor* InActor)
+	{
+		OwningActor = InActor;
+	}
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<AActor> OwningActor;
 };

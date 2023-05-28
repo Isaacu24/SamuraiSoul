@@ -3,10 +3,31 @@
 
 #include "SSEnemyCharacterBase.h"
 #include <Components/CapsuleComponent.h>
+#include "Component/SSWidgetComponent.h"
+#include "Component/SSEnemyCombatComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Enemy"));
+
+	HPBar = CreateDefaultSubobject<USSWidgetComponent>(TEXT("Widget"));
+	HPBar->SetupAttachment(GetMesh());
+	HPBar->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> HPBAR_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_HPBar.WBP_HPBar_C'"));
+
+	if (true == HPBAR_WIDGET.Succeeded())
+	{
+		HPBar->SetWidgetClass(HPBAR_WIDGET.Class);
+		HPBar->SetWidgetSpace(EWidgetSpace::Screen);
+		HPBar->SetDrawSize(FVector2D(150.0f, 15.0f));
+		HPBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = 100.f;
+
+	CombatComponent = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 }
 
 float ASSEnemyCharacterBase::GetAIPatrolRadius()

@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Component/SSCombatComponent.h"
 #include "Item/Weapon/SSWeapon.h"
 #include "Item/Weapon/SSWeapon_Katana.h"
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include "Character/SSCharacterBase.h"
+#include "Component/SSCharacterStatComponent.h"
 
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility.h"
@@ -121,7 +121,9 @@ void USSCombatComponent::TakeDamageEffect(const TSubclassOf<UGameplayEffect> Eff
 		FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->
 		                                                  ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
-		if (0.f >= Character->GetHealth())
+		Character->GetStatComponent()->OnHPChanged.Broadcast(Character->GetStatComponent()->GetHealth());
+
+		if (0.f >= Character->GetStatComponent()->GetHealth())
 		{
 			Character->Die();
 		}

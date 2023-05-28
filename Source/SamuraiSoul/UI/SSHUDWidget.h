@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "SSHUDWidget.generated.h"
 
+class USSHPBarWidget;
+
 /**
  * 
  */
@@ -19,10 +21,16 @@ public:
 
 	void SetVisibilityBossHPBar(ESlateVisibility Value);
 
+	void SetMaxPlayerHP(float Value);
+	void UpdatePlayerHPbar(float Value);
+
 protected:
 	virtual void NativeConstruct() override;
 
 protected:
 	UPROPERTY()
-	TObjectPtr<class USSHPBarWidget> BossHPBar;
+	TObjectPtr<USSHPBarWidget> PlayerHPBar;
+
+	UPROPERTY()
+	TObjectPtr<USSHPBarWidget> BossHPBar;
 };

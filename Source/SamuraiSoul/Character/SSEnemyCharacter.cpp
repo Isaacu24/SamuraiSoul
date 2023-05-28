@@ -6,6 +6,9 @@
 #include "Component/SSEnemyCombatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
 #include "AI/SSEnemyAIController.h"
+#include "Component/SSCharacterStatComponent.h"
+#include "UI/SSHPBarWidget.h"
+#include "Component/SSWidgetComponent.h"
 
 ASSEnemyCharacter::ASSEnemyCharacter()
 {
@@ -31,15 +34,16 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 
 	AIControllerClass = ASSEnemyAIController::StaticClass();
 	AutoPossessAI     = EAutoPossessAI::PlacedInWorldOrSpawned;
-
-	CombatComponent = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
-
-	GetCharacterMovement()->MaxWalkSpeed = 100.f;
 }
 
 void ASSEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ASSEnemyCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 
 	if (nullptr != CombatComponent)
 	{
@@ -109,4 +113,25 @@ void ASSEnemyCharacter::StopBehaviorTree() const
 			MyController->StopAI();
 		}
 	}
+}
+
+void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
+{
+	Super::SetupCharacterWidget(InUserWidget);
+
+	USSHPBarWidget* HPBarWidget = Cast<USSHPBarWidget>(InUserWidget);
+
+	if (nullptr != HPBarWidget)
+	{
+		HPBarWidget->SetMaxHp(StatComponent->GetMaxHealth());
+		HPBarWidget->UpdateHPBar(StatComponent->GetMaxHealth());
+		StatComponent->OnHPChanged.AddUObject(HPBarWidget, &USSHPBarWidget::UpdateHPBar);
+	}
+}
+
+void ASSEnemyCharacter::Die() const
+{
+	Super::Die();
+
+	HPBar->SetHiddenInGame(true);
 }

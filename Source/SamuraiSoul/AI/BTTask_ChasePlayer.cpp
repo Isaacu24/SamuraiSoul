@@ -5,6 +5,7 @@
 #include "SSEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 UBTTask_ChasePlayer::UBTTask_ChasePlayer()
 {
@@ -15,8 +16,29 @@ EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& Own
 {
 	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
 	FVector PalyerLocation           = Controller->GetBlackboardComponent()->GetValueAsVector(TEXT("TargetLocation"));
-
 	UAIBlueprintHelperLibrary::SimpleMoveToLocation(Controller, PalyerLocation);
+
+	APawn* ControllingPawn          = Controller->GetPawn();
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ControllingPawn);
+
+	const float DistanceToTarget = FVector::Distance(ControllingPawn->GetActorLocation(), PalyerLocation);
+
+	if (200.f <= DistanceToTarget)
+	{
+		AIPawn->Run();
+	}
+
+	else
+	{
+		if (100.f <= DistanceToTarget)
+		{
+			Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), true);
+			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+			return EBTNodeResult::Succeeded;
+		}
+
+		AIPawn->Walk();
+	}
 
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return EBTNodeResult::Succeeded;

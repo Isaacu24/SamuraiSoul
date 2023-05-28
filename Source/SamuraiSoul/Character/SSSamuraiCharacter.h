@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
 #include "InputActionValue.h"
+#include "Interface/SSCharacterHUDInterface.h"
 #include "Interface/SSCombatInterface.h"
 #include "SSSamuraiCharacter.generated.h"
 
 class ASSWeapon;
+class UInputComponent;
 class UCameraComponent;
 class USSInputConfigData;
 class USpringArmComponent;
@@ -16,7 +18,7 @@ class UInputMappingContext;
 class USSCharacterControlData;
 
 UCLASS()
-class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase, public ISSCombatInterface
+class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase, public ISSCharacterHUDInterface, public ISSCombatInterface
 {
 	GENERATED_BODY()
 
@@ -42,7 +44,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	virtual void OnRep_PlayerState() override;
 
@@ -55,6 +57,8 @@ public:
 
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
+
+	virtual void SetupHUDWidget(USSHUDWidget* InHUDWidget) override;
 
 private:
 	void Move(const FInputActionValue& Value);

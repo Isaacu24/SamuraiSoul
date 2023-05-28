@@ -6,9 +6,11 @@
 #include <GameplayEffectTypes.h>
 #include "AbilitySystemInterface.h"
 #include "Interface/SSBehaviorInterface.h"
+#include "Interface/SSCharacterWidgetInterface.h"
 #include "GameFramework/Character.h"
 #include "SSCharacterBase.generated.h"
 
+class USSUserWidget;
 class USSAttributeSet;
 class UInputComponent;
 class UGameplayEffect;
@@ -17,6 +19,7 @@ class UMotionWarpingComponent;
 class UAbilitySystemComponent;
 class USSCharacterControlData;
 class UMotionWarpingComponent;
+class USSCharacterStatComponent;
 
 DECLARE_MULTICAST_DELEGATE(FCharacterEndedDelegate);
 
@@ -28,7 +31,7 @@ enum class ECharacterControlType : uint8
 };
 
 UCLASS()
-class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSBehaviorInterface
+class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSBehaviorInterface, public ISSCharacterWidgetInterface
 {
 	GENERATED_BODY()
 
@@ -40,6 +43,8 @@ public:
 	virtual void GiveAbilities();
 	virtual void PossessedBy(AController* NewController) override;
 
+	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget);
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -49,7 +54,7 @@ public:
 	virtual void OnRep_Controller() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	void Die() const;
+	virtual void Die() const;
 
 	virtual UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const override
 	{
@@ -61,7 +66,10 @@ public:
 		return MotionWarpComponent;
 	}
 
-	float GetHealth() const;
+	USSCharacterStatComponent* GetStatComponent() const
+	{
+		return StatComponent;
+	}
 
 	FCharacterEndedDelegate OnCharacterEnded;
 
@@ -110,6 +118,9 @@ protected:
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSCharacterStatComponent> StatComponent;
 
 	UPROPERTY()
 	TObjectPtr<USSAttributeSet> Attributes;

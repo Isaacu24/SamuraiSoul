@@ -17,18 +17,24 @@ UBTTask_FIndPlayerLocation::UBTTask_FIndPlayerLocation()
 EBTNodeResult::Type UBTTask_FIndPlayerLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ACharacter* Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	if (nullptr == Player)
+	{
+		return EBTNodeResult::Failed;
+	}
+
 	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetAIOwner());
-	FVector PlayerLocation = Player->GetActorLocation();
+	FVector PlayerLocation           = Player->GetActorLocation();
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(Controller->GetPawn());
 
-	if(true == SearchRandom)
+	if (true == SearchRandom)
 	{
 		FNavLocation NavLocation = {};
 
 		UNavigationSystemV1* NaviSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 
-		if(nullptr != NaviSystem
+		if (nullptr != NaviSystem
 			&& NaviSystem->GetRandomPointInNavigableRadius(PlayerLocation, AIPawn->GetAIPatrolRadius(), NavLocation, nullptr))
 		{
 			Controller->GetBlackboardComponent()->SetValueAsVector(TEXT("TargetLocation"), NavLocation);

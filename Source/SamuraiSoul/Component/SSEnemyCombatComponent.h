@@ -17,11 +17,16 @@ class SAMURAISOUL_API USSEnemyCombatComponent : public USSCombatComponent
 public:
 	USSEnemyCombatComponent();
 
+	virtual void BeginPlay() override;
+
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
 
 protected:
-	virtual void Hit(AActor* InActor);
+	virtual void Hit(AActor* InActor) override;
+
+	virtual void Parry(AActor* Opponent) override;
+	virtual void Rebound(AActor* Opponent) override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))

@@ -7,9 +7,11 @@ ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> BODY_MESH(TEXT("/Script/Engine.SkeletalMesh'/Game/BossyEnemy/SkeletalMesh/SK_Mannequin_UE4_WithWeapon.SK_Mannequin_UE4_WithWeapon'"));
-	static ConstructorHelpers::FClassFinder<UAnimInstance> ANIM_ENEMY(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/AI/AB_SSEnemyBossCharacter.AB_SSEnemyBossCharacter_C'"));
-	 
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
+		BODY_MESH(TEXT("/Script/Engine.SkeletalMesh'/Game/BossyEnemy/SkeletalMesh/SK_Mannequin_UE4_WithWeapon.SK_Mannequin_UE4_WithWeapon'"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		ANIM_ENEMY(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/AI/AB_SSEnemyBossCharacter.AB_SSEnemyBossCharacter_C'"));
+
 	if (true == BODY_MESH.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(BODY_MESH.Object);
@@ -20,8 +22,10 @@ ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_ENEMY.Class);
 	}
 
-	GetMesh()->SetRelativeLocation(FVector{ 0.f, 0.f, -89.f });
-	GetMesh()->SetRelativeRotation(FRotator{ 0.f, 0.f, -90.f });
+	GetMesh()->SetRelativeLocation(FVector{0.f, 0.f, -89.f});
+	GetMesh()->SetRelativeRotation(FRotator{0.f, 0.f, -90.f});
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void ASSEnemyBossCharacter::Tick(float DeltaTime)

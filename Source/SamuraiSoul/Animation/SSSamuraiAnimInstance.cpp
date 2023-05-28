@@ -35,10 +35,9 @@ void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	OwnerCharacter = Cast<ASSCharacterBase>(MyCharacter);
 
-	Speed = MyCharacter->GetVelocity().Size();
-	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Red, FString::SanitizeFloat(Speed));
-
+	Speed     = MyCharacter->GetVelocity().Size();
 	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
+	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Blue, FString::SanitizeFloat(Direction));
 
 	bIsCrouch  = OwnerCharacter->IsCrouch();
 	bIsAir     = OwnerCharacter->GetCharacterMovement()->IsFalling();

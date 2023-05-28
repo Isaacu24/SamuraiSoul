@@ -9,6 +9,8 @@
 #include "Abilities/SSAttributeSet.h"
 #include "SSCharacterControlData.h"
 #include "MotionWarpingComponent.h"
+#include "Component/SSCharacterStatComponent.h"
+#include "UI/SSHPBarWidget.h"
 
 ASSCharacterBase::ASSCharacterBase()
 {
@@ -21,18 +23,11 @@ ASSCharacterBase::ASSCharacterBase()
 	Attributes          = CreateDefaultSubobject<USSAttributeSet>(TEXT("Attributes"));
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
+	StatComponent = CreateDefaultSubobject<USSCharacterStatComponent>(TEXT("SSCharacterStat Component"));
+	StatComponent->SetAttributeSet(Attributes);
+
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
 	GetMesh()->SetCollisionProfileName("NoCollision");
-}
-
-float ASSCharacterBase::GetHealth() const
-{
-	if (false == Attributes)
-	{
-		return 1.f;
-	}
-
-	return Attributes->GetHealth();
 }
 
 void ASSCharacterBase::BeginPlay()
@@ -96,6 +91,10 @@ void ASSCharacterBase::PossessedBy(AController* NewController)
 
 	InitializeAttributes();
 	GiveAbilities();
+}
+
+void ASSCharacterBase::SetupCharacterWidget(USSUserWidget* InUserWidget)
+{
 }
 
 void ASSCharacterBase::OnRep_Controller()

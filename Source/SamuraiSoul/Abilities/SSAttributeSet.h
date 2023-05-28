@@ -7,7 +7,6 @@
 #include "SSAbilitySystemComponent.h"
 #include "SSAttributeSet.generated.h"
 
-//getter와 setter 함수를 자동으로 생성해주는 매크로
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
@@ -21,13 +20,17 @@ UCLASS()
 class SAMURAISOUL_API USSAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
-	
+
 public:
 	USSAttributeSet();
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, Health);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(USSAttributeSet, MaxHealth);
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_AttackPower)
 	FGameplayAttributeData AttackPower;

@@ -26,11 +26,11 @@ public:
 		MaxHp = NewMaxHp;
 	}
 
-	void UpdateHpBar(float NewCurrentHp);
+	void UpdateHPBar(float NewCurrentHp);
 
 protected:
 	UPROPERTY()
-	TObjectPtr<class UProgressBar> HpProgressBar;
+	TObjectPtr<class UProgressBar> HPProgressBar;
 
 	UPROPERTY()
 	float MaxHp;

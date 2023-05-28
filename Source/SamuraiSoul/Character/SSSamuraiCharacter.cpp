@@ -18,6 +18,8 @@
 #include "Abilities/SSAbilitySystemComponent.h"
 #include "Component/SSCombatComponent.h"
 #include "SSCharacterControlData.h"
+#include "Component/SSCharacterStatComponent.h"
+#include "UI/SSHUDWidget.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -131,7 +133,7 @@ void ASSSamuraiCharacter::Tick(float DeltaTime)
 	if (true == bIsLockOn
 		&& nullptr != LockOnTarget)
 	{
-		const FVector TargetPos  = LockOnTarget->GetActorLocation();
+		const FVector TargetPos  = LockOnTarget->GetActorLocation() + FVector{0.0f, 0.0f, 100.f};
 		const FVector Pos        = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
 		const FRotator Rotator   = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
 		const FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);
@@ -381,6 +383,16 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 	}
 
 	ControlType = CharacterControlType;
+}
+
+void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
+{
+	if (nullptr != InHUDWidget)
+	{
+		InHUDWidget->SetMaxPlayerHP(StatComponent->GetMaxHealth());
+		InHUDWidget->UpdatePlayerHPbar(StatComponent->GetMaxHealth());
+		StatComponent->OnHPChanged.AddUObject(InHUDWidget, &USSHUDWidget::UpdatePlayerHPbar);
+	}
 }
 
 void ASSSamuraiCharacter::HandleDodgeActionPressed()

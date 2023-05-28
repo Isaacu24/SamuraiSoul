@@ -31,8 +31,8 @@ public:
 	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
 	void TakeDamageEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
-	void Parry(AActor* Opponent);
-	void Rebound(AActor* Opponent);
+	virtual void Parry(AActor* Opponent);
+	virtual void Rebound(AActor* Opponent);
 
 	void OnDefense() const;
 	void OffDefense() const;

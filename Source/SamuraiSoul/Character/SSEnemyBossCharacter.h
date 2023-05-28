@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/SSCharacterBase.h"
+#include "Character/SSEnemyCharacterBase.h"
 #include "SSEnemyBossCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API ASSEnemyBossCharacter : public ASSCharacterBase
+class SAMURAISOUL_API ASSEnemyBossCharacter : public ASSEnemyCharacterBase
 {
 	GENERATED_BODY()
 
@@ -19,13 +19,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void PostInitializeComponents() override;
 
 	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData);
-
-
 };
