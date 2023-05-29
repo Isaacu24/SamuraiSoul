@@ -52,7 +52,7 @@ protected:
 	virtual void RunBehaviorTree() const override;
 	virtual void StopBehaviorTree() const override;
 
-	virtual void SetAICharacterStatData(USSAICharacterStatData* AICharacterData);
+	virtual void SetHiddenHPBar(bool Value) const override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

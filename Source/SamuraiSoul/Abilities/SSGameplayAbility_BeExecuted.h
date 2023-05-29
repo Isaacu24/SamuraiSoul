@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/SSGameplayAbility.h"
-#include "SSGameplayAbility_Executed.generated.h"
+#include "SSGameplayAbility_BeExecuted.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API USSGameplayAbility_Executed : public USSGameplayAbility
+class SAMURAISOUL_API USSGameplayAbility_BeExecuted : public USSGameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	USSGameplayAbility_Executed();
+	USSGameplayAbility_BeExecuted();
 
 	virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                          const FGameplayAbilityActivationInfo ActivationInfo) override;

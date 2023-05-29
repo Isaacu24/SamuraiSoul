@@ -82,6 +82,6 @@ void ASSEnemyCharacterBase::StopBehaviorTree() const
 {
 }
 
-void ASSEnemyCharacterBase::SetAICharacterStatData(USSAICharacterStatData* AICharacterData)
+void ASSEnemyCharacterBase::SetHiddenHPBar(bool Value) const
 {
 }

@@ -41,4 +41,7 @@ public:
 
 	virtual void RunBehaviorTree() const = 0;
 	virtual void StopBehaviorTree() const = 0;
+
+	//UI
+	virtual void SetHiddenHPBar(bool Value) const = 0;
 };

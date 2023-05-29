@@ -14,6 +14,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
+#include "Interface/SSCharacterAIInterface.h"
 
 #include "Abilities/SSAbilitySystemComponent.h"
 #include "Component/SSCombatComponent.h"
@@ -332,12 +333,21 @@ void ASSSamuraiCharacter::LockOn()
 			bIsLockOn = false;
 		});
 
+		ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(LockOnTarget);
+		AIPawn->SetHiddenHPBar(false);
+
 		bIsLockOn                 = true;
 		bUseControllerRotationYaw = true;
 	}
 
 	else
 	{
+		if (nullptr != LockOnTarget)
+		{
+			ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(LockOnTarget);
+			AIPawn->SetHiddenHPBar(true);
+		}
+
 		bIsLockOn                 = false;
 		bUseControllerRotationYaw = false;
 	}
