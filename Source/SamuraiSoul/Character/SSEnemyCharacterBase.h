@@ -8,7 +8,9 @@
 #include "Interface/SSCharacterAIInterface.h"
 #include "SSEnemyCharacterBase.generated.h"
 
+
 class USSWidgetComponent;
+class USSAICharacterStatData;
 class USSEnemyCombatComponent;
 
 /**
@@ -31,8 +33,11 @@ protected:
 		return static_cast<USSCombatComponent*>(CombatComponent);
 	}
 
+	virtual void BeginPlay() override;
+
 	virtual float GetAIPatrolRadius() override;
-	virtual float GetAIDetectRange() override;
+	virtual float GetAIDetectRadius() override;
+	virtual float GetAILoseDetectRadius() override;
 	virtual float GetAISight() override;
 	virtual float GetAIAttackRange() override;
 	virtual float GetAITurnSpeed() override;
@@ -47,10 +52,15 @@ protected:
 	virtual void RunBehaviorTree() const override;
 	virtual void StopBehaviorTree() const override;
 
+	virtual void SetAICharacterStatData(USSAICharacterStatData* AICharacterData);
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> HPBar;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category= StatData)
+	USSAICharacterStatData* AICharacterStatData;
 };

@@ -26,7 +26,8 @@ class SAMURAISOUL_API ISSCharacterAIInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual float GetAIPatrolRadius() = 0;
-	virtual float GetAIDetectRange() = 0;
+	virtual float GetAIDetectRadius() = 0;
+	virtual float GetAILoseDetectRadius() = 0;
 	virtual float GetAISight() = 0;
 	virtual float GetAIAttackRange() = 0;
 	virtual float GetAITurnSpeed() = 0;

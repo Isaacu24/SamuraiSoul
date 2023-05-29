@@ -207,7 +207,7 @@ void USSCombatComponent::Hit(AActor* InActor)
 
 	if (true == IsRebound)
 	{
-		ActivateAbility(ExecutedAbility);
+		ActivateAbility(BeExecutedAbility);
 	}
 
 	else

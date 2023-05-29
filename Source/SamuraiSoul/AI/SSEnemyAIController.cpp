@@ -10,6 +10,7 @@
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 ASSEnemyAIController::ASSEnemyAIController()
 {
@@ -30,19 +31,7 @@ ASSEnemyAIController::ASSEnemyAIController()
 	}
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
-
-	AISenseConfigSight                                           = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
-	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
-	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
-	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
-	AISenseConfigSight->SightRadius                              = 1500.f;
-	AISenseConfigSight->LoseSightRadius                          = 2000.f;
-	AISenseConfigSight->PeripheralVisionAngleDegrees             = 90.0f;
-	AISenseConfigSight->SetMaxAge(5.0f);
-
-	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
-	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
-	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
 }
 
 void ASSEnemyAIController::RunAI()
@@ -100,6 +89,23 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 void ASSEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
+
+	if (nullptr != AIPawn)
+	{
+		AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
+		AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
+		AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
+		AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
+		AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
+		AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
+		AISenseConfigSight->SetMaxAge(5.0f);
+
+		AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+		AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
+		AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	}
 
 	RunAI();
 }

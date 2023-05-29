@@ -29,10 +29,15 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
 		SK_BODY(TEXT("/Script/Engine.SkeletalMesh'/Game/GhostSamurai_Bundle/GhostSamurai/Character/Mesh/SK_GhostSamurai_katana.SK_GhostSamurai_katana'"));
+
 	static ConstructorHelpers::FClassFinder<UAnimInstance>
 		ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
+
 	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
 		KEYBOARD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Keyboard.DA_Keyboard'"));
+
+	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
+		GAMEPAD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Gamepad.DA_Gamepad'"));
 
 	if (true == SK_BODY.Succeeded())
 	{
@@ -48,9 +53,6 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	{
 		CharacterControlMap.Add({ECharacterControlType::Keyboard, KEYBOARD_CONTROLDATA.Object});
 	}
-
-	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
-		GAMEPAD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Gamepad.DA_Gamepad'"));
 
 	if (nullptr != GAMEPAD_CONTROLDATA.Object)
 	{

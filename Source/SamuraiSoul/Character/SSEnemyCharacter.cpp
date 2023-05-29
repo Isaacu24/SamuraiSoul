@@ -3,12 +3,12 @@
 
 #include "SSEnemyCharacter.h"
 #include "Game/SamuraiSoul.h"
-#include "Component/SSEnemyCombatComponent.h"
-#include <GameFramework/CharacterMovementComponent.h>
-#include "AI/SSEnemyAIController.h"
-#include "Component/SSCharacterStatComponent.h"
 #include "UI/SSHPBarWidget.h"
+#include "AI/SSEnemyAIController.h"
 #include "Component/SSWidgetComponent.h"
+#include "Component/SSEnemyCombatComponent.h"
+#include "Component/SSCharacterStatComponent.h"
+#include <GameFramework/CharacterMovementComponent.h>
 
 ASSEnemyCharacter::ASSEnemyCharacter()
 {
@@ -16,6 +16,7 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
 		BODY_MESH(TEXT("/Script/Engine.SkeletalMesh'/Game/MyContent/Mesh/Enemy/Samurai/SK_EnemySamurai_Katana.SK_EnemySamurai_Katana'"));
+
 	static ConstructorHelpers::FClassFinder<UAnimInstance>
 		ANIM_ENEMY(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/AI/AB_SSEnemyCharacter.AB_SSEnemyCharacter_C'"));
 
@@ -34,6 +35,21 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 
 	AIControllerClass = ASSEnemyAIController::StaticClass();
 	AutoPossessAI     = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+
+	HPBar = CreateDefaultSubobject<USSWidgetComponent>(TEXT("Widget"));
+	HPBar->SetupAttachment(GetMesh());
+	HPBar->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> HPBAR_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_HPBar.WBP_HPBar_C'"));
+
+	if (true == HPBAR_WIDGET.Succeeded())
+	{
+		HPBar->SetWidgetClass(HPBAR_WIDGET.Class);
+		HPBar->SetWidgetSpace(EWidgetSpace::Screen);
+		HPBar->SetDrawSize(FVector2D(150.0f, 15.0f));
+		HPBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void ASSEnemyCharacter::BeginPlay()
