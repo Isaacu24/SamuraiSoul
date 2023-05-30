@@ -44,4 +44,5 @@ public:
 
 	//UI
 	virtual void SetHiddenHPBar(bool Value) const = 0;
+	virtual void SetHiddenTargetCursor(bool Value) const = 0;
 };

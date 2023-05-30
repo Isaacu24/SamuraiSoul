@@ -53,6 +53,7 @@ protected:
 	virtual void StopBehaviorTree() const override;
 
 	virtual void SetHiddenHPBar(bool Value) const override;
+	virtual void SetHiddenTargetCursor(bool Value) const override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -60,6 +61,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> HPBar;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSWidgetComponent> TargetCursor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category= StatData)
 	USSAICharacterStatData* AICharacterStatData;

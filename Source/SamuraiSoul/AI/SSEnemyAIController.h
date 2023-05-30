@@ -7,8 +7,10 @@
 #include "Perception/AIPerceptionTypes.h"
 #include "SSEnemyAIController.generated.h"
 
+class UBlackboardData;
+class UAISenseConfig_Sight;
+class UAISenseConfig_Hearing;
 class UAIPerceptionComponent;
-
 /**
  * 
  */
@@ -38,16 +40,15 @@ protected:
 
 private:
 	UPROPERTY()
-	TObjectPtr<class UBlackboardData> BBAsset;
+	TObjectPtr<UBlackboardData> BBAsset;
 
 	UPROPERTY()
-	TObjectPtr<class UBehaviorTree> BTAsset;
-
+	TObjectPtr<UBehaviorTree> BTAsset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = AI)
-	TObjectPtr<class UAISenseConfig_Sight> AISenseConfigSight     = nullptr;
-	TObjectPtr<class UAISenseConfig_Hearing> AISenseConfigHearing = nullptr;
+	TObjectPtr<UAISenseConfig_Sight> AISenseConfigSight     = nullptr;
+	TObjectPtr<UAISenseConfig_Hearing> AISenseConfigHearing = nullptr;
 };

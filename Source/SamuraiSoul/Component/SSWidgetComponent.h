@@ -17,6 +17,5 @@ class SAMURAISOUL_API USSWidgetComponent : public UWidgetComponent
 public:
 	USSWidgetComponent();
 
-	void InitWidget() override;
-	
+	virtual void InitWidget() override;
 };

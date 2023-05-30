@@ -49,13 +49,13 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 		HPBar->SetDrawSize(FVector2D(100.0f, 10.0f));
 		HPBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
-
-	SetHiddenHPBar(true);
 }
 
 void ASSEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetHiddenHPBar(true);
 }
 
 void ASSEnemyCharacter::PostInitializeComponents()
@@ -154,6 +154,11 @@ void ASSEnemyCharacter::SetHiddenHPBar(bool Value) const
 	{
 		HPBar->SetHiddenInGame(Value);
 	}
+}
+
+void ASSEnemyCharacter::SetHiddenTargetCursor(bool Value) const
+{
+	Super::SetHiddenTargetCursor(Value);
 }
 
 void ASSEnemyCharacter::Die() const

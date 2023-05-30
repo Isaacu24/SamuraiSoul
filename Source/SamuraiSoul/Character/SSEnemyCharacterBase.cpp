@@ -3,9 +3,10 @@
 
 #include "SSEnemyCharacterBase.h"
 #include <Components/CapsuleComponent.h>
-#include "Component/SSEnemyCombatComponent.h"
 #include "DataAsset/SSAICharacterStatData.h"
+#include "Component/SSEnemyCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Component/SSWidgetComponent.h"
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
@@ -13,6 +14,21 @@ ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 
 	CombatComponent                      = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 	GetCharacterMovement()->MaxWalkSpeed = 100.f;
+
+	TargetCursor = CreateDefaultSubobject<USSWidgetComponent>(TEXT("Cursor"));
+	TargetCursor->SetupAttachment(GetMesh());
+	TargetCursor->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		CURSOR_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_TargetCursor.WBP_TargetCursor_C'"));
+
+	if (true == CURSOR_WIDGET.Succeeded())
+	{
+		TargetCursor->SetWidgetClass(CURSOR_WIDGET.Class);
+		TargetCursor->SetWidgetSpace(EWidgetSpace::Screen);
+		TargetCursor->SetDrawSize(FVector2D(10.0f, 10.0f));
+		TargetCursor->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void ASSEnemyCharacterBase::BeginPlay()
@@ -20,6 +36,8 @@ void ASSEnemyCharacterBase::BeginPlay()
 	Super::BeginPlay();
 
 	ensure(AICharacterStatData);
+
+	SetHiddenTargetCursor(true);
 }
 
 float ASSEnemyCharacterBase::GetAIPatrolRadius()
@@ -84,4 +102,12 @@ void ASSEnemyCharacterBase::StopBehaviorTree() const
 
 void ASSEnemyCharacterBase::SetHiddenHPBar(bool Value) const
 {
+}
+
+void ASSEnemyCharacterBase::SetHiddenTargetCursor(bool Value) const
+{
+	if (nullptr != TargetCursor)
+	{
+		TargetCursor->SetHiddenInGame(Value);
+	}
 }
