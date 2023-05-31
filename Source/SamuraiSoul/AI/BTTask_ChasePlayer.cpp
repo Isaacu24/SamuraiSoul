@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "SSAI.h"
 
 UBTTask_ChasePlayer::UBTTask_ChasePlayer()
 {
@@ -15,7 +16,7 @@ UBTTask_ChasePlayer::UBTTask_ChasePlayer()
 EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-	FVector PalyerLocation           = Controller->GetBlackboardComponent()->GetValueAsVector(TEXT("TargetLocation"));
+	FVector PalyerLocation           = Controller->GetBlackboardComponent()->GetValueAsVector(BBKEY_TARGETLOCATION);
 	UAIBlueprintHelperLibrary::SimpleMoveToLocation(Controller, PalyerLocation);
 
 	APawn* ControllingPawn          = Controller->GetPawn();

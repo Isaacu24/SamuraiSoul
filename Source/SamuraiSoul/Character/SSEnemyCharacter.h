@@ -29,9 +29,6 @@ public:
 	virtual void Run() override;
 	virtual void Walk() override;
 
-	virtual void RunBehaviorTree() const override;
-	virtual void StopBehaviorTree() const override;
-
 	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget) override;
 
 	virtual void SetHiddenHPBar(bool Value) const override;

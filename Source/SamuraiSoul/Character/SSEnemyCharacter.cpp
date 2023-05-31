@@ -102,36 +102,6 @@ void ASSEnemyCharacter::Walk()
 	GetCharacterMovement()->MaxWalkSpeed = 100.f;
 }
 
-void ASSEnemyCharacter::RunBehaviorTree() const
-{
-	Super::RunBehaviorTree();
-
-	if (nullptr != GetController())
-	{
-		ASSEnemyAIController* MyController = Cast<ASSEnemyAIController>(GetController());
-
-		if (nullptr != MyController)
-		{
-			MyController->RunAI();
-		}
-	}
-}
-
-void ASSEnemyCharacter::StopBehaviorTree() const
-{
-	Super::StopBehaviorTree();
-
-	if (nullptr != GetController())
-	{
-		ASSEnemyAIController* MyController = Cast<ASSEnemyAIController>(GetController());
-
-		if (nullptr != MyController)
-		{
-			MyController->StopAI();
-		}
-	}
-}
-
 void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 {
 	Super::SetupCharacterWidget(InUserWidget);

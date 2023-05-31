@@ -5,6 +5,7 @@
 #include "AI/SSEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "SSAI.h"
 
 UBTTask_TurnToTarget::UBTTask_TurnToTarget()
 {
@@ -23,7 +24,7 @@ EBTNodeResult::Type UBTTask_TurnToTarget::ExecuteTask(UBehaviorTreeComponent& Ow
 		return EBTNodeResult::Failed;
 	}
 
-	APawn* TargetPawn = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(TEXT("TargetLocation")));
+	APawn* TargetPawn = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGETLOCATION));
 	if (nullptr == TargetPawn)
 	{
 		return EBTNodeResult::Failed;

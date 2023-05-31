@@ -22,13 +22,15 @@ class SAMURAISOUL_API ASSEnemyAIController : public AAIController
 public:
 	ASSEnemyAIController();
 
+	virtual void BeginPlay() override;
+
 	UFUNCTION()
 	void TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus);
 
 	void RunAI();
 	void StopAI();
 
-	void ReboundAI();
+	void SetPatrol(bool Value);
 
 	UAIPerceptionComponent* GetAIPerceptionComponent() const
 	{

@@ -8,6 +8,7 @@
 #include "Interface/SSCharacterAIInterface.h"
 #include "SSEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "SSAI.h"
 
 UBTTask_FIndPlayerLocation::UBTTask_FIndPlayerLocation()
 {
@@ -37,13 +38,13 @@ EBTNodeResult::Type UBTTask_FIndPlayerLocation::ExecuteTask(UBehaviorTreeCompone
 		if (nullptr != NaviSystem
 			&& NaviSystem->GetRandomPointInNavigableRadius(PlayerLocation, AIPawn->GetAIPatrolRadius(), NavLocation, nullptr))
 		{
-			Controller->GetBlackboardComponent()->SetValueAsVector(TEXT("TargetLocation"), NavLocation);
+			Controller->GetBlackboardComponent()->SetValueAsVector(BBKEY_TARGETLOCATION, NavLocation);
 		}
 	}
 
 	else
 	{
-		Controller->GetBlackboardComponent()->SetValueAsVector(TEXT("TargetLocation"), PlayerLocation);
+		Controller->GetBlackboardComponent()->SetValueAsVector(BBKEY_TARGETLOCATION, PlayerLocation);
 	}
 
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

@@ -5,12 +5,10 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Perception/AISense_Sight.h"
 #include "Perception/AISenseConfig_Sight.h"
-#include "Perception/AISense_Hearing.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AIPerceptionComponent.h"
-#include "Interface/SSCharacterAIInterface.h"
+#include "SSAI.h"
 
 ASSEnemyAIController::ASSEnemyAIController()
 {
@@ -32,6 +30,36 @@ ASSEnemyAIController::ASSEnemyAIController()
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
 	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
+
+	//ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
+
+	//if (nullptr != AIPawn)
+	//{
+	//}
+
+	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
+	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
+	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
+	AISenseConfigSight->SightRadius                              = 800.f;
+	AISenseConfigSight->LoseSightRadius                          = 1000.f;
+	AISenseConfigSight->PeripheralVisionAngleDegrees             = 60.f;
+	AISenseConfigSight->SetMaxAge(5.0f);
+
+	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+}
+
+void ASSEnemyAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	RunAI();
+}
+
+void ASSEnemyAIController::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void ASSEnemyAIController::RunAI()
@@ -40,7 +68,7 @@ void ASSEnemyAIController::RunAI()
 
 	if (true == UseBlackboard(BBAsset, BlackboardPtr))
 	{
-		Blackboard->SetValueAsVector(TEXT("HomePos"), GetPawn()->GetActorLocation());
+		Blackboard->SetValueAsVector(BBKEY_TARGETLOCATION, GetPawn()->GetActorLocation());
 
 		bool RunResult = RunBehaviorTree(BTAsset);
 		ensure(RunResult);
@@ -57,16 +85,13 @@ void ASSEnemyAIController::StopAI()
 	}
 }
 
-void ASSEnemyAIController::ReboundAI()
+void ASSEnemyAIController::SetPatrol(bool Value)
 {
 	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
 
 	if (true == UseBlackboard(BBAsset, BlackboardPtr))
 	{
-		Blackboard->SetValueAsVector(TEXT("IsRebound"), GetPawn()->GetActorLocation());
-
-		bool RunResult = RunBehaviorTree(BTAsset);
-		ensure(RunResult);
+		Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, Value);
 	}
 }
 
@@ -81,31 +106,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 
 		if (true == UseBlackboard(BBAsset, BlackboardPtr))
 		{
-			Blackboard->SetValueAsBool(TEXT("IsSeePlayer"), Stimulus.WasSuccessfullySensed());
+			Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, Stimulus.WasSuccessfullySensed());
 		}
 	}
-}
-
-void ASSEnemyAIController::OnPossess(APawn* InPawn)
-{
-	Super::OnPossess(InPawn);
-
-	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
-
-	if (nullptr != AIPawn)
-	{
-		AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
-		AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
-		AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
-		AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
-		AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
-		AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
-		AISenseConfigSight->SetMaxAge(5.0f);
-
-		AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
-		AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
-		AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
-	}
-
-	RunAI();
 }

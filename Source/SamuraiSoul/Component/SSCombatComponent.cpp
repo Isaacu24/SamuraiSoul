@@ -232,6 +232,10 @@ void USSCombatComponent::Hit(AActor* InActor)
 			if (nullptr != AnimInstance)
 			{
 				AnimInstance->Montage_Play(HitBackMontage);
+
+				FOnMontageEnded HitEndDelegate;
+				HitEndDelegate.BindUObject(this, &USSCombatComponent::HitEnd);
+				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, ParryMontage);
 			}
 		}
 
@@ -297,4 +301,12 @@ void USSCombatComponent::ParryEnd(UAnimMontage* Montage, bool bInterrupted)
 void USSCombatComponent::ReboundEnd(UAnimMontage* Montage, bool bInterrupted)
 {
 	IsRebound = false;
+}
+
+void USSCombatComponent::HitEnd(UAnimMontage* Montage, bool bInterrupted)
+{
+	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+
+	FGameplayTag HitTag = FGameplayTag::RequestGameplayTag(TEXT("State.Hit"));
+	Character->GetAbilitySystemComponent()->RemoveReplicatedLooseGameplayTag(HitTag);
 }

@@ -4,18 +4,17 @@
 #include "Character/SSSamuraiCharacter.h"
 
 void USSAnimNotifyState_ComboRotation::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
-	const FAnimNotifyEventReference& EventReference)
+                                                   const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 }
 
 void USSAnimNotifyState_ComboRotation::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
-	const FAnimNotifyEventReference& EventReference)
+                                                  const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 }
 
 void USSAnimNotifyState_ComboRotation::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
-	Super::NotifyEnd(MeshComp, Animation);
 }

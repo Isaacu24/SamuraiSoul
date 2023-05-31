@@ -38,35 +38,14 @@ void USSEnemyCombatComponent::AttackByAI() const
 void USSEnemyCombatComponent::Hit(AActor* InActor)
 {
 	Super::Hit(InActor);
-
-	ISSCharacterAIInterface* Character = Cast<ISSCharacterAIInterface>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		Character->StopBehaviorTree();
-	}
 }
 
 void USSEnemyCombatComponent::Parry(AActor* Opponent)
 {
 	Super::Parry(Opponent);
-
-	ISSCharacterAIInterface* Character = Cast<ISSCharacterAIInterface>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		Character->StopBehaviorTree();
-	}
 }
 
 void USSEnemyCombatComponent::Rebound(AActor* Opponent)
 {
 	Super::Rebound(Opponent);
-
-	ISSCharacterAIInterface* Character = Cast<ISSCharacterAIInterface>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		Character->StopBehaviorTree();
-	}
 }

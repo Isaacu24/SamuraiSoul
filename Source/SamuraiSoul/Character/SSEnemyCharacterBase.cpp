@@ -92,14 +92,6 @@ void ASSEnemyCharacterBase::AttackEnd()
 	OnAttackFinished.ExecuteIfBound();
 }
 
-void ASSEnemyCharacterBase::RunBehaviorTree() const
-{
-}
-
-void ASSEnemyCharacterBase::StopBehaviorTree() const
-{
-}
-
 void ASSEnemyCharacterBase::SetHiddenHPBar(bool Value) const
 {
 }

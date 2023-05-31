@@ -49,9 +49,6 @@ protected:
 	virtual void AttackByAI() override;
 	virtual void AttackEnd() override;
 
-	virtual void RunBehaviorTree() const override;
-	virtual void StopBehaviorTree() const override;
-
 	virtual void SetHiddenHPBar(bool Value) const override;
 	virtual void SetHiddenTargetCursor(bool Value) const override;
 

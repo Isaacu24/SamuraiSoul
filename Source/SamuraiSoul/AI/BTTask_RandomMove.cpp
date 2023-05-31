@@ -4,6 +4,7 @@
 #include "SSEnemyAIController.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "SSAI.h"
 
 UBTTask_RandomMove::UBTTask_RandomMove()
 {
@@ -14,11 +15,11 @@ EBTNodeResult::Type UBTTask_RandomMove::ExecuteTask(UBehaviorTreeComponent& Owne
 {
 	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetAIOwner());
 
-	if(nullptr == Controller)
+	if (nullptr == Controller)
 	{
 		return EBTNodeResult::Failed;
 	}
-	
+
 	APawn* Enemy = Controller->GetPawn();
 
 	if (nullptr == Enemy)
@@ -26,7 +27,7 @@ EBTNodeResult::Type UBTTask_RandomMove::ExecuteTask(UBehaviorTreeComponent& Owne
 		return EBTNodeResult::Failed;
 	}
 
-	const FVector Origin = Enemy->GetActorLocation();
+	const FVector Origin     = Enemy->GetActorLocation();
 	FNavLocation NavLocation = {};
 
 	const UNavigationSystemV1* NaviSystem = UNavigationSystemV1::GetCurrent(GetWorld());
@@ -34,7 +35,7 @@ EBTNodeResult::Type UBTTask_RandomMove::ExecuteTask(UBehaviorTreeComponent& Owne
 	if (nullptr != NaviSystem
 		&& true == NaviSystem->GetRandomPointInNavigableRadius(Origin, SearchReadius, NavLocation))
 	{
-		Controller->GetBlackboardComponent()->SetValueAsVector(TEXT("TargetLocation"), NavLocation);
+		Controller->GetBlackboardComponent()->SetValueAsVector(BBKEY_TARGETLOCATION, NavLocation);
 	}
 
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
