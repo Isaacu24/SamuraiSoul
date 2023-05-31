@@ -13,7 +13,9 @@ UCLASS()
 class SAMURAISOUL_API USamuraiSoulGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-	
+
+	virtual void Init() override;
+
 public:
 	USamuraiSoulGameInstance();
 };

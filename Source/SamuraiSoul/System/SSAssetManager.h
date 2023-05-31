@@ -23,7 +23,4 @@ public:
 
 protected:
 	virtual void StartInitialLoading() override;
-
-private:
-	void InitializeAbilitySystem();
 };

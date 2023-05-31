@@ -13,12 +13,11 @@ UCLASS()
 class SAMURAISOUL_API ASamuraiSoulGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	ASamuraiSoulGameModeBase();
 
 protected:
 
 private:
-	
 };

@@ -2,9 +2,13 @@
 
 
 #include "SamuraiSoulGameInstance.h"
-
+#include "SSGameplayTags.h"
 
 USamuraiSoulGameInstance::USamuraiSoulGameInstance()
 {
+}
 
+void USamuraiSoulGameInstance::Init()
+{
+	Super::Init();
 }
