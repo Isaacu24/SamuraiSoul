@@ -9,26 +9,12 @@
 
 USSGameplayAbility_BeExecuted::USSGameplayAbility_BeExecuted()
 {
-	AbilityID      = ESSAbilityID::Executed;
+	AbilityID      = ESSAbilityID::BeExecuted;
 	AbilityInputID = ESSAbilityInputID::None;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Executed")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Executed")));
+	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.BeExecuted")));
+	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.BeExecuted")));
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
-}
-
-void USSGameplayAbility_BeExecuted::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-                                                 const FGameplayAbilityActivationInfo ActivationInfo)
-{
-	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
-}
-
-void USSGameplayAbility_BeExecuted::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-                                                  const FGameplayAbilityActivationInfo ActivationInfo)
-{
-	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
 
 void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -44,7 +30,7 @@ void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHa
 		return;
 	}
 
-	Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("Executed"));
+	Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("BeExecuted"));
 
 	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{

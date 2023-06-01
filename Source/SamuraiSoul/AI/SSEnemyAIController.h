@@ -31,6 +31,7 @@ public:
 	void StopAI();
 
 	void SetPatrol(bool Value);
+	void SetHit(bool Value);
 
 	UAIPerceptionComponent* GetAIPerceptionComponent() const
 	{

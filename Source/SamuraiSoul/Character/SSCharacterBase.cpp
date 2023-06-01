@@ -24,7 +24,6 @@ ASSCharacterBase::ASSCharacterBase()
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	StatComponent = CreateDefaultSubobject<USSCharacterStatComponent>(TEXT("SSCharacterStat Component"));
-	StatComponent->SetAttributeSet(Attributes);
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
 	GetMesh()->SetCollisionProfileName("NoCollision");

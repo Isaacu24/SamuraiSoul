@@ -6,6 +6,8 @@ FSSGameplayTags FSSGameplayTags::GameplayTags;
 
 FSSGameplayTags::FSSGameplayTags()
 {
-	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
-	HitTag  = FGameplayTag::RequestGameplayTag(FName("State.Hit"));
+	AbilityTag = FGameplayTag::RequestGameplayTag(TEXT("SSAbilities"));
+
+	HitTag  = FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Hit"));
+	DeadTag = FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Dead"));
 }

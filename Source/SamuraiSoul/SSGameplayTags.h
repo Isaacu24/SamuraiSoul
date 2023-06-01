@@ -15,6 +15,8 @@ public:
 	static const FSSGameplayTags& Get() { return GameplayTags; }
 
 public:
+	FGameplayTag AbilityTag;
+
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;
 

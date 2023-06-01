@@ -3,6 +3,9 @@
 
 #include "SSGameplayAbility.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemInterface.h"
+
 USSGameplayAbility::USSGameplayAbility()
 {
 }
@@ -29,4 +32,11 @@ void USSGameplayAbility::AbilityCancelled(FGameplayTag EventTag, FGameplayEventD
 
 void USSGameplayAbility::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
 {
+}
+
+void USSGameplayAbility::CancelAllAbility()
+{
+	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetActorInfo().AvatarActor);
+	UAbilitySystemComponent* ASC         = AbilityPawn->GetAbilitySystemComponent();
+	ASC->CancelAbility(this);
 }

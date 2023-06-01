@@ -13,9 +13,13 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-/**
- * 
- */
+DECLARE_MULTICAST_DELEGATE_FourParams(FSSAttributeEventDelegate,
+                                      AActor* /*EffectInstigator*/,
+                                      AActor* /*EffectCauser*/,
+                                      const FGameplayEffectSpec& /*EffectSpec*/,
+                                      float /*EffectMagnitude*/
+                                     );
+
 UCLASS()
 class SAMURAISOUL_API USSAttributeSet : public UAttributeSet
 {
@@ -36,6 +40,13 @@ public:
 	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, AttackPower);
 
+	//Damage
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_AttackPower)
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(USSAttributeSet, Damage);
+
+	mutable FSSAttributeEventDelegate OnDamagedEvent;
+
 	// 이펙트가 적용된 후에 자동으로 호출되는 함수
 	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
@@ -47,6 +58,9 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
+
+	UFUNCTION()
+	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 
 	UFUNCTION()
 	virtual void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower);

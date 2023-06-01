@@ -11,6 +11,7 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "Interface/SSCombatInterface.h"
 #include "AbilitySystemInterface.h"
+#include "SSGameplayTags.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -235,7 +236,7 @@ void USSCombatComponent::Hit(AActor* InActor)
 
 				FOnMontageEnded HitEndDelegate;
 				HitEndDelegate.BindUObject(this, &USSCombatComponent::HitEnd);
-				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, ParryMontage);
+				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, HitBackMontage);
 			}
 		}
 
@@ -244,6 +245,10 @@ void USSCombatComponent::Hit(AActor* InActor)
 			if (nullptr != AnimInstance)
 			{
 				AnimInstance->Montage_Play(HitForwardMontage);
+
+				FOnMontageEnded HitEndDelegate;
+				HitEndDelegate.BindUObject(this, &USSCombatComponent::HitEnd);
+				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, HitForwardMontage);
 			}
 		}
 	}
@@ -307,6 +312,8 @@ void USSCombatComponent::HitEnd(UAnimMontage* Montage, bool bInterrupted)
 {
 	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 
-	FGameplayTag HitTag = FGameplayTag::RequestGameplayTag(TEXT("State.Hit"));
-	Character->GetAbilitySystemComponent()->RemoveReplicatedLooseGameplayTag(HitTag);
+	if (nullptr != Character)
+	{
+		Character->GetAbilitySystemComponent()->RemoveReplicatedLooseGameplayTag(FSSGameplayTags::Get().HitTag);
+	}
 }

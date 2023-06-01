@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "Components/ActorComponent.h"
 #include "SSCharacterStatComponent.generated.h"
 
@@ -19,11 +20,6 @@ public:
 	// Sets default values for this component's properties
 	USSCharacterStatComponent();
 
-	FORCEINLINE void SetAttributeSet(USSAttributeSet* AttributeSet)
-	{
-		OwnerAttributeSet = AttributeSet;
-	}
-
 public:
 	FOnHPChangedDelegate OnHPChanged;
 
@@ -34,10 +30,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 
 private:
-	TObjectPtr<USSAttributeSet> OwnerAttributeSet;
+	TObjectPtr<const USSAttributeSet> OwnerAttributeSet;
 };

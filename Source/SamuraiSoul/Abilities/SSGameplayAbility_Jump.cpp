@@ -14,11 +14,6 @@ USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
 }
 
-USSGameplayAbility_Jump* USSGameplayAbility_Jump::NewJumpAbilityTask(UGameplayAbility* OwningAbility, FName TaskInstanceName, AActor* InAvatar)
-{
-	return nullptr;
-}
-
 void USSGameplayAbility_Jump::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                            const FGameplayAbilityActivationInfo ActivationInfo)
 {

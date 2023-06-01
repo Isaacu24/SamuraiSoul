@@ -330,7 +330,12 @@ void ASSSamuraiCharacter::LockOn()
 		LockOnTarget = Cast<ASSCharacterBase>(OutHit.GetActor());
 		LockOnTarget->OnCharacterEnded.AddLambda([&]()
 		{
-			LockOnTarget              = nullptr;
+			ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(LockOnTarget);
+			AIPawn->SetHiddenHPBar(true);
+			AIPawn->SetHiddenTargetCursor(true);
+
+			LockOnTarget = nullptr;
+
 			bIsLockOn                 = false;
 			bUseControllerRotationYaw = false;
 		});

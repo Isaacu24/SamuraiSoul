@@ -3,6 +3,9 @@
 
 #include "Component/SSEnemyCombatComponent.h"
 #include "Item/Weapon/SSWeapon.h"
+#include "SSGameplayTags.h"
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
 
 USSEnemyCombatComponent::USSEnemyCombatComponent()
@@ -37,7 +40,17 @@ void USSEnemyCombatComponent::AttackByAI() const
 
 void USSEnemyCombatComponent::Hit(AActor* InActor)
 {
-	Super::Hit(InActor);
+	//Super::Hit(InActor);
+
+	//IAbilitySystemInterface* Ability = Cast<IAbilitySystemInterface>(GetOwner());
+	//ISSCharacterAIInterface* AIPawn  = Cast<ISSCharacterAIInterface>(GetOwner());
+
+	//if (nullptr != Ability
+	//	&& nullptr != AIPawn)
+	//{
+	//	AIPawn->SetHit(true);
+	//	Ability->GetAbilitySystemComponent()->AddLooseGameplayTag(FSSGameplayTags::Get().HitTag);
+	//}
 }
 
 void USSEnemyCombatComponent::Parry(AActor* Opponent)

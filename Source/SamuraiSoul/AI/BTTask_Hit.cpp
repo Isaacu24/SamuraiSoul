@@ -6,24 +6,35 @@
 #include "AbilitySystemInterface.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "SSAI.h"
+#include "SSGameplayTags.h"
 
 UBTTask_Hit::UBTTask_Hit()
 {
-	HitTag = FGameplayTag::RequestGameplayTag(TEXT("State.Hit"));
 }
 
 EBTNodeResult::Type UBTTask_Hit::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	IAbilitySystemInterface* AbilitySystem = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
-	bool IsHit                             = AbilitySystem->GetAbilitySystemComponent()->HasMatchingGameplayTag(HitTag);
+	AbilitySystem = Cast<IAbilitySystemInterface>(OwnerComp.GetAIOwner()->GetPawn());
 
-	if (true == IsHit)
+	return EBTNodeResult::InProgress;
+}
+
+void UBTTask_Hit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+{
+	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
+
+	if (nullptr == AbilitySystem)
 	{
-		return EBTNodeResult::InProgress;
+		return;
 	}
 
-	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetAIOwner());
-	Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_TARGETLOCATION, IsHit);
+	bool IsHit = AbilitySystem->GetAbilitySystemComponent()->HasMatchingGameplayTag(FSSGameplayTags::Get().HitTag);
 
-	return EBTNodeResult::Succeeded;
+	if (false == IsHit)
+	{
+		ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetAIOwner());
+		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_ISHIT, IsHit);
+
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	}
 }

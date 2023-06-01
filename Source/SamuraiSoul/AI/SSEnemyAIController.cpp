@@ -95,6 +95,16 @@ void ASSEnemyAIController::SetPatrol(bool Value)
 	}
 }
 
+void ASSEnemyAIController::SetHit(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISHIT, Value);
+	}
+}
+
 void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)
 {
 	APawn* Player = Cast<APawn>(InActor);

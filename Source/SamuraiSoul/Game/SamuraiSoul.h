@@ -30,7 +30,9 @@ enum class ESSAbilityID : uint8
 	Slash,
 	Defense,
 	Execution,
-	Executed
+	BeExecuted,
+	Hit,
+	Dead
 };
 
 UENUM(BlueprintType)
