@@ -14,6 +14,7 @@ class USSUserWidget;
 class USSAttributeSet;
 class UInputComponent;
 class UGameplayEffect;
+class USSCharacterData;
 class USSGameplayAbility;
 class UMotionWarpingComponent;
 class UAbilitySystemComponent;
@@ -114,6 +115,10 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
 	virtual void SetCharacterControlData(const USSCharacterControlData* ControlData);
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterData")
+	TObjectPtr<USSCharacterData> CharacterData;
 
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

@@ -9,9 +9,10 @@
 #include "GameplayTagContainer.h"
 #include "SSAbilitySet.generated.h"
 
-class UGameplayAbility;
-class UGameplayEffect;
 class UAttributeSet;
+class UGameplayEffect;
+class UGameplayAbility;
+class USSGameplayAbility;
 class USSAbilitySystemComponent;
 
 USTRUCT(BlueprintType)
@@ -20,18 +21,17 @@ struct FSSAbilitySet_GameplayAbility
 	GENERATED_BODY()
 
 public:
-
 	// Gameplay ability to grant.
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<USSGameplayAbility> Ability = nullptr;
+	TSubclassOf<USSGameplayAbility> Ability = nullptr;
 
 	// Level of ability to grant.
 	UPROPERTY(EditDefaultsOnly)
-		int32 AbilityLevel = 1;
+	int32 AbilityLevel = 1;
 
 	// Tag used to process input for the ability.
 	UPROPERTY(EditDefaultsOnly, Meta = (Categories = "InputTag"))
-		FGameplayTag InputTag;
+	FGameplayTag InputTag;
 };
 
 
@@ -49,11 +49,11 @@ public:
 
 	// Gameplay effect to grant.
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<UGameplayEffect> GameplayEffect = nullptr;
+	TSubclassOf<UGameplayEffect> GameplayEffect = nullptr;
 
 	// Level of gameplay effect to grant.
 	UPROPERTY(EditDefaultsOnly)
-		float EffectLevel = 1.0f;
+	float EffectLevel = 1.0f;
 };
 
 /**
@@ -69,7 +69,7 @@ struct FSSAbilitySet_AttributeSet
 public:
 	// Gameplay effect to grant.
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<UAttributeSet> AttributeSet;
+	TSubclassOf<UAttributeSet> AttributeSet;
 
 };
 
@@ -95,15 +95,15 @@ protected:
 
 	// Handles to the granted abilities.
 	UPROPERTY()
-		TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
+	TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
 
 	// Handles to the granted gameplay effects.
 	UPROPERTY()
-		TArray<FActiveGameplayEffectHandle> GameplayEffectHandles;
+	TArray<FActiveGameplayEffectHandle> GameplayEffectHandles;
 
 	// Pointers to the granted attribute sets
 	UPROPERTY()
-		TArray<TObjectPtr<UAttributeSet>> GrantedAttributeSets;
+	TArray<TObjectPtr<UAttributeSet>> GrantedAttributeSets;
 };
 
 
@@ -113,7 +113,7 @@ protected:
  *	Non-mutable data asset used to grant gameplay abilities and gameplay effects.
  */
 UCLASS(BlueprintType, Const)
-class USSAbilitySet : public UPrimaryDataAsset
+class SAMURAISOUL_API USSAbilitySet : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
@@ -128,13 +128,13 @@ protected:
 
 	// Gameplay abilities to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Abilities", meta = (TitleProperty = Ability))
-		TArray<FSSAbilitySet_GameplayAbility> GrantedGameplayAbilities;
+	TArray<FSSAbilitySet_GameplayAbility> GrantedGameplayAbilities;
 
 	// Gameplay effects to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Effects", meta = (TitleProperty = GameplayEffect))
-		TArray<FSSAbilitySet_GameplayEffect> GrantedGameplayEffects;
+	TArray<FSSAbilitySet_GameplayEffect> GrantedGameplayEffects;
 
 	// Attribute sets to grant when this ability set is granted.
 	UPROPERTY(EditDefaultsOnly, Category = "Attribute Sets", meta = (TitleProperty = AttributeSet))
-		TArray<FSSAbilitySet_AttributeSet> GrantedAttributes;
+	TArray<FSSAbilitySet_AttributeSet> GrantedAttributes;
 };

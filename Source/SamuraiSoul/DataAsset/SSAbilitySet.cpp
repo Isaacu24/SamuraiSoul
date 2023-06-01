@@ -18,10 +18,6 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SSAbilitySet)
 
-USSAbilitySet::USSAbilitySet()
-{
-}
-
 void FSSAbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
 {
 	if (Handle.IsValid())
@@ -133,7 +129,7 @@ void USSAbilitySet::GiveToAbilitySystem(USSAbilitySystemComponent* ASC, FSSAbili
 		}
 
 		const UGameplayEffect* GameplayEffect = EffectToGrant.GameplayEffect->GetDefaultObject<UGameplayEffect>();
-		const FActiveGameplayEffectHandle GameplayEffectHandle = ASC->ApplyGameplayEffectToSelf(GameplayEffect, EffectToGrant.EffectLevel, LyraASC->MakeEffectContext());
+		const FActiveGameplayEffectHandle GameplayEffectHandle = ASC->ApplyGameplayEffectToSelf(GameplayEffect, EffectToGrant.EffectLevel, ASC->MakeEffectContext());
 
 		if (nullptr != OutGrantedHandles)
 		{
