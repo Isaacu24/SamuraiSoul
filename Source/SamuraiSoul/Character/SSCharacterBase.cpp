@@ -3,7 +3,6 @@
 
 #include "SSCharacterBase.h"
 #include "AbilitySystemComponent.h"
-#include "Abilities/SSGameplayAbility.h"
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include "Abilities/SSAttributeSet.h"
@@ -55,8 +54,6 @@ void ASSCharacterBase::PossessedBy(AController* NewController)
 	CharacterData->AbilitySet->GiveToAbilitySystem(AbilitySystemComponent, &AbilitySetHandles);
 
 	const USSAttributeSet* Attribute = AbilitySystemComponent->GetSet<USSAttributeSet>();
-
-	//float a = Attribute->GetMaxHealth();
 
 	StatComponent->InitializeAbilityDelegates();
 
@@ -158,9 +155,4 @@ UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
 void ASSCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void ASSCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }

@@ -2,6 +2,8 @@
 
 
 #include "SSPlayerController.h"
+#include "AbilitySystemInterface.h"
+#include "Abilities/SSAbilitySystemComponent.h"
 #include "UI/SSHUDWidget.h"
 
 ASSPlayerController::ASSPlayerController()
@@ -27,4 +29,17 @@ void ASSPlayerController::BeginPlay()
 	{
 		HUDWidget->AddToViewport();
 	}
+}
+
+void ASSPlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	Super::PostProcessInput(DeltaTime, bGamePaused);
+
+	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetPawn());
+
+	check(AbilityPawn);
+	check(AbilityPawn->GetAbilitySystemComponent());
+
+	USSAbilitySystemComponent* ASC = Cast<USSAbilitySystemComponent>(AbilityPawn->GetAbilitySystemComponent());
+	ASC->ProcessAbilityInput(DeltaTime, bGamePaused);
 }

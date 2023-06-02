@@ -20,6 +20,8 @@ public:
 protected:
 	virtual void BeginPlay();
 
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
 	TSubclassOf<class USSHUDWidget> HUDWidgetClass;

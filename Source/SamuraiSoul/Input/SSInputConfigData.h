@@ -30,6 +30,9 @@ public:
 	const UInputAction* FindAbilityInputActionByTag(const FGameplayTag& NewInputTag, bool bLogNotFound = true) const;
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	TObjectPtr<UInputMappingContext> InputMappingContext;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputActions"))
 	TArray<FTagBindingInputAction> NativeInputActions;
 

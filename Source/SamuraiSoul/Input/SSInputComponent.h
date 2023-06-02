@@ -4,23 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
-#include "Containers/Array.h"
-#include "GameplayTagContainer.h"
-#include "HAL/Platform.h"
+#include "Input/SSInputConfigData.h"
 #include "InputTriggers.h"
-#include "SSInputConfigData.h"
-#include "Misc/AssertionMacros.h"
-#include "UObject/UObjectGlobals.h"
+#include "GameplayTagContainer.h"
 #include "SSInputComponent.generated.h"
 
-class UEnhancedInputLocalPlayerSubsystem;
-class UInputAction;
-class UObject;
-
 /**
- * USSInputComponent
- *
- *	Component used to manage input mappings and bindings using an input config data asset.
+ * 
  */
 UCLASS()
 class SAMURAISOUL_API USSInputComponent : public UEnhancedInputComponent
@@ -28,50 +18,44 @@ class SAMURAISOUL_API USSInputComponent : public UEnhancedInputComponent
 	GENERATED_BODY()
 
 public:
-	USSInputComponent(const FObjectInitializer& ObjectInitializer);
+	void SetMappingContext(const USSInputConfigData* InputConfig, class UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const;
 
 	template <class UserClass, typename FuncType>
-	void BindNativeAction(const USSInputConfigData* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func,
-	                      bool bLogIfNotFound);
+	void BindNativeAction(const USSInputConfigData* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func);
 
 	template <class UserClass, typename PressedFuncType, typename ReleasedFuncType>
-	void BindAbilityActions(const USSInputConfigData* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc,
-	                        TArray<uint32>& BindHandles);
-
-	void RemoveBinds(TArray<uint32>& BindHandles);
+	void BindAbilityActions(const USSInputConfigData* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc);
 };
 
 
 template <class UserClass, typename FuncType>
 void USSInputComponent::BindNativeAction(const USSInputConfigData* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object,
-                                         FuncType Func, bool bLogIfNotFound)
+                                          FuncType Func)
 {
-	check(InputConfig);
-	if (const UInputAction* IA = InputConfig->FindNativeInputActionByTag(InputTag, bLogIfNotFound))
-	{
-		BindAction(IA, TriggerEvent, Object, Func);
-	}
+	ensure(InputConfig);
+
+	const UInputAction* InputAction = InputConfig->FindNativeInputActionByTag(InputTag);
+
+	BindAction(InputAction, TriggerEvent, Object, Func);
 }
 
 template <class UserClass, typename PressedFuncType, typename ReleasedFuncType>
-void USSInputComponent::BindAbilityActions(const USSInputConfigData* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc,
-                                           TArray<uint32>& BindHandles)
+void USSInputComponent::BindAbilityActions(const USSInputConfigData* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc)
 {
-	check(InputConfig);
+	ensure(InputConfig);
 
 	for (const FTagBindingInputAction& Action : InputConfig->AbilityInputActions)
 	{
-		if (Action.InputAction && Action.InputTag.IsValid())
-		{
-			if (PressedFunc)
-			{
-				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag).GetHandle());
-			}
+		if (Action.InputAction == nullptr || Action.InputTag.IsValid() == false) continue;
 
-			if (ReleasedFunc)
-			{
-				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag).GetHandle());
-			}
+		if (PressedFunc != nullptr)
+		{
+			BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag);
+		}
+
+		if (ReleasedFunc != nullptr)
+		{
+			BindAction(Action.InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag);
 		}
 	}
 }

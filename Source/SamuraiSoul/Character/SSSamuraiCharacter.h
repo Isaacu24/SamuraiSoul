@@ -64,20 +64,8 @@ private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
-	void HandleDodgeActionPressed();
-	void HandleDodgeActionReleased();
-
-	void HandleEquipAndUnarmActionPressed();
-	void HandleEquipAndUnarmActionReleased();
-
-	void HandleJumpActionPressed();
-	void HandleJumpActionReleased();
-
-	void HandleSlashActionPressed();
-	void HandleSlashActionReleased();
-
-	void HandleDefenseActionPressed();
-	void HandleDefenseActionReleased();
+	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
+	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
