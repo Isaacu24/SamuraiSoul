@@ -87,7 +87,7 @@ private:
 	TObjectPtr<USpringArmComponent> CameraArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USSInputConfigData> InputActions;
+	TObjectPtr<USSInputConfigData> InputConfig;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSCombatComponent> CombatComponent;

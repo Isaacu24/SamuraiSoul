@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include <GameplayEffectTypes.h>
 #include "AbilitySystemInterface.h"
+#include "DataAsset/SSAbilitySet.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "Interface/SSCharacterWidgetInterface.h"
 #include "GameFramework/Character.h"
@@ -42,7 +43,6 @@ public:
 
 	virtual void InitializeAttributes();
 	virtual void GiveAbilities();
-	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget);
 
@@ -57,10 +57,12 @@ public:
 
 	virtual void Die() const;
 
-	virtual UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const override
+	USSAbilitySystemComponent* GetSSAbilitySystemComponent() const
 	{
 		return AbilitySystemComponent;
 	}
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UMotionWarpingComponent* GetMotionWarpingComponent() const
 	{
@@ -111,6 +113,8 @@ public:
 	}
 
 protected:
+	virtual void PossessedBy(AController* NewController) override;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
@@ -122,7 +126,7 @@ protected:
 
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<USSAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSCharacterStatComponent> StatComponent;
@@ -130,14 +134,11 @@ protected:
 	UPROPERTY()
 	TObjectPtr<USSAttributeSet> Attributes;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
-	TSubclassOf<UGameplayEffect> DefaultAttributeEffect;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
-	TArray<TSubclassOf<USSGameplayAbility>> DefaultAbilities;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMotionWarpingComponent> MotionWarpComponent;
+
+	UPROPERTY()
+	FSSAbilitySet_GrantedHandles AbilitySetHandles;
 
 protected:
 	uint8 bIsCrouch : 1;

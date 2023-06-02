@@ -20,6 +20,8 @@ public:
 	// Sets default values for this component's properties
 	USSCharacterStatComponent();
 
+	void InitializeAbilityDelegates();
+
 public:
 	FOnHPChangedDelegate OnHPChanged;
 
@@ -33,5 +35,5 @@ protected:
 	virtual void HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 
 private:
-	TObjectPtr<const USSAttributeSet> OwnerAttributeSet;
+	TWeakObjectPtr<const USSAttributeSet> OwnerAttributeSet;
 };

@@ -7,21 +7,24 @@ USSCharacterStatComponent::USSCharacterStatComponent()
 {
 }
 
+void USSCharacterStatComponent::InitializeAbilityDelegates()
+{
+	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
+
+	if (nullptr != AbilityPawn)
+	{
+		if (nullptr != AbilityPawn->GetAbilitySystemComponent())
+		{
+			OwnerAttributeSet = AbilityPawn->GetAbilitySystemComponent()->GetSet<USSAttributeSet>();
+			OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
+		}
+	}
+}
+
 // Called when the game starts
 void USSCharacterStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
-
-	//if (nullptr != AbilityPawn)
-	//{
-	//	if (nullptr != AbilityPawn->GetAbilitySystemComponent())
-	//	{
-	//		//OwnerAttributeSet = AbilityPawn->GetAbilitySystemComponent()->GetAttributeSet();
-	//		//OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
-	//	}
-	//}
 }
 
 void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,

@@ -21,6 +21,7 @@
 #include "SSCharacterControlData.h"
 #include "Component/SSCharacterStatComponent.h"
 #include "UI/SSHUDWidget.h"
+#include "SSGameplayTags.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -86,7 +87,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
 
 	CombatComponent = CreateDefaultSubobject<USSCombatComponent>(TEXT("Combat Component"));
-	InputActions    = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputActions"));
+	InputConfig     = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputConfig"));
 
 	ControlType = ECharacterControlType::Keyboard;
 }
@@ -153,59 +154,59 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		//NativeinputAction
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Move"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_MoveTag),
 		                                   ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Move);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_LookTag),
 		                                   ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_RunTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::Run);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_UnRunTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::UnRun);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_CrouchStartTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::CrouchStart);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_CrouchEndTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::CrouchEnd);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.LockOn"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_LockOnTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::LockOn);
 
-		EnhancedInputComponent->BindAction(InputActions->FindNativeInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.ChangeControl"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindNativeInputActionByTag(FSSGameplayTags::Get().Input_ChangeControlTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::ChangeCharacterControl);
 
 		//AbilityInputAction
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_JumpTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleJumpActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_JumpTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleJumpActionReleased);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_DodgeTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleDodgeActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_DodgeTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleDodgeActionReleased);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_EquipAndUnarmTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_EquipAndUnarmTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleEquipAndUnarmActionReleased);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_SlashTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleSlashActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_SlashTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleSlashActionReleased);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_DefenseTag),
 		                                   ETriggerEvent::Started, this, &ASSSamuraiCharacter::HandleDefenseActionPressed);
 
-		EnhancedInputComponent->BindAction(InputActions->FindAbilityInputActionByTag(FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"))),
+		EnhancedInputComponent->BindAction(InputConfig->FindAbilityInputActionByTag(FSSGameplayTags::Get().Input_DefenseTag),
 		                                   ETriggerEvent::Completed, this, &ASSSamuraiCharacter::HandleDefenseActionReleased);
 	}
 }
