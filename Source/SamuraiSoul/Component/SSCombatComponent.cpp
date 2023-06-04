@@ -122,7 +122,7 @@ void USSCombatComponent::TakeDamageEffect(const TSubclassOf<UGameplayEffect> Eff
 		FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->
 		                                                  ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
-		Character->GetStatComponent()->OnHPChanged.Broadcast(Character->GetStatComponent()->GetHealth());
+		//Character->GetStatComponent()->OnHPChanged.Broadcast(Character->GetStatComponent()->GetHealth());
 
 		if (0.f >= Character->GetStatComponent()->GetHealth())
 		{
@@ -203,12 +203,20 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 void USSCombatComponent::Hit(AActor* InActor)
 {
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	/*ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
 	ASSCharacterBase* Enemy     = Cast<ASSCharacterBase>(InActor);
 
 	if (true == IsRebound)
 	{
-		ActivateAbility(BeExecutedAbility);
+		if (nullptr == Character)
+		{
+			return;
+		}
+
+		FGameplayEventData Payload;
+		Payload.EventTag = FSSGameplayTags::Get().BeExecutedTag;
+
+		Character->GetAbilitySystemComponent()->HandleGameplayEvent(Payload.EventTag, &Payload);
 	}
 
 	else
@@ -251,7 +259,7 @@ void USSCombatComponent::Hit(AActor* InActor)
 				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, HitForwardMontage);
 			}
 		}
-	}
+	}*/
 
 	TakeDamageEffect(DamageEffect);
 }

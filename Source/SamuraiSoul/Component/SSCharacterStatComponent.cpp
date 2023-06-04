@@ -7,7 +7,7 @@ USSCharacterStatComponent::USSCharacterStatComponent()
 {
 }
 
-void USSCharacterStatComponent::InitializeAbilityDelegates()
+void USSCharacterStatComponent::SetAbilityDelegates()
 {
 	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
 
@@ -17,6 +17,7 @@ void USSCharacterStatComponent::InitializeAbilityDelegates()
 		{
 			OwnerAttributeSet = AbilityPawn->GetAbilitySystemComponent()->GetSet<USSAttributeSet>();
 			OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
+			OwnerAttributeSet->OnDeadEvent.AddUObject(this, &ThisClass::HandleDamaged);
 		}
 	}
 }
@@ -44,8 +45,31 @@ void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* 
 		Payload.TargetTags     = *DamageEffectSpec.CapturedTargetTags.GetAggregatedTags();
 		Payload.EventMagnitude = DamageMagnitude;
 
-		FScopedPredictionWindow NewScopedWindow(AbilityPawn->GetAbilitySystemComponent(), true);
 		AbilityPawn->GetAbilitySystemComponent()->HandleGameplayEvent(Payload.EventTag, &Payload);
+
+		OnHPChanged.Broadcast(OwnerAttributeSet->GetHealth());
+	}
+}
+
+void USSCharacterStatComponent::HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude)
+{
+	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
+
+	if (nullptr != AbilityPawn)
+	{
+		FGameplayEventData Payload;
+		Payload.EventTag       = FSSGameplayTags::Get().DeadTag;
+		Payload.Instigator     = DamageInstigator;
+		Payload.Target         = AbilityPawn->GetAbilitySystemComponent()->GetAvatarActor();
+		Payload.OptionalObject = DamageEffectSpec.Def;
+		Payload.ContextHandle  = DamageEffectSpec.GetEffectContext();
+		Payload.InstigatorTags = *DamageEffectSpec.CapturedSourceTags.GetAggregatedTags();
+		Payload.TargetTags     = *DamageEffectSpec.CapturedTargetTags.GetAggregatedTags();
+		Payload.EventMagnitude = DamageMagnitude;
+
+		AbilityPawn->GetAbilitySystemComponent()->HandleGameplayEvent(Payload.EventTag, &Payload);
+
+		OnCharacterDead.Broadcast();
 	}
 }
 

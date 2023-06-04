@@ -8,15 +8,16 @@
 #include "DataAsset/SSComboActionData.h"
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {
 	AbilityID      = ESSAbilityID::Slash;
 	AbilityInputID = ESSAbilityInputID::Slash;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Slash")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Slash")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -96,7 +97,6 @@ void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handl
 		AI->AttackEnd();
 	}
 
-	//ensure(CurrentCombo != 0);
 	CurrentCombo = 0;
 }
 

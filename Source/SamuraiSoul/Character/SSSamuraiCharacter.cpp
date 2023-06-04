@@ -97,8 +97,6 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 void ASSSamuraiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SetCharacterControl(ControlType);
 }
 
 void ASSSamuraiCharacter::PostInitializeComponents()
@@ -154,11 +152,7 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 	USSInputComponent* SSInputComponent = CastChecked<USSInputComponent>(PlayerInputComponent);
 
-	const APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
-
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-
-	//SSInputComponent->SetMappingContext(InputConfig, Subsystem);
+	SetCharacterControl(ControlType);
 
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_MoveTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Move);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_LookTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
@@ -181,7 +175,6 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	InitializeAttributes();
 }
 
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)

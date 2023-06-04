@@ -51,3 +51,10 @@ enum class EDefenseState : uint8
 	Parry
 	//Defelect
 };
+
+UENUM(BlueprintType)
+enum class ECharacterControlType : uint8
+{
+	Keyboard,
+	Gamepad
+};

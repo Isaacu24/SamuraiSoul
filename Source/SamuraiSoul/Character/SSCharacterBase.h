@@ -25,13 +25,6 @@ class USSCharacterStatComponent;
 
 DECLARE_MULTICAST_DELEGATE(FCharacterEndedDelegate);
 
-UENUM()
-enum class ECharacterControlType : uint8
-{
-	Keyboard,
-	Gamepad
-};
-
 UCLASS()
 class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSBehaviorInterface, public ISSCharacterWidgetInterface
 {
@@ -40,9 +33,6 @@ class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySyste
 public:
 	// Sets default values for this character's properties
 	ASSCharacterBase();
-
-	virtual void InitializeAttributes();
-	virtual void GiveAbilities();
 
 	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget);
 

@@ -8,15 +8,16 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatInterface.h"
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 {
 	AbilityID      = ESSAbilityID::Defense;
 	AbilityInputID = ESSAbilityInputID::Defense;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Defense")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Defense")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_Defense::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

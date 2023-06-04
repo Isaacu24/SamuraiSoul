@@ -13,7 +13,7 @@ const UInputAction* USSInputConfigData::FindNativeInputActionByTag(const FGamepl
 		}
 	}
 
-	if (bLogNotFound)
+	if (true == bLogNotFound)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Can't find NativeInputAction for InputTag [%s] on InputConfig [%s]."), *NewInputTag.ToString(), *GetNameSafe(this));
 	}
@@ -32,7 +32,7 @@ const UInputAction* USSInputConfigData::FindAbilityInputActionByTag(const FGamep
 		}
 	}
 
-	if (bLogNotFound)
+	if (true == bLogNotFound)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Can't find AbilityInputAction for InputTag [%s] on InputConfig [%s]."), *NewInputTag.ToString(), *GetNameSafe(this));
 	}

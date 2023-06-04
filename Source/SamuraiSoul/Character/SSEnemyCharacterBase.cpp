@@ -78,10 +78,6 @@ void ASSEnemyCharacterBase::Walk()
 {
 }
 
-void ASSEnemyCharacterBase::SetHit(bool Value)
-{
-}
-
 void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
 {
 	OnAttackFinished = InOnAttackFinished;

@@ -14,6 +14,7 @@ USSGameplayAbility_Hit::USSGameplayAbility_Hit()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().HitTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().HitTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 
 	FAbilityTriggerData TriggerData;
 	TriggerData.TriggerTag    = FSSGameplayTags::Get().HitTag;

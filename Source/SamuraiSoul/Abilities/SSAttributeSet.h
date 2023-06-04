@@ -46,6 +46,7 @@ public:
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, Damage);
 
 	mutable FSSAttributeEventDelegate OnDamagedEvent;
+	mutable FSSAttributeEventDelegate OnDeadEvent;
 
 	// 이펙트가 적용된 후에 자동으로 호출되는 함수
 	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;

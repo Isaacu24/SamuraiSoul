@@ -8,6 +8,7 @@
 #include "SSCharacterStatComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHPChangedDelegate, float /*CurrentHP*/);
+DECLARE_MULTICAST_DELEGATE(FOnCharacterDeadDelegate);
 
 class USSAttributeSet;
 
@@ -20,10 +21,11 @@ public:
 	// Sets default values for this component's properties
 	USSCharacterStatComponent();
 
-	void InitializeAbilityDelegates();
+	void SetAbilityDelegates();
 
 public:
 	FOnHPChangedDelegate OnHPChanged;
+	FOnCharacterDeadDelegate OnCharacterDead;
 
 	float GetHealth() const;
 	float GetMaxHealth() const;
@@ -33,6 +35,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
+	virtual void HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 
 private:
 	TWeakObjectPtr<const USSAttributeSet> OwnerAttributeSet;

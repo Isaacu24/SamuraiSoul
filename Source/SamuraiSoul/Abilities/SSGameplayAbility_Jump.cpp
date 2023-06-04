@@ -3,15 +3,16 @@
 
 #include "SSGameplayAbility_Jump.h"
 #include <GameFramework/Character.h>
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {
 	AbilityID      = ESSAbilityID::Jump;
 	AbilityInputID = ESSAbilityInputID::Jump;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Jump")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_Jump::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

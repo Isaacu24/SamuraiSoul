@@ -6,7 +6,14 @@ FSSGameplayTags FSSGameplayTags::GameplayTags;
 
 FSSGameplayTags::FSSGameplayTags()
 {
-	AbilityTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities"));
+	AbilityTag            = FGameplayTag::RequestGameplayTag(FName("SSAbilities"));
+	Ability_JumpTag       = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Jump"));
+	Ability_DodgeTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dodge"));
+	Ability_EquipUnarmTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.EquipUnarm"));
+	Ability_SlashTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
+	Ability_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
+	BeExecutedTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.BeExecuted"));
+	Ability_ExecutionTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Execution"));
 
 	HitTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Hit"));
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dead"));

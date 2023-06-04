@@ -18,8 +18,6 @@ class SAMURAISOUL_API USSInputComponent : public UEnhancedInputComponent
 	GENERATED_BODY()
 
 public:
-	void SetMappingContext(const USSInputConfigData* InputConfig, class UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const;
-
 	template <class UserClass, typename FuncType>
 	void BindNativeAction(const USSInputConfigData* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func);
 
@@ -30,7 +28,7 @@ public:
 
 template <class UserClass, typename FuncType>
 void USSInputComponent::BindNativeAction(const USSInputConfigData* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object,
-                                          FuncType Func)
+                                         FuncType Func)
 {
 	ensure(InputConfig);
 
@@ -46,11 +44,14 @@ void USSInputComponent::BindAbilityActions(const USSInputConfigData* InputConfig
 
 	for (const FTagBindingInputAction& Action : InputConfig->AbilityInputActions)
 	{
-		if (Action.InputAction == nullptr || Action.InputTag.IsValid() == false) continue;
+		if (nullptr == Action.InputAction || false == Action.InputTag.IsValid())
+		{
+			continue;
+		}
 
 		if (PressedFunc != nullptr)
 		{
-			BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, PressedFunc, Action.InputTag);
+			BindAction(Action.InputAction, ETriggerEvent::Started, Object, PressedFunc, Action.InputTag);
 		}
 
 		if (ReleasedFunc != nullptr)

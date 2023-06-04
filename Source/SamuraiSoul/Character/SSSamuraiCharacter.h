@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/SamuraiSoul.h"
 #include "SSCharacterBase.h"
 #include "InputActionValue.h"
 #include "Interface/SSCharacterHUDInterface.h"

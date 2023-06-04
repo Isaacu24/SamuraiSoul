@@ -4,15 +4,16 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Interface/SSBehaviorInterface.h"
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_EquipUnarm::USSGameplayAbility_EquipUnarm()
 {
 	AbilityID      = ESSAbilityID::EquipUnarm;
 	AbilityInputID = ESSAbilityInputID::EquipUnarm;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.EquipUnarm")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.EquipUnarm")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_EquipUnarm::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

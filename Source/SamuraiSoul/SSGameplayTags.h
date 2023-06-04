@@ -17,6 +17,15 @@ public:
 public:
 	//Ability
 	FGameplayTag AbilityTag;
+	FGameplayTag Ability_JumpTag;
+	FGameplayTag Ability_DodgeTag;
+	FGameplayTag Ability_EquipUnarmTag;
+	FGameplayTag Ability_SlashTag;
+	FGameplayTag Ability_DefenseTag;
+	FGameplayTag BeExecutedTag;
+	FGameplayTag Ability_ExecutionTag;
+
+	//Hit
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;
 

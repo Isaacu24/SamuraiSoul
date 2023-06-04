@@ -5,15 +5,16 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Interface/SSBehaviorInterface.h"
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_Dodege::USSGameplayAbility_Dodege()
 {
 	AbilityID      = ESSAbilityID::Dodge;
 	AbilityInputID = ESSAbilityInputID::Dodge;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Dodge")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Dodge")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_Dodege::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

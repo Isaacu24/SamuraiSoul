@@ -6,15 +6,21 @@
 #include <Components/CapsuleComponent.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_BeExecuted::USSGameplayAbility_BeExecuted()
 {
 	AbilityID      = ESSAbilityID::BeExecuted;
 	AbilityInputID = ESSAbilityInputID::None;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.BeExecuted")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.BeExecuted")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+
+	FAbilityTriggerData TriggerData;
+	TriggerData.TriggerTag    = FSSGameplayTags::Get().BeExecutedTag;
+	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	AbilityTriggers.Emplace(TriggerData);
 }
 
 void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

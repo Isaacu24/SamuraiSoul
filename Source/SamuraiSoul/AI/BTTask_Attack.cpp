@@ -3,6 +3,8 @@
 #include "AI/BTTask_Attack.h"
 #include "AIController.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "SSEnemyAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
@@ -28,10 +30,12 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	FAICharacterAbilityFinished OnAttackFinished;
 
 	OnAttackFinished.BindLambda(
-		[&]()
-		{
-			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-		});
+	                            [&]()
+	                            {
+		                            ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+		                            Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), false);
+		                            FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	                            });
 
 	AIPawn->SetAIAttackDelegate(OnAttackFinished);
 	AIPawn->AttackByAI();

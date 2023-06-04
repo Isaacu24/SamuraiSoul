@@ -40,8 +40,8 @@ ASSEnemyAIController::ASSEnemyAIController()
 	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
 	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
 	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
-	AISenseConfigSight->SightRadius                              = 800.f;
-	AISenseConfigSight->LoseSightRadius                          = 1000.f;
+	AISenseConfigSight->SightRadius                              = 1500.f;
+	AISenseConfigSight->LoseSightRadius                          = 2000.f;
 	AISenseConfigSight->PeripheralVisionAngleDegrees             = 60.f;
 	AISenseConfigSight->SetMaxAge(5.0f);
 

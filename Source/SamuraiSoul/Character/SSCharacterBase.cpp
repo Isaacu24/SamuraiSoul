@@ -53,12 +53,7 @@ void ASSCharacterBase::PossessedBy(AController* NewController)
 	check(nullptr != CharacterData->AbilitySet);
 	CharacterData->AbilitySet->GiveToAbilitySystem(AbilitySystemComponent, &AbilitySetHandles);
 
-	const USSAttributeSet* Attribute = AbilitySystemComponent->GetSet<USSAttributeSet>();
-
-	StatComponent->InitializeAbilityDelegates();
-
-	//InitializeAttributes();
-	//GiveAbilities();
+	StatComponent->SetAbilityDelegates();
 }
 
 void ASSCharacterBase::SetCharacterControlData(const USSCharacterControlData* ControlData)
@@ -70,37 +65,6 @@ void ASSCharacterBase::SetCharacterControlData(const USSCharacterControlData* Co
 	GetCharacterMovement()->bOrientRotationToMovement     = ControlData->bOrientRotationToMovement;
 	GetCharacterMovement()->bUseControllerDesiredRotation = ControlData->bUseControllerDesiredRotation;
 	GetCharacterMovement()->RotationRate                  = ControlData->RotationRate;
-}
-
-void ASSCharacterBase::InitializeAttributes()
-{
-	//if (nullptr != AbilitySystemComponent
-	//	&& nullptr != DefaultAttributeEffect)
-	//{
-	//	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	//	EffectContext.AddSourceObject(this);
-
-	//	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributeEffect, 1, EffectContext);
-
-	//	if (SpecHandle.IsValid())
-	//	{
-	//		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	//	}
-	//}
-}
-
-void ASSCharacterBase::GiveAbilities()
-{
-	//if (true == HasAuthority()
-	//	&& nullptr != AbilitySystemComponent)
-	//{
-	//	for (TSubclassOf<USSGameplayAbility>& StartUpAbility : DefaultAbilities)
-	//	{
-	//		AbilitySystemComponent->GiveAbility(
-	//		                                    FGameplayAbilitySpec(StartUpAbility, 1, static_cast<int32>(StartUpAbility.GetDefaultObject()->AbilityInputID),
-	//		                                                         this));
-	//	}
-	//}
 }
 
 void ASSCharacterBase::SetupCharacterWidget(USSUserWidget* InUserWidget)

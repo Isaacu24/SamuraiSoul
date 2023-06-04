@@ -45,8 +45,6 @@ protected:
 	virtual void Run() override;
 	virtual void Walk() override;
 
-	virtual void SetHit(bool Value) override;
-
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
 	virtual void AttackEnd() override;

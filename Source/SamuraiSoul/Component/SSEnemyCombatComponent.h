@@ -23,10 +23,6 @@ public:
 	void AttackByAI() const;
 
 protected:
-	virtual void Hit(AActor* InActor) override;
-
-	virtual void Parry(AActor* Opponent) override;
-	virtual void Rebound(AActor* Opponent) override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))

@@ -102,19 +102,6 @@ void ASSEnemyCharacter::Walk()
 	GetCharacterMovement()->MaxWalkSpeed = 100.f;
 }
 
-void ASSEnemyCharacter::SetHit(bool Value)
-{
-	if (nullptr != GetController())
-	{
-		ASSEnemyAIController* MyController = Cast<ASSEnemyAIController>(GetController());
-
-		if (nullptr != MyController)
-		{
-			MyController->SetHit(Value);
-		}
-	}
-}
-
 void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 {
 	Super::SetupCharacterWidget(InUserWidget);

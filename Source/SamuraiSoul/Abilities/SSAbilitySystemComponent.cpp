@@ -2,10 +2,7 @@
 
 
 #include "SSAbilitySystemComponent.h"
-
 #include "SSGameplayAbility.h"
-
-class USSGameplayAbility;
 
 USSAbilitySystemComponent::USSAbilitySystemComponent()
 {
@@ -13,11 +10,11 @@ USSAbilitySystemComponent::USSAbilitySystemComponent()
 
 void USSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
-	if (InputTag.IsValid())
+	if (true == InputTag.IsValid())
 	{
 		for (const FGameplayAbilitySpec& AbilitySpec : ActivatableAbilities.Items)
 		{
-			if (AbilitySpec.Ability && (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)))
+			if (nullptr != AbilitySpec.Ability && true == (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)))
 			{
 				InputPressedSpecHandles.AddUnique(AbilitySpec.Handle);
 				InputHeldSpecHandles.AddUnique(AbilitySpec.Handle);
@@ -28,11 +25,11 @@ void USSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Input
 
 void USSAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
-	if (InputTag.IsValid())
+	if (true == InputTag.IsValid())
 	{
 		for (const FGameplayAbilitySpec& AbilitySpec : ActivatableAbilities.Items)
 		{
-			if (AbilitySpec.Ability && (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)))
+			if (nullptr != AbilitySpec.Ability && true == (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)))
 			{
 				InputReleasedSpecHandles.AddUnique(AbilitySpec.Handle);
 				InputHeldSpecHandles.Remove(AbilitySpec.Handle);
@@ -51,7 +48,7 @@ void USSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGameP
 	{
 		if (const FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
 		{
-			if (AbilitySpec->Ability && !AbilitySpec->IsActive())
+			if (nullptr != AbilitySpec->Ability && false == AbilitySpec->IsActive())
 			{
 				const USSGameplayAbility* SSAbilityCDO = CastChecked<USSGameplayAbility>(AbilitySpec->Ability);
 
@@ -68,15 +65,16 @@ void USSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGameP
 	{
 		if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
 		{
-			if (AbilitySpec->Ability)
+			if (nullptr != AbilitySpec->Ability)
 			{
 				AbilitySpec->InputPressed = true;
 
-				if (AbilitySpec->IsActive())
+				if (true == AbilitySpec->IsActive())
 				{
 					// Ability is active so pass along the input event.
 					AbilitySpecInputPressed(*AbilitySpec);
 				}
+
 				else
 				{
 					const USSGameplayAbility* LyraAbilityCDO = CastChecked<USSGameplayAbility>(AbilitySpec->Ability);
@@ -90,28 +88,24 @@ void USSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGameP
 		}
 	}
 
-	//
 	// Try to activate all the abilities that are from presses and holds.
 	// We do it all at once so that held inputs don't activate the ability
 	// and then also send a input event to the ability because of the press.
-	//
 	for (const FGameplayAbilitySpecHandle& AbilitySpecHandle : AbilitiesToActivate)
 	{
 		TryActivateAbility(AbilitySpecHandle);
 	}
 
-	//
-	// Process all abilities that had their input released this frame.
-	//
+	//	// Process all abilities that had their input released this frame.
 	for (const FGameplayAbilitySpecHandle& SpecHandle : InputReleasedSpecHandles)
 	{
 		if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(SpecHandle))
 		{
-			if (AbilitySpec->Ability)
+			if (nullptr != AbilitySpec->Ability)
 			{
 				AbilitySpec->InputPressed = false;
 
-				if (AbilitySpec->IsActive())
+				if (true == AbilitySpec->IsActive())
 				{
 					// Ability is active so pass along the input event.
 					AbilitySpecInputReleased(*AbilitySpec);
@@ -120,9 +114,7 @@ void USSAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGameP
 		}
 	}
 
-	//
 	// Clear the cached ability handles.
-	//
 	InputPressedSpecHandles.Reset();
 	InputReleasedSpecHandles.Reset();
 }

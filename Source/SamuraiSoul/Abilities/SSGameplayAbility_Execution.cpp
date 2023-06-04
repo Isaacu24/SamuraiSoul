@@ -9,15 +9,16 @@
 #include <MotionWarpingComponent.h>
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatInterface.h"
+#include "SSGameplayTags.h"
 
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
 	AbilityID      = ESSAbilityID::Execution;
 	AbilityInputID = ESSAbilityInputID::Execution;
 
-	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Execution")));
-	ActivationOwnedTags.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities.Execution")));
-	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag(TEXT("SSAbilities")));
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_ExecutionTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_ExecutionTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -82,7 +83,7 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		}
 	}
 
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ActivateAbility: %s"), *GetName()));
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("BeExecuted: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Execution::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

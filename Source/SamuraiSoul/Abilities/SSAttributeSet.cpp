@@ -19,21 +19,21 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute() && Data.EvaluatedData.Magnitude > 0.0f)
 	{
 		//Calculrate Damage.
-		/*float NewHealth = FMath::Clamp(GetHealth() - GetDamage(), 0.0f, GetMaxHealth());
+		float NewHealth = FMath::Clamp(GetHealth() - GetDamage(), 0.0f, GetMaxHealth());
 		SetHealth(NewHealth);
-		SetDamage(0.0f);*/
+		SetDamage(0.0f);
 
 		if (GetHealth() <= 0.0f)
 		{
 			//Dead
-			//if (true == OnOutOfHealthDelegate.IsBound())
-			//{
-			//	const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
-			//	AActor* Instigator                                = EffectContext.GetOriginalInstigator();
-			//	AActor* Causer                                    = EffectContext.GetEffectCauser();
+			if (true == OnDeadEvent.IsBound())
+			{
+				const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+				AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+				AActor* Causer                                    = EffectContext.GetEffectCauser();
 
-			//	OnOutOfHealthDelegate.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
-			//}
+				OnDeadEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+			}
 		}
 
 		else

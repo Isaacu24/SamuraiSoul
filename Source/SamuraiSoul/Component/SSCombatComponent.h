@@ -90,10 +90,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> BeExecutedAbility;
-
 	UPROPERTY()
 	uint8 IsParry : 1;
 
