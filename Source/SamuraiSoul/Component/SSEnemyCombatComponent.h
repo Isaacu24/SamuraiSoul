@@ -22,9 +22,13 @@ public:
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
 
-protected:
+	virtual void Parry();
+	virtual void Rebound();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	virtual void Hit();
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> SlashAbility;
 };

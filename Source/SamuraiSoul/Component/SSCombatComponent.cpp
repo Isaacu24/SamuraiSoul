@@ -11,7 +11,6 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "Interface/SSCombatInterface.h"
 #include "AbilitySystemInterface.h"
-#include "SSGameplayTags.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -97,7 +96,7 @@ void USSCombatComponent::ActivateAbility(const TSubclassOf<UGameplayAbility> Abi
 	}
 }
 
-void USSCombatComponent::TakeDamageEffect(const TSubclassOf<UGameplayEffect> Effect) const
+void USSCombatComponent::TakeGameplayEffect(const TSubclassOf<UGameplayEffect> Effect) const
 {
 	if (nullptr == Effect)
 	{
@@ -190,63 +189,27 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 	if (MyOwner != Enemy)
 	{
-		Enemy->GetCombatComponent()->Hit(GetOwner());
+		Enemy->GetCombatComponent()->Hit();
 	}
 }
 
-void USSCombatComponent::Hit(AActor* InActor)
+void USSCombatComponent::Parry()
 {
-	TakeDamageEffect(DamageEffect);
+	ensure(ParryAbility);
+	ActivateAbility(ParryAbility);
 }
 
-void USSCombatComponent::Parry(AActor* Opponent)
+void USSCombatComponent::Hit()
 {
-	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
+	//Execution or Attack
+	ensure(DamageEffect);
 
-	Target = Opponent;
-
-	if (nullptr != Character)
-	{
-		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
-
-		if (nullptr != AnimInstance)
-		{
-			AnimInstance->Montage_Play(ParryMontage);
-
-			IsParry = true;
-			FOnMontageEnded ParryEndDelegate;
-			ParryEndDelegate.BindUObject(this, &USSCombatComponent::ParryEnd);
-			AnimInstance->Montage_SetEndDelegate(ParryEndDelegate, ParryMontage);
-		}
-	}
+	TakeGameplayEffect(DamageEffect);
+	//TakeGameplayEffect(BeExecutedEffect);
 }
 
-void USSCombatComponent::Rebound(AActor* Opponent)
+void USSCombatComponent::Rebound()
 {
-	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
-
-		if (nullptr != AnimInstance)
-		{
-			AnimInstance->Montage_Play(ReboundMontage);
-
-			IsRebound = true;
-			FOnMontageEnded ReboundEndDelegate;
-			ReboundEndDelegate.BindUObject(this, &USSCombatComponent::ReboundEnd);
-			AnimInstance->Montage_SetEndDelegate(ReboundEndDelegate, ReboundMontage);
-		}
-	}
-}
-
-void USSCombatComponent::ParryEnd(UAnimMontage* Montage, bool bInterrupted)
-{
-	IsParry = false;
-}
-
-void USSCombatComponent::ReboundEnd(UAnimMontage* Montage, bool bInterrupted)
-{
-	IsRebound = false;
+	ensure(ReboundEffect);
+	TakeGameplayEffect(ReboundEffect);
 }

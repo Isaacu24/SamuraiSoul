@@ -31,12 +31,6 @@ ASSEnemyAIController::ASSEnemyAIController()
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
 	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
 
-	//ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
-
-	//if (nullptr != AIPawn)
-	//{
-	//}
-
 	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
 	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
 	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
@@ -85,6 +79,16 @@ void ASSEnemyAIController::StopAI()
 	}
 }
 
+void ASSEnemyAIController::SetParry(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISPARRY, Value);
+	}
+}
+
 void ASSEnemyAIController::SetPatrol(bool Value)
 {
 	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
@@ -102,6 +106,26 @@ void ASSEnemyAIController::SetHit(bool Value)
 	if (true == UseBlackboard(BBAsset, BlackboardPtr))
 	{
 		Blackboard->SetValueAsBool(BBKEY_ISHIT, Value);
+	}
+}
+
+void ASSEnemyAIController::SetDead(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISDEAD, Value);
+	}
+}
+
+void ASSEnemyAIController::SetRebound(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISREBOUND, Value);
 	}
 }
 

@@ -12,12 +12,13 @@ FSSGameplayTags::FSSGameplayTags()
 	Ability_EquipUnarmTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.EquipUnarm"));
 	Ability_SlashTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
 	Ability_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
-	BeExecutedTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.BeExecuted"));
 	Ability_ExecutionTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Execution"));
+	Ability_ParryTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Parry"));
 
-	HitTag     = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Hit"));
-	DeadTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dead"));
-	ReboundTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dead"));
+	HitTag        = FGameplayTag::RequestGameplayTag(FName("Reaction.Hit"));
+	DeadTag       = FGameplayTag::RequestGameplayTag(FName("Reaction.Dead"));
+	ReboundTag    = FGameplayTag::RequestGameplayTag(FName("Reaction.Rebound"));
+	BeExecutedTag = FGameplayTag::RequestGameplayTag(FName("Reaction.BeExecuted"));
 
 	Input_MoveTag          = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Move"));
 	Input_LookTag          = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"));
@@ -28,9 +29,9 @@ FSSGameplayTags::FSSGameplayTags()
 	Input_LockOnTag        = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.LockOn"));
 	Input_ChangeControlTag = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.ChangeControl"));
 
-	Input_JumpTag          = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"));
-	Input_DodgeTag         = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"));
-	Input_EquipAndUnarmTag = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipAndUnarm"));
-	Input_SlashTag         = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"));
-	Input_DefenseTag       = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"));
+	Input_JumpTag       = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"));
+	Input_DodgeTag      = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"));
+	Input_EquipUnarmTag = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipUnarm"));
+	Input_SlashTag      = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"));
+	Input_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"));
 }

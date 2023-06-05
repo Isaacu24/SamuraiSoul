@@ -50,6 +50,30 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 			}
 		}
 	}
+
+	else if (Data.EvaluatedData.Attribute == GetReboundAttribute())
+	{
+		if (true == OnReboundEvent.IsBound())
+		{
+			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+			AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+			AActor* Causer                                    = EffectContext.GetEffectCauser();
+
+			OnReboundEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+		}
+	}
+
+	else if (Data.EvaluatedData.Attribute == GetBeExecutedAttribute())
+	{
+		if (true == OnBeExecutedEvent.IsBound())
+		{
+			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+			AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+			AActor* Causer                                    = EffectContext.GetEffectCauser();
+
+			OnBeExecutedEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+		}
+	}
 }
 
 void USSAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
@@ -79,4 +103,19 @@ void USSAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth
 void USSAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, AttackPower, OldAttackPower);
+}
+
+void USSAttributeSet::OnRep_Damage(const FGameplayAttributeData& OldDamage)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, Damage, OldDamage);
+}
+
+void USSAttributeSet::OnRep_Rebound(const FGameplayAttributeData& OldRebound)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, Rebound, OldRebound);
+}
+
+void USSAttributeSet::OnRep_BeExecuted(const FGameplayAttributeData& OldBeExecuted)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, BeExecuted, OldBeExecuted);
 }

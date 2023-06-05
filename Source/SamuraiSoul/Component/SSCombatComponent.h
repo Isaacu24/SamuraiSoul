@@ -29,10 +29,10 @@ public:
 	void EquipDefenseBarrier();
 
 	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
-	void TakeDamageEffect(const TSubclassOf<UGameplayEffect> Effect) const;
+	void TakeGameplayEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
-	virtual void Parry(AActor* Opponent);
-	virtual void Rebound(AActor* Opponent);
+	virtual void Parry();
+	virtual void Rebound();
 
 	void OnDefense() const;
 	void OffDefense() const;
@@ -40,16 +40,6 @@ public:
 
 	void OnWeapon() const;
 	void OffWeapon() const;
-
-	bool GetIsParry() const
-	{
-		return IsParry;
-	}
-
-	bool GetIsRebound() const
-	{
-		return IsRebound;
-	}
 
 	AActor* GetTarget() const
 	{
@@ -63,10 +53,7 @@ public:
 
 protected:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
-	virtual void Hit(AActor* InActor);
-
-	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
-	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
+	virtual void Hit();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
@@ -75,11 +62,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ASSWeapon_DefenseBarrier> DefenseBarrier;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> HitForwardMontage;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> HitBackMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayAbility> ParryAbility;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> ParryMontage;
@@ -89,11 +73,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
-	UPROPERTY()
-	uint8 IsParry : 1;
 
-	UPROPERTY()
-	uint8 IsRebound : 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> BeExecutedEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> ReboundEffect;
 
 	UPROPERTY()
 	TObjectPtr<AActor> Target;

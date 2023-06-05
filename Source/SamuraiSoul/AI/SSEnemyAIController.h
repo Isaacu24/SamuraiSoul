@@ -30,8 +30,12 @@ public:
 	void RunAI();
 	void StopAI();
 
+	void SetParry(bool Value);
+
 	void SetPatrol(bool Value);
 	void SetHit(bool Value);
+	void SetDead(bool Value);
+	void SetRebound(bool Value);
 
 	UAIPerceptionComponent* GetAIPerceptionComponent() const
 	{

@@ -7,6 +7,7 @@
 #include "Component/SSEnemyCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Component/SSWidgetComponent.h"
+#include "AI/SSEnemyAIController.h"
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
@@ -90,6 +91,38 @@ void ASSEnemyCharacterBase::AttackByAI()
 void ASSEnemyCharacterBase::AttackEnd()
 {
 	OnAttackFinished.ExecuteIfBound();
+}
+
+void ASSEnemyCharacterBase::SetParry(bool Value)
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->SetParry(Value);
+}
+
+void ASSEnemyCharacterBase::SetHit(bool Value)
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->SetHit(Value);
+}
+
+void ASSEnemyCharacterBase::SetDead(bool Value)
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->SetDead(Value);
+}
+
+void ASSEnemyCharacterBase::SetRebound(bool Value)
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->SetRebound(Value);
 }
 
 void ASSEnemyCharacterBase::SetHiddenHPBar(bool Value) const

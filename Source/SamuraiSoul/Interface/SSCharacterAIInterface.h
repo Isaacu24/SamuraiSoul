@@ -39,6 +39,12 @@ public:
 	virtual void AttackByAI() = 0;
 	virtual void AttackEnd() = 0;
 
+	virtual void SetParry(bool Value) = 0;
+
+	virtual void SetHit(bool Value) = 0;
+	virtual void SetDead(bool Value) = 0;
+	virtual void SetRebound(bool Value) = 0;
+
 	//UI
 	virtual void SetHiddenHPBar(bool Value) const = 0;
 	virtual void SetHiddenTargetCursor(bool Value) const = 0;

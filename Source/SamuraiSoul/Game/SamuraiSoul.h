@@ -31,6 +31,7 @@ enum class ESSAbilityID : uint8
 	Defense,
 	Execution,
 	BeExecuted,
+	Parry,
 	Rebound,
 	Hit,
 	Dead

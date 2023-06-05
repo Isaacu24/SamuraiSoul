@@ -22,13 +22,13 @@ public:
 	FGameplayTag Ability_EquipUnarmTag;
 	FGameplayTag Ability_SlashTag;
 	FGameplayTag Ability_DefenseTag;
-	FGameplayTag BeExecutedTag;
 	FGameplayTag Ability_ExecutionTag;
-
+	FGameplayTag Ability_ParryTag;
 	//Hit
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;
 	FGameplayTag ReboundTag;
+	FGameplayTag BeExecutedTag;
 
 	//Input
 	FGameplayTag Input_MoveTag;
@@ -42,7 +42,7 @@ public:
 
 	FGameplayTag Input_JumpTag;
 	FGameplayTag Input_DodgeTag;
-	FGameplayTag Input_EquipAndUnarmTag;
+	FGameplayTag Input_EquipUnarmTag;
 	FGameplayTag Input_SlashTag;
 	FGameplayTag Input_DefenseTag;
 

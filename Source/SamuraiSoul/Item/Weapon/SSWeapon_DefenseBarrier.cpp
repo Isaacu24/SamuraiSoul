@@ -106,8 +106,8 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 						if (nullptr != MyOwner->GetCombatComponent()
 							&& nullptr != Enemy->GetCombatComponent())
 						{
-							MyOwner->GetCombatComponent()->Parry(OtherActor->GetOwner());
-							Enemy->GetCombatComponent()->Rebound(GetOwner());
+							MyOwner->GetCombatComponent()->Parry();
+							Enemy->GetCombatComponent()->Rebound();
 						}
 					}
 				}

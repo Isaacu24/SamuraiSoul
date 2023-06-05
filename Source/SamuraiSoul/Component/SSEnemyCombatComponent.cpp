@@ -2,6 +2,7 @@
 
 
 #include "Component/SSEnemyCombatComponent.h"
+#include "Interface/SSCharacterAIInterface.h"
 #include "Item/Weapon/SSWeapon.h"
 
 USSEnemyCombatComponent::USSEnemyCombatComponent()
@@ -32,4 +33,28 @@ void USSEnemyCombatComponent::AttackByAI() const
 		default:
 			break;
 	}
+}
+
+void USSEnemyCombatComponent::Parry()
+{
+	Super::Parry();
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
+	AIPawn->SetParry(true);
+}
+
+void USSEnemyCombatComponent::Rebound()
+{
+	Super::Rebound();
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
+	AIPawn->SetRebound(true);
+}
+
+void USSEnemyCombatComponent::Hit()
+{
+	Super::Hit();
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
+	AIPawn->SetHit(true);
 }

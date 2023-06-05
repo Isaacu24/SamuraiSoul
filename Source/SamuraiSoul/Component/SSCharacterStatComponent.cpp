@@ -16,8 +16,12 @@ void USSCharacterStatComponent::SetAbilityDelegates()
 		if (nullptr != AbilityPawn->GetAbilitySystemComponent())
 		{
 			OwnerAttributeSet = AbilityPawn->GetAbilitySystemComponent()->GetSet<USSAttributeSet>();
+
+			//Reaction Ability binding
 			OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
-			OwnerAttributeSet->OnDeadEvent.AddUObject(this, &ThisClass::HandleDamaged);
+			OwnerAttributeSet->OnDeadEvent.AddUObject(this, &ThisClass::HandleDead);
+			OwnerAttributeSet->OnReboundEvent.AddUObject(this, &ThisClass::HandleRebound);
+			OwnerAttributeSet->OnBeExecutedEvent.AddUObject(this, &ThisClass::HandleBeExecuted);
 		}
 	}
 }
@@ -28,15 +32,16 @@ void USSCharacterStatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
-                                              float DamageMagnitude)
+bool USSCharacterStatComponent::SetHandleGameplayEvent(FGameplayTag Tag, AActor* DamageInstigator, AActor* DamageCauser,
+                                                       const FGameplayEffectSpec& DamageEffectSpec,
+                                                       float DamageMagnitude)
 {
 	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
 
 	if (nullptr != AbilityPawn)
 	{
 		FGameplayEventData Payload;
-		Payload.EventTag       = FSSGameplayTags::Get().HitTag;
+		Payload.EventTag       = Tag;
 		Payload.Instigator     = DamageInstigator;
 		Payload.Target         = AbilityPawn->GetAbilitySystemComponent()->GetAvatarActor();
 		Payload.OptionalObject = DamageEffectSpec.Def;
@@ -47,30 +52,49 @@ void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* 
 
 		AbilityPawn->GetAbilitySystemComponent()->HandleGameplayEvent(Payload.EventTag, &Payload);
 
+		return true;
+	}
+
+	return false;
+}
+
+void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
+                                              float DamageMagnitude)
+{
+	bool IsSuccessed = SetHandleGameplayEvent(FSSGameplayTags::Get().HitTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
+
+	if (true == IsSuccessed)
+	{
 		OnHPChanged.Broadcast(OwnerAttributeSet->GetHealth());
 	}
 }
 
 void USSCharacterStatComponent::HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude)
 {
-	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
+	bool IsSuccessed = SetHandleGameplayEvent(FSSGameplayTags::Get().DeadTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
 
-	if (nullptr != AbilityPawn)
+	if (true == IsSuccessed)
 	{
-		FGameplayEventData Payload;
-		Payload.EventTag       = FSSGameplayTags::Get().DeadTag;
-		Payload.Instigator     = DamageInstigator;
-		Payload.Target         = AbilityPawn->GetAbilitySystemComponent()->GetAvatarActor();
-		Payload.OptionalObject = DamageEffectSpec.Def;
-		Payload.ContextHandle  = DamageEffectSpec.GetEffectContext();
-		Payload.InstigatorTags = *DamageEffectSpec.CapturedSourceTags.GetAggregatedTags();
-		Payload.TargetTags     = *DamageEffectSpec.CapturedTargetTags.GetAggregatedTags();
-		Payload.EventMagnitude = DamageMagnitude;
-
-		AbilityPawn->GetAbilitySystemComponent()->HandleGameplayEvent(Payload.EventTag, &Payload);
-
+		//Destroy UI
 		OnCharacterDead.Broadcast();
 	}
+}
+
+void USSCharacterStatComponent::HandleBeExecuted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
+                                                 float DamageMagnitude)
+{
+	bool IsSuccessed = SetHandleGameplayEvent(FSSGameplayTags::Get().BeExecutedTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
+
+	if (true == IsSuccessed)
+	{
+		OnCharacterDead.Broadcast();
+	}
+}
+
+void USSCharacterStatComponent::HandleRebound(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
+                                              float DamageMagnitude)
+{
+	SetHandleGameplayEvent(FSSGameplayTags::Get().ReboundTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
 }
 
 float USSCharacterStatComponent::GetHealth() const
