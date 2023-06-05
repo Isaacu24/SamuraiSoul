@@ -15,8 +15,9 @@ FSSGameplayTags::FSSGameplayTags()
 	BeExecutedTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.BeExecuted"));
 	Ability_ExecutionTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Execution"));
 
-	HitTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Hit"));
-	DeadTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dead"));
+	HitTag     = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Hit"));
+	DeadTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dead"));
+	ReboundTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dead"));
 
 	Input_MoveTag          = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Move"));
 	Input_LookTag          = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"));

@@ -27,23 +27,7 @@ void USSGameplayAbility_Hit::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
-	{
-		if (nullptr != FrontHitMontage)
-		{
-			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, FrontHitMontage, FGameplayTagContainer(), 1.f, NAME_None,
-				                                                                false);
-
-			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-			Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-			Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-			Task->ReadyForActivation();
-		}
-	}
+	PlayMontage(ForwardHitMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_Hit::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

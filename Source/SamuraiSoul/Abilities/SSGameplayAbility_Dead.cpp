@@ -10,6 +10,7 @@ USSGameplayAbility_Dead::USSGameplayAbility_Dead()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().DeadTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeadTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 
 	FAbilityTriggerData TriggerData;
 	TriggerData.TriggerTag    = FSSGameplayTags::Get().DeadTag;
@@ -21,6 +22,8 @@ void USSGameplayAbility_Dead::ActivateAbility(const FGameplayAbilitySpecHandle H
                                               const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	PlayMontage(DeadMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_Dead::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

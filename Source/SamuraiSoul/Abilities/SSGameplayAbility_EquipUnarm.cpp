@@ -50,82 +50,38 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 		bIsEquip = Character->IsEquip();
 		Character->SwitchIsEquip();
 	}
-
-	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
+	if (nullptr != EquipMontage
+		&& nullptr != EquipRootMontage
+		&& false == bIsEquip)
 	{
-		if (nullptr != EquipMontage
-			&& nullptr != EquipRootMontage
-			&& false == bIsEquip)
+		if (0.1f <= Owner->GetVelocity().Size())
 		{
-			if (0.1f <= Owner->GetVelocity().Size())
-			{
-				//Not Root Anim Montage
-				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, EquipMontage, FGameplayTagContainer(), 1.f, NAME_None,
-					                                                                false);
-
-				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-				Task->ReadyForActivation();
-			}
-
-			else
-			{
-				//Root Anim Montage
-				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, EquipRootMontage, FGameplayTagContainer(), 1.f, NAME_None,
-					                                                                false);
-
-				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-				Task->ReadyForActivation();
-			}
+			//Not Root Anim Montage
+			PlayMontage(EquipMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 		}
 
-
-		if (nullptr != UnarmMontage
-			&& nullptr != UnarmRootMontage
-			&& true == bIsEquip)
+		else
 		{
-			if (0.1f <= Owner->GetVelocity().Size())
-			{
-				//Not Root Anim Montage
-				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, UnarmMontage, FGameplayTagContainer(), 1.f, NAME_None,
-					                                                                false);
+			//Root Anim Montage
+			PlayMontage(EquipRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+		}
+	}
 
-				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
 
-				Task->ReadyForActivation();
-			}
+	if (nullptr != UnarmMontage
+		&& nullptr != UnarmRootMontage
+		&& true == bIsEquip)
+	{
+		if (0.1f <= Owner->GetVelocity().Size())
+		{
+			//Not Root Anim Montage
+			PlayMontage(UnarmMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+		}
 
-			else
-			{
-				//Root Anim Montage
-				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, UnarmRootMontage, FGameplayTagContainer(), 1.f, NAME_None,
-					                                                                false);
-
-				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-				Task->ReadyForActivation();
-			}
+		else
+		{
+			//Root Anim Montage
+			PlayMontage(UnarmRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 		}
 	}
 }

@@ -119,15 +119,8 @@ void USSCombatComponent::TakeDamageEffect(const TSubclassOf<UGameplayEffect> Eff
 
 	if (SpecHandle.IsValid())
 	{
-		FActiveGameplayEffectHandle GEHandle = Character->GetAbilitySystemComponent()->
-		                                                  ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-
-		//Character->GetStatComponent()->OnHPChanged.Broadcast(Character->GetStatComponent()->GetHealth());
-
-		if (0.f >= Character->GetStatComponent()->GetHealth())
-		{
-			Character->Die();
-		}
+		Character->GetAbilitySystemComponent()->
+		           ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 	}
 }
 
@@ -203,64 +196,6 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 void USSCombatComponent::Hit(AActor* InActor)
 {
-	/*ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-	ASSCharacterBase* Enemy     = Cast<ASSCharacterBase>(InActor);
-
-	if (true == IsRebound)
-	{
-		if (nullptr == Character)
-		{
-			return;
-		}
-
-		FGameplayEventData Payload;
-		Payload.EventTag = FSSGameplayTags::Get().BeExecutedTag;
-
-		Character->GetAbilitySystemComponent()->HandleGameplayEvent(Payload.EventTag, &Payload);
-	}
-
-	else
-	{
-		if (nullptr == Enemy
-			|| nullptr == Character)
-		{
-			return;
-		}
-
-		FVector A = Character->GetActorForwardVector();
-		A.Normalize();
-		FVector B = Enemy->GetActorForwardVector();
-		B.Normalize();
-
-		const float ReturnValue = FVector::DotProduct(A, B);
-
-		UAnimInstance* AnimInstance = Character->GetMesh()->GetAnimInstance();
-
-		if (0.0f <= ReturnValue)
-		{
-			if (nullptr != AnimInstance)
-			{
-				AnimInstance->Montage_Play(HitBackMontage);
-
-				FOnMontageEnded HitEndDelegate;
-				HitEndDelegate.BindUObject(this, &USSCombatComponent::HitEnd);
-				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, HitBackMontage);
-			}
-		}
-
-		else
-		{
-			if (nullptr != AnimInstance)
-			{
-				AnimInstance->Montage_Play(HitForwardMontage);
-
-				FOnMontageEnded HitEndDelegate;
-				HitEndDelegate.BindUObject(this, &USSCombatComponent::HitEnd);
-				AnimInstance->Montage_SetEndDelegate(HitEndDelegate, HitForwardMontage);
-			}
-		}
-	}*/
-
 	TakeDamageEffect(DamageEffect);
 }
 
@@ -314,14 +249,4 @@ void USSCombatComponent::ParryEnd(UAnimMontage* Montage, bool bInterrupted)
 void USSCombatComponent::ReboundEnd(UAnimMontage* Montage, bool bInterrupted)
 {
 	IsRebound = false;
-}
-
-void USSCombatComponent::HitEnd(UAnimMontage* Montage, bool bInterrupted)
-{
-	const ASSCharacterBase* Character = Cast<ASSCharacterBase>(GetOwner());
-
-	if (nullptr != Character)
-	{
-		Character->GetAbilitySystemComponent()->RemoveReplicatedLooseGameplayTag(FSSGameplayTags::Get().HitTag);
-	}
 }

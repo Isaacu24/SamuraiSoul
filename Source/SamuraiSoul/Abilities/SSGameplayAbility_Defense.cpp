@@ -49,42 +49,19 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 
 	CombatableCharacter->GetCombatComponent()->OnDefense();
 
-	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
+	if (nullptr != DefenseMontage
+		&& nullptr != DefenseRootMontage)
 	{
-		if (nullptr != DefenseMontage
-			&& nullptr != DefenseRootMontage)
+		if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
 		{
-			if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
-			{
-				//Not Root Anim Montage
-				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseMontage, FGameplayTagContainer(), 1.f, NAME_None,
-					                                                                false);
+			//Not Root Anim Montage
+			PlayMontage(DefenseMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+		}
 
-				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-				Task->ReadyForActivation();
-			}
-
-			else
-			{
-				//Root Anim Montage
-				USSAbilityTask_PlayMontageAndWait* Task
-					= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DefenseRootMontage, FGameplayTagContainer(), 1.f,
-					                                                                NAME_None, false);
-
-				Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-				Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-				Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-				Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-				Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-				Task->ReadyForActivation();
-			}
+		else
+		{
+			//Root Anim Montage
+			PlayMontage(DefenseRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 		}
 	}
 }

@@ -28,6 +28,7 @@ public:
 	//Hit
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;
+	FGameplayTag ReboundTag;
 
 	//Input
 	FGameplayTag Input_MoveTag;

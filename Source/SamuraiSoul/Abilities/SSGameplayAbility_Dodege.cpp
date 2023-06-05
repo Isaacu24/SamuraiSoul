@@ -43,22 +43,7 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 		return;
 	}
 
-	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
-	{
-		if (nullptr != DodgeMontage)
-		{
-			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, DodgeMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
-
-			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-			Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-			Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-			Task->ReadyForActivation();
-		}
-	}
+	PlayMontage(DodgeMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_Dodege::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

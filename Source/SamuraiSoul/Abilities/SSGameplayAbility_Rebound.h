@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/SSGameplayAbility.h"
-#include "SSGameplayAbility_Dead.generated.h"
+#include "SSGameplayAbility_Rebound.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API USSGameplayAbility_Dead : public USSGameplayAbility
+class SAMURAISOUL_API USSGameplayAbility_Rebound : public USSGameplayAbility
 {
 	GENERATED_BODY()
 
 public:
-	USSGameplayAbility_Dead();
+	USSGameplayAbility_Rebound();
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                             const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
@@ -26,6 +26,6 @@ public:
 	                       const FGameplayAbilityActivationInfo ActivationInfo) const override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
-	TObjectPtr<UAnimMontage> DeadMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	TObjectPtr<UAnimMontage> ReboundMontage;
 };

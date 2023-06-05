@@ -65,7 +65,6 @@ protected:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Hit(AActor* InActor);
 
-	void HitEnd(UAnimMontage* Montage, bool bInterrupted);
 	void ParryEnd(UAnimMontage* Montage, bool bInterrupted);
 	void ReboundEnd(UAnimMontage* Montage, bool bInterrupted);
 

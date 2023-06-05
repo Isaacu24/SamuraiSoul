@@ -25,15 +25,12 @@ void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle
                                                 const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
-
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputPressed: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Execution::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                                  const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("InputReleased: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -65,39 +62,19 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 		Combatable->GetCombatComponent()->SetTarget(nullptr);
 	}
 
-	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
-	{
-		if (nullptr != ExecutionMontage)
-		{
-			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, ExecutionMontage, FGameplayTagContainer(), 1.f, NAME_None,
-				                                                                false);
-
-			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-			Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-			Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-			Task->ReadyForActivation();
-		}
-	}
-
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("BeExecuted: %s"), *GetName()));
+	PlayMontage(ExecutionMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_Execution::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                               const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("EndAbility: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Execution::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                              const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
-	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("ApplyCost: %s"), *GetName()));
 }
 
 void USSGameplayAbility_Execution::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)

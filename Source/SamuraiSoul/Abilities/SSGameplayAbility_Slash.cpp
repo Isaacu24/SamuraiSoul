@@ -67,22 +67,7 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 
 	AnimInstance = Character->GetMesh()->GetAnimInstance();
 
-	if (true == CommitAbility(Handle, ActorInfo, ActivationInfo))
-	{
-		if (nullptr != SlashMontage)
-		{
-			USSAbilityTask_PlayMontageAndWait* Task
-				= USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(this, NAME_None, SlashMontage, FGameplayTagContainer(), 1.f, NAME_None, false);
-
-			Task->OnCompleted.AddDynamic(this, &ThisClass::AbilityCompleted);
-			Task->OnBlendOut.AddDynamic(this, &ThisClass::AbilityBlendOut);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::AbilityInterrupted);
-			Task->OnCancelled.AddDynamic(this, &ThisClass::AbilityCancelled);
-			Task->EventReceived.AddDynamic(this, &ThisClass::AbilityEventReceived);
-
-			Task->ReadyForActivation();
-		}
-	}
+	PlayMontage(SlashMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

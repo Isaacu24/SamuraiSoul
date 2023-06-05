@@ -27,7 +27,7 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
-	TObjectPtr<UAnimMontage> FrontHitMontage;
+	TObjectPtr<UAnimMontage> ForwardHitMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 	TObjectPtr<UAnimMontage> BackHitMontage;

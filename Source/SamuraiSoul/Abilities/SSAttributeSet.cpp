@@ -20,6 +20,7 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	{
 		//Calculrate Damage.
 		float NewHealth = FMath::Clamp(GetHealth() - GetDamage(), 0.0f, GetMaxHealth());
+
 		SetHealth(NewHealth);
 		SetDamage(0.0f);
 

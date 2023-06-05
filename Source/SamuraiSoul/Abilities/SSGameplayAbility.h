@@ -62,7 +62,7 @@ public:
 
 
 /**
- * 
+ *
  */
 UCLASS()
 class SAMURAISOUL_API USSGameplayAbility : public UGameplayAbility
@@ -106,4 +106,7 @@ protected:
 
 protected:
 	void CancelAllAbility();
+
+	void PlayMontage(UAnimMontage* Montage, const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	                 const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData);
 };
