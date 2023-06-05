@@ -32,9 +32,10 @@ void USSInputComponent::BindNativeAction(const USSInputConfigData* InputConfig, 
 {
 	ensure(InputConfig);
 
-	const UInputAction* InputAction = InputConfig->FindNativeInputActionByTag(InputTag);
-
-	BindAction(InputAction, TriggerEvent, Object, Func);
+	if (const UInputAction* IA = InputConfig->FindNativeInputActionByTag(InputTag))
+	{
+		BindAction(IA, TriggerEvent, Object, Func);
+	}
 }
 
 template <class UserClass, typename PressedFuncType, typename ReleasedFuncType>
