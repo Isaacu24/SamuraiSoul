@@ -2,7 +2,6 @@
 
 
 #include "SSGameplayAbility_Execution.h"
-#include <Kismet/KismetSystemLibrary.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Character/SSCharacterBase.h"
@@ -14,11 +13,12 @@
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
 	AbilityID      = ESSAbilityID::Execution;
-	AbilityInputID = ESSAbilityInputID::Execution;
+	AbilityInputID = ESSAbilityInputID::Attack;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_ExecutionTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_ExecutionTag);
+	AbilityTags.AddTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag);
 	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().DeferredAbilityTag);
 }
 
 void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

@@ -193,8 +193,11 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 	}
 }
 
-void USSCombatComponent::Parry()
+void USSCombatComponent::Parry(AActor* InActor)
 {
+	ensure(InActor);
+	SetTarget(InActor);
+
 	ensure(ParryAbility);
 	ActivateAbility(ParryAbility);
 }

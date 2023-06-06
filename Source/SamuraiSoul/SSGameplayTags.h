@@ -22,8 +22,12 @@ public:
 	FGameplayTag Ability_EquipUnarmTag;
 	FGameplayTag Ability_SlashTag;
 	FGameplayTag Ability_DefenseTag;
-	FGameplayTag Ability_ExecutionTag;
 	FGameplayTag Ability_ParryTag;
+
+	//DeferredAbility
+	FGameplayTag DeferredAbilityTag;
+	FGameplayTag DeferredAbility_ExecutionTag;
+
 	//Hit
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;

@@ -22,7 +22,7 @@ public:
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
 
-	virtual void Parry();
+	virtual void Parry(AActor* InActor);
 	virtual void Rebound();
 
 protected:

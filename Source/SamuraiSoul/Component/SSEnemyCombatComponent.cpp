@@ -35,9 +35,9 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
-void USSEnemyCombatComponent::Parry()
+void USSEnemyCombatComponent::Parry(AActor* InActor)
 {
-	Super::Parry();
+	Super::Parry(InActor);
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
 	AIPawn->SetParry(true);

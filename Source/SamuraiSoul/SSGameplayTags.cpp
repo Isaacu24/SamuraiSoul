@@ -12,8 +12,10 @@ FSSGameplayTags::FSSGameplayTags()
 	Ability_EquipUnarmTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.EquipUnarm"));
 	Ability_SlashTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
 	Ability_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
-	Ability_ExecutionTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Execution"));
 	Ability_ParryTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Parry"));
+
+	DeferredAbilityTag           = FGameplayTag::RequestGameplayTag(FName("SSDeferredAbilities"));
+	DeferredAbility_ExecutionTag = FGameplayTag::RequestGameplayTag(FName("SSDeferredAbilities.Execution"));
 
 	HitTag        = FGameplayTag::RequestGameplayTag(FName("Reaction.Hit"));
 	DeadTag       = FGameplayTag::RequestGameplayTag(FName("Reaction.Dead"));

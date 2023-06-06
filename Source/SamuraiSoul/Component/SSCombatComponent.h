@@ -31,7 +31,7 @@ public:
 	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
 	void TakeGameplayEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
-	virtual void Parry();
+	virtual void Parry(AActor* InActor);
 	virtual void Rebound();
 
 	void OnDefense() const;
@@ -46,9 +46,9 @@ public:
 		return Target;
 	}
 
-	void SetTarget(AActor* Actor)
+	void SetTarget(AActor* InActor)
 	{
-		Target = Actor;
+		Target = InActor;
 	}
 
 protected:

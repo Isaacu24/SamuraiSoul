@@ -13,9 +13,8 @@ enum class ESSAbilityInputID : uint8
 	Jump,
 	Dodge,
 	EquipUnarm,
-	Slash,
-	Defense,
-	Execution
+	Attack,
+	Defense
 };
 
 UENUM(BlueprintType)
