@@ -11,6 +11,7 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "Interface/SSCombatInterface.h"
 #include "AbilitySystemInterface.h"
+#include "SSGameplayTags.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -189,6 +190,23 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 	if (MyOwner != Enemy)
 	{
+		IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
+
+		// 현재 활성화된 어빌리티들 가져오기
+		TArray<FGameplayAbilitySpec> ActiveAbilities = AbilityPawn->GetAbilitySystemComponent()->GetActivatableAbilities();
+
+		// 각 어빌리티의 태그 출력
+		for (const FGameplayAbilitySpec AbilitySpec : ActiveAbilities)
+		{
+			const FGameplayTagContainer& AbilityTags = AbilitySpec.Ability->AbilityTags;
+
+			if (true == AbilityTags.HasTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag))
+			{
+				Enemy->GetCombatComponent()->BeExecuted();
+				return;
+			}
+		}
+
 		Enemy->GetCombatComponent()->Hit();
 	}
 }
@@ -204,11 +222,14 @@ void USSCombatComponent::Parry(AActor* InActor)
 
 void USSCombatComponent::Hit()
 {
-	//Execution or Attack
 	ensure(DamageEffect);
-
 	TakeGameplayEffect(DamageEffect);
-	//TakeGameplayEffect(BeExecutedEffect);
+}
+
+void USSCombatComponent::BeExecuted()
+{
+	ensure(BeExecutedEffect);
+	TakeGameplayEffect(BeExecutedEffect);
 }
 
 void USSCombatComponent::Rebound()

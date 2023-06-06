@@ -54,6 +54,7 @@ public:
 protected:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Hit();
+	virtual void BeExecuted();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))

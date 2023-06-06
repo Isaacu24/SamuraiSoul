@@ -6,17 +6,13 @@
 
 USSGameplayAbility_Parry::USSGameplayAbility_Parry()
 {
-	AbilityID = ESSAbilityID::Parry;
+	AbilityID      = ESSAbilityID::Parry;
 	AbilityInputID = ESSAbilityInputID::None;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
+	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
+	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
 	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
-
-	FAbilityTriggerData TriggerData;
-	TriggerData.TriggerTag = FSSGameplayTags::Get().BeExecutedTag;
-	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-	AbilityTriggers.Emplace(TriggerData);
+	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGameplayAbility_Parry::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

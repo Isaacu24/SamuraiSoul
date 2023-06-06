@@ -17,8 +17,9 @@ USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().DeferredAbilityTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	ActivationRequiredTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
 }
 
 void USSGameplayAbility_Execution::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

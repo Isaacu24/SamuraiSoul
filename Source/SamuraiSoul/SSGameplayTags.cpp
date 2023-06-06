@@ -34,6 +34,6 @@ FSSGameplayTags::FSSGameplayTags()
 	Input_JumpTag       = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Jump"));
 	Input_DodgeTag      = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Dodge"));
 	Input_EquipUnarmTag = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.EquipUnarm"));
-	Input_SlashTag      = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Slash"));
+	Input_SlashTag      = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Attack"));
 	Input_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Defense"));
 }
