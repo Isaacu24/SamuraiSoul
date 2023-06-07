@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
 #include "Interface/SSCombatableInterface.h"
+#include "Interface/SSTargetableInterface.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "SSEnemyCharacterBase.generated.h"
 
@@ -17,7 +18,8 @@ class USSEnemyCombatComponent;
  * 
  */
 UCLASS()
-class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public ISSCharacterAIInterface, public ISSCombatableInterface
+class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public ISSTargetableInterface, public ISSCharacterAIInterface,
+                                              public ISSCombatableInterface
 {
 	GENERATED_BODY()
 
@@ -56,8 +58,12 @@ protected:
 	virtual void SetRebound(bool Value) override;
 	virtual void SetBeExecuted(bool Value) override;
 
-	virtual void SetHiddenHPBar(bool Value) const override;
-	virtual void SetHiddenTargetCursor(bool Value) const override;
+	virtual FTargetingEndedDelegate& GetTargetingEndedDelegate() override;
+
+	virtual void Die() const override;
+
+	virtual void VisibleTargetUI() override;
+	virtual void HideTargetUI() override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -68,6 +74,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> TargetCursor;
+
+	FTargetingEndedDelegate OnTargetingEnded;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category= StatData)
 	USSAICharacterStatData* AICharacterStatData;

@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Animation/SSAnimNotifyState_Dead.h"
-#include "Components/CapsuleComponent.h"
-#include "GameFramework/Character.h"
+#include "Character/SSCharacterBase.h"
+#include <Components/CapsuleComponent.h>
 
 USSAnimNotifyState_Dead::USSAnimNotifyState_Dead()
 {
@@ -11,24 +11,22 @@ USSAnimNotifyState_Dead::USSAnimNotifyState_Dead()
 void USSAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
                                           const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
+	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);;
 
-	/*ensure(MeshComp());
+	if (nullptr == MeshComp)
+	{
+		return;
+	}
 
-	ACharacter* Character = Cast<ACharacter>(MeshComp()->GetOwner());
+	MeshComp->SetCollisionProfileName(FName("Ragdoll"));
 
-	ensure(Character);
+	MeshComp->SetSimulatePhysics(true);
+	MeshComp->WakeAllRigidBodies();
 
-	USkeletalMeshComponent* CharacterMesh = MeshComp();
+	ASSCharacterBase* OnwerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	ensure(OnwerCharacter);
 
-	CharacterMesh->SetCollisionProfileName(FName("Ragdoll"));
-	CharacterMesh->SetSimulatePhysics(true);
-	CharacterMesh->WakeAllRigidBodies();
-
-	Character->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	CharacterMesh->AddImpulse((Character->GetVelocity() / 2.f) * CharacterMesh->GetMass());
-	CharacterMesh->AddRadialImpulse(Character->GetActorLocation(), 500.0f, 2000.0f, ERadialImpulseFalloff::RIF_Constant, true);*/
+	OnwerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void USSAnimNotifyState_Dead::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
@@ -40,4 +38,9 @@ void USSAnimNotifyState_Dead::NotifyTick(USkeletalMeshComponent* MeshComp, UAnim
 void USSAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	Super::NotifyEnd(MeshComp, Animation);
+
+	ASSCharacterBase* OnwerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	ensure(OnwerCharacter);
+
+	OnwerCharacter->Die();
 }

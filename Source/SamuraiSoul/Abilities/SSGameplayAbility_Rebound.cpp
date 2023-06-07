@@ -12,7 +12,7 @@ USSGameplayAbility_Rebound::USSGameplayAbility_Rebound()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().ReboundTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().ReboundTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().ReactionTag);
 
 	FAbilityTriggerData TriggerData;
 	TriggerData.TriggerTag    = FSSGameplayTags::Get().ReboundTag;

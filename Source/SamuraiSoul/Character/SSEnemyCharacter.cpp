@@ -54,8 +54,6 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 void ASSEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SetHiddenHPBar(true);
 }
 
 void ASSEnemyCharacter::PostInitializeComponents()
@@ -114,26 +112,4 @@ void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 		HPBarWidget->UpdateHPBar(StatComponent->GetMaxHealth());
 		StatComponent->OnHPChanged.AddUObject(HPBarWidget, &USSHPBarWidget::UpdateHPBar);
 	}
-}
-
-void ASSEnemyCharacter::SetHiddenHPBar(bool Value) const
-{
-	Super::SetHiddenHPBar(Value);
-
-	if (nullptr != HPBar)
-	{
-		HPBar->SetHiddenInGame(Value);
-	}
-}
-
-void ASSEnemyCharacter::SetHiddenTargetCursor(bool Value) const
-{
-	Super::SetHiddenTargetCursor(Value);
-}
-
-void ASSEnemyCharacter::Die() const
-{
-	Super::Die();
-
-	SetHiddenHPBar(true);
 }

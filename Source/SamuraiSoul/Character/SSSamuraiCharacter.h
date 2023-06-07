@@ -85,7 +85,7 @@ private:
 	TMap<ECharacterControlType, USSCharacterControlData*> CharacterControlMap;
 
 	UPROPERTY()
-	TObjectPtr<ASSCharacterBase> LockOnTarget;
+	TObjectPtr<AActor> LockOnTarget;
 
 	ECharacterControlType ControlType;
 };

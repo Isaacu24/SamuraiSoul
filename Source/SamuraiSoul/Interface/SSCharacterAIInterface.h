@@ -45,8 +45,4 @@ public:
 	virtual void SetDead(bool Value) = 0;
 	virtual void SetRebound(bool Value) = 0;
 	virtual void SetBeExecuted(bool Value) = 0;
-
-	//UI
-	virtual void SetHiddenHPBar(bool Value) const = 0;
-	virtual void SetHiddenTargetCursor(bool Value) const = 0;
 };

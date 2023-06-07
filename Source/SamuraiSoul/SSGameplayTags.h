@@ -29,6 +29,7 @@ public:
 	FGameplayTag DeferredAbility_ExecutionTag;
 
 	//Hit
+	FGameplayTag ReactionTag;
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;
 	FGameplayTag ReboundTag;

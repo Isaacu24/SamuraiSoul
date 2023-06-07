@@ -17,6 +17,7 @@ FSSGameplayTags::FSSGameplayTags()
 	DeferredAbilityTag           = FGameplayTag::RequestGameplayTag(FName("SSDeferredAbilities"));
 	DeferredAbility_ExecutionTag = FGameplayTag::RequestGameplayTag(FName("SSDeferredAbilities.Execution"));
 
+	ReactionTag   = FGameplayTag::RequestGameplayTag(FName("Reaction"));
 	HitTag        = FGameplayTag::RequestGameplayTag(FName("Reaction.Hit"));
 	DeadTag       = FGameplayTag::RequestGameplayTag(FName("Reaction.Dead"));
 	ReboundTag    = FGameplayTag::RequestGameplayTag(FName("Reaction.Rebound"));

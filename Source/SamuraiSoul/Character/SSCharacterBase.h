@@ -23,8 +23,6 @@ class USSCharacterControlData;
 class UMotionWarpingComponent;
 class USSCharacterStatComponent;
 
-DECLARE_MULTICAST_DELEGATE(FCharacterEndedDelegate);
-
 UCLASS()
 class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSBehaviorInterface, public ISSCharacterWidgetInterface
 {
@@ -60,8 +58,6 @@ public:
 	{
 		return StatComponent;
 	}
-
-	FCharacterEndedDelegate OnCharacterEnded;
 
 public:
 	virtual bool IsCrouch() const override

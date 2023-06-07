@@ -14,7 +14,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
-#include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSTargetableInterface.h"
 
 #include "Abilities/SSAbilitySystemComponent.h"
 #include "Component/SSCombatComponent.h"
@@ -136,7 +136,9 @@ void ASSSamuraiCharacter::Tick(float DeltaTime)
 	if (true == bIsLockOn
 		&& nullptr != LockOnTarget)
 	{
-		const FVector TargetPos  = LockOnTarget->GetActorLocation() + FVector{0.0f, 0.0f, 100.f};
+		AActor* TargetActor = Cast<AActor>(LockOnTarget);
+
+		const FVector TargetPos  = TargetActor->GetActorLocation() + FVector{0.0f, 0.0f, 100.f};
 		const FVector Pos        = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
 		const FRotator Rotator   = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
 		const FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);
@@ -297,41 +299,43 @@ void ASSSamuraiCharacter::LockOn()
 	                                                  1.f
 	                                                 );
 
-	if (nullptr != OutHit.GetActor())
-	{
-		LockOnTarget = Cast<ASSCharacterBase>(OutHit.GetActor());
-		LockOnTarget->OnCharacterEnded.AddLambda([&]()
-		{
-			ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(LockOnTarget);
-			AIPawn->SetHiddenHPBar(true);
-			AIPawn->SetHiddenTargetCursor(true);
-
-			LockOnTarget = nullptr;
-
-			bIsLockOn                 = false;
-			bUseControllerRotationYaw = false;
-		});
-
-		ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(LockOnTarget);
-		AIPawn->SetHiddenHPBar(false);
-		AIPawn->SetHiddenTargetCursor(false);
-
-		bIsLockOn                 = true;
-		bUseControllerRotationYaw = true;
-	}
-
-	else
+	if (nullptr == OutHit.GetActor())
 	{
 		if (nullptr != LockOnTarget)
 		{
-			ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(LockOnTarget);
-			AIPawn->SetHiddenHPBar(true);
-			AIPawn->SetHiddenTargetCursor(true);
+			ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
+			TargetPawn->HideTargetUI();
 		}
 
 		bIsLockOn                 = false;
 		bUseControllerRotationYaw = false;
+
+		return;
 	}
+
+	LockOnTarget                       = OutHit.GetActor();
+	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
+
+	if (nullptr == TargetPawn)
+	{
+		return;
+	}
+
+	TargetPawn->GetTargetingEndedDelegate().BindLambda([&]()
+	{
+		ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
+		TargetPawn->HideTargetUI();
+
+		LockOnTarget = nullptr;
+
+		bIsLockOn                 = false;
+		bUseControllerRotationYaw = false;
+	});
+
+	TargetPawn->VisibleTargetUI();
+
+	bIsLockOn                 = true;
+	bUseControllerRotationYaw = true;
 }
 
 void ASSSamuraiCharacter::ChangeCharacterControl()

@@ -71,24 +71,13 @@ void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* 
 
 void USSCharacterStatComponent::HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude)
 {
-	bool IsSuccessed = SetHandleGameplayEvent(FSSGameplayTags::Get().DeadTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
-
-	if (true == IsSuccessed)
-	{
-		//Destroy UI
-		OnCharacterDead.Broadcast();
-	}
+	SetHandleGameplayEvent(FSSGameplayTags::Get().DeadTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
 }
 
 void USSCharacterStatComponent::HandleBeExecuted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
                                                  float DamageMagnitude)
 {
-	bool IsSuccessed = SetHandleGameplayEvent(FSSGameplayTags::Get().BeExecutedTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
-
-	if (true == IsSuccessed)
-	{
-		OnCharacterDead.Broadcast();
-	}
+	SetHandleGameplayEvent(FSSGameplayTags::Get().BeExecutedTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
 }
 
 void USSCharacterStatComponent::HandleRebound(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,

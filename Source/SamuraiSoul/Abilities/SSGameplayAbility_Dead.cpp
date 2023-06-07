@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Abilities/SSGameplayAbility_Dead.h"
+#include "Interface/SSTargetableInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_Dead::USSGameplayAbility_Dead()
@@ -10,7 +11,7 @@ USSGameplayAbility_Dead::USSGameplayAbility_Dead()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().DeadTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeadTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
 
 	FAbilityTriggerData TriggerData;
 	TriggerData.TriggerTag    = FSSGameplayTags::Get().DeadTag;
@@ -22,6 +23,13 @@ void USSGameplayAbility_Dead::ActivateAbility(const FGameplayAbilitySpecHandle H
                                               const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != TargetPawn)
+	{
+		TargetPawn->GetTargetingEndedDelegate().ExecuteIfBound();
+	}
 
 	PlayMontage(DeadMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }

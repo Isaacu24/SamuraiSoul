@@ -30,9 +30,4 @@ public:
 	virtual void Walk() override;
 
 	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget) override;
-
-	virtual void SetHiddenHPBar(bool Value) const override;
-	virtual void SetHiddenTargetCursor(bool Value) const override;
-
-	virtual void Die() const override;
 };

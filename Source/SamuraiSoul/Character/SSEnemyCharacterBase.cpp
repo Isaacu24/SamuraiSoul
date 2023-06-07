@@ -38,7 +38,7 @@ void ASSEnemyCharacterBase::BeginPlay()
 
 	ensure(AICharacterStatData);
 
-	SetHiddenTargetCursor(true);
+	HideTargetUI();
 }
 
 float ASSEnemyCharacterBase::GetAIPatrolRadius()
@@ -133,14 +133,30 @@ void ASSEnemyCharacterBase::SetBeExecuted(bool Value)
 	AIController->SetBeExecuted(Value);
 }
 
-void ASSEnemyCharacterBase::SetHiddenHPBar(bool Value) const
+FTargetingEndedDelegate& ASSEnemyCharacterBase::GetTargetingEndedDelegate()
 {
+	return OnTargetingEnded;
 }
 
-void ASSEnemyCharacterBase::SetHiddenTargetCursor(bool Value) const
+void ASSEnemyCharacterBase::Die() const
 {
-	if (nullptr != TargetCursor)
-	{
-		TargetCursor->SetHiddenInGame(Value);
-	}
+	Super::Die();
+}
+
+void ASSEnemyCharacterBase::VisibleTargetUI()
+{
+	ensure(TargetCursor);
+	TargetCursor->SetHiddenInGame(false);
+
+	ensure(HPBar);
+	HPBar->SetHiddenInGame(false);
+}
+
+void ASSEnemyCharacterBase::HideTargetUI()
+{
+	ensure(TargetCursor);
+	TargetCursor->SetHiddenInGame(true);
+
+	ensure(HPBar);
+	HPBar->SetHiddenInGame(true);
 }

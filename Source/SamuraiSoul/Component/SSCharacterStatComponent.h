@@ -25,7 +25,6 @@ public:
 
 public:
 	FOnHPChangedDelegate OnHPChanged;
-	FOnCharacterDeadDelegate OnCharacterDead;
 
 	float GetHealth() const;
 	float GetMaxHealth() const;

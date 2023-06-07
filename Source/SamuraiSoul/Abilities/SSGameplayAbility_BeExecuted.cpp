@@ -5,6 +5,7 @@
 #include <Components/CapsuleComponent.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
+#include "Interface/SSTargetableInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_BeExecuted::USSGameplayAbility_BeExecuted()
@@ -14,7 +15,8 @@ USSGameplayAbility_BeExecuted::USSGameplayAbility_BeExecuted()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
+	ActivationRequiredTags.AddTag(FSSGameplayTags::Get().ReboundTag);
 
 	FAbilityTriggerData TriggerData;
 	TriggerData.TriggerTag    = FSSGameplayTags::Get().BeExecutedTag;
@@ -28,11 +30,12 @@ void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHa
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
+	check(Character);
+	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(Character);
 
-	if (nullptr == Character)
+	if (nullptr != TargetPawn)
 	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
+		TargetPawn->GetTargetingEndedDelegate().ExecuteIfBound();
 	}
 
 	Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("BeExecuted"));
