@@ -7,7 +7,7 @@
 #include "Character/SSCharacterBase.h"
 #include <MotionWarpingComponent.h>
 #include "Component/SSCombatComponent.h"
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
@@ -39,8 +39,8 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSCharacterBase* Character    = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(ActorInfo->OwnerActor);
+	ASSCharacterBase* Character        = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(ActorInfo->OwnerActor);
 
 	if (nullptr == Character
 		|| nullptr == Combatable)

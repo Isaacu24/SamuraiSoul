@@ -6,7 +6,7 @@
 #include "SSAbilityTask.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Component/SSCombatComponent.h"
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
@@ -37,8 +37,8 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const TWeakObjectPtr<AActor> Actor            = GetActorInfo().AvatarActor;
-	const ISSCombatInterface* CombatableCharacter = Cast<ISSCombatInterface>(Actor);
+	const TWeakObjectPtr<AActor> Actor                = GetActorInfo().AvatarActor;
+	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(Actor);
 
 	if (nullptr == Actor
 		|| nullptr == CombatableCharacter)
@@ -71,8 +71,8 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Han
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ACharacter* Character          = Cast<ACharacter>(ActorInfo->OwnerActor);
-	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(Character);
+	ACharacter* Character              = Cast<ACharacter>(ActorInfo->OwnerActor);
+	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(Character);
 
 	if (nullptr != Character
 		&& nullptr != Combatable)

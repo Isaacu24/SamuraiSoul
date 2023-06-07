@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SSCharacterBase.h"
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "SSEnemyCharacterBase.generated.h"
 
@@ -17,7 +17,7 @@ class USSEnemyCombatComponent;
  * 
  */
 UCLASS()
-class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public ISSCharacterAIInterface, public ISSCombatInterface
+class SAMURAISOUL_API ASSEnemyCharacterBase : public ASSCharacterBase, public ISSCharacterAIInterface, public ISSCombatableInterface
 {
 	GENERATED_BODY()
 

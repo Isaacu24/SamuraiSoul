@@ -7,7 +7,7 @@
 #include <Components/BoxComponent.h>
 #include <Components/SphereComponent.h>
 #include <Kismet/KismetSystemLibrary.h>
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "Component/SSCombatComponent.h"
 #include <Engine/StaticMeshActor.h>
 
@@ -21,7 +21,7 @@ void ASSWeapon::BeginPlay()
 }
 
 void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
-                                  const FHitResult&    SweepResult)
+                                  const FHitResult& SweepResult)
 {
 }
 

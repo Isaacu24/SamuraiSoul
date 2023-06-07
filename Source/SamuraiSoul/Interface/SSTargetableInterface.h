@@ -4,13 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "SSCombatInterface.generated.h"
-
-class USSCombatComponent;
+#include "SSTargetableInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class USSCombatInterface : public UInterface
+class USSTargetableInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -18,11 +16,10 @@ class USSCombatInterface : public UInterface
 /**
  * 
  */
-class SAMURAISOUL_API ISSCombatInterface
+class SAMURAISOUL_API ISSTargetableInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual USSCombatComponent* GetCombatComponent() const = 0;
 };

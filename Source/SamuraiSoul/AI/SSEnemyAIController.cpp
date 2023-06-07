@@ -8,6 +8,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Interface/SSCharacterAIInterface.h"
 #include "SSAI.h"
 
 ASSEnemyAIController::ASSEnemyAIController()
@@ -34,7 +35,7 @@ ASSEnemyAIController::ASSEnemyAIController()
 	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
 	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
 	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
-	AISenseConfigSight->SightRadius                              = 1500.f;
+	AISenseConfigSight->SightRadius                              = 1800.f;
 	AISenseConfigSight->LoseSightRadius                          = 2000.f;
 	AISenseConfigSight->PeripheralVisionAngleDegrees             = 60.f;
 	AISenseConfigSight->SetMaxAge(5.0f);
@@ -47,6 +48,23 @@ ASSEnemyAIController::ASSEnemyAIController()
 void ASSEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	//ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
+
+	//if (nullptr != AIPawn)
+	//{
+	//	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
+	//	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
+	//	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
+	//	AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
+	//	AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
+	//	AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
+	//	AISenseConfigSight->SetMaxAge(5.0f);
+
+	//	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+	//	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
+	//	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	//}
 
 	RunAI();
 }

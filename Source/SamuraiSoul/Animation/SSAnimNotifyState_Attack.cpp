@@ -3,7 +3,7 @@
 
 #include "SSAnimNotifyState_Attack.h"
 #include "Component/SSCombatComponent.h"
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 
 USSAnimNotifyState_Attack::USSAnimNotifyState_Attack()
 {
@@ -17,7 +17,7 @@ void USSAnimNotifyState_Attack::NotifyBegin(USkeletalMeshComponent* MeshComp, UA
 		return;
 	}
 
-	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
+	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(MeshComp->GetOwner());
 
 	if (nullptr != Combatable)
 	{
@@ -38,7 +38,7 @@ void USSAnimNotifyState_Attack::NotifyEnd(USkeletalMeshComponent* MeshComp, UAni
 		return;
 	}
 
-	ISSCombatInterface* Combatable = Cast<ISSCombatInterface>(MeshComp->GetOwner());
+	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(MeshComp->GetOwner());
 
 	if (nullptr != Combatable)
 	{

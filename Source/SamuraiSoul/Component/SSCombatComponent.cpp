@@ -9,7 +9,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Abilities/SSGameplayAbility.h"
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "AbilitySystemInterface.h"
 #include "SSGameplayTags.h"
 
@@ -179,8 +179,8 @@ void USSCombatComponent::OffWeapon() const
 
 void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) const
 {
-	const ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
-	const ISSCombatInterface* Enemy   = Cast<ISSCombatInterface>(InActor);
+	const ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
+	const ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(InActor);
 
 	if (nullptr == MyOwner
 		|| nullptr == Enemy)

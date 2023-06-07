@@ -3,7 +3,7 @@
 
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include <Components/BoxComponent.h>
-#include <Interface/SSCombatInterface.h>
+#include <Interface/SSCombatableInterface.h>
 #include "Component/SSCombatComponent.h"
 
 ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
@@ -92,8 +92,8 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 
 				if (nullptr != Weapon)
 				{
-					ISSCombatInterface* MyOwner = Cast<ISSCombatInterface>(GetOwner());
-					ISSCombatInterface* Enemy   = Cast<ISSCombatInterface>(OtherActor->GetOwner());
+					ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
+					ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(OtherActor->GetOwner());
 
 					if (MyOwner == Enemy)
 					{

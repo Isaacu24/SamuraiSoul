@@ -5,6 +5,7 @@
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Component/SSCombatComponent.h"
+#include "Interface/SSCharacterAIInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_Hit::USSGameplayAbility_Hit()
@@ -34,6 +35,13 @@ void USSGameplayAbility_Hit::EndAbility(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AIPawn)
+	{
+		AIPawn->SetHit(false);
+	}
 }
 
 void USSGameplayAbility_Hit::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

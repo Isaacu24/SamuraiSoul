@@ -7,7 +7,7 @@
 #include "SSCharacterBase.h"
 #include "InputActionValue.h"
 #include "Interface/SSCharacterHUDInterface.h"
-#include "Interface/SSCombatInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "SSSamuraiCharacter.generated.h"
 
 class ASSWeapon;
@@ -19,7 +19,7 @@ class UInputMappingContext;
 class USSCharacterControlData;
 
 UCLASS()
-class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase, public ISSCharacterHUDInterface, public ISSCombatInterface
+class SAMURAISOUL_API ASSSamuraiCharacter : public ASSCharacterBase, public ISSCharacterHUDInterface, public ISSCombatableInterface
 {
 	GENERATED_BODY()
 
