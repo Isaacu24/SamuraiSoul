@@ -129,6 +129,16 @@ void ASSEnemyAIController::SetRebound(bool Value)
 	}
 }
 
+void ASSEnemyAIController::SetBeExecuted(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISBEEXECUTED, Value);
+	}
+}
+
 void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)
 {
 	APawn* Player = Cast<APawn>(InActor);

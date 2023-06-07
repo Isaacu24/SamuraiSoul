@@ -49,11 +49,12 @@ protected:
 	virtual void AttackByAI() override;
 	virtual void AttackEnd() override;
 
-	virtual void SetParry(bool Value);
+	virtual void SetParry(bool Value) override;
 
-	virtual void SetHit(bool Value);
-	virtual void SetDead(bool Value);
-	virtual void SetRebound(bool Value);
+	virtual void SetHit(bool Value) override;
+	virtual void SetDead(bool Value) override;
+	virtual void SetRebound(bool Value) override;
+	virtual void SetBeExecuted(bool Value) override;
 
 	virtual void SetHiddenHPBar(bool Value) const override;
 	virtual void SetHiddenTargetCursor(bool Value) const override;

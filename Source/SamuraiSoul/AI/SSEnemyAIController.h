@@ -36,6 +36,7 @@ public:
 	void SetHit(bool Value);
 	void SetDead(bool Value);
 	void SetRebound(bool Value);
+	void SetBeExecuted(bool Value);
 
 	UAIPerceptionComponent* GetAIPerceptionComponent() const
 	{

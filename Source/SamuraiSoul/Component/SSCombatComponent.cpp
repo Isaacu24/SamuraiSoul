@@ -202,12 +202,17 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 
 			if (true == AbilityTags.HasTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag))
 			{
-				Enemy->GetCombatComponent()->BeExecuted();
-				return;
+				if (true == AbilitySpec.IsActive())
+				{
+					Enemy->GetCombatComponent()->BeExecuted();
+				}
+
+				else
+				{
+					Enemy->GetCombatComponent()->Hit();
+				}
 			}
 		}
-
-		Enemy->GetCombatComponent()->Hit();
 	}
 }
 

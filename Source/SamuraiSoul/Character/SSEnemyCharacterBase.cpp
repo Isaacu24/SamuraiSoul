@@ -125,6 +125,14 @@ void ASSEnemyCharacterBase::SetRebound(bool Value)
 	AIController->SetRebound(Value);
 }
 
+void ASSEnemyCharacterBase::SetBeExecuted(bool Value)
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->SetBeExecuted(Value);
+}
+
 void ASSEnemyCharacterBase::SetHiddenHPBar(bool Value) const
 {
 }

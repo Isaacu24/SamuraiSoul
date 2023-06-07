@@ -22,11 +22,12 @@ public:
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
 
-	virtual void Parry(AActor* InActor);
-	virtual void Rebound();
+	virtual void Parry(AActor* InActor) override;
+	virtual void Rebound() override;
 
 protected:
-	virtual void Hit();
+	virtual void Hit() override;
+	virtual void BeExecuted() override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))

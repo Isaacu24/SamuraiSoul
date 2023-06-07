@@ -58,3 +58,11 @@ void USSEnemyCombatComponent::Hit()
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
 	AIPawn->SetHit(true);
 }
+
+void USSEnemyCombatComponent::BeExecuted()
+{
+	Super::BeExecuted();
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
+	AIPawn->SetBeExecuted(true);
+}
