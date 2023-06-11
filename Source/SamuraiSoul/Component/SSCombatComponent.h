@@ -33,6 +33,7 @@ public:
 
 	virtual void Parry(AActor* InActor);
 	virtual void Rebound();
+	virtual void BeExecuted(int8 RandomNumber);
 
 	void OnDefense() const;
 	void OffDefense() const;
@@ -51,10 +52,14 @@ public:
 		Target = InActor;
 	}
 
+	int8 GetExecutionNumber() const
+	{
+		return ExecutionNumber;
+	}
+
 protected:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Hit();
-	virtual void BeExecuted();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
@@ -83,4 +88,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AActor> Target;
+
+	UPROPERTY()
+	int8 ExecutionNumber;
 };

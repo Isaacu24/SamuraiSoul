@@ -59,9 +59,9 @@ void USSEnemyCombatComponent::Hit()
 	AIPawn->SetHit(true);
 }
 
-void USSEnemyCombatComponent::BeExecuted()
+void USSEnemyCombatComponent::BeExecuted(int8 RandomNumber)
 {
-	Super::BeExecuted();
+	Super::BeExecuted(RandomNumber);
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
 	AIPawn->SetBeExecuted(true);

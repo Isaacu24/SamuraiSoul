@@ -2,11 +2,13 @@
 
 #include "SSGameplayAbility_BeExecuted.h"
 #include <GameFramework/Character.h>
-#include <Components/CapsuleComponent.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Interface/SSTargetableInterface.h"
+#include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "SSGameplayTags.h"
+#include "Component/SSCombatComponent.h"
 
 USSGameplayAbility_BeExecuted::USSGameplayAbility_BeExecuted()
 {
@@ -31,6 +33,7 @@ void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHa
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
 	check(Character);
+
 	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(Character);
 
 	if (nullptr != TargetPawn)
@@ -38,9 +41,17 @@ void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHa
 		TargetPawn->GetTargetingEndedDelegate().ExecuteIfBound();
 	}
 
-	Character->GetCapsuleComponent()->SetCollisionProfileName(TEXT("BeExecuted"));
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(Character);
 
-	PlayMontage(ExecutedMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	if (nullptr != AIPawn)
+	{
+		AIPawn->StopAI();
+	}
+
+	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(Character);
+	int8 Number                            = CombatablePawn->GetCombatComponent()->GetExecutionNumber();
+
+	PlayMontage(ExecutedMontages[Number], Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_BeExecuted::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

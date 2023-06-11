@@ -17,7 +17,8 @@ void USSHPBarWidget::NativeConstruct()
 	ensure(HPProgressBar);
 
 	ISSCharacterWidgetInterface* CharacterWidget = Cast<ISSCharacterWidgetInterface>(OwningActor);
-	if (CharacterWidget)
+
+	if (nullptr != CharacterWidget)
 	{
 		CharacterWidget->SetupCharacterWidget(this);
 	}

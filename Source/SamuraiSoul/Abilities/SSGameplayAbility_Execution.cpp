@@ -9,6 +9,7 @@
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatableInterface.h"
 #include "SSGameplayTags.h"
+#include "Math/RandomStream.h"
 
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
@@ -39,31 +40,31 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ASSCharacterBase* Character        = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
-	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(ActorInfo->OwnerActor);
+	ASSCharacterBase* Character            = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
+	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(Character);
 
-	if (nullptr == Character
-		|| nullptr == Combatable)
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
+	AActor* ExecutionTarget                 = CombatablePawn->GetCombatComponent()->GetTarget();
+	ISSCombatableInterface* CombatableEnemy = Cast<ISSCombatableInterface>(ExecutionTarget);
 
-	AActor* ExecutionTarget = Combatable->GetCombatComponent()->GetTarget();
+	check(ExecutionTarget);
+	check(CombatableEnemy);
 
-	if (nullptr != ExecutionTarget)
-	{
-		FMotionWarpingTarget Target = {};
-		Target.Name                 = FName("Target");
-		Target.Location             = ExecutionTarget->GetActorLocation();
-		Target.Rotation             = ExecutionTarget->GetActorRotation();
-		Target.Rotation.Yaw += 180.f;
+	FMotionWarpingTarget Target = {};
+	Target.Name                 = FName("Target");
+	Target.Location             = ExecutionTarget->GetActorLocation();
+	Target.Rotation             = ExecutionTarget->GetActorRotation();
+	Target.Rotation.Yaw += 180.f;
 
-		Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
-		Combatable->GetCombatComponent()->SetTarget(nullptr);
-	}
+	Character->GetMotionWarpingComponent()->AddOrUpdateWarpTarget(Target);
+	CombatablePawn->GetCombatComponent()->SetTarget(nullptr);
 
-	PlayMontage(ExecutionMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	int32 RandomNumber = FMath::RandRange(0, ExecutionMontages.Num() - 1);
+	check(ExecutionMontages[RandomNumber]);
+
+	PlayMontage(ExecutionMontages[RandomNumber], Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	UE_LOG(LogTemp, Warning, TEXT("Random Number: %d"), RandomNumber);
+
+	CombatableEnemy->GetCombatComponent()->BeExecuted(RandomNumber);
 }
 
 void USSGameplayAbility_Execution::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

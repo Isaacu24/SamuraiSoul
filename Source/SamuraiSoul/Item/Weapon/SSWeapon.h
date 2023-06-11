@@ -7,7 +7,6 @@
 #include "Game/SamuraiSoul.h"
 #include "SSWeapon.generated.h"
 
-class AActor;
 class UBoxComponent;
 class USceneComponent;
 class USphereComponent;
@@ -39,7 +38,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
-	                               const FHitResult&    SweepResult);
+	                               const FHitResult& SweepResult);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Mesh;

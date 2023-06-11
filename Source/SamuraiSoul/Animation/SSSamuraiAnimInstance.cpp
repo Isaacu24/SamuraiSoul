@@ -2,16 +2,9 @@
 
 
 #include "SSSamuraiAnimInstance.h"
-#include "Character/SSCharacterBase.h"
-#include <GameFramework/CharacterMovementComponent.h>
 
 USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 {
-	bIsCrouch       = false;
-	bIsAir          = false;
-	bIsEquip        = false;
-	bIsDefense      = false;
-	bIsFristDefense = false;
 }
 
 void USSSamuraiAnimInstance::NativeBeginPlay()
@@ -27,36 +20,6 @@ void USSSamuraiAnimInstance::NativeInitializeAnimation()
 void USSSamuraiAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-
-	if (false == IsValid(MyCharacter))
-	{
-		return;
-	}
-
-	OwnerCharacter = Cast<ASSCharacterBase>(MyCharacter);
-
-	Speed     = MyCharacter->GetVelocity().Size();
-	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
-	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Blue, FString::SanitizeFloat(Direction));
-
-	bIsCrouch  = OwnerCharacter->IsCrouch();
-	bIsAir     = OwnerCharacter->GetCharacterMovement()->IsFalling();
-	bIsEquip   = OwnerCharacter->IsEquip();
-	bIsDefense = OwnerCharacter->IsDefense();
-	bIsLockOn  = OwnerCharacter->IsLockOn();
-
-	if (false == bIsFristDefense)
-	{
-		if (true == bIsDefense)
-		{
-			bIsFristDefense = true;
-		}
-	}
-
-	if (false == bIsDefense)
-	{
-		bIsFristDefense = false;
-	}
 }
 
 FName USSSamuraiAnimInstance::GetAttackMontageSectionName(int32 Section)

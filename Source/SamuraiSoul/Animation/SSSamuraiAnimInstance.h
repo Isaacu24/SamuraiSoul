@@ -35,24 +35,4 @@ protected:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-	UPROPERTY()
-	TObjectPtr<class ASSCharacterBase> OwnerCharacter;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	uint8 bIsCrouch : 1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	uint8 bIsAir : 1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta=(AllowPrivateAccess=true))
-	uint8 bIsEquip : 1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	uint8 bIsDefense : 1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	uint8 bIsLockOn : 1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	uint8 bIsFristDefense : 1;
 };

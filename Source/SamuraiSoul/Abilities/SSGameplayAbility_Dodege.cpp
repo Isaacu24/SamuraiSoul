@@ -34,10 +34,10 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ISSBehaviorInterface* Character = Cast<ISSBehaviorInterface>(ActorInfo->OwnerActor);
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(ActorInfo->OwnerActor);
 
-	if (nullptr == Character
-		|| false == Character->IsEquip())
+	if (nullptr == BehaviorPawn
+		|| false == BehaviorPawn->IsEquip())
 	{
 		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		return;

@@ -88,4 +88,10 @@ private:
 	TObjectPtr<AActor> LockOnTarget;
 
 	ECharacterControlType ControlType;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class ULevelSequence> LevelSequence;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class ULevelSequencePlayer> LevelSequencePlayer;
 };

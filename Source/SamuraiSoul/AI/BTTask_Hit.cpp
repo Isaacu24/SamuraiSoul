@@ -10,6 +10,7 @@
 
 UBTTask_Hit::UBTTask_Hit()
 {
+	bNotifyTick = true;
 }
 
 EBTNodeResult::Type UBTTask_Hit::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

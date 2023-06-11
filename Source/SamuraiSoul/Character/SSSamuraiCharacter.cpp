@@ -14,6 +14,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
+
+#include "MovieSceneSequencePlaybackSettings.h"
 #include "Interface/SSTargetableInterface.h"
 
 #include "Abilities/SSAbilitySystemComponent.h"
@@ -23,6 +25,8 @@
 #include "UI/SSHUDWidget.h"
 #include "SSGameplayTags.h"
 #include "Input/SSInputComponent.h"
+#include "LevelSequence/Public/LevelSequenceActor.h"
+#include "LevelSequence/Public/LevelSequencePlayer.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -37,10 +41,10 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 		ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
 
 	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
-		KEYBOARD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Keyboard.DA_Keyboard'"));
+		KEYBOARD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Player/Control/DA_Keyboard.DA_Keyboard'"));
 
 	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
-		GAMEPAD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Control/DA_Gamepad.DA_Gamepad'"));
+		GAMEPAD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Player/Control/DA_Gamepad.DA_Gamepad'"));
 
 	if (true == SK_BODY.Succeeded())
 	{
@@ -108,6 +112,15 @@ void ASSSamuraiCharacter::PostInitializeComponents()
 		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName("Weapon_rSocket"));
 		CombatComponent->EquipDefenseBarrier();
 	}
+
+	FMovieSceneSequencePlaybackSettings Settings;
+	Settings.bDisableLookAtInput   = true;
+	Settings.bDisableMovementInput = true;
+	Settings.bHideHud              = true;
+
+	ALevelSequenceActor* SequenceActor;
+
+	LevelSequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), LevelSequence, Settings, SequenceActor);
 }
 
 void ASSSamuraiCharacter::SetCharacterControlData(const USSCharacterControlData* ControlData)
@@ -138,7 +151,7 @@ void ASSSamuraiCharacter::Tick(float DeltaTime)
 	{
 		AActor* TargetActor = Cast<AActor>(LockOnTarget);
 
-		const FVector TargetPos  = TargetActor->GetActorLocation() + FVector{0.0f, 0.0f, 100.f};
+		const FVector TargetPos  = TargetActor->GetActorLocation() + FVector{0.0f, 0.0f, 25.f};
 		const FVector Pos        = FVector(TargetPos.X, TargetPos.Y, TargetPos.Z - 150.f);
 		const FRotator Rotator   = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Pos);
 		const FRotator InterpRot = FMath::RInterpTo(GetControlRotation(), Rotator, GetWorld()->GetDeltaSeconds(), 5.0f);

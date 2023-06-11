@@ -2,6 +2,7 @@
 
 #include "Abilities/SSGameplayAbility_Dead.h"
 #include "Interface/SSTargetableInterface.h"
+#include "Interface/SSCharacterAIInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_Dead::USSGameplayAbility_Dead()
@@ -23,6 +24,13 @@ void USSGameplayAbility_Dead::ActivateAbility(const FGameplayAbilitySpecHandle H
                                               const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AIPawn)
+	{
+		AIPawn->StopAI();
+	}
 
 	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(ActorInfo->OwnerActor);
 

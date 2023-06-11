@@ -37,32 +37,22 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const TWeakObjectPtr<AActor> Actor                = GetActorInfo().AvatarActor;
-	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(Actor);
 
-	if (nullptr == Actor
-		|| nullptr == CombatableCharacter)
-	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
+	OwnerCharacter                                    = Cast<ACharacter>(ActorInfo->OwnerActor);
+	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(OwnerCharacter);
 
 	CombatableCharacter->GetCombatComponent()->OnDefense();
 
-	if (nullptr != DefenseMontage
-		&& nullptr != DefenseRootMontage)
+	if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
 	{
-		if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
-		{
-			//Not Root Anim Montage
-			PlayMontage(DefenseMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
-		}
+		//Not Root Anim Montage
+		PlayMontage(DefenseMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	}
 
-		else
-		{
-			//Root Anim Montage
-			PlayMontage(DefenseRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
-		}
+	else
+	{
+		//Root Anim Montage
+		PlayMontage(DefenseRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	}
 }
 
@@ -70,19 +60,19 @@ void USSGameplayAbility_Defense::EndAbility(const FGameplayAbilitySpecHandle Han
                                             const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	HitStack = 0;
 
-	ACharacter* Character              = Cast<ACharacter>(ActorInfo->OwnerActor);
-	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(Character);
+	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(OwnerCharacter);
 
-	if (nullptr != Character
+	if (nullptr != OwnerCharacter
 		&& nullptr != Combatable)
 	{
 		Combatable->GetCombatComponent()->OffDefense();
 
-		if (nullptr != Character->GetMesh()->GetAnimInstance())
+		if (nullptr != OwnerCharacter->GetMesh()->GetAnimInstance())
 		{
-			Character->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseMontage);
-			Character->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseRootMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseRootMontage);
 		}
 	}
 }
@@ -91,6 +81,30 @@ void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle Hand
                                            const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
+}
+
+void USSGameplayAbility_Defense::DefenseHit()
+{
+	switch (HitStack)
+	{
+		case 0:
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Hit"), DefenseHitMontage);
+			break;
+		case 1:
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Hit2"), DefenseHitMontage);
+			break;
+
+		case 2:
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Broken"), DefenseHitMontage);
+			break;
+	}
+
+	++HitStack;
+
+	OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_Play(DefenseHitMontage);
+	//OwnerCharacter->GetMesh()->GetAnimInstance()->OnMontageEnded.AddDynamic();
+
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
 void USSGameplayAbility_Defense::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)

@@ -17,21 +17,10 @@ class SAMURAISOUL_API USSEnemyAnimInstance : public USSCharacterAnimInstance
 public:
 	USSEnemyAnimInstance();
 
-	void PlayStabMontage();
-
-	UFUNCTION()
-	void AnimNotify_RagdollDeath();
-
-	UFUNCTION()
-	void AnimNotify_DeathMontageEnd();
-
 protected:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TObjectPtr<UAnimMontage> StabMontage;
 };

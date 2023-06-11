@@ -188,32 +188,34 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 		return;
 	}
 
-	if (MyOwner != Enemy)
-	{
-		IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
+	Enemy->GetCombatComponent()->Hit();
 
-		// 현재 활성화된 어빌리티들 가져오기
-		TArray<FGameplayAbilitySpec> ActiveAbilities = AbilityPawn->GetAbilitySystemComponent()->GetActivatableAbilities();
+	//if (MyOwner != Enemy)
+	//{
+	//	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
 
-		// 각 어빌리티의 태그 출력
-		for (const FGameplayAbilitySpec AbilitySpec : ActiveAbilities)
-		{
-			const FGameplayTagContainer& AbilityTags = AbilitySpec.Ability->AbilityTags;
+	//	// 현재 활성화된 어빌리티들 가져오기
+	//	TArray<FGameplayAbilitySpec> ActiveAbilities = AbilityPawn->GetAbilitySystemComponent()->GetActivatableAbilities();
 
-			if (true == AbilityTags.HasTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag))
-			{
-				if (true == AbilitySpec.IsActive())
-				{
-					Enemy->GetCombatComponent()->BeExecuted();
-				}
+	//	// 각 어빌리티의 태그 출력
+	//	for (const FGameplayAbilitySpec AbilitySpec : ActiveAbilities)
+	//	{
+	//		const FGameplayTagContainer& AbilityTags = AbilitySpec.Ability->AbilityTags;
 
-				else
-				{
-					Enemy->GetCombatComponent()->Hit();
-				}
-			}
-		}
-	}
+	//		if (true == AbilityTags.HasTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag))
+	//		{
+	//			if (true == AbilitySpec.IsActive())
+	//			{
+	//				Enemy->GetCombatComponent()->BeExecuted();
+	//			}
+
+	//			else
+	//			{
+	//				Enemy->GetCombatComponent()->Hit();
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 void USSCombatComponent::Parry(AActor* InActor)
@@ -231,8 +233,10 @@ void USSCombatComponent::Hit()
 	TakeGameplayEffect(DamageEffect);
 }
 
-void USSCombatComponent::BeExecuted()
+void USSCombatComponent::BeExecuted(int8 RandomNumber)
 {
+	ExecutionNumber = RandomNumber;
+
 	ensure(BeExecutedEffect);
 	TakeGameplayEffect(BeExecutedEffect);
 }

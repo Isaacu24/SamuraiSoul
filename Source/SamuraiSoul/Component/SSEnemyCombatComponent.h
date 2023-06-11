@@ -27,7 +27,7 @@ public:
 
 protected:
 	virtual void Hit() override;
-	virtual void BeExecuted() override;
+	virtual void BeExecuted(int8 RandomNumber) override;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))

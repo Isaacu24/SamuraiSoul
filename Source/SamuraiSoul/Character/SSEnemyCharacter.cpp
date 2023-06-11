@@ -103,13 +103,12 @@ void ASSEnemyCharacter::Walk()
 void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 {
 	Super::SetupCharacterWidget(InUserWidget);
-
 	USSHPBarWidget* HPBarWidget = Cast<USSHPBarWidget>(InUserWidget);
 
 	if (nullptr != HPBarWidget)
 	{
 		HPBarWidget->SetMaxHp(StatComponent->GetMaxHealth());
-		HPBarWidget->UpdateHPBar(StatComponent->GetMaxHealth());
+		HPBarWidget->UpdateHPBar(StatComponent->GetHealth());
 		StatComponent->OnHPChanged.AddUObject(HPBarWidget, &USSHPBarWidget::UpdateHPBar);
 	}
 }

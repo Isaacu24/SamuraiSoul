@@ -32,14 +32,6 @@ ASSEnemyAIController::ASSEnemyAIController()
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
 	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
 
-	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
-	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
-	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
-	AISenseConfigSight->SightRadius                              = 1800.f;
-	AISenseConfigSight->LoseSightRadius                          = 2000.f;
-	AISenseConfigSight->PeripheralVisionAngleDegrees             = 60.f;
-	AISenseConfigSight->SetMaxAge(5.0f);
-
 	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
 	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
@@ -49,24 +41,25 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	//ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
 
-	//if (nullptr != AIPawn)
-	//{
-	//	AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
-	//	AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
-	//	AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
-	//	AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
-	//	AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
-	//	AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
-	//	AISenseConfigSight->SetMaxAge(5.0f);
+	if (nullptr != AIPawn)
+	{
+		AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
+		AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
+		AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
+		AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
+		AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
+		AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
+		AISenseConfigSight->SetMaxAge(5.0f);
 
-	//	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
-	//	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
-	//	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
-	//}
+		AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+		AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	}
 
 	RunAI();
+
+	SetPatrol(true);
 }
 
 void ASSEnemyAIController::BeginPlay()
@@ -113,7 +106,7 @@ void ASSEnemyAIController::SetPatrol(bool Value)
 
 	if (true == UseBlackboard(BBAsset, BlackboardPtr))
 	{
-		Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, Value);
+		Blackboard->SetValueAsBool(BBKEY_ISPATROL, Value);
 	}
 }
 
@@ -168,7 +161,15 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 
 		if (true == UseBlackboard(BBAsset, BlackboardPtr))
 		{
-			Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, Stimulus.WasSuccessfullySensed());
+			bool IsDetected = Stimulus.WasSuccessfullySensed();
+
+			Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, IsDetected);
+
+			//플레이어 목격 시 순찰 정지.
+			if (true == IsDetected)
+			{
+				SetPatrol(false);
+			}
 		}
 	}
 }

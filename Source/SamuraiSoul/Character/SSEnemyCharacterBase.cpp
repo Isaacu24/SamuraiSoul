@@ -71,6 +71,22 @@ float ASSEnemyCharacterBase::GetAITurnSpeed()
 	return AICharacterStatData->AITurnSpeed;
 }
 
+void ASSEnemyCharacterBase::StopAI()
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->StopAI();
+}
+
+void ASSEnemyCharacterBase::RunAI()
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->RunAI();
+}
+
 void ASSEnemyCharacterBase::Run()
 {
 }
@@ -91,6 +107,10 @@ void ASSEnemyCharacterBase::AttackByAI()
 void ASSEnemyCharacterBase::AttackEnd()
 {
 	OnAttackFinished.ExecuteIfBound();
+}
+
+void ASSEnemyCharacterBase::EquipUnarm()
+{
 }
 
 void ASSEnemyCharacterBase::SetParry(bool Value)

@@ -8,6 +8,7 @@
 #include "DataAsset/SSComboActionData.h"
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSBehaviorInterface.h"
 #include "SSGameplayTags.h"
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
@@ -58,12 +59,18 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
+	check(Character);
 
-	if (nullptr == Character)
-	{
-		Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-		return;
-	}
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
+
+	//if (nullptr != BehaviorPawn)
+	//{
+	//	if (false == BehaviorPawn->IsEquip())
+	//	{
+	//		Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+	//		return;
+	//	}
+	//}
 
 	AnimInstance = Character->GetMesh()->GetAnimInstance();
 

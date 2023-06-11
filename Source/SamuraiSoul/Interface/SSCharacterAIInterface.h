@@ -32,12 +32,17 @@ public:
 	virtual float GetAIAttackRange() = 0;
 	virtual float GetAITurnSpeed() = 0;
 
+	virtual void StopAI() = 0;
+	virtual void RunAI() = 0;
+
 	virtual void Run() = 0;
 	virtual void Walk() = 0;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
 	virtual void AttackByAI() = 0;
 	virtual void AttackEnd() = 0;
+
+	virtual void EquipUnarm() = 0;
 
 	virtual void SetParry(bool Value) = 0;
 
