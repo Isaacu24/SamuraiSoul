@@ -10,6 +10,9 @@
 #include "Component/SSCharacterStatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
 
+#include "Abilities/SSAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
+
 ASSEnemyCharacter::ASSEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -73,6 +76,49 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ASSEnemyCharacter::Die()
+{
+	Super::Die();
+
+	if (nullptr != Controller)
+	{
+		Controller->SetIgnoreMoveInput(true);
+	}
+
+	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
+	ensure(nullptr != CapsuleComp);
+	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	UCharacterMovementComponent* MovementComp = GetCharacterMovement();
+	ensure(nullptr != MovementComp);
+	MovementComp->StopMovementImmediately();
+	MovementComp->DisableMovement();
+
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		DetachFromControllerPendingDestroy();
+		SetLifeSpan(0.1f);
+	}
+
+	AbilitySystemComponent->CancelAbilities(nullptr, nullptr);
+	AbilitySystemComponent->RemoveAllGameplayCues();
+	GetSSAbilitySystemComponent()->ClearAbilityInput();
+
+	if (nullptr != AbilitySystemComponent->GetOwnerActor())
+	{
+		AbilitySystemComponent->SetAvatarActor(nullptr);
+	}
+
+	else
+	{
+		// If the ASC doesn't have a valid owner, we need to clear *all* actor info, not just the avatar pairing
+		AbilitySystemComponent->ClearActorInfo();
+	}
+
+	AbilitySystemComponent = nullptr;
+}
+
 void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
 {
 	Super::SetAIAttackDelegate(InOnAttackFinished);
@@ -98,14 +144,14 @@ void ASSEnemyCharacter::Run()
 {
 	Super::Run();
 
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 }
 
 void ASSEnemyCharacter::Walk()
 {
 	Super::Walk();
 
-	GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	GetCharacterMovement()->MaxWalkSpeed = 150.f;
 }
 
 void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)

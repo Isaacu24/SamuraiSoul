@@ -24,14 +24,14 @@ EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& Own
 
 	const float DistanceToTarget = FVector::Distance(ControllingPawn->GetActorLocation(), PalyerLocation);
 
-	if (300.f <= DistanceToTarget)
+	if (500.f <= DistanceToTarget)
 	{
 		AIPawn->Run();
 	}
 
 	else
 	{
-		if (150.f <= DistanceToTarget)
+		if (AIPawn->GetAIAttackRange() >= DistanceToTarget)
 		{
 			Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), true);
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

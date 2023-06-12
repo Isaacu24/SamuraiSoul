@@ -49,6 +49,8 @@ public:
 
 	virtual void OnRep_PlayerState() override;
 
+	virtual void Die() override;
+
 	void Run();
 	void UnRun();
 	void CrouchStart();

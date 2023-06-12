@@ -7,7 +7,7 @@
 #include "Component/SSEnemyCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Component/SSWidgetComponent.h"
-#include "AI/SSEnemyAIController.h"
+#include "AI/SSEnemyBaseAIController.h"
 
 ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
@@ -73,7 +73,7 @@ float ASSEnemyCharacterBase::GetAITurnSpeed()
 
 void ASSEnemyCharacterBase::StopAI()
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->StopAI();
@@ -81,7 +81,7 @@ void ASSEnemyCharacterBase::StopAI()
 
 void ASSEnemyCharacterBase::RunAI()
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->RunAI();
@@ -115,7 +115,7 @@ void ASSEnemyCharacterBase::EquipUnarm()
 
 void ASSEnemyCharacterBase::SetParry(bool Value)
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->SetParry(Value);
@@ -123,7 +123,7 @@ void ASSEnemyCharacterBase::SetParry(bool Value)
 
 void ASSEnemyCharacterBase::SetHit(bool Value)
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->SetHit(Value);
@@ -131,7 +131,7 @@ void ASSEnemyCharacterBase::SetHit(bool Value)
 
 void ASSEnemyCharacterBase::SetDead(bool Value)
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->SetDead(Value);
@@ -139,7 +139,7 @@ void ASSEnemyCharacterBase::SetDead(bool Value)
 
 void ASSEnemyCharacterBase::SetRebound(bool Value)
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->SetRebound(Value);
@@ -147,7 +147,7 @@ void ASSEnemyCharacterBase::SetRebound(bool Value)
 
 void ASSEnemyCharacterBase::SetEquip(bool Value)
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->SetEquip(Value);
@@ -155,7 +155,7 @@ void ASSEnemyCharacterBase::SetEquip(bool Value)
 
 void ASSEnemyCharacterBase::SetBeExecuted(bool Value)
 {
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
 	ensure(AIController);
 
 	AIController->SetBeExecuted(Value);
@@ -166,7 +166,7 @@ FTargetingEndedDelegate& ASSEnemyCharacterBase::GetTargetingEndedDelegate()
 	return OnTargetingEnded;
 }
 
-void ASSEnemyCharacterBase::Die() const
+void ASSEnemyCharacterBase::Die()
 {
 	Super::Die();
 }
@@ -176,8 +176,10 @@ void ASSEnemyCharacterBase::VisibleTargetUI()
 	ensure(TargetCursor);
 	TargetCursor->SetHiddenInGame(false);
 
-	ensure(HPBar);
-	HPBar->SetHiddenInGame(false);
+	if (nullptr != HPBar)
+	{
+		HPBar->SetHiddenInGame(false);
+	}
 }
 
 void ASSEnemyCharacterBase::HideTargetUI()
@@ -185,6 +187,8 @@ void ASSEnemyCharacterBase::HideTargetUI()
 	ensure(TargetCursor);
 	TargetCursor->SetHiddenInGame(true);
 
-	ensure(HPBar);
-	HPBar->SetHiddenInGame(true);
+	if (nullptr != HPBar)
+	{
+		HPBar->SetHiddenInGame(true);
+	}
 }

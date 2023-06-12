@@ -86,7 +86,7 @@ void ASSCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
-void ASSCharacterBase::Die() const
+void ASSCharacterBase::Die()
 {
 }
 

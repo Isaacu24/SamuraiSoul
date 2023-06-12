@@ -40,6 +40,6 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UImage> DeathScreen;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UWidgetAnimation> DeadAnimation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
+	TObjectPtr<UWidgetAnimation> FadeIn;
 };

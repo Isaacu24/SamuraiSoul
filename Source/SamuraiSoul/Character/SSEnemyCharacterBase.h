@@ -66,7 +66,7 @@ protected:
 
 	virtual FTargetingEndedDelegate& GetTargetingEndedDelegate() override;
 
-	virtual void Die() const override;
+	virtual void Die() override;
 
 	virtual void VisibleTargetUI() override;
 	virtual void HideTargetUI() override;

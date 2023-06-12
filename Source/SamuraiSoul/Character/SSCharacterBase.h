@@ -40,7 +40,7 @@ public:
 	virtual void OnRep_Controller() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	virtual void Die() const;
+	virtual void Die();
 
 	USSAbilitySystemComponent* GetSSAbilitySystemComponent() const
 	{

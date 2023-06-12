@@ -2,6 +2,7 @@
 
 
 #include "Character/SSEnemyBossCharacter.h"
+#include "AI/SSEnemyBaseAIController.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 {
@@ -22,10 +23,11 @@ ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_ENEMY.Class);
 	}
 
-	GetMesh()->SetRelativeLocation(FVector{0.f, 0.f, -89.f});
-	GetMesh()->SetRelativeRotation(FRotator{0.f, 0.f, -90.f});
+	GetMesh()->SetRelativeLocation(FVector{0.f, 0.f, -88.5f});
+	GetMesh()->SetRelativeRotation(FRotator{0.f, -90.f, 0.f});
 
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AIControllerClass = ASSEnemyBaseAIController::StaticClass();
+	AutoPossessAI     = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void ASSEnemyBossCharacter::Tick(float DeltaTime)
@@ -41,9 +43,4 @@ void ASSEnemyBossCharacter::BeginPlay()
 void ASSEnemyBossCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-}
-
-void ASSEnemyBossCharacter::SetCharacterControlData(const USSCharacterControlData* ControlData)
-{
-	Super::SetCharacterControlData(ControlData);
 }

@@ -192,6 +192,48 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
+void ASSSamuraiCharacter::Die()
+{
+	Super::Die();
+
+	//if (nullptr != Controller)
+	//{
+	//	Controller->SetIgnoreMoveInput(true);
+	//}
+
+	//UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
+	//ensure(nullptr != CapsuleComp);
+	//CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	//UCharacterMovementComponent* MovementComp = GetCharacterMovement();
+	//ensure(nullptr != MovementComp);
+	//MovementComp->StopMovementImmediately();
+	//MovementComp->DisableMovement();
+
+	//if (GetLocalRole() == ROLE_Authority)
+	//{
+	//	DetachFromControllerPendingDestroy();
+	//	SetLifeSpan(0.1f);
+	//}
+
+	//AbilitySystemComponent->CancelAbilities(nullptr, nullptr);
+	//AbilitySystemComponent->RemoveAllGameplayCues();
+	//GetSSAbilitySystemComponent()->ClearAbilityInput();
+
+	//if (nullptr != AbilitySystemComponent->GetOwnerActor())
+	//{
+	//	AbilitySystemComponent->SetAvatarActor(nullptr);
+	//}
+
+	//else
+	//{
+	//	AbilitySystemComponent->ClearActorInfo();
+	//}
+
+	//AbilitySystemComponent = nullptr;
+}
+
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D

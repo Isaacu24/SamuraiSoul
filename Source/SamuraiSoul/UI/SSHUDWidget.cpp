@@ -40,7 +40,7 @@ void USSHUDWidget::UpdatePlayerHPbar(float Value)
 
 void USSHUDWidget::OnDeathScreen()
 {
-	//PlayAnimation(DeadAnimation);
+	PlayAnimation(FadeIn);
 }
 
 void USSHUDWidget::SetVisibilityBossHPBar(ESlateVisibility Value)

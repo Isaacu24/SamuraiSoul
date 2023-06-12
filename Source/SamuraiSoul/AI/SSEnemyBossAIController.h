@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "SSEnemyBaseAIController.h"
-#include "SSEnemyAIController.generated.h"
+#include "SSEnemyBossAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API ASSEnemyAIController : public ASSEnemyBaseAIController
+class SAMURAISOUL_API ASSEnemyBossAIController : public ASSEnemyBaseAIController
 {
 	GENERATED_BODY()
 
 public:
-	ASSEnemyAIController();
+	ASSEnemyBossAIController();
 
 	virtual void BeginPlay() override;
 
