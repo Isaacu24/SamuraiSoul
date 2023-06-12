@@ -110,6 +110,16 @@ void ASSEnemyAIController::SetPatrol(bool Value)
 	}
 }
 
+void ASSEnemyAIController::SetEquip(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISEQUIP, Value);
+	}
+}
+
 void ASSEnemyAIController::SetHit(bool Value)
 {
 	UBlackboardComponent* BlackboardPtr = Blackboard.Get();

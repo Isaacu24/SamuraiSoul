@@ -7,6 +7,7 @@
 #include "SSHUDWidget.generated.h"
 
 class USSHPBarWidget;
+class UImage;
 
 /**
  * 
@@ -24,6 +25,8 @@ public:
 	void SetMaxPlayerHP(float Value);
 	void UpdatePlayerHPbar(float Value);
 
+	void OnDeathScreen();
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -33,4 +36,10 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<USSHPBarWidget> BossHPBar;
+
+	UPROPERTY()
+	TObjectPtr<UImage> DeathScreen;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UWidgetAnimation> DeadAnimation;
 };

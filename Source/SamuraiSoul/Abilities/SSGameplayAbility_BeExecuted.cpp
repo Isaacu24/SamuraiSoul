@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SSGameplayAbility_BeExecuted.h"
-#include <GameFramework/Character.h>
 #include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Interface/SSTargetableInterface.h"
@@ -31,24 +30,21 @@ void USSGameplayAbility_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHa
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
-	check(Character);
-
-	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(Character);
-
-	if (nullptr != TargetPawn)
-	{
-		TargetPawn->GetTargetingEndedDelegate().ExecuteIfBound();
-	}
-
-	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(Character);
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
 
 	if (nullptr != AIPawn)
 	{
 		AIPawn->StopAI();
 	}
 
-	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(Character);
+	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != TargetPawn)
+	{
+		TargetPawn->GetTargetingEndedDelegate().ExecuteIfBound();
+	}
+
+	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(ActorInfo->OwnerActor);
 	int8 Number                            = CombatablePawn->GetCombatComponent()->GetExecutionNumber();
 
 	PlayMontage(ExecutedMontages[Number], Handle, ActorInfo, ActivationInfo, TriggerEventData);

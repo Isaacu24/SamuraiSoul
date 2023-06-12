@@ -86,6 +86,14 @@ void ASSEnemyCharacter::AttackByAI()
 	}
 }
 
+void ASSEnemyCharacter::EquipUnarm()
+{
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->Equip();
+	}
+}
+
 void ASSEnemyCharacter::Run()
 {
 	Super::Run();

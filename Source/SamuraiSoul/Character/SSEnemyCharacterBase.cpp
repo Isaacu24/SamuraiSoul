@@ -145,6 +145,14 @@ void ASSEnemyCharacterBase::SetRebound(bool Value)
 	AIController->SetRebound(Value);
 }
 
+void ASSEnemyCharacterBase::SetEquip(bool Value)
+{
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+	ensure(AIController);
+
+	AIController->SetEquip(Value);
+}
+
 void ASSEnemyCharacterBase::SetBeExecuted(bool Value)
 {
 	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());

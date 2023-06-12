@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Game/SamuraiSoul.h"
 #include "Components/ActorComponent.h"
+#include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include "SSCombatComponent.generated.h"
 
 class ASSWeapon;
@@ -37,6 +38,7 @@ public:
 
 	void OnDefense() const;
 	void OffDefense() const;
+	ASSWeapon_DefenseBarrier* BindDefenseHit() const;
 	void ChangeDefenseState(EDefenseState Type) const;
 
 	void OnWeapon() const;

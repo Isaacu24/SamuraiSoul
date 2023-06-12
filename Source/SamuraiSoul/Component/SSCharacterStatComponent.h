@@ -8,7 +8,7 @@
 #include "SSCharacterStatComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHPChangedDelegate, float /*CurrentHP*/);
-DECLARE_MULTICAST_DELEGATE(FOnCharacterDeadDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnHPZeroDelegate);
 
 class USSAttributeSet;
 
@@ -25,6 +25,7 @@ public:
 
 public:
 	FOnHPChangedDelegate OnHPChanged;
+	FOnHPZeroDelegate OnHPZero;
 
 	float GetHealth() const;
 	float GetMaxHealth() const;

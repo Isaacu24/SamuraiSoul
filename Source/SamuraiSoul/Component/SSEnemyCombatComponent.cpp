@@ -35,6 +35,11 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
+void USSEnemyCombatComponent::Equip()
+{
+	ActivateAbility(EquipAbility);
+}
+
 void USSEnemyCombatComponent::Parry(AActor* InActor)
 {
 	Super::Parry(InActor);

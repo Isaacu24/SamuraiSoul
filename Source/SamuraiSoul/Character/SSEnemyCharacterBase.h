@@ -61,6 +61,7 @@ protected:
 	virtual void SetHit(bool Value) override;
 	virtual void SetDead(bool Value) override;
 	virtual void SetRebound(bool Value) override;
+	virtual void SetEquip(bool Value) override;
 	virtual void SetBeExecuted(bool Value) override;
 
 	virtual FTargetingEndedDelegate& GetTargetingEndedDelegate() override;

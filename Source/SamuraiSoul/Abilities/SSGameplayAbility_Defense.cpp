@@ -42,6 +42,7 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
 	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(OwnerCharacter);
 
 	CombatableCharacter->GetCombatComponent()->OnDefense();
+	CombatableCharacter->GetCombatComponent()->BindDefenseHit()->OnHitEvent.BindUObject(this, &USSGameplayAbility_Defense::DefenseHit);
 
 	if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
 	{
@@ -83,30 +84,78 @@ void USSGameplayAbility_Defense::ApplyCost(const FGameplayAbilitySpecHandle Hand
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
 }
 
+void USSGameplayAbility_Defense::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
+{
+}
+
 void USSGameplayAbility_Defense::DefenseHit()
 {
 	switch (HitStack)
 	{
 		case 0:
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Hit"), DefenseHitMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit"), DefenseMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit"), DefenseRootMontage);
 			break;
 		case 1:
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Hit2"), DefenseHitMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit1"), DefenseMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit1"), DefenseRootMontage);
 			break;
 
 		case 2:
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("Broken"), DefenseHitMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit2"), DefenseMontage);
+			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit2"), DefenseRootMontage);
 			break;
 	}
 
 	++HitStack;
 
-	OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_Play(DefenseHitMontage);
-	//OwnerCharacter->GetMesh()->GetAnimInstance()->OnMontageEnded.AddDynamic();
-
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	//OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_Play(DefenseHitMontage);
+	//OwnerCharacter->GetMesh()->GetAnimInstance()->OnMontageEnded.AddDynamic(this, &USSGameplayAbility_Defense::ReDefense);
 }
 
-void USSGameplayAbility_Defense::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
+void USSGameplayAbility_Defense::ReDefense(UAnimMontage* Montage, bool bInterrupted)
 {
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	ActivateAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, &CurrentEventData);
 }
+
+//
+//void USSGameplayAbility_Defense::AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload)
+//{
+//	if (0 < HitStack)
+//	{
+//		return;
+//	}
+//
+//	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+//}
+//
+//void USSGameplayAbility_Defense::AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload)
+//{
+//	if (0 < HitStack)
+//	{
+//		return;
+//	}
+//
+//	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+//}
+//
+//void USSGameplayAbility_Defense::AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload)
+//{
+//	if (0 < HitStack)
+//	{
+//		return;
+//	}
+//
+//	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
+//}
+//
+//void USSGameplayAbility_Defense::AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload)
+//{
+//	if (0 < HitStack)
+//	{
+//		return;
+//	}
+//
+//	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
+//}

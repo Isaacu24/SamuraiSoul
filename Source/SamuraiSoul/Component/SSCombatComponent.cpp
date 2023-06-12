@@ -148,6 +148,12 @@ void USSCombatComponent::OffDefense() const
 	DefenseBarrier->SetActorTickEnabled(false);
 }
 
+
+ASSWeapon_DefenseBarrier* USSCombatComponent::BindDefenseHit() const
+{
+	return DefenseBarrier;
+}
+
 void USSCombatComponent::ChangeDefenseState(EDefenseState Type) const
 {
 	DefenseBarrier->ChangeDefenseState(Type);

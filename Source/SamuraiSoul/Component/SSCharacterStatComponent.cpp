@@ -71,7 +71,14 @@ void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* 
 
 void USSCharacterStatComponent::HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude)
 {
-	SetHandleGameplayEvent(FSSGameplayTags::Get().DeadTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
+	bool IsSuccessed = SetHandleGameplayEvent(FSSGameplayTags::Get().DeadTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
+
+	if (true == IsSuccessed)
+	{
+		OnHPChanged.Broadcast(OwnerAttributeSet->GetHealth());
+	}
+
+	OnHPZero.Broadcast();
 }
 
 void USSCharacterStatComponent::HandleBeExecuted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,

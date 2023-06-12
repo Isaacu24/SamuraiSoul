@@ -24,9 +24,11 @@ void USSAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 	MeshComp->WakeAllRigidBodies();
 
 	ASSCharacterBase* OnwerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
-	ensure(OnwerCharacter);
 
-	OnwerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	if (nullptr != OnwerCharacter)
+	{
+		OnwerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void USSAnimNotifyState_Dead::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
@@ -40,7 +42,9 @@ void USSAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 	Super::NotifyEnd(MeshComp, Animation);
 
 	ASSCharacterBase* OnwerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
-	ensure(OnwerCharacter);
 
-	OnwerCharacter->Die();
+	if (nullptr != OnwerCharacter)
+	{
+		OnwerCharacter->Die();
+	}
 }

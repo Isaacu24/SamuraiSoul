@@ -65,6 +65,8 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 	else if (Data.EvaluatedData.Attribute == GetBeExecutedAttribute())
 	{
+		SetHealth(0.f);
+
 		if (true == OnBeExecutedEvent.IsBound())
 		{
 			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();

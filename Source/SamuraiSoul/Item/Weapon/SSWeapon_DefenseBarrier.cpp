@@ -101,6 +101,7 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 						if (nullptr != MyOwner->GetCombatComponent()
 							&& nullptr != Enemy->GetCombatComponent())
 						{
+							OnHitEvent.ExecuteIfBound();
 							Enemy->GetCombatComponent()->OffWeapon();
 							//MyOwner->GetCombatComponent()->DefenseHit();?
 						}

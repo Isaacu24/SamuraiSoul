@@ -33,6 +33,8 @@ public:
 	void SetParry(bool Value);
 
 	void SetPatrol(bool Value);
+	void SetEquip(bool Value);
+
 	void SetHit(bool Value);
 	void SetDead(bool Value);
 	void SetRebound(bool Value);

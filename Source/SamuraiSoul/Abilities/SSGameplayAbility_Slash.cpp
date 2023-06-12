@@ -63,14 +63,14 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 
 	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
 
-	//if (nullptr != BehaviorPawn)
-	//{
-	//	if (false == BehaviorPawn->IsEquip())
-	//	{
-	//		Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
-	//		return;
-	//	}
-	//}
+	if (nullptr != BehaviorPawn)
+	{
+		if (false == BehaviorPawn->IsEquip())
+		{
+			Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			return;
+		}
+	}
 
 	AnimInstance = Character->GetMesh()->GetAnimInstance();
 

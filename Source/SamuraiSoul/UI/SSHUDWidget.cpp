@@ -2,6 +2,7 @@
 
 
 #include "UI/SSHUDWidget.h"
+#include "Components/Image.h"
 #include "UI/SSHPBarWidget.h"
 #include "Interface/SSCharacterHUDInterface.h"
 
@@ -19,6 +20,9 @@ void USSHUDWidget::NativeConstruct()
 	PlayerHPBar = Cast<USSHPBarWidget>(GetWidgetFromName(TEXT("Player_HPBar")));
 	ensure(BossHPBar);
 
+	DeathScreen = Cast<UImage>(GetWidgetFromName(TEXT("Death_Screen")));
+	ensure(DeathScreen);
+
 	ISSCharacterHUDInterface* HUDPawn = Cast<ISSCharacterHUDInterface>(GetOwningPlayerPawn());
 
 	if (nullptr != HUDPawn)
@@ -32,6 +36,11 @@ void USSHUDWidget::NativeConstruct()
 void USSHUDWidget::UpdatePlayerHPbar(float Value)
 {
 	PlayerHPBar->UpdateHPBar(Value);
+}
+
+void USSHUDWidget::OnDeathScreen()
+{
+	//PlayAnimation(DeadAnimation);
 }
 
 void USSHUDWidget::SetVisibilityBossHPBar(ESlateVisibility Value)

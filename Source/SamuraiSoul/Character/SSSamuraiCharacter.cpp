@@ -400,7 +400,9 @@ void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 	if (nullptr != InHUDWidget)
 	{
 		InHUDWidget->SetMaxPlayerHP(StatComponent->GetMaxHealth());
-		InHUDWidget->UpdatePlayerHPbar(StatComponent->GetMaxHealth());
+		InHUDWidget->UpdatePlayerHPbar(StatComponent->GetHealth());
+
 		StatComponent->OnHPChanged.AddUObject(InHUDWidget, &USSHUDWidget::UpdatePlayerHPbar);
+		StatComponent->OnHPZero.AddUObject(InHUDWidget, &USSHUDWidget::OnDeathScreen);
 	}
 }

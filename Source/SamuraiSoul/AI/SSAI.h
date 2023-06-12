@@ -10,3 +10,4 @@
 #define BBKEY_ISDEAD TEXT("IsDead")
 #define BBKEY_ISREBOUND TEXT("IsRebound")
 #define BBKEY_ISBEEXECUTED TEXT("IsBeExecuted")
+#define BBKEY_ISEQUIP TEXT("IsEquip")

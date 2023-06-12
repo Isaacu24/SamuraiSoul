@@ -5,6 +5,7 @@
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "SSGameplayTags.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSGameplayAbility_EquipUnarm::USSGameplayAbility_EquipUnarm()
 {
@@ -43,7 +44,7 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 
 	ISSBehaviorInterface* Character = Cast<ISSBehaviorInterface>(Owner);
 
-	bool bIsEquip = false;
+	bIsEquip = false;
 
 	if (nullptr != Character)
 	{
@@ -90,6 +91,16 @@ void USSGameplayAbility_EquipUnarm::EndAbility(const FGameplayAbilitySpecHandle 
                                                const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AIPawn)
+	{
+		if (false == bIsEquip)
+		{
+			AIPawn->SetEquip(true);
+		}
+	}
 }
 
 void USSGameplayAbility_EquipUnarm::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

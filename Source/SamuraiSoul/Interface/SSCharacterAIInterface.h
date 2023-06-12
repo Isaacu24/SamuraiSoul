@@ -49,5 +49,6 @@ public:
 	virtual void SetHit(bool Value) = 0;
 	virtual void SetDead(bool Value) = 0;
 	virtual void SetRebound(bool Value) = 0;
+	virtual void SetEquip(bool Value) = 0;
 	virtual void SetBeExecuted(bool Value) = 0;
 };
