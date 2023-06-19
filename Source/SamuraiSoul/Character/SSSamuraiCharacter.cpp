@@ -378,6 +378,11 @@ void ASSSamuraiCharacter::LockOn()
 
 	TargetPawn->GetTargetingEndedDelegate().BindLambda([&]()
 	{
+		if (nullptr == LockOnTarget)
+		{
+			return;
+		}
+
 		ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
 		TargetPawn->HideTargetUI();
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Character/SSEnemyCharacterBase.h"
 #include "SSEnemyBaseAIController.generated.h"
 
 class UBlackboardData;
@@ -24,26 +25,20 @@ public:
 
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
-	void TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus);
-
 	void RunAI();
 	void StopAI();
-
-	void SetParry(bool Value);
-
-	void SetPatrol(bool Value);
-	void SetEquip(bool Value);
-
-	void SetHit(bool Value);
-	void SetDead(bool Value);
-	void SetRebound(bool Value);
-	void SetBeExecuted(bool Value);
 
 	UAIPerceptionComponent* GetAIPerceptionComponent() const
 	{
 		return AIPerceptionComponent;
 	}
+
+	virtual void SetParry(bool Value);
+	virtual void SetHit(bool Value);
+	virtual void SetDead(bool Value);
+	virtual void SetRebound(bool Value);
+	virtual void SetEquip(bool Value);
+	virtual void SetBeExecuted(bool Value);
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;

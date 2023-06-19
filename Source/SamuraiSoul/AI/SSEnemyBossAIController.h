@@ -17,6 +17,9 @@ class SAMURAISOUL_API ASSEnemyBossAIController : public ASSEnemyBaseAIController
 public:
 	ASSEnemyBossAIController();
 
+	UFUNCTION()
+	virtual void TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus);
+
 	virtual void BeginPlay() override;
 
 protected:

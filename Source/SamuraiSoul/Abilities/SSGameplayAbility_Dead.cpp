@@ -12,6 +12,7 @@ USSGameplayAbility_Dead::USSGameplayAbility_Dead()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().DeadTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeadTag);
+	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
 
 	FAbilityTriggerData TriggerData;
