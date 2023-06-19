@@ -5,19 +5,6 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
-enum class ESSAbilityInputID : uint8
-{
-	None,
-	Confirm,
-	Cancel,
-	Jump,
-	Dodge,
-	EquipUnarm,
-	Attack,
-	Defense
-};
-
-UENUM(BlueprintType)
 enum class ESSAbilityID : uint8
 {
 	None,

@@ -91,9 +91,6 @@ public:
 
 public:
 	UPROPERTY(BlueprintReadOnly, EditAnyWhere, Category = "Ability")
-	ESSAbilityInputID AbilityInputID = ESSAbilityInputID::None;
-
-	UPROPERTY(BlueprintReadOnly, EditAnyWhere, Category = "Ability")
 	ESSAbilityID AbilityID = ESSAbilityID::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Handles)

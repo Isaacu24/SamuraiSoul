@@ -11,6 +11,8 @@ FSSGameplayTags::FSSGameplayTags()
 	Ability_DodgeTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dodge"));
 	Ability_EquipUnarmTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.EquipUnarm"));
 	Ability_SlashTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
+	Ability_SpinSlashTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.SpinSlash"));
+	Ability_StabTag       = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Stab"));
 	Ability_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
 	Ability_ParryTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Parry"));
 

@@ -7,8 +7,7 @@
 
 USSGameplayAbility_Dead::USSGameplayAbility_Dead()
 {
-	AbilityID      = ESSAbilityID::Dead;
-	AbilityInputID = ESSAbilityInputID::None;
+	AbilityID = ESSAbilityID::Dead;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().DeadTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeadTag);

@@ -9,8 +9,7 @@
 
 USSGameplayAbility_Dodege::USSGameplayAbility_Dodege()
 {
-	AbilityID      = ESSAbilityID::Dodge;
-	AbilityInputID = ESSAbilityInputID::Dodge;
+	AbilityID = ESSAbilityID::Dodge;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);

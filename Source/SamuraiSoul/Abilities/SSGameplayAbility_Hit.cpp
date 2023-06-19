@@ -10,8 +10,7 @@
 
 USSGameplayAbility_Hit::USSGameplayAbility_Hit()
 {
-	AbilityID      = ESSAbilityID::Hit;
-	AbilityInputID = ESSAbilityInputID::None;
+	AbilityID = ESSAbilityID::Hit;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().HitTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().HitTag);

@@ -11,8 +11,7 @@
 
 USSGameplayAbility_Defense::USSGameplayAbility_Defense()
 {
-	AbilityID      = ESSAbilityID::Defense;
-	AbilityInputID = ESSAbilityInputID::Defense;
+	AbilityID = ESSAbilityID::Defense;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);

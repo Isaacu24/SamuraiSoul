@@ -13,8 +13,7 @@
 
 USSGameplayAbility_Execution::USSGameplayAbility_Execution()
 {
-	AbilityID      = ESSAbilityID::Execution;
-	AbilityInputID = ESSAbilityInputID::Attack;
+	AbilityID = ESSAbilityID::Execution;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag);

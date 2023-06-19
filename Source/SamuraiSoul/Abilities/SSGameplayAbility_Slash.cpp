@@ -13,8 +13,7 @@
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {
-	AbilityID      = ESSAbilityID::Slash;
-	AbilityInputID = ESSAbilityInputID::Attack;
+	AbilityID = ESSAbilityID::Slash;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);

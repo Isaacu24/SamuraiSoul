@@ -6,8 +6,7 @@
 
 USSGameplayAbility_Parry::USSGameplayAbility_Parry()
 {
-	AbilityID      = ESSAbilityID::Parry;
-	AbilityInputID = ESSAbilityInputID::None;
+	AbilityID = ESSAbilityID::Parry;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);

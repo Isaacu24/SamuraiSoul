@@ -7,8 +7,7 @@
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {
-	AbilityID      = ESSAbilityID::Jump;
-	AbilityInputID = ESSAbilityInputID::Jump;
+	AbilityID = ESSAbilityID::Jump;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);

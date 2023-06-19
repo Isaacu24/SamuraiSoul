@@ -11,8 +11,7 @@
 
 USSGameplayAbility_BeExecuted::USSGameplayAbility_BeExecuted()
 {
-	AbilityID      = ESSAbilityID::BeExecuted;
-	AbilityInputID = ESSAbilityInputID::None;
+	AbilityID = ESSAbilityID::BeExecuted;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);

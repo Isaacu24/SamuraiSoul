@@ -7,8 +7,7 @@
 
 USSGameplayAbility_Rebound::USSGameplayAbility_Rebound()
 {
-	AbilityID      = ESSAbilityID::Rebound;
-	AbilityInputID = ESSAbilityInputID::None;
+	AbilityID = ESSAbilityID::Rebound;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().ReboundTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().ReboundTag);

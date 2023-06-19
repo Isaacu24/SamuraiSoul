@@ -21,6 +21,8 @@ public:
 	FGameplayTag Ability_DodgeTag;
 	FGameplayTag Ability_EquipUnarmTag;
 	FGameplayTag Ability_SlashTag;
+	FGameplayTag Ability_SpinSlashTag;
+	FGameplayTag Ability_StabTag;
 	FGameplayTag Ability_DefenseTag;
 	FGameplayTag Ability_ParryTag;
 

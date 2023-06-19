@@ -9,8 +9,7 @@
 
 USSGameplayAbility_EquipUnarm::USSGameplayAbility_EquipUnarm()
 {
-	AbilityID      = ESSAbilityID::EquipUnarm;
-	AbilityInputID = ESSAbilityInputID::EquipUnarm;
+	AbilityID = ESSAbilityID::EquipUnarm;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
