@@ -21,6 +21,7 @@ public:
 
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
+	void SpecialAttackByAI() const;
 	virtual void Equip();
 
 	virtual void Parry(AActor* InActor) override;
@@ -32,8 +33,14 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayAbility> EquipAbility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayAbility> SlashAbility;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> EquipAbility;
+	TSubclassOf<UGameplayAbility> StabAbility;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayAbility> SpinSlashAbility;
 };

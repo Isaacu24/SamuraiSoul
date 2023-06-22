@@ -5,10 +5,11 @@
 #include "SSGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Interface/SSBehaviorInterface.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSGameplayAbility_Stab::USSGameplayAbility_Stab()
 {
-	AbilityID = ESSAbilityID::Slash;
+	AbilityID = ESSAbilityID::Stab;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_StabTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_StabTag);
@@ -41,4 +42,11 @@ void USSGameplayAbility_Stab::EndAbility(const FGameplayAbilitySpecHandle Handle
                                          const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AI)
+	{
+		AI->AttackEnd();
+	}
 }

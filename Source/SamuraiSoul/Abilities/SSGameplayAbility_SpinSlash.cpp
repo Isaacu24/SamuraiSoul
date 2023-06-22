@@ -4,10 +4,11 @@
 #include "SSGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Interface/SSBehaviorInterface.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSGameplayAbility_SpinSlash::USSGameplayAbility_SpinSlash()
 {
-	AbilityID = ESSAbilityID::Slash;
+	AbilityID = ESSAbilityID::SpinSlash;
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SpinSlashTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SpinSlashTag);
@@ -40,4 +41,11 @@ void USSGameplayAbility_SpinSlash::EndAbility(const FGameplayAbilitySpecHandle H
                                               const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AI)
+	{
+		AI->AttackEnd();
+	}
 }

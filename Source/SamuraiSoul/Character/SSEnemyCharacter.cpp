@@ -132,6 +132,14 @@ void ASSEnemyCharacter::AttackByAI()
 	}
 }
 
+void ASSEnemyCharacter::SpectialAttackByAI()
+{
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->SpecialAttackByAI();
+	}
+}
+
 void ASSEnemyCharacter::EquipUnarm()
 {
 	if (nullptr != CombatComponent)

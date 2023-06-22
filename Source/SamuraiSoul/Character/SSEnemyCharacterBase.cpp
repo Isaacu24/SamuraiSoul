@@ -104,6 +104,10 @@ void ASSEnemyCharacterBase::AttackByAI()
 {
 }
 
+void ASSEnemyCharacterBase::SpectialAttackByAI()
+{
+}
+
 void ASSEnemyCharacterBase::AttackEnd()
 {
 	OnAttackFinished.ExecuteIfBound();

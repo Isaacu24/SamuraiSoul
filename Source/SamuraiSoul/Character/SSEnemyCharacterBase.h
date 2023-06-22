@@ -52,6 +52,7 @@ protected:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
+	virtual void SpectialAttackByAI() override;
 	virtual void AttackEnd() override;
 
 	virtual void EquipUnarm() override;

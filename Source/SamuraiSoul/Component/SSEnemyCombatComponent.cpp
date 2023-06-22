@@ -35,6 +35,11 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
+void USSEnemyCombatComponent::SpecialAttackByAI() const
+{
+	ActivateAbility(StabAbility);
+}
+
 void USSEnemyCombatComponent::Equip()
 {
 	ActivateAbility(EquipAbility);

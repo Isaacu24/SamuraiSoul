@@ -13,6 +13,7 @@ FSSGameplayTags::FSSGameplayTags()
 	Ability_SlashTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
 	Ability_SpinSlashTag  = FGameplayTag::RequestGameplayTag(FName("SSAbilities.SpinSlash"));
 	Ability_StabTag       = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Stab"));
+	Ability_WolfDrawTag   = FGameplayTag::RequestGameplayTag(FName("SSAbilities.WolfDraw"));
 	Ability_DefenseTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
 	Ability_ParryTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Parry"));
 

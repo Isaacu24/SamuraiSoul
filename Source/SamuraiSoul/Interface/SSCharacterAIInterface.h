@@ -40,6 +40,7 @@ public:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
 	virtual void AttackByAI() = 0;
+	virtual void SpectialAttackByAI() = 0;
 	virtual void AttackEnd() = 0;
 
 	virtual void EquipUnarm() = 0;
