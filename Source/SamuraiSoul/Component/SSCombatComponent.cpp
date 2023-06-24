@@ -11,7 +11,6 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "Interface/SSCombatableInterface.h"
 #include "AbilitySystemInterface.h"
-#include "SSGameplayTags.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -26,11 +25,6 @@ void USSCombatComponent::BeginPlay()
 	{
 		Weapon->OnWeaponOverlap.BindUObject(this, &USSCombatComponent::Attack);
 	}
-}
-
-void USSCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void USSCombatComponent::EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName)
@@ -67,13 +61,8 @@ void USSCombatComponent::EquipDefenseBarrier()
 	}
 }
 
-void USSCombatComponent::ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const
+void USSCombatComponent::TryActivateAbility(const FGameplayTag AbilityTag) const
 {
-	if (nullptr == Ability)
-	{
-		return;
-	}
-
 	IAbilitySystemInterface* Character = Cast<IAbilitySystemInterface>(GetOwner());
 
 	if (nullptr == Character)
@@ -85,15 +74,12 @@ void USSCombatComponent::ActivateAbility(const TSubclassOf<UGameplayAbility> Abi
 
 	if (nullptr != AbilitySystemComponent)
 	{
-		const FGameplayAbilitySpec* AbilitySpec = AbilitySystemComponent->FindAbilitySpecFromClass(Ability);
+		bool IsSucceced = AbilitySystemComponent->TryActivateAbilitiesByTag(FGameplayTagContainer(AbilityTag));
 
-		if (nullptr == AbilitySpec)
+		if (false == IsSucceced)
 		{
-			return;
+			UE_LOG(LogTemp, Warning, TEXT("Faild Ability"));
 		}
-
-		AbilitySystemComponent->CancelAbilities();
-		AbilitySystemComponent->TryActivateAbility(AbilitySpec->Handle);
 	}
 }
 
@@ -195,33 +181,6 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 	}
 
 	Enemy->GetCombatComponent()->Hit();
-
-	//if (MyOwner != Enemy)
-	//{
-	//	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetOwner());
-
-	//	// 현재 활성화된 어빌리티들 가져오기
-	//	TArray<FGameplayAbilitySpec> ActiveAbilities = AbilityPawn->GetAbilitySystemComponent()->GetActivatableAbilities();
-
-	//	// 각 어빌리티의 태그 출력
-	//	for (const FGameplayAbilitySpec AbilitySpec : ActiveAbilities)
-	//	{
-	//		const FGameplayTagContainer& AbilityTags = AbilitySpec.Ability->AbilityTags;
-
-	//		if (true == AbilityTags.HasTag(FSSGameplayTags::Get().DeferredAbility_ExecutionTag))
-	//		{
-	//			if (true == AbilitySpec.IsActive())
-	//			{
-	//				Enemy->GetCombatComponent()->BeExecuted();
-	//			}
-
-	//			else
-	//			{
-	//				Enemy->GetCombatComponent()->Hit();
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 void USSCombatComponent::Parry(AActor* InActor)
@@ -229,8 +188,7 @@ void USSCombatComponent::Parry(AActor* InActor)
 	ensure(InActor);
 	SetTarget(InActor);
 
-	ensure(ParryAbility);
-	ActivateAbility(ParryAbility);
+	TryActivateAbility(ParryTag);
 }
 
 void USSCombatComponent::Hit()

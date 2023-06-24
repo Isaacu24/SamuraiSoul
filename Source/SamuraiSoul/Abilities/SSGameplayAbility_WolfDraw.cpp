@@ -3,6 +3,7 @@
 
 #include "Abilities/SSGameplayAbility_WolfDraw.h"
 #include "SSGameplayTags.h"
+#include "Character/SSWolf.h"
 #include "GameFramework/Character.h"
 #include "Interface/SSBehaviorInterface.h"
 
@@ -18,7 +19,6 @@ USSGameplayAbility_WolfDraw::USSGameplayAbility_WolfDraw()
 void USSGameplayAbility_WolfDraw::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                                   const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
@@ -42,4 +42,13 @@ void USSGameplayAbility_WolfDraw::EndAbility(const FGameplayAbilitySpecHandle Ha
                                              const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	ACharacter* MyCharacter = Cast<ACharacter>(ActorInfo->AvatarActor);
+
+	FTransform CharacterTransform = MyCharacter->GetActorTransform();
+
+	SpawnedWolf = GetWorld()->SpawnActorDeferred<ASSWolf>(ProjectileClass, CharacterTransform, GetOwningActorFromActorInfo(),
+	                                                      MyCharacter, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	SpawnedWolf->FinishSpawning(CharacterTransform);
+	SpawnedWolf->RunWolf(MyCharacter);
 }

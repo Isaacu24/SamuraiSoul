@@ -45,6 +45,8 @@ public:
 
 	virtual void EquipUnarm() = 0;
 
+	virtual void ShowPerilousMark() = 0;
+
 	virtual void SetParry(bool Value) = 0;
 
 	virtual void SetHit(bool Value) = 0;

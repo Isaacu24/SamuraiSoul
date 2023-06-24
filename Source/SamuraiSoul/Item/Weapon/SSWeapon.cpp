@@ -2,14 +2,8 @@
 
 
 #include "SSWeapon.h"
-#include "Game/SamuraiSoul.h"
 #include "DrawDebugHelpers.h"
 #include <Components/BoxComponent.h>
-#include <Components/SphereComponent.h>
-#include <Kismet/KismetSystemLibrary.h>
-#include "Interface/SSCombatableInterface.h"
-#include "Component/SSCombatComponent.h"
-#include <Engine/StaticMeshActor.h>
 
 ASSWeapon::ASSWeapon()
 {

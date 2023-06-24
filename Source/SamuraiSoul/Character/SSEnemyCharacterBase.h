@@ -57,6 +57,8 @@ protected:
 
 	virtual void EquipUnarm() override;
 
+	virtual void ShowPerilousMark() override;
+
 	virtual void SetParry(bool Value) override;
 
 	virtual void SetHit(bool Value) override;
@@ -78,6 +80,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> HPBar;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSWidgetComponent> PerilousMark;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> TargetCursor;

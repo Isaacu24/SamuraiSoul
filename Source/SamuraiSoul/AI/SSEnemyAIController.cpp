@@ -118,6 +118,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 	APawn* Player = Cast<APawn>(InActor);
 
 	if (nullptr != Player
+		&& nullptr != Player->GetController()
 		&& true == Player->GetController()->IsPlayerController())
 	{
 		UBlackboardComponent* BlackboardPtr = Blackboard.Get();

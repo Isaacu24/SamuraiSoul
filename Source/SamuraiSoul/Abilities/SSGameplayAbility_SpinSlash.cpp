@@ -34,6 +34,13 @@ void USSGameplayAbility_SpinSlash::ActivateAbility(const FGameplayAbilitySpecHan
 		}
 	}
 
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AI)
+	{
+		AI->ShowPerilousMark();
+	}
+
 	PlayMontage(SpinSlashMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 

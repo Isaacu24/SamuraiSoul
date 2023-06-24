@@ -30,6 +30,23 @@ ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 		TargetCursor->SetDrawSize(FVector2D(10.0f, 10.0f));
 		TargetCursor->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+
+	PerilousMark = CreateDefaultSubobject<USSWidgetComponent>(TEXT("PerilousMark"));
+	PerilousMark->SetupAttachment(GetMesh());
+	PerilousMark->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		PERILOUSMARK_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_Perilous.WBP_Perilous_C'"));
+
+	if (true == PERILOUSMARK_WIDGET.Succeeded())
+	{
+		PerilousMark->SetWidgetClass(PERILOUSMARK_WIDGET.Class);
+		PerilousMark->SetWidgetSpace(EWidgetSpace::Screen);
+		PerilousMark->SetDrawSize(FVector2D(150.0f, 150.0f));
+		PerilousMark->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	PerilousMark->SetHiddenInGame(true);
 }
 
 void ASSEnemyCharacterBase::BeginPlay()
@@ -115,6 +132,17 @@ void ASSEnemyCharacterBase::AttackEnd()
 
 void ASSEnemyCharacterBase::EquipUnarm()
 {
+}
+
+void ASSEnemyCharacterBase::ShowPerilousMark()
+{
+	PerilousMark->SetHiddenInGame(false);
+
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, [&]()
+	{
+		PerilousMark->SetHiddenInGame(true);
+	}, 1.0f, false);
 }
 
 void ASSEnemyCharacterBase::SetParry(bool Value)

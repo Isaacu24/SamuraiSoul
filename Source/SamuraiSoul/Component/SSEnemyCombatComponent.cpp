@@ -25,7 +25,7 @@ void USSEnemyCombatComponent::AttackByAI() const
 	switch (Weapon->GetWeaponType())
 	{
 		case EWeaponType::Katana:
-			ActivateAbility(SlashAbility);
+			TryActivateAbility(SlashTag);
 			break;
 		case EWeaponType::Bow:
 			// Active Ability
@@ -37,12 +37,12 @@ void USSEnemyCombatComponent::AttackByAI() const
 
 void USSEnemyCombatComponent::SpecialAttackByAI() const
 {
-	ActivateAbility(StabAbility);
+	TryActivateAbility(StabTag);
 }
 
 void USSEnemyCombatComponent::Equip()
 {
-	ActivateAbility(EquipAbility);
+	TryActivateAbility(EquipTag);
 }
 
 void USSEnemyCombatComponent::Parry(AActor* InActor)

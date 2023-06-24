@@ -25,6 +25,7 @@ EBTNodeResult::Type UBTTask_TurnToTarget::ExecuteTask(UBehaviorTreeComponent& Ow
 	}
 
 	APawn* TargetPawn = Cast<APawn>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGETLOCATION));
+
 	if (nullptr == TargetPawn)
 	{
 		return EBTNodeResult::Failed;

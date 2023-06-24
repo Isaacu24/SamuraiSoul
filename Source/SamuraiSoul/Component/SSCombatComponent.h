@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Game/SamuraiSoul.h"
 #include "Components/ActorComponent.h"
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
@@ -24,12 +25,11 @@ public:
 	USSCombatComponent();
 
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName);
 	void EquipDefenseBarrier();
 
-	void ActivateAbility(const TSubclassOf<UGameplayAbility> Ability) const;
+	void TryActivateAbility(const FGameplayTag AbilityTag) const;
 	void TakeGameplayEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
 	virtual void Parry(AActor* InActor);
@@ -71,7 +71,7 @@ protected:
 	TObjectPtr<ASSWeapon_DefenseBarrier> DefenseBarrier;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> ParryAbility;
+	FGameplayTag ParryTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> ParryMontage;

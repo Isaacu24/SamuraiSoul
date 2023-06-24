@@ -23,11 +23,11 @@ void USSAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 	MeshComp->SetSimulatePhysics(true);
 	MeshComp->WakeAllRigidBodies();
 
-	ASSCharacterBase* OnwerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	ASSCharacterBase* OwnerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
 
-	if (nullptr != OnwerCharacter)
+	if (nullptr != OwnerCharacter)
 	{
-		OnwerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		OwnerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 

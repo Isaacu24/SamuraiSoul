@@ -29,7 +29,7 @@ void USSGameplayAbility_Dead::ActivateAbility(const FGameplayAbilitySpecHandle H
 
 	if (nullptr != AIPawn)
 	{
-		AIPawn->StopAI();
+		AIPawn->SetDead(true);
 	}
 
 	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(ActorInfo->OwnerActor);

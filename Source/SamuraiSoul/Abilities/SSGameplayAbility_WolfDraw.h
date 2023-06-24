@@ -6,6 +6,9 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "SSGameplayAbility_WolfDraw.generated.h"
 
+class ASSWolf;
+class ASSWolf;
+
 /**
  * 
  */
@@ -26,4 +29,10 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> Montage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Projectile)
+	ASSWolf* SpawnedWolf;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Projectile)
+	TSubclassOf<ASSWolf> ProjectileClass;
 };

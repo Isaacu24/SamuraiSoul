@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Component/SSCombatComponent.h"
 #include "SSEnemyCombatComponent.generated.h"
 
@@ -33,14 +34,14 @@ protected:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> EquipAbility;
+	FGameplayTag EquipTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> SlashAbility;
+	FGameplayTag SlashTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> StabAbility;
+	FGameplayTag StabTag;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UGameplayAbility> SpinSlashAbility;
+	FGameplayTag SpinSlashTag;
 };

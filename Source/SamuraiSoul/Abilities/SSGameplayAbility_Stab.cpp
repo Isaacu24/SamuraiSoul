@@ -35,6 +35,13 @@ void USSGameplayAbility_Stab::ActivateAbility(const FGameplayAbilitySpecHandle H
 		}
 	}
 
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	if (nullptr != AI)
+	{
+		AI->ShowPerilousMark();
+	}
+
 	PlayMontage(StabMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
