@@ -21,10 +21,10 @@ void USSGameplayAbility_WolfDraw::ActivateAbility(const FGameplayAbilitySpecHand
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
-	check(Character);
+	MyCharacter = Cast<ACharacter>(ActorInfo->AvatarActor);
+	check(MyCharacter);
 
-	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(MyCharacter);
 
 	if (nullptr != BehaviorPawn)
 	{
@@ -42,8 +42,14 @@ void USSGameplayAbility_WolfDraw::EndAbility(const FGameplayAbilitySpecHandle Ha
                                              const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+}
 
-	ACharacter* MyCharacter = Cast<ACharacter>(ActorInfo->AvatarActor);
+void USSGameplayAbility_WolfDraw::SpawnWolf()
+{
+	if (nullptr == MyCharacter)
+	{
+		return;
+	}
 
 	FTransform CharacterTransform = MyCharacter->GetActorTransform();
 

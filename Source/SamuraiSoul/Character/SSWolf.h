@@ -13,6 +13,9 @@ class UCapsuleComponent;
 class UParticleSystem;
 class ASSWolf;
 
+
+DECLARE_DELEGATE_TwoParams(FWolfCollisionOverlap, AActor* /*InActor*/, const FHitResult& /*OutHit*/);
+
 UCLASS()
 class SAMURAISOUL_API ASSWolf : public AActor
 {
@@ -54,4 +57,6 @@ private:
 	TObjectPtr<UAnimMontage> RunMontage;
 
 	float GravityScale;
+
+	FWolfCollisionOverlap OnWolfOverlap;
 };

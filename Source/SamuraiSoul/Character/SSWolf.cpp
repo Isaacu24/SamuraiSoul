@@ -2,10 +2,13 @@
 
 
 #include "Character/SSWolf.h"
+
+#include "Component/SSCombatComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Interface/SSCombatableInterface.h"
 
 ASSWolf::ASSWolf()
 {
@@ -66,6 +69,13 @@ void ASSWolf::RunWolf(AActor* InActor)
 	ProjectileComponent->Activate();
 
 	SkeletalMeshComponent->GetAnimInstance()->Montage_Play(RunMontage);
+
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(InActor);
+
+	if (nullptr != CombatPawn)
+	{
+		OnWolfOverlap.BindUObject(CombatPawn->GetCombatComponent(), &USSCombatComponent::Attack);
+	}
 }
 
 void ASSWolf::OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
@@ -94,6 +104,8 @@ void ASSWolf::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor*
 		                                                              GetActorTransform()
 		                                                             );
 	}
+
+	OnWolfOverlap.ExecuteIfBound(OtherActor, SweepResult);
 
 	Destroy();
 }

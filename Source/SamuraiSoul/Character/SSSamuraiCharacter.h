@@ -56,7 +56,9 @@ public:
 	void CrouchStart();
 	void CrouchEnd();
 
+	void LockOnSwitch();
 	void LockOn();
+	void LockOff();
 
 	void ChangeCharacterControl();
 	void SetCharacterControl(ECharacterControlType CharacterControlType);

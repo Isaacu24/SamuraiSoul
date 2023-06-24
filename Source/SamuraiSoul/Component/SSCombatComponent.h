@@ -32,6 +32,7 @@ public:
 	void TryActivateAbility(const FGameplayTag AbilityTag) const;
 	void TakeGameplayEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
+	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Parry(AActor* InActor);
 	virtual void Rebound();
 	virtual void BeExecuted(int8 RandomNumber);
@@ -60,7 +61,6 @@ public:
 	}
 
 protected:
-	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Hit();
 
 protected:

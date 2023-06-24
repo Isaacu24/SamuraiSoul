@@ -74,6 +74,9 @@ void USSCombatComponent::TryActivateAbility(const FGameplayTag AbilityTag) const
 
 	if (nullptr != AbilitySystemComponent)
 	{
+		//if hp is zero
+		AbilitySystemComponent->CancelAllAbilities();
+
 		bool IsSucceced = AbilitySystemComponent->TryActivateAbilitiesByTag(FGameplayTagContainer(AbilityTag));
 
 		if (false == IsSucceced)

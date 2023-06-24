@@ -176,7 +176,7 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_CrouchStartTag, ETriggerEvent::Triggered, this,
 	                                   &ASSSamuraiCharacter::CrouchStart);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_CrouchEndTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::CrouchEnd);
-	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_LockOnTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::LockOn);
+	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_LockOnTag, ETriggerEvent::Completed, this, &ASSSamuraiCharacter::LockOnSwitch);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_ChangeControlTag, ETriggerEvent::Triggered, this,
 	                                   &ASSSamuraiCharacter::ChangeCharacterControl);
 
@@ -194,44 +194,10 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 
 void ASSSamuraiCharacter::Die()
 {
-	Super::Die();
+	//Super::Die();
+	//CombatComponent->DestroyComponent();
 
-	//if (nullptr != Controller)
-	//{
-	//	Controller->SetIgnoreMoveInput(true);
-	//}
-
-	//UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
-	//ensure(nullptr != CapsuleComp);
-	//CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	//CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-
-	//UCharacterMovementComponent* MovementComp = GetCharacterMovement();
-	//ensure(nullptr != MovementComp);
-	//MovementComp->StopMovementImmediately();
-	//MovementComp->DisableMovement();
-
-	//if (GetLocalRole() == ROLE_Authority)
-	//{
-	//	DetachFromControllerPendingDestroy();
-	//	SetLifeSpan(0.1f);
-	//}
-
-	//AbilitySystemComponent->CancelAbilities(nullptr, nullptr);
-	//AbilitySystemComponent->RemoveAllGameplayCues();
-	//GetSSAbilitySystemComponent()->ClearAbilityInput();
-
-	//if (nullptr != AbilitySystemComponent->GetOwnerActor())
-	//{
-	//	AbilitySystemComponent->SetAvatarActor(nullptr);
-	//}
-
-	//else
-	//{
-	//	AbilitySystemComponent->ClearActorInfo();
-	//}
-
-	//AbilitySystemComponent = nullptr;
+	LockOff();
 }
 
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
@@ -321,6 +287,19 @@ void ASSSamuraiCharacter::CrouchEnd()
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 }
 
+void ASSSamuraiCharacter::LockOnSwitch()
+{
+	if (false == bIsLockOn)
+	{
+		LockOn();
+	}
+
+	else
+	{
+		LockOff();
+	}
+}
+
 void ASSSamuraiCharacter::LockOn()
 {
 	const FVector Start = GetActorLocation();
@@ -356,19 +335,11 @@ void ASSSamuraiCharacter::LockOn()
 
 	if (nullptr == OutHit.GetActor())
 	{
-		if (nullptr != LockOnTarget)
-		{
-			ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
-			TargetPawn->HideTargetUI();
-		}
-
-		bIsLockOn                 = false;
-		bUseControllerRotationYaw = false;
-
-		return;
+		LockOff();
 	}
 
-	LockOnTarget                       = OutHit.GetActor();
+	LockOnTarget = OutHit.GetActor();
+
 	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
 
 	if (nullptr == TargetPawn)
@@ -376,26 +347,27 @@ void ASSSamuraiCharacter::LockOn()
 		return;
 	}
 
-	TargetPawn->GetTargetingEndedDelegate().BindLambda([&]()
-	{
-		if (nullptr == LockOnTarget)
-		{
-			return;
-		}
-
-		ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
-		TargetPawn->HideTargetUI();
-
-		LockOnTarget = nullptr;
-
-		bIsLockOn                 = false;
-		bUseControllerRotationYaw = false;
-	});
-
+	TargetPawn->GetTargetingEndedDelegate().BindUObject(this, &ASSSamuraiCharacter::LockOff);
 	TargetPawn->VisibleTargetUI();
 
 	bIsLockOn                 = true;
 	bUseControllerRotationYaw = true;
+}
+
+void ASSSamuraiCharacter::LockOff()
+{
+	if (nullptr == LockOnTarget)
+	{
+		return;
+	}
+
+	ISSTargetableInterface* TargetPawn = Cast<ISSTargetableInterface>(LockOnTarget);
+	TargetPawn->HideTargetUI();
+
+	LockOnTarget = nullptr;
+
+	bIsLockOn                 = false;
+	bUseControllerRotationYaw = false;
 }
 
 void ASSSamuraiCharacter::ChangeCharacterControl()

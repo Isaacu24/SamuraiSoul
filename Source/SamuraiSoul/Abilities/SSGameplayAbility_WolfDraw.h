@@ -26,7 +26,13 @@ public:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                        const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Ability")
+	void SpawnWolf();
+
 protected:
+	UPROPERTY()
+	ACharacter* MyCharacter;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> Montage;
 
