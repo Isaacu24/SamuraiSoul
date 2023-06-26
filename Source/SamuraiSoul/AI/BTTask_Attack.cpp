@@ -2,18 +2,21 @@
 
 #include "AI/BTTask_Attack.h"
 #include "AIController.h"
-#include "Interface/SSCharacterAIInterface.h"
 #include "SSEnemyAIController.h"
+#include "Interface/SSCharacterAIInterface.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
+	NodeName = TEXT("Attack");
 }
 
 EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	APawn* ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
+	APawn* ControllingPawn                  = OwnerComp.GetAIOwner()->GetPawn();
+	ASSEnemyAIController* EnemyAIController = Cast<ASSEnemyAIController>(ControllingPawn->GetController());
+	EnemyAIController->SetFocus(nullptr);
 
 	if (nullptr == ControllingPawn)
 	{

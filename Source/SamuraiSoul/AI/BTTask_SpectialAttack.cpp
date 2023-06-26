@@ -9,12 +9,15 @@
 
 UBTTask_SpectialAttack::UBTTask_SpectialAttack()
 {
+	NodeName = TEXT("SpectialAttack");
 }
 
 EBTNodeResult::Type UBTTask_SpectialAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	APawn* ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
+	APawn* ControllingPawn                  = OwnerComp.GetAIOwner()->GetPawn();
+	ASSEnemyAIController* EnemyAIController = Cast<ASSEnemyAIController>(ControllingPawn->GetController());
+	EnemyAIController->SetFocus(nullptr);
 
 	if (nullptr == ControllingPawn)
 	{
@@ -31,12 +34,12 @@ EBTNodeResult::Type UBTTask_SpectialAttack::ExecuteTask(UBehaviorTreeComponent& 
 	FAICharacterAbilityFinished OnAttackFinished;
 
 	OnAttackFinished.BindLambda(
-		[&]()
-		{
-			ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-			Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), false);
-			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-		});
+	                            [&]()
+	                            {
+		                            ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+		                            Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), false);
+		                            FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	                            });
 
 	AIPawn->SetAIAttackDelegate(OnAttackFinished);
 	AIPawn->SpectialAttackByAI();
