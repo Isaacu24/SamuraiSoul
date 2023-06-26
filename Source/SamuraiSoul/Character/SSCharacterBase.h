@@ -23,6 +23,9 @@ class USSCharacterControlData;
 class UMotionWarpingComponent;
 class USSCharacterStatComponent;
 
+//call Die()
+DECLARE_MULTICAST_DELEGATE(FOnCharacterDeadDelegate);
+
 UCLASS()
 class SAMURAISOUL_API ASSCharacterBase : public ACharacter, public IAbilitySystemInterface, public ISSBehaviorInterface, public ISSCharacterWidgetInterface
 {
@@ -41,6 +44,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void Die();
+	virtual void PostDeath();
 
 	USSAbilitySystemComponent* GetSSAbilitySystemComponent() const
 	{
@@ -95,6 +99,11 @@ public:
 		bIsDefense = ~bIsDefense;
 	}
 
+	virtual bool IsDie() const override
+	{
+		return bIsDie;
+	}
+
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 
@@ -106,6 +115,8 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterData")
 	TObjectPtr<USSCharacterData> CharacterData;
+
+	FOnCharacterDeadDelegate OnCharacterDead;
 
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -129,4 +140,5 @@ protected:
 	uint8 bIsLockOn : 1;
 	uint8 bIsDefense : 1;
 	uint8 bIsHit : 1;
+	uint8 bIsDie: 1;
 };

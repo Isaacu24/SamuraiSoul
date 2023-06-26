@@ -50,6 +50,7 @@ public:
 	virtual void OnRep_PlayerState() override;
 
 	virtual void Die() override;
+	virtual void PostDeath() override;
 
 	void Run();
 	void UnRun();

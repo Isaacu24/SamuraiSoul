@@ -32,7 +32,8 @@ ASSWolf::ASSWolf()
 		SkeletalMeshComponent->SetAnimInstanceClass(ANIM_SAMURAI.Class);
 	}
 
-	RootComponent = SkeletalMeshComponent;
+
+	SkeletalMeshComponent->SetupAttachment(GetRootComponent());
 	SkeletalMeshComponent->SetCollisionProfileName("NoCollision");
 
 	ProjectileComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("ProjectileMovementComponent"));
@@ -65,7 +66,7 @@ void ASSWolf::RunWolf(AActor* InActor)
 	ProjectileComponent->InitialSpeed = 1000.f;
 	ProjectileComponent->MaxSpeed     = 1500.f;
 
-	ProjectileComponent->Velocity = InActor->GetActorForwardVector() * 1000.f;
+	ProjectileComponent->Velocity = InActor->GetActorForwardVector() * 1500.f;
 	ProjectileComponent->Activate();
 
 	SkeletalMeshComponent->GetAnimInstance()->Montage_Play(RunMontage);

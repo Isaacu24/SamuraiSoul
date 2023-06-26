@@ -60,6 +60,8 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
 	check(Character);
 
+	AnimInstance = Character->GetMesh()->GetAnimInstance();
+
 	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
 
 	if (nullptr != BehaviorPawn)
@@ -71,9 +73,15 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 		}
 	}
 
-	AnimInstance = Character->GetMesh()->GetAnimInstance();
-
 	PlayMontage(SlashMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(Character);
+
+	if (nullptr != AIPawn)
+	{
+		FName NextSection = *FString::Printf(TEXT("%s%d"), *SlashComboData->MontageSectionNamePrefix, AIPawn->GetCurrentCombo());
+		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);
+	}
 }
 
 void USSGameplayAbility_Slash::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

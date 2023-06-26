@@ -32,6 +32,8 @@ public:
 	virtual float GetAIAttackRange() = 0;
 	virtual float GetAITurnSpeed() = 0;
 
+	virtual uint8 GetCurrentCombo() = 0;
+
 	virtual void StopAI() = 0;
 	virtual void RunAI() = 0;
 

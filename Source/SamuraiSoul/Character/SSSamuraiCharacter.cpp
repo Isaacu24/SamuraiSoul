@@ -194,10 +194,16 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 
 void ASSSamuraiCharacter::Die()
 {
-	//Super::Die();
-	//CombatComponent->DestroyComponent();
+	Super::Die();
 
 	LockOff();
+}
+
+void ASSSamuraiCharacter::PostDeath()
+{
+	Super::PostDeath();
+
+	OnCharacterDead.Broadcast();
 }
 
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
@@ -321,7 +327,7 @@ void ASSSamuraiCharacter::LockOn()
 	                                                  this,
 	                                                  Start,
 	                                                  Start,
-	                                                  1000.f,
+	                                                  1500.f,
 	                                                  ObjectTypes,
 	                                                  false,
 	                                                  ActorsToIgnore,
@@ -422,6 +428,6 @@ void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 		InHUDWidget->UpdatePlayerHPbar(StatComponent->GetHealth());
 
 		StatComponent->OnHPChanged.AddUObject(InHUDWidget, &USSHUDWidget::UpdatePlayerHPbar);
-		StatComponent->OnHPZero.AddUObject(InHUDWidget, &USSHUDWidget::OnDeathScreen);
+		OnCharacterDead.AddUObject(InHUDWidget, &USSHUDWidget::OnDeathScreen);
 	}
 }

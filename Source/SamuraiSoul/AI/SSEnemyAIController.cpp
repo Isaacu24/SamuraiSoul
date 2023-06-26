@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -115,10 +116,15 @@ void ASSEnemyAIController::SetBeExecuted(bool Value)
 
 void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)
 {
-	APawn* Player = Cast<APawn>(InActor);
+	ASSCharacterBase* Player = Cast<ASSCharacterBase>(InActor);
 
-	if (nullptr != Player
-		&& nullptr != Player->GetController()
+	if (nullptr == Player
+		|| true == Player->IsDie())
+	{
+		return;
+	}
+
+	if (nullptr != Player->GetController()
 		&& true == Player->GetController()->IsPlayerController())
 	{
 		UBlackboardComponent* BlackboardPtr = Blackboard.Get();
@@ -128,7 +134,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 			return;
 		}
 
-		bool IsDetected = Stimulus.WasSuccessfullySensed();
+		const bool IsDetected = Stimulus.WasSuccessfullySensed();
 
 		Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, IsDetected);
 
@@ -141,6 +147,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 			AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 			AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
 
+			SetFocus(Player);
 			SetPatrol(false);
 		}
 
@@ -159,6 +166,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 			AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 			AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
 
+			SetFocus(nullptr);
 			SetPatrol(true);
 			AIPawn->Walk();
 		}

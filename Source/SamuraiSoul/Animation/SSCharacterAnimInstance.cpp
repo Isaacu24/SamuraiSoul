@@ -54,3 +54,11 @@ void USSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsFristDefense = false;
 	}
 }
+
+void USSCharacterAnimInstance::AnimNofify_Ragdoll()
+{
+	if (nullptr != MyCharacter)
+	{
+		MyCharacter->GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
+	}
+}

@@ -213,3 +213,9 @@ void USSCombatComponent::Rebound()
 	ensure(ReboundEffect);
 	TakeGameplayEffect(ReboundEffect);
 }
+
+void USSCombatComponent::DefenseHit()
+{
+	ensure(ReboundEffect);
+	TakeGameplayEffect(DefenseEffect);
+}

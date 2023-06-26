@@ -72,10 +72,17 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 	{
 		case EDefenseState::Defense:
 			{
+				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+
+				if (nullptr == Weapon)
+				{
+					return;
+				}
+
 				FVector A = GetOwner()->GetActorForwardVector();
 				A.Normalize();
 
-				FVector B = OtherActor->GetOwner()->GetActorForwardVector();
+				FVector B = Weapon->GetOwner()->GetActorForwardVector();
 				B.Normalize();
 
 				if (false == CheckAttackDirection(A, B))
@@ -83,38 +90,41 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 					return;
 				}
 
-				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+				ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
+				ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(Weapon->GetOwner());
 
-				if (nullptr != Weapon)
+				if (MyOwner == Enemy)
 				{
-					ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
-					ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(OtherActor->GetOwner());
+					return;
+				}
 
-					if (MyOwner == Enemy)
+				if (nullptr != MyOwner
+					&& nullptr != Enemy)
+				{
+					if (nullptr != MyOwner->GetCombatComponent()
+						&& nullptr != Enemy->GetCombatComponent())
 					{
-						return;
-					}
+						OnHitEvent.ExecuteIfBound();
 
-					if (nullptr != MyOwner
-						&& nullptr != Enemy)
-					{
-						if (nullptr != MyOwner->GetCombatComponent()
-							&& nullptr != Enemy->GetCombatComponent())
-						{
-							OnHitEvent.ExecuteIfBound();
-							Enemy->GetCombatComponent()->OffWeapon();
-							//MyOwner->GetCombatComponent()->DefenseHit();?
-						}
+						Enemy->GetCombatComponent()->OffWeapon();
+						MyOwner->GetCombatComponent()->DefenseHit();
 					}
 				}
 			}
 			break;
 		case EDefenseState::Parry:
 			{
+				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+
+				if (nullptr == Weapon)
+				{
+					return;
+				}
+
 				FVector A = GetOwner()->GetActorForwardVector();
 				A.Normalize();
 
-				FVector B = OtherActor->GetOwner()->GetActorForwardVector();
+				FVector B = Weapon->GetOwner()->GetActorForwardVector();
 				B.Normalize();
 
 				if (false == CheckAttackDirection(A, B))
@@ -122,29 +132,24 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 					return;
 				}
 
-				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+				ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
+				ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(Weapon->GetOwner());
 
-				if (nullptr != Weapon)
+				if (MyOwner == Enemy)
 				{
-					ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
-					ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(OtherActor->GetOwner());
+					return;
+				}
 
-					if (MyOwner == Enemy)
+				if (nullptr != MyOwner
+					&& nullptr != Enemy)
+				{
+					if (nullptr != MyOwner->GetCombatComponent()
+						&& nullptr != Enemy->GetCombatComponent())
 					{
-						return;
-					}
+						MyOwner->GetCombatComponent()->Parry(OtherActor->GetOwner());
 
-					if (nullptr != MyOwner
-						&& nullptr != Enemy)
-					{
-						if (nullptr != MyOwner->GetCombatComponent()
-							&& nullptr != Enemy->GetCombatComponent())
-						{
-							MyOwner->GetCombatComponent()->Parry(OtherActor->GetOwner());
-
-							Enemy->GetCombatComponent()->OffWeapon();
-							Enemy->GetCombatComponent()->Rebound();
-						}
+						Enemy->GetCombatComponent()->OffWeapon();
+						Enemy->GetCombatComponent()->Rebound();
 					}
 				}
 			}

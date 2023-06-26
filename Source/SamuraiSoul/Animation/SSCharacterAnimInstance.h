@@ -22,6 +22,8 @@ protected:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	virtual void AnimNofify_Ragdoll();
+
 protected:
 	UPROPERTY()
 	TObjectPtr<class ASSCharacterBase> MyCharacter;

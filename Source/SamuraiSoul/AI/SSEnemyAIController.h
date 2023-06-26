@@ -25,13 +25,13 @@ public:
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
-	void SetParry(bool Value);
+	virtual void SetParry(bool Value) override;
 
 	void SetPatrol(bool Value);
-	void SetEquip(bool Value);
+	virtual void SetEquip(bool Value) override;
 
-	void SetHit(bool Value);
-	void SetDead(bool Value);
-	void SetRebound(bool Value);
-	void SetBeExecuted(bool Value);
+	virtual void SetHit(bool Value) override;
+	virtual void SetDead(bool Value) override;
+	virtual void SetRebound(bool Value) override;
+	virtual void SetBeExecuted(bool Value) override;
 };

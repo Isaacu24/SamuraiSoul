@@ -35,6 +35,7 @@ public:
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;
 	virtual void Parry(AActor* InActor);
 	virtual void Rebound();
+	virtual void DefenseHit();
 	virtual void BeExecuted(int8 RandomNumber);
 
 	void OnDefense() const;
@@ -81,6 +82,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> DefenseEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> BeExecutedEffect;

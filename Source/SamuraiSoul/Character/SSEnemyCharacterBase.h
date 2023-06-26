@@ -44,6 +44,18 @@ protected:
 	virtual float GetAIAttackRange() override;
 	virtual float GetAITurnSpeed() override;
 
+	virtual uint8 GetCurrentCombo()
+	{
+		if (3 <= CurrentCombo)
+		{
+			CurrentCombo = 0;
+		}
+
+		++CurrentCombo;
+
+		return CurrentCombo;
+	}
+
 	virtual void StopAI() override;
 	virtual void RunAI() override;
 
@@ -91,4 +103,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category= StatData)
 	USSAICharacterStatData* AICharacterStatData;
+
+	UPROPERTY()
+	uint8 CurrentCombo;
 };

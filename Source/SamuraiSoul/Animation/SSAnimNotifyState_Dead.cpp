@@ -3,6 +3,7 @@
 #include "Animation/SSAnimNotifyState_Dead.h"
 #include "Character/SSCharacterBase.h"
 #include <Components/CapsuleComponent.h>
+#include "GameFramework/CharacterMovementComponent.h"
 
 USSAnimNotifyState_Dead::USSAnimNotifyState_Dead()
 {
@@ -18,16 +19,20 @@ void USSAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		return;
 	}
 
-	MeshComp->SetCollisionProfileName(FName("Ragdoll"));
-
 	MeshComp->SetSimulatePhysics(true);
 	MeshComp->WakeAllRigidBodies();
 
-	ASSCharacterBase* OwnerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
+	OwnerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
 
 	if (nullptr != OwnerCharacter)
 	{
 		OwnerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		OwnerCharacter->GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+		OwnerCharacter->GetCharacterMovement()->StopMovementImmediately();
+		OwnerCharacter->GetCharacterMovement()->DisableMovement();
+
+		OwnerCharacter->Die();
 	}
 }
 
@@ -41,10 +46,8 @@ void USSAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 {
 	Super::NotifyEnd(MeshComp, Animation);
 
-	ASSCharacterBase* OnwerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
-
-	if (nullptr != OnwerCharacter)
+	if (nullptr != OwnerCharacter)
 	{
-		OnwerCharacter->Die();
+		OwnerCharacter->PostDeath();
 	}
 }

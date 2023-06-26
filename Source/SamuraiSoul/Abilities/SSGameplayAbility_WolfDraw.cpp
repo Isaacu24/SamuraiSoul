@@ -36,6 +36,9 @@ void USSGameplayAbility_WolfDraw::ActivateAbility(const FGameplayAbilitySpecHand
 	}
 
 	PlayMontage(Montage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &USSGameplayAbility_WolfDraw::SpawnWolf, 1.25, false);
 }
 
 void USSGameplayAbility_WolfDraw::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

@@ -92,43 +92,10 @@ void ASSCharacterBase::Die()
 	{
 		Controller->SetIgnoreMoveInput(true);
 	}
+}
 
-	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
-	ensure(nullptr != CapsuleComp);
-	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-
-	UCharacterMovementComponent* MovementComp = GetCharacterMovement();
-	ensure(nullptr != MovementComp);
-	MovementComp->StopMovementImmediately();
-	MovementComp->DisableMovement();
-
-	if (GetLocalRole() == ROLE_Authority)
-	{
-		DetachFromControllerPendingDestroy();
-		SetLifeSpan(0.1f);
-	}
-
-	AbilitySystemComponent->CancelAllAbilities();
-	AbilitySystemComponent->RemoveAllGameplayCues();
-	GetSSAbilitySystemComponent()->ClearAbilityInput();
-
-	if (nullptr != AbilitySystemComponent->GetOwnerActor())
-	{
-		AbilitySystemComponent->SetAvatarActor(nullptr);
-	}
-
-	else
-	{
-		// If the ASC doesn't have a valid owner, we need to clear *all* actor info, not just the avatar pairing
-		AbilitySystemComponent->ClearActorInfo();
-	}
-
-	AbilitySystemComponent->DestroyComponent();
-	AbilitySystemComponent = nullptr;
-
-	MotionWarpComponent->DestroyComponent();
-	StatComponent->DestroyComponent();
+void ASSCharacterBase::PostDeath()
+{
 }
 
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
