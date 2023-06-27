@@ -83,11 +83,6 @@ float ASSEnemyCharacterBase::GetAIAttackRange()
 	return AICharacterStatData->AIAttackRange;
 }
 
-float ASSEnemyCharacterBase::GetAITurnSpeed()
-{
-	return AICharacterStatData->AITurnSpeed;
-}
-
 void ASSEnemyCharacterBase::StopAI()
 {
 	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());

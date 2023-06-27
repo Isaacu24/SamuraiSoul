@@ -14,10 +14,10 @@ void USSHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	BossHPBar = Cast<USSHPBarWidget>(GetWidgetFromName(TEXT("Boss_HPBar")));
-	ensure(BossHPBar);
-
 	PlayerHPBar = Cast<USSHPBarWidget>(GetWidgetFromName(TEXT("Player_HPBar")));
+	ensure(PlayerHPBar);
+
+	BossHPBar = Cast<USSHPBarWidget>(GetWidgetFromName(TEXT("Boss_HPBar")));
 	ensure(BossHPBar);
 
 	DeathScreen = Cast<UImage>(GetWidgetFromName(TEXT("Death_Screen")));

@@ -104,6 +104,14 @@ public:
 		return bIsDie;
 	}
 
+	void SetCharacterData(USSCharacterData* Data)
+	{
+		if (nullptr == CharacterData)
+		{
+			CharacterData = Data;
+		}
+	}
+
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 

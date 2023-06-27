@@ -2,9 +2,9 @@
 
 
 #include "SamuraiSoulGameModeBase.h"
-#include "../Character/SSSamuraiCharacter.h"
-#include "../Player/SSPlayerController.h"
+#include "Gimmick/SpawnActor.h"
 
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 {
+	SpawnActor = CreateDefaultSubobject<ASpawnActor>(TEXT("Actor Spawner"));
 }

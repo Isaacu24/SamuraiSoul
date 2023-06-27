@@ -31,7 +31,4 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Stat)
 	float AIAttackRange;
-
-	UPROPERTY(EditAnywhere, Category = Stat)
-	float AITurnSpeed;
 };

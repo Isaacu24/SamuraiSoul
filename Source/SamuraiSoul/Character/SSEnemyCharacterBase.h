@@ -42,7 +42,6 @@ protected:
 	virtual float GetAILoseDetectRadius() override;
 	virtual float GetAISight() override;
 	virtual float GetAIAttackRange() override;
-	virtual float GetAITurnSpeed() override;
 
 	virtual uint8 GetCurrentCombo()
 	{

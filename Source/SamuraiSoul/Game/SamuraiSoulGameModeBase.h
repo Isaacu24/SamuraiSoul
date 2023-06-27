@@ -20,4 +20,5 @@ public:
 protected:
 
 private:
+	TObjectPtr<class ASpawnActor> SpawnActor;
 };
