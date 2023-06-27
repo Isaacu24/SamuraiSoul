@@ -8,7 +8,8 @@
 
 ASSPlayerController::ASSPlayerController()
 {
-	static ConstructorHelpers::FClassFinder<USSHUDWidget> HUD_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_SSHUD.WBP_SSHUD_C'"));
+	static ConstructorHelpers::FClassFinder<USSHUDWidget>
+		HUD_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_SSSamuraiHUD.WBP_SSSamuraiHUD_C'"));
 
 	if (nullptr != HUD_WIDGET.Class)
 	{

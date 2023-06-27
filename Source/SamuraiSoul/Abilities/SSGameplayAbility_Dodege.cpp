@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbilityTypes.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "SSGameplayTags.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/Character.h"
 
 USSGameplayAbility_Dodege::USSGameplayAbility_Dodege()
 {
@@ -33,6 +35,16 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	MyCharacter = Cast<ACharacter>(ActorInfo->AvatarActor);
+
+	if (nullptr == MyCharacter)
+	{
+		return;
+	}
+
+	MyCollisionProfileName = MyCharacter->GetCapsuleComponent()->GetCollisionProfileName();
+	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName("DodgeCharacter");
+
 	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(ActorInfo->OwnerActor);
 
 	if (nullptr == BehaviorPawn
@@ -42,13 +54,47 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 		return;
 	}
 
-	PlayMontage(DodgeMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	const FVector2D MovementVector = BehaviorPawn->GetMovementVector();
+
+	EDirection Direction = EDirection::Foward;
+
+	if (true == BehaviorPawn->IsLockOn())
+	{
+		if (0.9f <= MovementVector.Y)
+		{
+			Direction = EDirection::Foward;
+		}
+
+		else if (-0.9f >= MovementVector.Y)
+		{
+			Direction = EDirection::Back;
+		}
+
+		else if (0.9f <= MovementVector.X)
+		{
+			Direction = EDirection::Right;
+		}
+
+		else
+		{
+			Direction = EDirection::Left;
+		}
+	}
+
+	PlayMontage(DodgeMontages[static_cast<int>(Direction)], Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
 void USSGameplayAbility_Dodege::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                            const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+	if (nullptr == MyCharacter)
+	{
+		return;
+	}
+
+	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName(MyCollisionProfileName);
 }
 
 void USSGameplayAbility_Dodege::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

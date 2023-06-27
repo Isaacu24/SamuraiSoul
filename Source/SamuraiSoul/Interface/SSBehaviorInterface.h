@@ -33,5 +33,7 @@ public:
 	virtual bool IsDefense() const = 0;
 	virtual void SwitchIsDefense() = 0;
 
+	virtual const FVector2D& GetMovementVector() const = 0;
+
 	virtual bool IsDie() const = 0;
 };

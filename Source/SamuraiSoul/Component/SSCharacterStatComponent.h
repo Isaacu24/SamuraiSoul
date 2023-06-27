@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "SSCharacterStatComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnHPChangedDelegate, float /*CurrentHP*/);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedDelegate, float /*CurrentAttribute*/);
 DECLARE_MULTICAST_DELEGATE(FOnHPZeroDelegate);
 
 class USSAttributeSet;
@@ -24,7 +24,8 @@ public:
 	void SetAbilityDelegates();
 
 public:
-	FOnHPChangedDelegate OnHPChanged;
+	FOnAttributeChangedDelegate OnHPChanged;
+	FOnAttributeChangedDelegate OnBPChanged;
 	FOnHPZeroDelegate OnHPZero;
 
 	float GetHealth() const;
@@ -33,14 +34,17 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual bool SetHandleGameplayEvent(FGameplayTag Tag, AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
 	                                    float DamageMagnitude);
 
+	virtual void HandleDefenseHit(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
+	virtual void HandleRebound(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
+	virtual void HandleBeExecuted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
+
 	virtual void HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 	virtual void HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
-	virtual void HandleBeExecuted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
-	virtual void HandleRebound(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 
 private:
 	TWeakObjectPtr<const USSAttributeSet> OwnerAttributeSet;

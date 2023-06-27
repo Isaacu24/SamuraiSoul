@@ -9,9 +9,7 @@
 #include "Component/SSEnemyCombatComponent.h"
 #include "Component/SSCharacterStatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
-
-#include "Abilities/SSAbilitySystemComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "UI/SSEnemyHUDWidget.h"
 
 ASSEnemyCharacter::ASSEnemyCharacter()
 {
@@ -39,18 +37,18 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	AIControllerClass = ASSEnemyAIController::StaticClass();
 	AutoPossessAI     = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	HPBar = CreateDefaultSubobject<USSWidgetComponent>(TEXT("Widget"));
-	HPBar->SetupAttachment(GetMesh());
-	HPBar->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
+	EnemyHUD = CreateDefaultSubobject<USSWidgetComponent>(TEXT("Enemy HUD"));
+	EnemyHUD->SetupAttachment(GetMesh());
+	EnemyHUD->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> HPBAR_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_HPBar.WBP_HPBar_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		EnemyHUD_WIDGET(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/MyContent/UI/WBP_SSEnemyHUD.WBP_SSEnemyHUD_C'"));
 
-	if (true == HPBAR_WIDGET.Succeeded())
+	if (true == EnemyHUD_WIDGET.Succeeded())
 	{
-		HPBar->SetWidgetClass(HPBAR_WIDGET.Class);
-		HPBar->SetWidgetSpace(EWidgetSpace::Screen);
-		HPBar->SetDrawSize(FVector2D(100.0f, 10.0f));
-		HPBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		EnemyHUD->SetWidgetClass(EnemyHUD_WIDGET.Class);
+		EnemyHUD->SetWidgetSpace(EWidgetSpace::Screen);
+		EnemyHUD->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
@@ -124,15 +122,37 @@ void ASSEnemyCharacter::Walk()
 	GetCharacterMovement()->MaxWalkSpeed = 150.f;
 }
 
+void ASSEnemyCharacter::VisibleTargetUI()
+{
+	Super::VisibleTargetUI();
+
+	if (nullptr != EnemyHUD)
+	{
+		EnemyHUD->SetHiddenInGame(false);
+	}
+}
+
+void ASSEnemyCharacter::HideTargetUI()
+{
+	Super::HideTargetUI();
+
+	if (nullptr != EnemyHUD)
+	{
+		EnemyHUD->SetHiddenInGame(true);
+	}
+}
+
 void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 {
 	Super::SetupCharacterWidget(InUserWidget);
-	USSHPBarWidget* HPBarWidget = Cast<USSHPBarWidget>(InUserWidget);
+	USSEnemyHUDWidget* HUDwidget = Cast<USSEnemyHUDWidget>(InUserWidget);
 
-	if (nullptr != HPBarWidget)
+	if (nullptr != HUDwidget)
 	{
-		HPBarWidget->SetMaxHp(StatComponent->GetMaxHealth());
-		HPBarWidget->UpdateHPBar(StatComponent->GetHealth());
-		StatComponent->OnHPChanged.AddUObject(HPBarWidget, &USSHPBarWidget::UpdateHPBar);
+		HUDwidget->SetMaxEnemyHP(StatComponent->GetMaxHealth());
+		HUDwidget->UpdateEnemyHPbar(StatComponent->GetHealth());
+
+		StatComponent->OnHPChanged.AddUObject(HUDwidget, &USSEnemyHUDWidget::UpdateEnemyHPbar);
+		StatComponent->OnBPChanged.AddUObject(HUDwidget, &USSEnemyHUDWidget::UpdateEnemyBPGauge);
 	}
 }

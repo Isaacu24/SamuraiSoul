@@ -32,13 +32,21 @@ public:
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, Health);
 
-	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Health)
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, MaxHealth);
 
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_AttackPower)
 	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, AttackPower);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Balance)
+	FGameplayAttributeData Balance;
+	ATTRIBUTE_ACCESSORS(USSAttributeSet, Balance);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxBalance)
+	FGameplayAttributeData MaxBalance;
+	ATTRIBUTE_ACCESSORS(USSAttributeSet, MaxBalance);
 
 	//Damage
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Damage)
@@ -55,11 +63,12 @@ public:
 	FGameplayAttributeData BeExecuted;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, BeExecuted);
 
+	mutable FSSAttributeEventDelegate OnDefenseHitEvent;
+	mutable FSSAttributeEventDelegate OnReboundEvent;
+	mutable FSSAttributeEventDelegate OnBeExecutedEvent;
 
 	mutable FSSAttributeEventDelegate OnDamagedEvent;
 	mutable FSSAttributeEventDelegate OnDeadEvent;
-	mutable FSSAttributeEventDelegate OnReboundEvent;
-	mutable FSSAttributeEventDelegate OnBeExecutedEvent;
 
 	// 이펙트가 적용된 후에 자동으로 호출되는 함수
 	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
@@ -78,6 +87,12 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower);
+
+	UFUNCTION()
+	virtual void OnRep_Balance(const FGameplayAttributeData& OldBalance);
+
+	UFUNCTION()
+	virtual void OnRep_MaxBalance(const FGameplayAttributeData& OldMaxBalance);
 
 	UFUNCTION()
 	virtual void OnRep_Damage(const FGameplayAttributeData& OldDamage);

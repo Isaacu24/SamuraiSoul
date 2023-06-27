@@ -46,6 +46,8 @@ public:
 	virtual void Die();
 	virtual void PostDeath();
 
+	virtual const FVector2D& GetMovementVector() const override;
+
 	USSAbilitySystemComponent* GetSSAbilitySystemComponent() const
 	{
 		return AbilitySystemComponent;

@@ -26,7 +26,7 @@ public:
 		MaxHp = NewMaxHp;
 	}
 
-	void UpdateHPBar(float NewCurrentHp);
+	void UpdateHPBar(float NewCurrentHp) const;
 
 protected:
 	UPROPERTY()

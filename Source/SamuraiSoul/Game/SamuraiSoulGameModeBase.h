@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameData/SSSpawnEnemyData.h"
 #include "GameFramework/GameModeBase.h"
 #include "SamuraiSoulGameModeBase.generated.h"
 
@@ -17,8 +18,13 @@ class SAMURAISOUL_API ASamuraiSoulGameModeBase : public AGameModeBase
 public:
 	ASamuraiSoulGameModeBase();
 
+	void BeginPlay() override;
+
 protected:
 
 private:
-	TObjectPtr<class ASpawnActor> SpawnActor;
+	TArray<FSSSpawnEnemyData> SpawnEnemyDataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ASSEnemyCharacter> CharacterClass;
 };

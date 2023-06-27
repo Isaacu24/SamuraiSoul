@@ -1,19 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/SSBalanceWidget.h"
+#include "UI/SSBalanceGaugeWidget.h"
 #include "Components/ProgressBar.h"
 #include "Interface/SSCharacterWidgetInterface.h"
 
-USSBalanceWidget::USSBalanceWidget(const FObjectInitializer& ObjectInitializer)
+USSBalanceGaugeWidget::USSBalanceGaugeWidget(const FObjectInitializer& ObjectInitializer)
 {
 }
 
-void USSBalanceWidget::NativeConstruct()
+void USSBalanceGaugeWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	Gauge = Cast<UProgressBar>(GetWidgetFromName(TEXT("Gauge")));
+	Gauge = Cast<UProgressBar>(GetWidgetFromName(TEXT("GaugeBar")));
 	ensure(Gauge);
 
 	ISSCharacterWidgetInterface* CharacterWidget = Cast<ISSCharacterWidgetInterface>(OwningActor);
@@ -24,12 +24,10 @@ void USSBalanceWidget::NativeConstruct()
 	}
 }
 
-void USSBalanceWidget::UpdateHPBar(float NewCurrentHp) const
+void USSBalanceGaugeWidget::UpdateBPGauge(float NewCurrentBP) const
 {
-	ensure(MaxBP > 0.0f);
-
 	if (nullptr != Gauge)
 	{
-		Gauge->SetPercent(NewCurrentHp / MaxBP);
+		Gauge->SetPercent(NewCurrentBP);
 	}
 }

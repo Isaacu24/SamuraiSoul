@@ -41,15 +41,16 @@ void USSGameplayAbility_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHa
 		return;
 	}
 
-	ISSBehaviorInterface* Character = Cast<ISSBehaviorInterface>(Owner);
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Owner);
 
 	bIsEquip = false;
 
-	if (nullptr != Character)
+	if (nullptr != BehaviorPawn)
 	{
-		bIsEquip = Character->IsEquip();
-		Character->SwitchIsEquip();
+		bIsEquip = BehaviorPawn->IsEquip();
+		BehaviorPawn->SwitchIsEquip();
 	}
+
 	if (nullptr != EquipMontage
 		&& nullptr != EquipRootMontage
 		&& false == bIsEquip)

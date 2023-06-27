@@ -98,6 +98,11 @@ void ASSCharacterBase::PostDeath()
 {
 }
 
+const FVector2D& ASSCharacterBase::GetMovementVector() const
+{
+	return FVector2D::ZeroVector;
+}
+
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
 {
 	return GetSSAbilitySystemComponent();

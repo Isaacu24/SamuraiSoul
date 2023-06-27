@@ -27,6 +27,7 @@
 #include "Input/SSInputComponent.h"
 #include "LevelSequence/Public/LevelSequenceActor.h"
 #include "LevelSequence/Public/LevelSequencePlayer.h"
+#include "UI/SSSamuraiHUDWidget.h"
 
 // Sets default values
 ASSSamuraiCharacter::ASSSamuraiCharacter()
@@ -192,6 +193,11 @@ void ASSSamuraiCharacter::OnRep_PlayerState()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
+const FVector2D& ASSSamuraiCharacter::GetMovementVector() const
+{
+	return MovementVector;
+}
+
 void ASSSamuraiCharacter::Die()
 {
 	Super::Die();
@@ -209,7 +215,7 @@ void ASSSamuraiCharacter::PostDeath()
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
@@ -226,6 +232,9 @@ void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 		// add movement 
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		AddMovementInput(RightDirection, MovementVector.X);
+
+		UE_LOG(LogTemp, Error, TEXT("FowardBack: %f"), MovementVector.Y);
+		UE_LOG(LogTemp, Error, TEXT("RightLeft: %f"), MovementVector.X);
 	}
 }
 
@@ -422,12 +431,15 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 
 void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 {
-	if (nullptr != InHUDWidget)
-	{
-		InHUDWidget->SetMaxPlayerHP(StatComponent->GetMaxHealth());
-		InHUDWidget->UpdatePlayerHPbar(StatComponent->GetHealth());
+	USSSamuraiHUDWidget* SamuraiHUD = Cast<USSSamuraiHUDWidget>(InHUDWidget);
 
-		StatComponent->OnHPChanged.AddUObject(InHUDWidget, &USSHUDWidget::UpdatePlayerHPbar);
-		OnCharacterDead.AddUObject(InHUDWidget, &USSHUDWidget::OnDeathScreen);
+	if (nullptr != SamuraiHUD)
+	{
+		SamuraiHUD->SetMaxPlayerHP(StatComponent->GetMaxHealth());
+		SamuraiHUD->UpdatePlayerHPbar(StatComponent->GetHealth());
+
+		StatComponent->OnHPChanged.AddUObject(SamuraiHUD, &USSSamuraiHUDWidget::UpdatePlayerHPbar);
+		StatComponent->OnBPChanged.AddUObject(SamuraiHUD, &USSSamuraiHUDWidget::UpdatePlayerBPGauge);
+		OnCharacterDead.AddUObject(SamuraiHUD, &USSSamuraiHUDWidget::OnDeathScreen);
 	}
 }

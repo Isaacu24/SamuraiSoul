@@ -90,9 +90,6 @@ protected:
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USSWidgetComponent> HPBar;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> PerilousMark;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

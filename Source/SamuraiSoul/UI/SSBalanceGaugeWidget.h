@@ -4,24 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "UI/SSUserWidget.h"
-#include "SSBalanceWidget.generated.h"
+#include "SSBalanceGaugeWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API USSBalanceWidget : public USSUserWidget
+class SAMURAISOUL_API USSBalanceGaugeWidget : public USSUserWidget
 {
 	GENERATED_BODY()
 
 public:
-	USSBalanceWidget(const FObjectInitializer& ObjectInitializer);
+	USSBalanceGaugeWidget(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void UpdateHPBar(float NewCurrentBP) const;
+	void UpdateBPGauge(float NewCurrentBP) const;
 
 protected:
 	UPROPERTY()

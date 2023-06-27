@@ -49,3 +49,12 @@ enum class ECharacterControlType : uint8
 	Keyboard,
 	Gamepad
 };
+
+UENUM()
+enum class EDirection : uint8
+{
+	Foward,
+	Back,
+	Right,
+	Left
+};

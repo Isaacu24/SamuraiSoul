@@ -34,5 +34,12 @@ public:
 	virtual void Run() override;
 	virtual void Walk() override;
 
+	virtual void VisibleTargetUI() override;
+	virtual void HideTargetUI() override;
+
 	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget) override;
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSWidgetComponent> EnemyHUD;
 };

@@ -208,28 +208,16 @@ FTargetingEndedDelegate& ASSEnemyCharacterBase::GetTargetingEndedDelegate()
 void ASSEnemyCharacterBase::Die()
 {
 	Super::Die();
-
-	CombatComponent->DestroyComponent();
 }
 
 void ASSEnemyCharacterBase::VisibleTargetUI()
 {
 	ensure(TargetCursor);
 	TargetCursor->SetHiddenInGame(false);
-
-	if (nullptr != HPBar)
-	{
-		HPBar->SetHiddenInGame(false);
-	}
 }
 
 void ASSEnemyCharacterBase::HideTargetUI()
 {
 	ensure(TargetCursor);
 	TargetCursor->SetHiddenInGame(true);
-
-	if (nullptr != HPBar)
-	{
-		HPBar->SetHiddenInGame(true);
-	}
 }

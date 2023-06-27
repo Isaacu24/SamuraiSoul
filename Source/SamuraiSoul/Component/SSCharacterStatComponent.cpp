@@ -5,6 +5,7 @@
 
 USSCharacterStatComponent::USSCharacterStatComponent()
 {
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void USSCharacterStatComponent::SetAbilityDelegates()
@@ -18,10 +19,12 @@ void USSCharacterStatComponent::SetAbilityDelegates()
 			OwnerAttributeSet = AbilityPawn->GetAbilitySystemComponent()->GetSet<USSAttributeSet>();
 
 			//Reaction Ability binding
-			OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
-			OwnerAttributeSet->OnDeadEvent.AddUObject(this, &ThisClass::HandleDead);
+			OwnerAttributeSet->OnDefenseHitEvent.AddUObject(this, &ThisClass::HandleDefenseHit);
 			OwnerAttributeSet->OnReboundEvent.AddUObject(this, &ThisClass::HandleRebound);
 			OwnerAttributeSet->OnBeExecutedEvent.AddUObject(this, &ThisClass::HandleBeExecuted);
+
+			OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
+			OwnerAttributeSet->OnDeadEvent.AddUObject(this, &ThisClass::HandleDead);
 		}
 	}
 }
@@ -30,6 +33,16 @@ void USSCharacterStatComponent::SetAbilityDelegates()
 void USSCharacterStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void USSCharacterStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (0.f < OwnerAttributeSet->GetBalance())
+	{
+		const float CurrentBP = FMath::Clamp(OwnerAttributeSet->GetBalance() - DeltaTime, 0.f, 1.f);
+	}
 }
 
 bool USSCharacterStatComponent::SetHandleGameplayEvent(FGameplayTag Tag, AActor* DamageInstigator, AActor* DamageCauser,
@@ -56,6 +69,12 @@ bool USSCharacterStatComponent::SetHandleGameplayEvent(FGameplayTag Tag, AActor*
 	}
 
 	return false;
+}
+
+void USSCharacterStatComponent::HandleDefenseHit(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
+                                                 float DamageMagnitude)
+{
+	OnBPChanged.Broadcast(OwnerAttributeSet->GetBalance());
 }
 
 void USSCharacterStatComponent::HandleDamaged(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,

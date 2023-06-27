@@ -49,6 +49,8 @@ public:
 
 	virtual void OnRep_PlayerState() override;
 
+	virtual const FVector2D& GetMovementVector() const override;
+
 	virtual void Die() override;
 	virtual void PostDeath() override;
 
@@ -99,4 +101,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class ULevelSequencePlayer> LevelSequencePlayer;
+
+	UPROPERTY()
+	FVector2D MovementVector;
 };

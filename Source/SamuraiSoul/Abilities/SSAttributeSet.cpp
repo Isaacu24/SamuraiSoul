@@ -51,6 +51,22 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		}
 	}
 
+	else if (Data.EvaluatedData.Attribute == GetBalanceAttribute())
+	{
+		float NewBalance = GetBalance();
+
+		SetBalance(NewBalance);
+
+		if (true == OnDefenseHitEvent.IsBound())
+		{
+			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+			AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+			AActor* Causer                                    = EffectContext.GetEffectCauser();
+
+			OnDefenseHitEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+		}
+	}
+
 	else if (Data.EvaluatedData.Attribute == GetReboundAttribute())
 	{
 		if (true == OnReboundEvent.IsBound())
@@ -105,6 +121,16 @@ void USSAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth
 void USSAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, AttackPower, OldAttackPower);
+}
+
+void USSAttributeSet::OnRep_Balance(const FGameplayAttributeData& OldBalance)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, Balance, OldBalance);
+}
+
+void USSAttributeSet::OnRep_MaxBalance(const FGameplayAttributeData& OldMaxBalance)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, MaxBalance, OldMaxBalance);
 }
 
 void USSAttributeSet::OnRep_Damage(const FGameplayAttributeData& OldDamage)
