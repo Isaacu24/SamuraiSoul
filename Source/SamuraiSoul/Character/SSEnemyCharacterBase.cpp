@@ -208,6 +208,8 @@ FTargetingEndedDelegate& ASSEnemyCharacterBase::GetTargetingEndedDelegate()
 void ASSEnemyCharacterBase::Die()
 {
 	Super::Die();
+
+	CombatComponent->DestroyComponent();
 }
 
 void ASSEnemyCharacterBase::VisibleTargetUI()

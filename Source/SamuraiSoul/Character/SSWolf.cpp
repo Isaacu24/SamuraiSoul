@@ -12,7 +12,7 @@
 
 ASSWolf::ASSWolf()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
 		SK_BODY(TEXT("/Script/Engine.SkeletalMesh'/Game/Wolf/Wolf/Meshes/Wolf.Wolf'"));
@@ -32,18 +32,15 @@ ASSWolf::ASSWolf()
 		SkeletalMeshComponent->SetAnimInstanceClass(ANIM_SAMURAI.Class);
 	}
 
-
-	SkeletalMeshComponent->SetupAttachment(GetRootComponent());
-	SkeletalMeshComponent->SetCollisionProfileName("NoCollision");
-
 	ProjectileComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("ProjectileMovementComponent"));
 	ProjectileComponent->SetAutoActivate(false);
 
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(FName("CapsuleComponent"));
-	CapsuleComponent->SetupAttachment(SkeletalMeshComponent);
-	CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ASSWolf::OnCapsuleBeginOverlap);
-	CapsuleComponent->OnComponentHit.AddDynamic(this, &ASSWolf::OnCapsuleHit);
+	CapsuleComponent->SetupAttachment(RootComponent);
 	CapsuleComponent->SetCollisionProfileName(TEXT("Wolf"));
+
+	SkeletalMeshComponent->SetupAttachment(CapsuleComponent);
+	SkeletalMeshComponent->SetCollisionProfileName("NoCollision");
 
 	SpawnedFXComponent = CreateDefaultSubobject<UParticleSystemComponent>(FName("SpawnedFXComponent"));
 	SpawnedFXComponent->SetupAttachment(SkeletalMeshComponent);
@@ -52,6 +49,9 @@ ASSWolf::ASSWolf()
 void ASSWolf::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CapsuleComponent->OnComponentBeginOverlap.AddDynamic(this, &ASSWolf::OnCapsuleBeginOverlap);
+	CapsuleComponent->OnComponentHit.AddDynamic(this, &ASSWolf::OnCapsuleHit);
 }
 
 void ASSWolf::Tick(float DeltaTime)
