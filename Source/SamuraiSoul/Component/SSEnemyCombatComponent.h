@@ -22,7 +22,7 @@ public:
 
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
-	void SpecialAttackByAI() const;
+	void SpecialAttackByAI(const FGameplayTag& Tag) const;
 	virtual void Equip();
 
 	virtual void Parry(AActor* InActor) override;

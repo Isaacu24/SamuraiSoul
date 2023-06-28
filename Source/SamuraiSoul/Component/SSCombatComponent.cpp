@@ -61,7 +61,7 @@ void USSCombatComponent::EquipDefenseBarrier()
 	}
 }
 
-void USSCombatComponent::TryActivateAbility(const FGameplayTag AbilityTag) const
+void USSCombatComponent::TryActivateAbility(const FGameplayTag& AbilityTag) const
 {
 	IAbilitySystemInterface* Character = Cast<IAbilitySystemInterface>(GetOwner());
 

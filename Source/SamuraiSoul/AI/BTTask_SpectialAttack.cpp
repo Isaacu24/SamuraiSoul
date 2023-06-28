@@ -3,6 +3,7 @@
 
 #include "AI/BTTask_SpectialAttack.h"
 #include "AIController.h"
+#include "SSAI.h"
 #include "SSEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
@@ -37,12 +38,12 @@ EBTNodeResult::Type UBTTask_SpectialAttack::ExecuteTask(UBehaviorTreeComponent& 
 	                            [&]()
 	                            {
 		                            ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-		                            Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), false);
+		                            Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, false);
 		                            FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	                            });
 
 	AIPawn->SetAIAttackDelegate(OnAttackFinished);
-	AIPawn->SpectialAttackByAI();
+	AIPawn->SpectialAttackByAI(SpectialAttackTag);
 
 	return EBTNodeResult::InProgress;
 }

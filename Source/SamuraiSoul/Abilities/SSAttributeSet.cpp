@@ -14,12 +14,12 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	FGameplayAttribute InAttribute = Data.EvaluatedData.Attribute;
+	const FGameplayAttribute InAttribute = Data.EvaluatedData.Attribute;
 
-	if (Data.EvaluatedData.Attribute == GetDamageAttribute() && Data.EvaluatedData.Magnitude > 0.0f)
+	if (InAttribute == GetDamageAttribute() && Data.EvaluatedData.Magnitude > 0.0f)
 	{
 		//Calculrate Damage.
-		float NewHealth = FMath::Clamp(GetHealth() - GetDamage(), 0.0f, GetMaxHealth());
+		const float NewHealth = FMath::Clamp(GetHealth() - GetDamage(), 0.0f, GetMaxHealth());
 
 		SetHealth(NewHealth);
 		SetDamage(0.0f);
@@ -51,23 +51,19 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		}
 	}
 
-	else if (Data.EvaluatedData.Attribute == GetBalanceAttribute())
-	{
-		float NewBalance = GetBalance();
+	//else if (InAttribute == GetBalanceAttribute())
+	//{
+	//	if (true == OnDefenseHitEvent.IsBound())
+	//	{
+	//		const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+	//		AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+	//		AActor* Causer                                    = EffectContext.GetEffectCauser();
 
-		SetBalance(NewBalance);
+	//		OnDefenseHitEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+	//	}
+	//}
 
-		if (true == OnDefenseHitEvent.IsBound())
-		{
-			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
-			AActor* Instigator                                = EffectContext.GetOriginalInstigator();
-			AActor* Causer                                    = EffectContext.GetEffectCauser();
-
-			OnDefenseHitEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
-		}
-	}
-
-	else if (Data.EvaluatedData.Attribute == GetReboundAttribute())
+	else if (InAttribute == GetReboundAttribute())
 	{
 		if (true == OnReboundEvent.IsBound())
 		{
@@ -79,7 +75,7 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		}
 	}
 
-	else if (Data.EvaluatedData.Attribute == GetBeExecutedAttribute())
+	else if (InAttribute == GetBeExecutedAttribute())
 	{
 		SetHealth(0.f);
 
@@ -90,6 +86,21 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 			AActor* Causer                                    = EffectContext.GetEffectCauser();
 
 			OnBeExecutedEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+		}
+	}
+
+	else if (InAttribute == GetBalanceAttribute())
+	{
+		const float NewBalance = FMath::Clamp(GetBalance(), 0.0f, GetBalance());
+		SetBalance(NewBalance);
+
+		if (true == OnSubtractBPEvent.IsBound())
+		{
+			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+			AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+			AActor* Causer                                    = EffectContext.GetEffectCauser();
+
+			OnSubtractBPEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
 		}
 	}
 }

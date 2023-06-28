@@ -43,7 +43,7 @@ void USSGameplayAbility_Dodege::ActivateAbility(const FGameplayAbilitySpecHandle
 	}
 
 	MyCollisionProfileName = MyCharacter->GetCapsuleComponent()->GetCollisionProfileName();
-	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName("DodgeCharacter");
+	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName(FName("InvincibleCharacter"));
 
 	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(ActorInfo->OwnerActor);
 

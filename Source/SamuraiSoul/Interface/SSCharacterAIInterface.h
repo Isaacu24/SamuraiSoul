@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "GameplayTagContainer.h"
 #include "SSCharacterAIInterface.generated.h"
 
 // This class does not need to be modified.
@@ -41,12 +42,13 @@ public:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
 	virtual void AttackByAI() = 0;
-	virtual void SpectialAttackByAI() = 0;
+	virtual void SpectialAttackByAI(const FGameplayTag& Tag) = 0;
 	virtual void AttackEnd() = 0;
 
 	virtual void EquipUnarm() = 0;
 
 	virtual void ShowPerilousMark() = 0;
+	virtual void HidePerilousMark() = 0;
 
 	virtual void SetParry(bool Value) = 0;
 

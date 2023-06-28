@@ -63,12 +63,13 @@ protected:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
-	virtual void SpectialAttackByAI() override;
+	virtual void SpectialAttackByAI(const FGameplayTag& Tag) override;
 	virtual void AttackEnd() override;
 
 	virtual void EquipUnarm() override;
 
 	virtual void ShowPerilousMark() override;
+	virtual void HidePerilousMark() override;
 
 	virtual void SetParry(bool Value) override;
 

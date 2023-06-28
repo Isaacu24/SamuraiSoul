@@ -29,7 +29,7 @@ public:
 	void EquipWeapon(EWeaponType Type, USceneComponent* InParent, FName InSocketName);
 	void EquipDefenseBarrier();
 
-	void TryActivateAbility(const FGameplayTag AbilityTag) const;
+	void TryActivateAbility(const FGameplayTag& AbilityTag) const;
 	void TakeGameplayEffect(const TSubclassOf<UGameplayEffect> Effect) const;
 
 	virtual void Attack(AActor* InActor, const FHitResult& HitResult) const;

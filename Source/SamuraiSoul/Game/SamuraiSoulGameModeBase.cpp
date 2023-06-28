@@ -2,6 +2,8 @@
 
 
 #include "SamuraiSoulGameModeBase.h"
+
+#include "Character/SSEnemyBossCharacter.h"
 #include "Character/SSEnemyCharacter.h"
 
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
@@ -33,7 +35,19 @@ void ASamuraiSoulGameModeBase::BeginPlay()
 
 	for (size_t i = 0; i < SpawnEnemyDataTable.Num(); ++i)
 	{
-		ASSEnemyCharacter* Enemy = GetWorld()->SpawnActor<ASSEnemyCharacter>(CharacterClass, SpawnEnemyDataTable[i].SpawnLocation,
-		                                                                     SpawnEnemyDataTable[i].SpawnRotation);
+		EEnemyType EnemyType = SpawnEnemyDataTable[i].EnemyType;
+
+		switch (EnemyType)
+		{
+			case EEnemyType::Katana:
+				GetWorld()->SpawnActor<ASSEnemyCharacter>(EnemyClass, SpawnEnemyDataTable[i].SpawnLocation,
+				                                          SpawnEnemyDataTable[i].SpawnRotation);
+				break;
+
+			case EEnemyType::Boss:
+				GetWorld()->SpawnActor<ASSEnemyBossCharacter>(BossClass, SpawnEnemyDataTable[i].SpawnLocation,
+				                                              SpawnEnemyDataTable[i].SpawnRotation);
+				break;
+		}
 	}
 }

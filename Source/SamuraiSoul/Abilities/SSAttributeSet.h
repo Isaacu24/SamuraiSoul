@@ -64,6 +64,7 @@ public:
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, BeExecuted);
 
 	mutable FSSAttributeEventDelegate OnDefenseHitEvent;
+	mutable FSSAttributeEventDelegate OnSubtractBPEvent;
 	mutable FSSAttributeEventDelegate OnReboundEvent;
 	mutable FSSAttributeEventDelegate OnBeExecutedEvent;
 

@@ -92,11 +92,11 @@ void ASSEnemyCharacter::AttackByAI()
 	}
 }
 
-void ASSEnemyCharacter::SpectialAttackByAI()
+void ASSEnemyCharacter::SpectialAttackByAI(const FGameplayTag& Tag)
 {
 	if (nullptr != CombatComponent)
 	{
-		CombatComponent->SpecialAttackByAI();
+		CombatComponent->SpecialAttackByAI(Tag);
 	}
 }
 

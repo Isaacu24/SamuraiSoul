@@ -35,9 +35,9 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
-void USSEnemyCombatComponent::SpecialAttackByAI() const
+void USSEnemyCombatComponent::SpecialAttackByAI(const FGameplayTag& Tag) const
 {
-	TryActivateAbility(StabTag);
+	TryActivateAbility(Tag);
 }
 
 void USSEnemyCombatComponent::Equip()
@@ -67,6 +67,7 @@ void USSEnemyCombatComponent::Hit()
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
 	AIPawn->SetHit(true);
+	AIPawn->HidePerilousMark();
 }
 
 void USSEnemyCombatComponent::BeExecuted(int8 RandomNumber)

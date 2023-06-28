@@ -116,7 +116,7 @@ void ASSEnemyCharacterBase::AttackByAI()
 {
 }
 
-void ASSEnemyCharacterBase::SpectialAttackByAI()
+void ASSEnemyCharacterBase::SpectialAttackByAI(const FGameplayTag& Tag)
 {
 }
 
@@ -138,6 +138,11 @@ void ASSEnemyCharacterBase::ShowPerilousMark()
 	{
 		PerilousMark->SetHiddenInGame(true);
 	}, 1.0f, false);
+}
+
+void ASSEnemyCharacterBase::HidePerilousMark()
+{
+	PerilousMark->SetHiddenInGame(true);
 }
 
 void ASSEnemyCharacterBase::SetParry(bool Value)

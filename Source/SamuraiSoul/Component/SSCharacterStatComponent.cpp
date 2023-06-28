@@ -5,7 +5,6 @@
 
 USSCharacterStatComponent::USSCharacterStatComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void USSCharacterStatComponent::SetAbilityDelegates()
@@ -20,6 +19,7 @@ void USSCharacterStatComponent::SetAbilityDelegates()
 
 			//Reaction Ability binding
 			OwnerAttributeSet->OnDefenseHitEvent.AddUObject(this, &ThisClass::HandleDefenseHit);
+			OwnerAttributeSet->OnSubtractBPEvent.AddUObject(this, &ThisClass::HandleBPSubtracted);
 			OwnerAttributeSet->OnReboundEvent.AddUObject(this, &ThisClass::HandleRebound);
 			OwnerAttributeSet->OnBeExecutedEvent.AddUObject(this, &ThisClass::HandleBeExecuted);
 
@@ -38,11 +38,6 @@ void USSCharacterStatComponent::BeginPlay()
 void USSCharacterStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (0.f < OwnerAttributeSet->GetBalance())
-	{
-		const float CurrentBP = FMath::Clamp(OwnerAttributeSet->GetBalance() - DeltaTime, 0.f, 1.f);
-	}
 }
 
 bool USSCharacterStatComponent::SetHandleGameplayEvent(FGameplayTag Tag, AActor* DamageInstigator, AActor* DamageCauser,
@@ -98,6 +93,12 @@ void USSCharacterStatComponent::HandleDead(AActor* DamageInstigator, AActor* Dam
 	}
 
 	OnHPZero.Broadcast();
+}
+
+void USSCharacterStatComponent::HandleBPSubtracted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
+                                                   float DamageMagnitude)
+{
+	OnBPChanged.Broadcast(OwnerAttributeSet->GetBalance());
 }
 
 void USSCharacterStatComponent::HandleBeExecuted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,

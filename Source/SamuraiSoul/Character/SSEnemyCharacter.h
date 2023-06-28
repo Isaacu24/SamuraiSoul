@@ -27,7 +27,7 @@ public:
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
-	virtual void SpectialAttackByAI() override;
+	virtual void SpectialAttackByAI(const FGameplayTag& Tag) override;
 
 	virtual void EquipUnarm() override;
 

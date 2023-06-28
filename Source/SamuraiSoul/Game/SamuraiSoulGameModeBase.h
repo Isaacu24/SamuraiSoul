@@ -26,5 +26,8 @@ private:
 	TArray<FSSSpawnEnemyData> SpawnEnemyDataTable;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class ASSEnemyCharacter> CharacterClass;
+	TSubclassOf<class ASSEnemyCharacter> EnemyClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ASSEnemyBossCharacter> BossClass;
 };

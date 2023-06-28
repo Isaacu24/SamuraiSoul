@@ -11,3 +11,5 @@
 #define BBKEY_ISREBOUND TEXT("IsRebound")
 #define BBKEY_ISBEEXECUTED TEXT("IsBeExecuted")
 #define BBKEY_ISEQUIP TEXT("IsEquip")
+
+#define BBKEY_ATTACKINDEX TEXT("AttackIndex")
