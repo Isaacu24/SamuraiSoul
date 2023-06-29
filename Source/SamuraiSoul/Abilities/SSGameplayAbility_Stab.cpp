@@ -3,6 +3,7 @@
 
 #include "Abilities/SSGameplayAbility_Stab.h"
 #include "SSGameplayTags.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "Interface/SSCharacterAIInterface.h"
@@ -21,10 +22,13 @@ void USSGameplayAbility_Stab::ActivateAbility(const FGameplayAbilitySpecHandle H
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
-	check(Character);
+	MyCharacter = Cast<ACharacter>(ActorInfo->OwnerActor);
+	check(MyCharacter);
 
-	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
+	MyCollisionProfileName = MyCharacter->GetCapsuleComponent()->GetCollisionProfileName();
+	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName(FName("InvincibleCharacter"));
+
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(MyCharacter);
 
 	if (nullptr != BehaviorPawn)
 	{
@@ -35,7 +39,7 @@ void USSGameplayAbility_Stab::ActivateAbility(const FGameplayAbilitySpecHandle H
 		}
 	}
 
-	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(MyCharacter);
 
 	if (nullptr != AI)
 	{
@@ -50,10 +54,17 @@ void USSGameplayAbility_Stab::EndAbility(const FGameplayAbilitySpecHandle Handle
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+	if (nullptr == MyCharacter)
+	{
+		return;
+	}
+
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(MyCharacter);
 
 	if (nullptr != AI)
 	{
 		AI->AttackEnd();
 	}
+
+	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName(MyCollisionProfileName);
 }

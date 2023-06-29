@@ -35,7 +35,7 @@ void USSGameplayAbility_Defense::ActivateAbility(const FGameplayAbilitySpecHandl
                                                  const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
+	UE_LOG(LogTemp, Warning, TEXT("Defense"));
 
 	OwnerCharacter                                    = Cast<ACharacter>(ActorInfo->OwnerActor);
 	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(OwnerCharacter);

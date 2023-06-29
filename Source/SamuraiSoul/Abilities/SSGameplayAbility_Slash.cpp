@@ -8,6 +8,7 @@
 #include "DataAsset/SSComboActionData.h"
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSCombatableInterface.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "SSGameplayTags.h"
 
@@ -24,6 +25,13 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
                                             const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputPressed(Handle, ActorInfo, ActivationInfo);
+
+	if (nullptr == MyCharacter)
+	{
+		MyCharacter = Cast<ACharacter>(ActorInfo->OwnerActor);
+	}
+
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
 
 	if (0 == CurrentCombo)
 	{
@@ -44,6 +52,8 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
 			HasNextComboCommand = true;
 		}
 	}
+
+	CombatPawn->SetHasNextComboCommand(HasNextComboCommand);
 }
 
 void USSGameplayAbility_Slash::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -57,12 +67,14 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
-	check(Character);
+	if (nullptr == MyCharacter)
+	{
+		MyCharacter = Cast<ACharacter>(ActorInfo->OwnerActor);
+	}
 
-	AnimInstance = Character->GetMesh()->GetAnimInstance();
+	AnimInstance = MyCharacter->GetMesh()->GetAnimInstance();
 
-	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(MyCharacter);
 
 	if (nullptr != BehaviorPawn)
 	{
@@ -75,7 +87,7 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 
 	PlayMontage(SlashMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(Character);
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(MyCharacter);
 
 	if (nullptr != AIPawn)
 	{
@@ -135,6 +147,13 @@ void USSGameplayAbility_Slash::ComboCheck()
 		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);
 
 		SetComboCheckTimer();
+
+		if (true == HasNextComboCommand)
+		{
+			ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
+			CombatPawn->SetHasNextComboCommand(HasNextComboCommand);
+		}
+
 		HasNextComboCommand = false;
 	}
 }

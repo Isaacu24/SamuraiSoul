@@ -25,4 +25,8 @@ class SAMURAISOUL_API ISSCombatableInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual USSCombatComponent* GetCombatComponent() const = 0;
+
+	//for Attack Animation Cancel.
+	virtual const bool GetHasNextComboCommand() const = 0;
+	virtual const void SetHasNextComboCommand(const bool Value) = 0;
 };

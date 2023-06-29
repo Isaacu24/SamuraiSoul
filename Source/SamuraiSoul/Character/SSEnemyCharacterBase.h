@@ -86,6 +86,16 @@ protected:
 	virtual void VisibleTargetUI() override;
 	virtual void HideTargetUI() override;
 
+	virtual const bool GetHasNextComboCommand() const override
+	{
+		return HasNextComboCommand;
+	};
+
+	virtual const void SetHasNextComboCommand(const bool Value) override
+	{
+		HasNextComboCommand = Value;
+	};
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
@@ -103,4 +113,6 @@ protected:
 
 	UPROPERTY()
 	uint8 CurrentCombo;
+
+	bool HasNextComboCommand;
 };

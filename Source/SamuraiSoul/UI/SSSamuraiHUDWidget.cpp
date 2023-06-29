@@ -54,6 +54,26 @@ void USSSamuraiHUDWidget::UpdatePlayerBPGauge(float Value) const
 	PlayerBPGauge->UpdateBPGauge(Value);
 }
 
+void USSSamuraiHUDWidget::SetMaxBossHP(float Value) const
+{
+	BossHPBar->SetMaxHp(Value);
+}
+
+void USSSamuraiHUDWidget::UpdateBossHPbar(float Value) const
+{
+	BossHPBar->UpdateHPBar(Value);
+}
+
+void USSSamuraiHUDWidget::UpdateBossBPGauge(float Value) const
+{
+	BossBPGauge->UpdateBPGauge(Value);
+}
+
+void USSSamuraiHUDWidget::SetBossName(const FString& Name) const
+{
+	BossName->SetText(FText::FromString(Name));
+}
+
 void USSSamuraiHUDWidget::OnDeathScreen()
 {
 	PlayAnimation(FadeIn);
@@ -64,6 +84,11 @@ void USSSamuraiHUDWidget::SetVisibilityBossHUD(ESlateVisibility Value) const
 	BossHPBar->SetVisibility(Value);
 	BossName->SetVisibility(Value);
 	BossBPGauge->SetVisibility(Value);
+}
+
+void USSSamuraiHUDWidget::SetHiddenBossHUD() const
+{
+	SetVisibilityBossHUD(ESlateVisibility::Hidden);
 }
 
 void USSSamuraiHUDWidget::SetMaxPlayerHP(float Value) const

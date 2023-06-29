@@ -2,9 +2,10 @@
 
 
 #include "SamuraiSoulGameModeBase.h"
-
 #include "Character/SSEnemyBossCharacter.h"
 #include "Character/SSEnemyCharacter.h"
+#include "Interface/SSCharacterHUDInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 {
@@ -13,14 +14,13 @@ ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 
 	if (nullptr != DataTableRef.Object)
 	{
-		const UDataTable* DataTable = DataTableRef.Object;
-		check(DataTable->GetRowMap().Num() > 0);
+		SpawnEnemyDataTable = DataTableRef.Object;
+		check(SpawnEnemyDataTable->GetRowMap().Num() > 0);
 
 		TArray<uint8*> ValueArray = {};
+		SpawnEnemyDataTable->GetRowMap().GenerateValueArray(ValueArray);
 
-		DataTable->GetRowMap().GenerateValueArray(ValueArray);
-
-		Algo::Transform(ValueArray, SpawnEnemyDataTable,
+		Algo::Transform(ValueArray, SpawnEnemyDataArray,
 		                [](uint8* Value)
 		                {
 			                return *reinterpret_cast<FSSSpawnEnemyData*>(Value);
@@ -33,21 +33,56 @@ void ASamuraiSoulGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (size_t i = 0; i < SpawnEnemyDataTable.Num(); ++i)
+	SpawnEnemy();
+}
+
+void ASamuraiSoulGameModeBase::SpawnEnemy()
+{
+	for (size_t i = 0; i < SpawnEnemyDataArray.Num(); ++i)
 	{
-		EEnemyType EnemyType = SpawnEnemyDataTable[i].EnemyType;
+		EEnemyType EnemyType = SpawnEnemyDataArray[i].EnemyType;
 
 		switch (EnemyType)
 		{
 			case EEnemyType::Katana:
-				GetWorld()->SpawnActor<ASSEnemyCharacter>(EnemyClass, SpawnEnemyDataTable[i].SpawnLocation,
-				                                          SpawnEnemyDataTable[i].SpawnRotation);
+				{
+					ASSEnemyCharacter* Enemy = GetWorld()->SpawnActor<ASSEnemyCharacter>(EnemyClass, SpawnEnemyDataArray[i].SpawnLocation,
+					                                                                     SpawnEnemyDataArray[i].SpawnRotation);
+				}
 				break;
 
 			case EEnemyType::Boss:
-				GetWorld()->SpawnActor<ASSEnemyBossCharacter>(BossClass, SpawnEnemyDataTable[i].SpawnLocation,
-				                                              SpawnEnemyDataTable[i].SpawnRotation);
+				{
+					ASSEnemyBossCharacter* Boss = GetWorld()->SpawnActor<ASSEnemyBossCharacter>(BossClass, SpawnEnemyDataArray[i].SpawnLocation,
+					                                                                            SpawnEnemyDataArray[i].SpawnRotation);
+					Boss->SetName(SpawnEnemyDataArray[i].EnemyName);
+					SpawnBossMap.Add(SpawnEnemyDataArray[i].EnemyName, Boss);
+				}
 				break;
 		}
 	}
+}
+
+ASSEnemyBossCharacter* ASamuraiSoulGameModeBase::SetBossDataInHUD(const FName& Key)
+{
+	FSSSpawnEnemyData* BossData = SpawnEnemyDataTable->FindRow<FSSSpawnEnemyData>(Key, "");
+
+	ASSEnemyBossCharacter* Boss = *(SpawnBossMap.Find(BossData->EnemyName));
+
+	if (nullptr == BossData)
+	{
+		return nullptr;
+	}
+
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	ISSCharacterHUDInterface* HUDPawn   = Cast<ISSCharacterHUDInterface>(PlayerController->GetPawn());
+
+	if (nullptr == HUDPawn)
+	{
+		return nullptr;
+	}
+
+	HUDPawn->SetBossDataInHUD(Boss);
+
+	return Boss;
 }

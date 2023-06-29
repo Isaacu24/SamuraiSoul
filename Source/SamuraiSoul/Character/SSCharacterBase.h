@@ -23,7 +23,7 @@ class USSCharacterControlData;
 class UMotionWarpingComponent;
 class USSCharacterStatComponent;
 
-//call Die()
+//Call Die()
 DECLARE_MULTICAST_DELEGATE(FOnCharacterDeadDelegate);
 
 UCLASS()
@@ -64,6 +64,10 @@ public:
 	{
 		return StatComponent;
 	}
+
+	const bool GetAxisInput() const;
+
+	FOnCharacterDeadDelegate OnCharacterDead;
 
 public:
 	virtual bool IsCrouch() const override
@@ -114,6 +118,9 @@ public:
 		}
 	}
 
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSCharacterStatComponent> StatComponent;
+
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 
@@ -126,14 +133,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "CharacterData")
 	TObjectPtr<USSCharacterData> CharacterData;
 
-	FOnCharacterDeadDelegate OnCharacterDead;
-
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USSCharacterStatComponent> StatComponent;
 
 	UPROPERTY()
 	TObjectPtr<USSAttributeSet> Attributes;
@@ -151,4 +154,6 @@ protected:
 	uint8 bIsDefense : 1;
 	uint8 bIsHit : 1;
 	uint8 bIsDie: 1;
+
+	uint8 bIsAixsInput : 1;
 };

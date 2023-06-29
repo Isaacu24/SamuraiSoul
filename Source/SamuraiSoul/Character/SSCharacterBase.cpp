@@ -96,6 +96,7 @@ void ASSCharacterBase::Die()
 
 void ASSCharacterBase::PostDeath()
 {
+	OnCharacterDead.Broadcast();
 }
 
 const FVector2D& ASSCharacterBase::GetMovementVector() const
@@ -106,6 +107,11 @@ const FVector2D& ASSCharacterBase::GetMovementVector() const
 UAbilitySystemComponent* ASSCharacterBase::GetAbilitySystemComponent() const
 {
 	return GetSSAbilitySystemComponent();
+}
+
+const bool ASSCharacterBase::GetAxisInput() const
+{
+	return bIsAixsInput;
 }
 
 void ASSCharacterBase::Tick(float DeltaTime)

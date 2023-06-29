@@ -15,15 +15,18 @@
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
 
+#include "EngineUtils.h"
 #include "MovieSceneSequencePlaybackSettings.h"
 #include "Interface/SSTargetableInterface.h"
 
 #include "Abilities/SSAbilitySystemComponent.h"
 #include "Component/SSCombatComponent.h"
 #include "SSCharacterControlData.h"
+#include "SSEnemyBossCharacter.h"
 #include "Component/SSCharacterStatComponent.h"
 #include "UI/SSHUDWidget.h"
 #include "SSGameplayTags.h"
+#include "GameData/SSSpawnEnemyData.h"
 #include "Input/SSInputComponent.h"
 #include "LevelSequence/Public/LevelSequenceActor.h"
 #include "LevelSequence/Public/LevelSequencePlayer.h"
@@ -170,6 +173,9 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 	SetCharacterControl(ControlType);
 
+	//for AnimMontage Cancel.
+	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_MoveTag, ETriggerEvent::Completed, this, &ASSSamuraiCharacter::MoveEnd);
+
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_MoveTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Move);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_LookTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_RunTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Run);
@@ -208,8 +214,6 @@ void ASSSamuraiCharacter::Die()
 void ASSSamuraiCharacter::PostDeath()
 {
 	Super::PostDeath();
-
-	OnCharacterDead.Broadcast();
 }
 
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
@@ -236,6 +240,15 @@ void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 		UE_LOG(LogTemp, Error, TEXT("FowardBack: %f"), MovementVector.Y);
 		UE_LOG(LogTemp, Error, TEXT("RightLeft: %f"), MovementVector.X);
 	}
+
+	bIsAixsInput = true;
+	UE_LOG(LogTemp, Warning, TEXT("AixsInput"));
+}
+
+void ASSSamuraiCharacter::MoveEnd(const FInputActionValue& Value)
+{
+	bIsAixsInput = false;
+	UE_LOG(LogTemp, Warning, TEXT("Not AixsInput"));
 }
 
 void ASSSamuraiCharacter::Look(const FInputActionValue& Value)
@@ -431,15 +444,31 @@ void ASSSamuraiCharacter::SetCharacterControl(ECharacterControlType CharacterCon
 
 void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 {
-	USSSamuraiHUDWidget* SamuraiHUD = Cast<USSSamuraiHUDWidget>(InHUDWidget);
+	MyHUD = Cast<USSSamuraiHUDWidget>(InHUDWidget);
 
-	if (nullptr != SamuraiHUD)
+	if (nullptr != MyHUD)
 	{
-		SamuraiHUD->SetMaxPlayerHP(StatComponent->GetMaxHealth());
-		SamuraiHUD->UpdatePlayerHPbar(StatComponent->GetHealth());
+		MyHUD->SetMaxPlayerHP(StatComponent->GetMaxHealth());
+		MyHUD->UpdatePlayerHPbar(StatComponent->GetHealth());
 
-		StatComponent->OnHPChanged.AddUObject(SamuraiHUD, &USSSamuraiHUDWidget::UpdatePlayerHPbar);
-		StatComponent->OnBPChanged.AddUObject(SamuraiHUD, &USSSamuraiHUDWidget::UpdatePlayerBPGauge);
-		OnCharacterDead.AddUObject(SamuraiHUD, &USSSamuraiHUDWidget::OnDeathScreen);
+		StatComponent->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerHPbar);
+		StatComponent->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerBPGauge);
+		OnCharacterDead.AddUObject(MyHUD, &USSSamuraiHUDWidget::OnDeathScreen);
+	}
+}
+
+void ASSSamuraiCharacter::SetBossDataInHUD(ASSEnemyBossCharacter* Boss)
+{
+	if (nullptr != MyHUD)
+	{
+		MyHUD->SetVisibilityBossHUD(ESlateVisibility::Visible);
+
+		MyHUD->SetBossName(Boss->GetBossName());
+		MyHUD->SetMaxBossHP(StatComponent->GetMaxHealth());
+		MyHUD->UpdateBossHPbar(StatComponent->GetHealth());
+
+		Boss->StatComponent->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossHPbar);
+		Boss->StatComponent->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossBPGauge);
+		Boss->OnCharacterDead.AddUObject(MyHUD, &USSSamuraiHUDWidget::SetHiddenBossHUD);
 	}
 }

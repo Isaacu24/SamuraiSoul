@@ -14,6 +14,7 @@ class ASSWeapon;
 class UInputComponent;
 class UCameraComponent;
 class USSInputConfigData;
+class USSSamuraiHUDWidget;
 class USpringArmComponent;
 class UInputMappingContext;
 class USSCharacterControlData;
@@ -67,9 +68,22 @@ public:
 	void SetCharacterControl(ECharacterControlType CharacterControlType);
 
 	virtual void SetupHUDWidget(USSHUDWidget* InHUDWidget) override;
+	virtual void SetBossDataInHUD(ASSEnemyBossCharacter* Boss) override;
+
+	virtual const bool GetHasNextComboCommand() const override
+	{
+		return HasNextComboCommand;
+	};
+
+	virtual const void SetHasNextComboCommand(const bool Value) override
+	{
+		HasNextComboCommand = Value;
+	};
 
 private:
 	void Move(const FInputActionValue& Value);
+	void MoveEnd(const FInputActionValue& Value);
+
 	void Look(const FInputActionValue& Value);
 
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
@@ -104,4 +118,9 @@ private:
 
 	UPROPERTY()
 	FVector2D MovementVector;
+
+	UPROPERTY()
+	USSSamuraiHUDWidget* MyHUD;
+
+	bool HasNextComboCommand;
 };

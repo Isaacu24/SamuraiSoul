@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "GameData/SSSpawnEnemyData.h"
 #include "SSCharacterHUDInterface.generated.h"
 
 class USSHUDWidget;
+class ASSEnemyBossCharacter;
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
@@ -21,6 +23,9 @@ class USSCharacterHUDInterface : public UInterface
 class SAMURAISOUL_API ISSCharacterHUDInterface
 {
 	GENERATED_BODY()
+
+public:
+	virtual void SetBossDataInHUD(ASSEnemyBossCharacter* Data) = 0;
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:

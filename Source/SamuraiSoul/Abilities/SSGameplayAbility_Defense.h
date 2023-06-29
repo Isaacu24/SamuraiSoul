@@ -51,9 +51,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAnimMontage> DefenseRootMontage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
-	TObjectPtr<UAnimMontage> DefenseHitMontage;
-
 	UPROPERTY()
 	int8 HitStack;
 };

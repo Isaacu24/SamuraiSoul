@@ -38,6 +38,9 @@ public:
 	virtual void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Animation)
+	ACharacter* MyCharacter;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> SlashMontage;
 

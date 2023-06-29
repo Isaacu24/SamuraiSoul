@@ -3,6 +3,7 @@
 
 #include "SSEnemyCharacterBase.h"
 #include <Components/CapsuleComponent.h>
+#include "AI/SSEnemyAIController.h"
 #include "DataAsset/SSAICharacterStatData.h"
 #include "Component/SSEnemyCombatComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -215,6 +216,13 @@ void ASSEnemyCharacterBase::Die()
 	Super::Die();
 
 	CombatComponent->DestroyComponent();
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->StopAI();
+	}
 }
 
 void ASSEnemyCharacterBase::VisibleTargetUI()

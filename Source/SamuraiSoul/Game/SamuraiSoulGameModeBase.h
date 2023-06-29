@@ -7,6 +7,9 @@
 #include "GameFramework/GameModeBase.h"
 #include "SamuraiSoulGameModeBase.generated.h"
 
+class ASSEnemyBossCharacter;
+class ASSEnemyCharacter;
+
 /**
  * 
  */
@@ -20,14 +23,20 @@ public:
 
 	void BeginPlay() override;
 
+	void SpawnEnemy();
+	ASSEnemyBossCharacter* SetBossDataInHUD(const FName& Key);
+
 protected:
 
 private:
-	TArray<FSSSpawnEnemyData> SpawnEnemyDataTable;
+	const UDataTable* SpawnEnemyDataTable;
+	TArray<FSSSpawnEnemyData> SpawnEnemyDataArray;
+
+	TMap<FString, ASSEnemyBossCharacter*> SpawnBossMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class ASSEnemyCharacter> EnemyClass;
+	TSubclassOf<ASSEnemyCharacter> EnemyClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class ASSEnemyBossCharacter> BossClass;
+	TSubclassOf<ASSEnemyBossCharacter> BossClass;
 };

@@ -19,8 +19,22 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void SetName(const FString& InName)
+	{
+		Name = InName;
+	}
+
+	const FString& GetBossName() const
+	{
+		return Name;
+	}
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void PostInitializeComponents() override;
+
+private:
+	UPROPERTY()
+	FString Name;
 };

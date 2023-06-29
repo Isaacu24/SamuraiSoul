@@ -26,4 +26,10 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<UAnimMontage> StabMontage;
+
+	UPROPERTY()
+	ACharacter* MyCharacter;
+
+	UPROPERTY()
+	FName MyCollisionProfileName;
 };
