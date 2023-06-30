@@ -28,6 +28,6 @@ void USSBalanceGaugeWidget::UpdateBPGauge(float NewCurrentBP) const
 {
 	if (nullptr != Gauge)
 	{
-		Gauge->SetPercent(NewCurrentBP);
+		Gauge->SetPercent(NewCurrentBP / MaxBP);
 	}
 }

@@ -19,6 +19,9 @@ public:
 	void ChangeDefenseState(EDefenseState Type);
 	bool CheckAttackDirection(FVector A, FVector B);
 
+	void Defense(AActor* OtherActor);
+	void Parry(AActor* OtherActor);
+
 	FDefenseHitDelegate OnHitEvent;
 
 protected:

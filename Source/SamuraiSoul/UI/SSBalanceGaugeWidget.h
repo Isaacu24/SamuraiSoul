@@ -23,6 +23,11 @@ protected:
 public:
 	void UpdateBPGauge(float NewCurrentBP) const;
 
+	FORCEINLINE void SetMaxBP(float NewMaxBP)
+	{
+		MaxBP = NewMaxBP;
+	}
+
 protected:
 	UPROPERTY()
 	TObjectPtr<class UProgressBar> Gauge;

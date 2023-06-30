@@ -460,6 +460,7 @@ void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 	{
 		MyHUD->SetMaxPlayerHP(StatComponent->GetMaxHealth());
 		MyHUD->UpdatePlayerHPbar(StatComponent->GetHealth());
+		MyHUD->SetMaxPlayerBP(StatComponent->GetMaxBalance());
 
 		StatComponent->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerHPbar);
 		StatComponent->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerBPGauge);

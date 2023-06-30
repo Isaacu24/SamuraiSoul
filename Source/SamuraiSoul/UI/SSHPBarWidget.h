@@ -21,9 +21,9 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	FORCEINLINE void SetMaxHp(float NewMaxHp)
+	FORCEINLINE void SetMaxHP(float NewMaxHP)
 	{
-		MaxHp = NewMaxHp;
+		MaxHP = NewMaxHP;
 	}
 
 	void UpdateHPBar(float NewCurrentHp) const;
@@ -33,5 +33,5 @@ protected:
 	TObjectPtr<class UProgressBar> HPProgressBar;
 
 	UPROPERTY()
-	float MaxHp;
+	float MaxHP;
 };

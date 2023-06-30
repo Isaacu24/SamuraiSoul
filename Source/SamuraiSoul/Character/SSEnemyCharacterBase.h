@@ -99,6 +99,16 @@ protected:
 	virtual EAttackType GetWeaponAttakType() const override;
 	virtual void SetWeaponAttackType(EAttackType InType) override;
 
+	virtual bool GetCanEnemyExecution() const override
+	{
+		return CanEnemyExecution;
+	};
+
+	virtual void SetCanEnemyExecution(bool Value) override
+	{
+		CanEnemyExecution = Value;
+	};
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
@@ -118,4 +128,5 @@ protected:
 	uint8 CurrentCombo;
 
 	bool HasNextComboCommand;
+	bool CanEnemyExecution;
 };

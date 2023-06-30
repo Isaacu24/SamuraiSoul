@@ -31,6 +31,9 @@ public:
 	float GetHealth() const;
 	float GetMaxHealth() const;
 
+	float GetBalance() const;
+	float GetMaxBalance() const;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

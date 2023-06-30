@@ -21,6 +21,7 @@ public:
 	USSEnemyHUDWidget(const FObjectInitializer& ObjectInitializer);
 
 	void SetMaxEnemyHP(float Value) const;
+	void SetMaxEnemyBPGauge(float Value) const;
 	void UpdateEnemyHPbar(float Value) const;
 	void UpdateEnemyBPGauge(float Value) const;
 

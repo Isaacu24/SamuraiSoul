@@ -33,4 +33,7 @@ public:
 
 	virtual EAttackType GetWeaponAttakType() const = 0;
 	virtual void SetWeaponAttackType(EAttackType InType) = 0;
+
+	virtual bool GetCanEnemyExecution() const = 0;
+	virtual void SetCanEnemyExecution(bool Value) = 0;
 };

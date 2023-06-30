@@ -132,3 +132,24 @@ float USSCharacterStatComponent::GetMaxHealth() const
 
 	return OwnerAttributeSet->GetMaxHealth();
 }
+
+
+float USSCharacterStatComponent::GetBalance() const
+{
+	if (nullptr == OwnerAttributeSet)
+	{
+		return 0.f;
+	}
+
+	return OwnerAttributeSet->GetBalance();
+}
+
+float USSCharacterStatComponent::GetMaxBalance() const
+{
+	if (nullptr == OwnerAttributeSet)
+	{
+		return 0.f;
+	}
+
+	return OwnerAttributeSet->GetMaxBalance();
+}

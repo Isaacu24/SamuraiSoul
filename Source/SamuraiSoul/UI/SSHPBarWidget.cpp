@@ -26,10 +26,10 @@ void USSHPBarWidget::NativeConstruct()
 
 void USSHPBarWidget::UpdateHPBar(float NewCurrentHp) const
 {
-	ensure(MaxHp > 0.0f);
+	ensure(MaxHP > 0.0f);
 
 	if (nullptr != HPProgressBar)
 	{
-		HPProgressBar->SetPercent(NewCurrentHp / MaxHp);
+		HPProgressBar->SetPercent(NewCurrentHp / MaxHP);
 	}
 }

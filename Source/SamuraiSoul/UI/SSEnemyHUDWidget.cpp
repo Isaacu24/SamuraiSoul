@@ -32,7 +32,12 @@ void USSEnemyHUDWidget::NativeConstruct()
 
 void USSEnemyHUDWidget::SetMaxEnemyHP(float Value) const
 {
-	EnemyHPBar->SetMaxHp(Value);
+	EnemyHPBar->SetMaxHP(Value);
+}
+
+void USSEnemyHUDWidget::SetMaxEnemyBPGauge(float Value) const
+{
+	EnemyBPGauge->SetMaxBP(Value);
 }
 
 void USSEnemyHUDWidget::UpdateEnemyHPbar(float Value) const
@@ -44,4 +49,3 @@ void USSEnemyHUDWidget::UpdateEnemyBPGauge(float Value) const
 {
 	EnemyBPGauge->UpdateBPGauge(Value);
 }
-

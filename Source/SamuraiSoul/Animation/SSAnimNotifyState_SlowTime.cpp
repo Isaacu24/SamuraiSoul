@@ -3,10 +3,23 @@
 
 #include "Animation/SSAnimNotifyState_SlowTime.h"
 
+#include "AbilitySystemInterface.h"
+#include "Interface/SSCombatableInterface.h"
+
 
 void USSAnimNotifyState_SlowTime::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
                                               const FAnimNotifyEventReference& EventReference)
 {
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MeshComp->GetOwner());
+
+	if (nullptr != CombatPawn)
+	{
+		if (false == CombatPawn->GetCanEnemyExecution())
+		{
+			return;
+		}
+	}
+
 	if (nullptr != MeshComp->GetOwner())
 	{
 		MeshComp->GetOwner()->GetWorldSettings()->SetTimeDilation(0.25f);

@@ -26,10 +26,12 @@ public:
 	void SetHiddenBossHUD() const;
 
 	void SetMaxPlayerHP(float Value) const;
+	void SetMaxPlayerBP(float Value) const;
 	void UpdatePlayerHPbar(float Value) const;
 	void UpdatePlayerBPGauge(float Value) const;
 
 	void SetMaxBossHP(float Value) const;
+	void SetMaxBossBP(float Value) const;
 	void UpdateBossHPbar(float Value) const;
 	void UpdateBossBPGauge(float Value) const;
 

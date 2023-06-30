@@ -83,6 +83,16 @@ public:
 	virtual EAttackType GetWeaponAttakType() const override;
 	virtual void SetWeaponAttackType(EAttackType InType) override;
 
+	virtual bool GetCanEnemyExecution() const override
+	{
+		return CanEnemyExecution;
+	};
+
+	virtual void SetCanEnemyExecution(bool Value) override
+	{
+		CanEnemyExecution = Value;
+	};
+
 private:
 	void Move(const FInputActionValue& Value);
 	void MoveEnd(const FInputActionValue& Value);
@@ -126,4 +136,5 @@ private:
 	USSSamuraiHUDWidget* MyHUD;
 
 	bool HasNextComboCommand;
+	bool CanEnemyExecution;
 };

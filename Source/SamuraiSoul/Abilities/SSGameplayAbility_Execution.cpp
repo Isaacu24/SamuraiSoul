@@ -42,6 +42,14 @@ void USSGameplayAbility_Execution::ActivateAbility(const FGameplayAbilitySpecHan
 	ASSCharacterBase* Character            = Cast<ASSCharacterBase>(ActorInfo->OwnerActor);
 	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(Character);
 
+	if (false == CombatablePawn->GetCanEnemyExecution())
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+		return;
+	}
+
+	CombatablePawn->SetCanEnemyExecution(false);
+
 	AActor* ExecutionTarget                 = CombatablePawn->GetCombatComponent()->GetTarget();
 	ISSCombatableInterface* CombatableEnemy = Cast<ISSCombatableInterface>(ExecutionTarget);
 

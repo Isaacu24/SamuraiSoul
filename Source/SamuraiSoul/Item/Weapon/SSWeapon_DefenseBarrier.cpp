@@ -4,7 +4,11 @@
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include <Components/BoxComponent.h>
 #include <Interface/SSCombatableInterface.h>
+
+#include "AbilitySystemComponent.h"
 #include "Component/SSCombatComponent.h"
+#include "AbilitySystemInterface.h"
+#include "Abilities/SSAttributeSet.h"
 
 ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 {
@@ -46,6 +50,126 @@ bool ASSWeapon_DefenseBarrier::CheckAttackDirection(FVector A, FVector B)
 	return true;
 }
 
+void ASSWeapon_DefenseBarrier::Defense(AActor* OtherActor)
+{
+	ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+
+	if (nullptr == Weapon
+		|| EAttackType::SpecialAttack == Weapon->GetAttackType())
+	{
+		return;
+	}
+
+	FVector A = GetOwner()->GetActorForwardVector();
+	A.Normalize();
+
+	FVector B = Weapon->GetOwner()->GetActorForwardVector();
+	B.Normalize();
+
+	if (false == CheckAttackDirection(A, B))
+	{
+		return;
+	}
+
+	ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
+	ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(Weapon->GetOwner());
+
+	if (MyOwner == Enemy)
+	{
+		return;
+	}
+
+	if (nullptr != MyOwner
+		&& nullptr != Enemy)
+	{
+		if (nullptr != MyOwner->GetCombatComponent()
+			&& nullptr != Enemy->GetCombatComponent())
+		{
+			OnHitEvent.ExecuteIfBound();
+
+			Enemy->GetCombatComponent()->OffWeapon();
+			MyOwner->GetCombatComponent()->DefenseHit();
+		}
+	}
+}
+
+void ASSWeapon_DefenseBarrier::Parry(AActor* OtherActor)
+{
+	ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
+
+	if (nullptr == Weapon)
+	{
+		return;
+	}
+
+	ISSCombatableInterface* CombatPawn  = Cast<ISSCombatableInterface>(GetOwner());
+	ISSCombatableInterface* CombatEnemy = Cast<ISSCombatableInterface>(Weapon->GetOwner());
+
+	IAbilitySystemInterface* AbilityEnemy = Cast<IAbilitySystemInterface>(OtherActor->GetOwner());
+
+	if (nullptr == AbilityEnemy)
+	{
+		return;
+	}
+
+	const UAttributeSet* Attribute        = AbilityEnemy->GetAbilitySystemComponent()->GetAttributeSet(USSAttributeSet::StaticClass());
+	const USSAttributeSet* OwnerAttribute = Cast<USSAttributeSet>(Attribute);
+
+	float CurrentBP = OwnerAttribute->GetBalance();
+	float MaxBP     = OwnerAttribute->GetMaxBalance();
+
+	switch (Weapon->GetAttackType())
+	{
+		case EAttackType::Normal:
+			if (MaxBP > CurrentBP)
+			{
+				CombatPawn->SetCanEnemyExecution(false);
+			}
+			else
+			{
+				CombatPawn->SetCanEnemyExecution(true);
+			}
+			break;
+
+		case EAttackType::SpecialAttack:
+			if (MaxBP > CurrentBP)
+			{
+				Defense(OtherActor);
+				return;
+			}
+			break;
+	}
+
+	FVector A = GetOwner()->GetActorForwardVector();
+	A.Normalize();
+
+	FVector B = Weapon->GetOwner()->GetActorForwardVector();
+	B.Normalize();
+
+	if (false == CheckAttackDirection(A, B))
+	{
+		return;
+	}
+
+	if (nullptr != CombatPawn
+		&& nullptr != CombatEnemy)
+	{
+		if (CombatPawn == CombatEnemy)
+		{
+			return;
+		}
+
+		if (nullptr != CombatPawn->GetCombatComponent()
+			&& nullptr != CombatEnemy->GetCombatComponent())
+		{
+			CombatPawn->GetCombatComponent()->Parry(OtherActor->GetOwner());
+
+			CombatEnemy->GetCombatComponent()->OffWeapon();
+			CombatEnemy->GetCombatComponent()->Rebound();
+		}
+	}
+}
+
 void ASSWeapon_DefenseBarrier::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -53,7 +177,7 @@ void ASSWeapon_DefenseBarrier::Tick(float DeltaTime)
 	if (nullptr != GetOwner())
 	{
 		//Delegate
-		FVector BarrierPos  = GetOwner()->GetActorForwardVector() * 75.f;
+		FVector BarrierPos  = GetOwner()->GetActorForwardVector() * 50.f;
 		FRotator BarrierRot = GetOwner()->GetActorRotation();
 		SetActorLocation(GetOwner()->GetActorLocation() + BarrierPos);
 		SetActorRotation(BarrierRot);
@@ -72,90 +196,13 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 	{
 		case EDefenseState::Defense:
 			{
-				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
-
-				if (nullptr == Weapon
-					|| EAttackType::SpecialAttack == Weapon->GetAttackType())
-				{
-					return;
-				}
-
-				FVector A = GetOwner()->GetActorForwardVector();
-				A.Normalize();
-
-				FVector B = Weapon->GetOwner()->GetActorForwardVector();
-				B.Normalize();
-
-				if (false == CheckAttackDirection(A, B))
-				{
-					return;
-				}
-
-				ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
-				ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(Weapon->GetOwner());
-
-				if (MyOwner == Enemy)
-				{
-					return;
-				}
-
-				if (nullptr != MyOwner
-					&& nullptr != Enemy)
-				{
-					if (nullptr != MyOwner->GetCombatComponent()
-						&& nullptr != Enemy->GetCombatComponent())
-					{
-						OnHitEvent.ExecuteIfBound();
-
-						Enemy->GetCombatComponent()->OffWeapon();
-						MyOwner->GetCombatComponent()->DefenseHit();
-					}
-				}
+				Defense(OtherActor);
 			}
 			break;
 		case EDefenseState::Parry:
 			{
-				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
-
-				if (nullptr == Weapon)
-				{
-					return;
-				}
-
-				FVector A = GetOwner()->GetActorForwardVector();
-				A.Normalize();
-
-				FVector B = Weapon->GetOwner()->GetActorForwardVector();
-				B.Normalize();
-
-				if (false == CheckAttackDirection(A, B))
-				{
-					return;
-				}
-
-				ISSCombatableInterface* MyOwner = Cast<ISSCombatableInterface>(GetOwner());
-				ISSCombatableInterface* Enemy   = Cast<ISSCombatableInterface>(Weapon->GetOwner());
-
-				if (MyOwner == Enemy)
-				{
-					return;
-				}
-
-				if (nullptr != MyOwner
-					&& nullptr != Enemy)
-				{
-					if (nullptr != MyOwner->GetCombatComponent()
-						&& nullptr != Enemy->GetCombatComponent())
-					{
-						MyOwner->GetCombatComponent()->Parry(OtherActor->GetOwner());
-
-						Enemy->GetCombatComponent()->OffWeapon();
-						Enemy->GetCombatComponent()->Rebound();
-					}
-				}
+				Parry(OtherActor);
 			}
-			break;
-		default:
 			break;
 	}
 }

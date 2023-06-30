@@ -56,7 +56,12 @@ void USSSamuraiHUDWidget::UpdatePlayerBPGauge(float Value) const
 
 void USSSamuraiHUDWidget::SetMaxBossHP(float Value) const
 {
-	BossHPBar->SetMaxHp(Value);
+	BossHPBar->SetMaxHP(Value);
+}
+
+void USSSamuraiHUDWidget::SetMaxBossBP(float Value) const
+{
+	BossBPGauge->SetMaxBP(Value);
 }
 
 void USSSamuraiHUDWidget::UpdateBossHPbar(float Value) const
@@ -93,5 +98,10 @@ void USSSamuraiHUDWidget::SetHiddenBossHUD() const
 
 void USSSamuraiHUDWidget::SetMaxPlayerHP(float Value) const
 {
-	PlayerHPBar->SetMaxHp(Value);
+	PlayerHPBar->SetMaxHP(Value);
+}
+
+void USSSamuraiHUDWidget::SetMaxPlayerBP(float Value) const
+{
+	PlayerBPGauge->SetMaxBP(Value);
 }

@@ -150,6 +150,7 @@ void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 	if (nullptr != HUDwidget)
 	{
 		HUDwidget->SetMaxEnemyHP(StatComponent->GetMaxHealth());
+		HUDwidget->SetMaxEnemyBPGauge(StatComponent->GetMaxBalance());
 		HUDwidget->UpdateEnemyHPbar(StatComponent->GetHealth());
 
 		StatComponent->OnHPChanged.AddUObject(HUDwidget, &USSEnemyHUDWidget::UpdateEnemyHPbar);
