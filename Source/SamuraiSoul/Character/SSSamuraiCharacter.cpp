@@ -45,10 +45,10 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 		ANIM_SAMURAI(TEXT("/Script/Engine.AnimBlueprint'/Game/MyContent/Animation/Character/Player/AB_SSSamuraiCharacter.AB_SSSamuraiCharacter_C'"));
 
 	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
-		KEYBOARD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Player/Control/DA_Keyboard.DA_Keyboard'"));
+		KEYBOARD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Samurai/Control/DA_Keyboard.DA_Keyboard'"));
 
 	static ConstructorHelpers::FObjectFinder<USSCharacterControlData>
-		GAMEPAD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Player/Control/DA_Gamepad.DA_Gamepad'"));
+		GAMEPAD_CONTROLDATA(TEXT("/Script/SamuraiSoul.SSCharacterControlData'/Game/MyContent/DataAsset/Character/Samurai/Control/DA_Gamepad.DA_Gamepad'"));
 
 	if (true == SK_BODY.Succeeded())
 	{
@@ -464,11 +464,11 @@ void ASSSamuraiCharacter::SetBossDataInHUD(ASSEnemyBossCharacter* Boss)
 		MyHUD->SetVisibilityBossHUD(ESlateVisibility::Visible);
 
 		MyHUD->SetBossName(Boss->GetBossName());
-		MyHUD->SetMaxBossHP(StatComponent->GetMaxHealth());
-		MyHUD->UpdateBossHPbar(StatComponent->GetHealth());
+		MyHUD->SetMaxBossHP(Boss->GetStatComponent()->GetMaxHealth());
+		MyHUD->UpdateBossHPbar(Boss->GetStatComponent()->GetHealth());
 
-		Boss->StatComponent->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossHPbar);
-		Boss->StatComponent->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossBPGauge);
+		Boss->GetStatComponent()->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossHPbar);
+		Boss->GetStatComponent()->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossBPGauge);
 		Boss->OnCharacterDead.AddUObject(MyHUD, &USSSamuraiHUDWidget::SetHiddenBossHUD);
 	}
 }

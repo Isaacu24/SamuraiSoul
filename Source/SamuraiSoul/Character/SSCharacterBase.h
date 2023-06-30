@@ -118,8 +118,10 @@ public:
 		}
 	}
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USSCharacterStatComponent> StatComponent;
+	USSCharacterStatComponent* GetStatComponent()
+	{
+		return StatComponent;
+	}
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
@@ -137,6 +139,8 @@ protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSAbilitySystemComponent> AbilitySystemComponent;
 
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSCharacterStatComponent> StatComponent;
 
 	UPROPERTY()
 	TObjectPtr<USSAttributeSet> Attributes;

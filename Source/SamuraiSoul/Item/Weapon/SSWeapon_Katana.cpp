@@ -62,7 +62,7 @@ void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 	                                     End,
 	                                     FVector(5.f, 5.f, 5.f),
 	                                     ColliderStart->GetComponentRotation(),
-	                                     ETraceTypeQuery::TraceTypeQuery3,
+	                                     ETraceTypeQuery::TraceTypeQuery4,
 	                                     false,
 	                                     ActorsToIgnore,
 	                                     EDrawDebugTrace::ForDuration,
