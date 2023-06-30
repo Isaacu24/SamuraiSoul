@@ -32,7 +32,14 @@ enum class EWeaponType : uint8
 	None,
 	Katana,
 	Bow,
-	Defense
+	Defense,
+};
+
+UENUM(BlueprintType)
+enum class EAttackType : uint8
+{
+	Normal,
+	SpecialAttack
 };
 
 UENUM(BlueprintType)

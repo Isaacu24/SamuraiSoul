@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSCombatableInterface.h"
 
 USSGameplayAbility_Stab::USSGameplayAbility_Stab()
 {
@@ -46,6 +47,13 @@ void USSGameplayAbility_Stab::ActivateAbility(const FGameplayAbilitySpecHandle H
 		AI->ShowPerilousMark();
 	}
 
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
+
+	if (nullptr != CombatPawn)
+	{
+		CombatPawn->SetWeaponAttackType(EAttackType::SpecialAttack);
+	}
+
 	PlayMontage(StabMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
@@ -64,6 +72,13 @@ void USSGameplayAbility_Stab::EndAbility(const FGameplayAbilitySpecHandle Handle
 	if (nullptr != AI)
 	{
 		AI->AttackEnd();
+	}
+
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
+
+	if (nullptr != CombatPawn)
+	{
+		CombatPawn->SetWeaponAttackType(EAttackType::Normal);
 	}
 
 	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName(MyCollisionProfileName);

@@ -29,7 +29,7 @@ public:
 	virtual void Rebound() override;
 
 protected:
-	virtual void Hit() override;
+	virtual void Hit(EAttackType InType) override;
 	virtual void BeExecuted(int8 RandomNumber) override;
 
 protected:

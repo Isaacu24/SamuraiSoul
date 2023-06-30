@@ -183,7 +183,7 @@ void USSCombatComponent::Attack(AActor* InActor, const FHitResult& HitResult) co
 		return;
 	}
 
-	Enemy->GetCombatComponent()->Hit();
+	Enemy->GetCombatComponent()->Hit(Weapon->GetAttackType());
 }
 
 void USSCombatComponent::Parry(AActor* InActor)
@@ -194,10 +194,21 @@ void USSCombatComponent::Parry(AActor* InActor)
 	TryActivateAbility(ParryTag);
 }
 
-void USSCombatComponent::Hit()
+void USSCombatComponent::Hit(EAttackType InType)
 {
 	ensure(DamageEffect);
-	TakeGameplayEffect(DamageEffect);
+	ensure(SpectialDamageEffect);
+
+	switch (InType)
+	{
+		case EAttackType::Normal:
+			TakeGameplayEffect(DamageEffect);
+			break;
+
+		case EAttackType::SpecialAttack:
+			TakeGameplayEffect(SpectialDamageEffect);
+			break;
+	}
 }
 
 void USSCombatComponent::BeExecuted(int8 RandomNumber)

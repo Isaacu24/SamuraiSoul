@@ -74,7 +74,8 @@ void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* Overlapped
 			{
 				ASSWeapon* Weapon = Cast<ASSWeapon>(OtherActor);
 
-				if (nullptr == Weapon)
+				if (nullptr == Weapon
+					|| EAttackType::SpecialAttack == Weapon->GetAttackType())
 				{
 					return;
 				}

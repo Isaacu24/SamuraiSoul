@@ -26,12 +26,22 @@ public:
 	FWeaponCollisionOverlap OnWeaponOverlap;
 
 	void Equip(USceneComponent* InParent, FName InSocketName);
-	void SetEnemyWeapon();
-	void CollisionHiddenInGame(bool Value);
+	void SetEnemyWeapon() const;
+	void CollisionHiddenInGame(bool Value) const;
 
 	FORCEINLINE EWeaponType GetWeaponType() const
 	{
 		return WeaponType;
+	}
+
+	FORCEINLINE EAttackType GetAttackType() const
+	{
+		return AttackType;
+	}
+
+	FORCEINLINE void SetAttackType(EAttackType InType)
+	{
+		AttackType = InType;
 	}
 
 protected:
@@ -52,5 +62,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> ColliderEnd;
 
+	UPROPERTY(VisibleAnywhere)
 	EWeaponType WeaponType;
+
+	UPROPERTY(VisibleAnywhere)
+	EAttackType AttackType;
 };

@@ -96,6 +96,9 @@ protected:
 		HasNextComboCommand = Value;
 	};
 
+	virtual EAttackType GetWeaponAttakType() const override;
+	virtual void SetWeaponAttackType(EAttackType InType) override;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;

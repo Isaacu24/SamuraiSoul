@@ -216,6 +216,16 @@ void ASSSamuraiCharacter::PostDeath()
 	Super::PostDeath();
 }
 
+EAttackType ASSSamuraiCharacter::GetWeaponAttakType() const
+{
+	return CombatComponent->GetWeapon()->GetAttackType();
+}
+
+void ASSSamuraiCharacter::SetWeaponAttackType(EAttackType InType)
+{
+	CombatComponent->GetWeapon()->SetAttackType(InType);
+}
+
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D

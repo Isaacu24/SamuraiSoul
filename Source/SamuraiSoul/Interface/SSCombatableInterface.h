@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Game/SamuraiSoul.h"
 #include "UObject/Interface.h"
 #include "SSCombatableInterface.generated.h"
 
@@ -29,4 +30,7 @@ public:
 	//for Attack Animation Cancel.
 	virtual const bool GetHasNextComboCommand() const = 0;
 	virtual const void SetHasNextComboCommand(const bool Value) = 0;
+
+	virtual EAttackType GetWeaponAttakType() const = 0;
+	virtual void SetWeaponAttackType(EAttackType InType) = 0;
 };

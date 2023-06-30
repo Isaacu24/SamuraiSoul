@@ -61,8 +61,13 @@ public:
 		return ExecutionNumber;
 	}
 
+	ASSWeapon* GetWeapon() const
+	{
+		return Weapon;
+	}
+
 protected:
-	virtual void Hit();
+	virtual void Hit(EAttackType InType);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Weapon, meta = (AllowPrivateAccess = "true"))
@@ -82,6 +87,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DamageEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> SpectialDamageEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> DefenseEffect;

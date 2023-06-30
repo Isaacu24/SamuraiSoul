@@ -236,3 +236,13 @@ void ASSEnemyCharacterBase::HideTargetUI()
 	ensure(TargetCursor);
 	TargetCursor->SetHiddenInGame(true);
 }
+
+EAttackType ASSEnemyCharacterBase::GetWeaponAttakType() const
+{
+	return CombatComponent->GetWeapon()->GetAttackType();
+}
+
+void ASSEnemyCharacterBase::SetWeaponAttackType(EAttackType InType)
+{
+	CombatComponent->GetWeapon()->SetAttackType(InType);
+}

@@ -40,6 +40,7 @@ ASSWeapon_Katana::ASSWeapon_Katana()
 	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_Katana::OnBoxOverlapBegin);
 
 	WeaponType = EWeaponType::Katana;
+	AttackType = EAttackType::Normal;
 }
 
 void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,

@@ -28,12 +28,12 @@ void ASSWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 	}
 }
 
-void ASSWeapon::SetEnemyWeapon()
+void ASSWeapon::SetEnemyWeapon() const
 {
 	WeaponCollider->SetCollisionProfileName("EnemyWeapon");
 }
 
-void ASSWeapon::CollisionHiddenInGame(bool Value)
+void ASSWeapon::CollisionHiddenInGame(bool Value) const
 {
 	Value ? WeaponCollider->bHiddenInGame = false : WeaponCollider->bHiddenInGame = true;
 }

@@ -61,9 +61,9 @@ void USSEnemyCombatComponent::Rebound()
 	AIPawn->SetRebound(true);
 }
 
-void USSEnemyCombatComponent::Hit()
+void USSEnemyCombatComponent::Hit(EAttackType InType)
 {
-	Super::Hit();
+	Super::Hit(InType);
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
 	AIPawn->SetHit(true);

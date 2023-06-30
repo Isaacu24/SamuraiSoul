@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSCombatableInterface.h"
 
 USSGameplayAbility_SpinSlash::USSGameplayAbility_SpinSlash()
 {
@@ -38,11 +39,18 @@ void USSGameplayAbility_SpinSlash::ActivateAbility(const FGameplayAbilitySpecHan
 		}
 	}
 
-	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+	ISSCharacterAIInterface* AI = Cast<ISSCharacterAIInterface>(MyCharacter);
 
 	if (nullptr != AI)
 	{
 		AI->ShowPerilousMark();
+	}
+
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
+
+	if (nullptr != CombatPawn)
+	{
+		CombatPawn->SetWeaponAttackType(EAttackType::SpecialAttack);
 	}
 
 	PlayMontage(SpinSlashMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -63,6 +71,13 @@ void USSGameplayAbility_SpinSlash::EndAbility(const FGameplayAbilitySpecHandle H
 	if (nullptr != AI)
 	{
 		AI->AttackEnd();
+	}
+
+	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
+
+	if (nullptr != CombatPawn)
+	{
+		CombatPawn->SetWeaponAttackType(EAttackType::Normal);
 	}
 
 	MyCharacter->GetCapsuleComponent()->SetCollisionProfileName(MyCollisionProfileName);

@@ -80,6 +80,9 @@ public:
 		HasNextComboCommand = Value;
 	};
 
+	virtual EAttackType GetWeaponAttakType() const override;
+	virtual void SetWeaponAttackType(EAttackType InType) override;
+
 private:
 	void Move(const FInputActionValue& Value);
 	void MoveEnd(const FInputActionValue& Value);
