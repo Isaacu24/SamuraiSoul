@@ -8,7 +8,7 @@
 #include "SSCharacterStatComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedDelegate, float /*CurrentAttribute*/);
-DECLARE_MULTICAST_DELEGATE(FOnHPZeroDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnAttributeZeroDelegate);
 
 class USSAttributeSet;
 
@@ -26,7 +26,8 @@ public:
 public:
 	FOnAttributeChangedDelegate OnHPChanged;
 	FOnAttributeChangedDelegate OnBPChanged;
-	FOnHPZeroDelegate OnHPZero;
+	FOnAttributeZeroDelegate OnHPZero;
+	FOnAttributeZeroDelegate OnBPZero;
 
 	float GetHealth() const;
 	float GetMaxHealth() const;
@@ -52,5 +53,8 @@ protected:
 	virtual void HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 
 private:
+	UPROPERTY()
 	TWeakObjectPtr<const USSAttributeSet> OwnerAttributeSet;
+
+	FTimerHandle BPZeroHandle;
 };

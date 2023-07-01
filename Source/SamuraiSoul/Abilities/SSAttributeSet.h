@@ -103,4 +103,9 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_BeExecuted(const FGameplayAttributeData& OldBeExecuted);
+
+private:
+	void Down();
+
+	FTimerHandle DownHandle;
 };

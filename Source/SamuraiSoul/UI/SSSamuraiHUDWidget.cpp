@@ -21,6 +21,7 @@ void USSSamuraiHUDWidget::NativeConstruct()
 
 	PlayerBPGauge = Cast<USSBalanceGaugeWidget>(GetWidgetFromName(TEXT("Player_BPGauge")));
 	ensure(PlayerBPGauge);
+	PlayerBPGauge->SetVisibility(ESlateVisibility::Hidden);
 
 	BossHPBar = Cast<USSHPBarWidget>(GetWidgetFromName(TEXT("Boss_HPBar")));
 	ensure(BossHPBar);
@@ -51,6 +52,11 @@ void USSSamuraiHUDWidget::UpdatePlayerHPbar(float Value) const
 
 void USSSamuraiHUDWidget::UpdatePlayerBPGauge(float Value) const
 {
+	if (ESlateVisibility::Hidden == PlayerBPGauge->GetVisibility())
+	{
+		PlayerBPGauge->SetVisibility(ESlateVisibility::Visible);
+	}
+
 	PlayerBPGauge->UpdateBPGauge(Value);
 }
 
@@ -82,6 +88,11 @@ void USSSamuraiHUDWidget::SetBossName(const FString& Name) const
 void USSSamuraiHUDWidget::OnDeathScreen()
 {
 	PlayAnimation(FadeIn);
+}
+
+void USSSamuraiHUDWidget::OffPlayerBPGauge() const
+{
+	PlayerBPGauge->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void USSSamuraiHUDWidget::SetVisibilityBossHUD(ESlateVisibility Value) const

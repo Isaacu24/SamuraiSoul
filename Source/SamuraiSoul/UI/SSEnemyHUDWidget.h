@@ -25,6 +25,8 @@ public:
 	void UpdateEnemyHPbar(float Value) const;
 	void UpdateEnemyBPGauge(float Value) const;
 
+	void OffEnemyBPGauge() const;
+
 protected:
 	virtual void NativeConstruct() override;
 

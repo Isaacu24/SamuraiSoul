@@ -39,6 +39,8 @@ public:
 
 	void OnDeathScreen();
 
+	void OffPlayerBPGauge() const;
+
 protected:
 	virtual void NativeConstruct() override;
 

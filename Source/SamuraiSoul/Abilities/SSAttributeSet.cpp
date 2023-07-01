@@ -5,6 +5,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameplayEffectTypes.h"
+#include "Interface/SSBehaviorInterface.h"
 
 USSAttributeSet::USSAttributeSet()
 {
@@ -51,18 +52,6 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		}
 	}
 
-	//else if (InAttribute == GetBalanceAttribute())
-	//{
-	//	if (true == OnDefenseHitEvent.IsBound())
-	//	{
-	//		const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
-	//		AActor* Instigator                                = EffectContext.GetOriginalInstigator();
-	//		AActor* Causer                                    = EffectContext.GetEffectCauser();
-
-	//		OnDefenseHitEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
-	//	}
-	//}
-
 	else if (InAttribute == GetReboundAttribute())
 	{
 		if (true == OnReboundEvent.IsBound())
@@ -91,8 +80,28 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 	else if (InAttribute == GetBalanceAttribute())
 	{
-		const float NewBalance = FMath::Clamp(GetBalance(), 0.0f, GetBalance());
+		UE_LOG(LogTemp, Warning, TEXT("BP: %f"), GetBalance());
+
+		ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(GetOwningActor());
+
+		if (nullptr == BehaviorPawn
+			|| true == BehaviorPawn->IsDown())
+		{
+			return;
+		}
+
+		const float NewBalance = FMath::Clamp(GetBalance(), 0.0f, GetMaxBalance());
 		SetBalance(NewBalance);
+
+		if (GetMaxBalance() - 0.001f <= NewBalance)
+		{
+			Down();
+		}
+
+		if (0.f >= GetBalance() - 0.001f)
+		{
+			return;
+		}
 
 		if (true == OnSubtractBPEvent.IsBound())
 		{
@@ -157,4 +166,21 @@ void USSAttributeSet::OnRep_Rebound(const FGameplayAttributeData& OldRebound)
 void USSAttributeSet::OnRep_BeExecuted(const FGameplayAttributeData& OldBeExecuted)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, BeExecuted, OldBeExecuted);
+}
+
+void USSAttributeSet::Down()
+{
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(GetOwningActor());
+
+	if (nullptr != BehaviorPawn)
+	{
+		BehaviorPawn->SetIsDown(true);
+
+		GetWorld()->GetTimerManager().SetTimer(DownHandle, FTimerDelegate::CreateLambda([&]()
+		{
+			ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(GetOwningActor());
+			BehaviorPawn->SetIsDown(false);
+			SetBalance(GetMaxBalance() - 0.1f);
+		}), 5.0f, false);
+	}
 }

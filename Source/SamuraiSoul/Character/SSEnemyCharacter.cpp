@@ -3,7 +3,6 @@
 
 #include "SSEnemyCharacter.h"
 #include "Game/SamuraiSoul.h"
-#include "UI/SSHPBarWidget.h"
 #include "AI/SSEnemyAIController.h"
 #include "Component/SSWidgetComponent.h"
 #include "Component/SSEnemyCombatComponent.h"
@@ -155,5 +154,6 @@ void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 
 		StatComponent->OnHPChanged.AddUObject(HUDwidget, &USSEnemyHUDWidget::UpdateEnemyHPbar);
 		StatComponent->OnBPChanged.AddUObject(HUDwidget, &USSEnemyHUDWidget::UpdateEnemyBPGauge);
+		StatComponent->OnBPZero.AddUObject(HUDwidget, &USSEnemyHUDWidget::OffEnemyBPGauge);
 	}
 }

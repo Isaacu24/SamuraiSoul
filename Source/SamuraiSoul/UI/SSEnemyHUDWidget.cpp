@@ -21,6 +21,7 @@ void USSEnemyHUDWidget::NativeConstruct()
 
 	EnemyBPGauge = Cast<USSBalanceGaugeWidget>(GetWidgetFromName(TEXT("Enemy_BPGauge")));
 	ensure(EnemyBPGauge);
+	EnemyBPGauge->SetVisibility(ESlateVisibility::Hidden);
 
 	ISSCharacterWidgetInterface* CharacterWidget = Cast<ISSCharacterWidgetInterface>(OwningActor);
 
@@ -45,7 +46,18 @@ void USSEnemyHUDWidget::UpdateEnemyHPbar(float Value) const
 	EnemyHPBar->UpdateHPBar(Value);
 }
 
+
+void USSEnemyHUDWidget::OffEnemyBPGauge() const
+{
+	EnemyBPGauge->SetVisibility(ESlateVisibility::Hidden);
+}
+
 void USSEnemyHUDWidget::UpdateEnemyBPGauge(float Value) const
 {
+	if (ESlateVisibility::Hidden == EnemyBPGauge->GetVisibility())
+	{
+		EnemyBPGauge->SetVisibility(ESlateVisibility::Visible);
+	}
+
 	EnemyBPGauge->UpdateBPGauge(Value);
 }

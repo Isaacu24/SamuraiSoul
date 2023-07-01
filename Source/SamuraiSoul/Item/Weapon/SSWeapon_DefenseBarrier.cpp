@@ -4,11 +4,8 @@
 #include "Item/Weapon/SSWeapon_DefenseBarrier.h"
 #include <Components/BoxComponent.h>
 #include <Interface/SSCombatableInterface.h>
-
-#include "AbilitySystemComponent.h"
+#include <Interface/SSBehaviorInterface.h>
 #include "Component/SSCombatComponent.h"
-#include "AbilitySystemInterface.h"
-#include "Abilities/SSAttributeSet.h"
 
 ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 {
@@ -105,23 +102,17 @@ void ASSWeapon_DefenseBarrier::Parry(AActor* OtherActor)
 	ISSCombatableInterface* CombatPawn  = Cast<ISSCombatableInterface>(GetOwner());
 	ISSCombatableInterface* CombatEnemy = Cast<ISSCombatableInterface>(Weapon->GetOwner());
 
-	IAbilitySystemInterface* AbilityEnemy = Cast<IAbilitySystemInterface>(OtherActor->GetOwner());
+	ISSBehaviorInterface* BehaviorEnemy = Cast<ISSBehaviorInterface>(OtherActor->GetOwner());
 
-	if (nullptr == AbilityEnemy)
+	if (nullptr == BehaviorEnemy)
 	{
 		return;
 	}
 
-	const UAttributeSet* Attribute        = AbilityEnemy->GetAbilitySystemComponent()->GetAttributeSet(USSAttributeSet::StaticClass());
-	const USSAttributeSet* OwnerAttribute = Cast<USSAttributeSet>(Attribute);
-
-	float CurrentBP = OwnerAttribute->GetBalance();
-	float MaxBP     = OwnerAttribute->GetMaxBalance();
-
 	switch (Weapon->GetAttackType())
 	{
 		case EAttackType::Normal:
-			if (MaxBP > CurrentBP)
+			if (false == BehaviorEnemy->IsDown())
 			{
 				CombatPawn->SetCanEnemyExecution(false);
 			}
@@ -132,7 +123,7 @@ void ASSWeapon_DefenseBarrier::Parry(AActor* OtherActor)
 			break;
 
 		case EAttackType::SpecialAttack:
-			if (MaxBP > CurrentBP)
+			if (false == BehaviorEnemy->IsDown())
 			{
 				Defense(OtherActor);
 				return;

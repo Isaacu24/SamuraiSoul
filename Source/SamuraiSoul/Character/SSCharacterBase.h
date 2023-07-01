@@ -105,6 +105,16 @@ public:
 		bIsDefense = ~bIsDefense;
 	}
 
+	virtual bool IsDown() const
+	{
+		return bIsDown;
+	}
+
+	virtual void SetIsDown(bool Value)
+	{
+		bIsDown = Value;
+	}
+
 	virtual bool IsDie() const override
 	{
 		return bIsDie;
@@ -157,7 +167,8 @@ protected:
 	uint8 bIsLockOn : 1;
 	uint8 bIsDefense : 1;
 	uint8 bIsHit : 1;
-	uint8 bIsDie: 1;
+	uint8 bIsDown: 1;
+	uint8 bIsDie : 1;
 
 	uint8 bIsAixsInput : 1;
 };

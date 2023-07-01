@@ -15,7 +15,6 @@
 #include "EnhancedInputComponent.h"
 #include <Components/InputComponent.h>
 
-#include "EngineUtils.h"
 #include "MovieSceneSequencePlaybackSettings.h"
 #include "Interface/SSTargetableInterface.h"
 
@@ -26,7 +25,6 @@
 #include "Component/SSCharacterStatComponent.h"
 #include "UI/SSHUDWidget.h"
 #include "SSGameplayTags.h"
-#include "GameData/SSSpawnEnemyData.h"
 #include "Input/SSInputComponent.h"
 #include "LevelSequence/Public/LevelSequenceActor.h"
 #include "LevelSequence/Public/LevelSequencePlayer.h"
@@ -87,7 +85,7 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	JumpMaxCount = 1;
 
 	GetCharacterMovement()->MaxWalkSpeed  = 200.f;
-	GetCharacterMovement()->JumpZVelocity = 500.0f;
+	GetCharacterMovement()->JumpZVelocity = 400.0f;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw   = false;
@@ -464,6 +462,7 @@ void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 
 		StatComponent->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerHPbar);
 		StatComponent->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerBPGauge);
+		StatComponent->OnBPZero.AddUObject(MyHUD, &USSSamuraiHUDWidget::OffPlayerBPGauge);
 		OnCharacterDead.AddUObject(MyHUD, &USSSamuraiHUDWidget::OnDeathScreen);
 	}
 }

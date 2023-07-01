@@ -3,6 +3,7 @@
 
 #include "Character/SSEnemyBossCharacter.h"
 #include "AI/SSEnemyBaseAIController.h"
+#include "Component/SSEnemyCombatComponent.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 {
@@ -43,4 +44,11 @@ void ASSEnemyBossCharacter::BeginPlay()
 void ASSEnemyBossCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName(""));
+		CombatComponent->EquipDefenseBarrier();
+		CombatComponent->SetEnemyWeapon();
+	}
 }
