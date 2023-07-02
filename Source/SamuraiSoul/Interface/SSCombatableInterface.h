@@ -27,13 +27,18 @@ class SAMURAISOUL_API ISSCombatableInterface
 public:
 	virtual USSCombatComponent* GetCombatComponent() const = 0;
 
-	//for Attack Animation Cancel.
-	virtual const bool GetHasNextComboCommand() const = 0;
-	virtual const void SetHasNextComboCommand(const bool Value) = 0;
-
 	virtual EAttackType GetWeaponAttakType() const = 0;
 	virtual void SetWeaponAttackType(EAttackType InType) = 0;
 
 	virtual bool GetCanEnemyExecution() const = 0;
 	virtual void SetCanEnemyExecution(bool Value) = 0;
+
+	virtual bool GetCanEnemyAssassination() const
+	{
+		return false;
+	};
+
+	virtual void SetCanEnemyAssassination(bool Value)
+	{
+	};
 };

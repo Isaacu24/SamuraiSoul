@@ -63,10 +63,16 @@ public:
 	FGameplayAttributeData BeExecuted;
 	ATTRIBUTE_ACCESSORS(USSAttributeSet, BeExecuted);
 
+	//BeAssassinated
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_BeAssassinated)
+	FGameplayAttributeData BeAssassinated;
+	ATTRIBUTE_ACCESSORS(USSAttributeSet, BeAssassinated);
+
 	mutable FSSAttributeEventDelegate OnDefenseHitEvent;
 	mutable FSSAttributeEventDelegate OnSubtractBPEvent;
 	mutable FSSAttributeEventDelegate OnReboundEvent;
 	mutable FSSAttributeEventDelegate OnBeExecutedEvent;
+	mutable FSSAttributeEventDelegate OnBeAssassinatedEvent;
 
 	mutable FSSAttributeEventDelegate OnDamagedEvent;
 	mutable FSSAttributeEventDelegate OnDeadEvent;
@@ -103,6 +109,9 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_BeExecuted(const FGameplayAttributeData& OldBeExecuted);
+
+	UFUNCTION()
+	virtual void OnRep_BeAssassinated(const FGameplayAttributeData& OldAssassinated);
 
 private:
 	void Down();

@@ -22,6 +22,7 @@ void USSCharacterStatComponent::SetAbilityDelegates()
 			OwnerAttributeSet->OnSubtractBPEvent.AddUObject(this, &ThisClass::HandleBPSubtracted);
 			OwnerAttributeSet->OnReboundEvent.AddUObject(this, &ThisClass::HandleRebound);
 			OwnerAttributeSet->OnBeExecutedEvent.AddUObject(this, &ThisClass::HandleBeExecuted);
+			OwnerAttributeSet->OnBeAssassinatedEvent.AddUObject(this, &ThisClass::HandleBeAssassinated);
 
 			OwnerAttributeSet->OnDamagedEvent.AddUObject(this, &ThisClass::HandleDamaged);
 			OwnerAttributeSet->OnDeadEvent.AddUObject(this, &ThisClass::HandleDead);
@@ -116,6 +117,12 @@ void USSCharacterStatComponent::HandleBeExecuted(AActor* DamageInstigator, AActo
                                                  float DamageMagnitude)
 {
 	SetHandleGameplayEvent(FSSGameplayTags::Get().BeExecutedTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
+}
+
+void USSCharacterStatComponent::HandleBeAssassinated(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
+                                                     float DamageMagnitude)
+{
+	SetHandleGameplayEvent(FSSGameplayTags::Get().BeAssassinatedTag, DamageInstigator, DamageCauser, DamageEffectSpec, DamageMagnitude);
 }
 
 void USSCharacterStatComponent::HandleRebound(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,

@@ -214,15 +214,6 @@ FTargetingEndedDelegate& ASSEnemyCharacterBase::GetTargetingEndedDelegate()
 void ASSEnemyCharacterBase::Die()
 {
 	Super::Die();
-
-	CombatComponent->DestroyComponent();
-
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->StopAI();
-	}
 }
 
 void ASSEnemyCharacterBase::VisibleTargetUI()

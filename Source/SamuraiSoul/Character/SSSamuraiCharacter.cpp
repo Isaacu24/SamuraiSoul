@@ -72,6 +72,8 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	GetMesh()->SetRelativeRotation(FRotator{0.f, -90.f, 0.f});
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ASSSamuraiCharacter::OnCapsuleOverlapBegin);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &ASSSamuraiCharacter::OnCapsuleOverlapEnd);
 
 	Camera    = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
@@ -209,11 +211,6 @@ void ASSSamuraiCharacter::Die()
 	LockOff();
 }
 
-void ASSSamuraiCharacter::PostDeath()
-{
-	Super::PostDeath();
-}
-
 EAttackType ASSSamuraiCharacter::GetWeaponAttakType() const
 {
 	return CombatComponent->GetWeapon()->GetAttackType();
@@ -222,6 +219,28 @@ EAttackType ASSSamuraiCharacter::GetWeaponAttakType() const
 void ASSSamuraiCharacter::SetWeaponAttackType(EAttackType InType)
 {
 	CombatComponent->GetWeapon()->SetAttackType(InType);
+}
+
+void ASSSamuraiCharacter::OnCapsuleOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
+                                                bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (FName("AssassinationCollision") == OtherComp->GetCollisionProfileName())
+	{
+		CanEnemyAssassination = true;
+
+		if (nullptr != OtherComp->GetOwner())
+		{
+			GetCombatComponent()->SetTarget(OtherComp->GetOwner());
+		}
+	}
+}
+
+void ASSSamuraiCharacter::OnCapsuleOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex)
+{
+	if (FName("AssassinationCollision") == OtherComp->GetCollisionProfileName())
+	{
+		CanEnemyAssassination = false;
+	}
 }
 
 void ASSSamuraiCharacter::Move(const FInputActionValue& Value)
@@ -456,9 +475,9 @@ void ASSSamuraiCharacter::SetupHUDWidget(USSHUDWidget* InHUDWidget)
 
 	if (nullptr != MyHUD)
 	{
-		MyHUD->SetMaxPlayerHP(StatComponent->GetMaxHealth());
+		MyHUD->SetPlayerMaxHP(StatComponent->GetMaxHealth());
 		MyHUD->UpdatePlayerHPbar(StatComponent->GetHealth());
-		MyHUD->SetMaxPlayerBP(StatComponent->GetMaxBalance());
+		MyHUD->SetPlayerMaxBP(StatComponent->GetMaxBalance());
 
 		StatComponent->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerHPbar);
 		StatComponent->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdatePlayerBPGauge);
@@ -474,8 +493,9 @@ void ASSSamuraiCharacter::SetBossDataInHUD(ASSEnemyBossCharacter* Boss)
 		MyHUD->SetVisibilityBossHUD(ESlateVisibility::Visible);
 
 		MyHUD->SetBossName(Boss->GetBossName());
-		MyHUD->SetMaxBossHP(Boss->GetStatComponent()->GetMaxHealth());
+		MyHUD->SetBossMaxHP(Boss->GetStatComponent()->GetMaxHealth());
 		MyHUD->UpdateBossHPbar(Boss->GetStatComponent()->GetHealth());
+		MyHUD->SetBossMaxBP(Boss->GetStatComponent()->GetMaxBalance());
 
 		Boss->GetStatComponent()->OnHPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossHPbar);
 		Boss->GetStatComponent()->OnBPChanged.AddUObject(MyHUD, &USSSamuraiHUDWidget::UpdateBossBPGauge);

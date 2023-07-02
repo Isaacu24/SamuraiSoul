@@ -78,6 +78,20 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		}
 	}
 
+	else if (InAttribute == GetBeAssassinatedAttribute())
+	{
+		SetHealth(0.f);
+
+		if (true == OnBeAssassinatedEvent.IsBound())
+		{
+			const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
+			AActor* Instigator                                = EffectContext.GetOriginalInstigator();
+			AActor* Causer                                    = EffectContext.GetEffectCauser();
+
+			OnBeAssassinatedEvent.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
+		}
+	}
+
 	else if (InAttribute == GetBalanceAttribute())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("BP: %f"), GetBalance());
@@ -93,7 +107,7 @@ void USSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		const float NewBalance = FMath::Clamp(GetBalance(), 0.0f, GetMaxBalance());
 		SetBalance(NewBalance);
 
-		if (GetMaxBalance() - 0.001f <= NewBalance)
+		if (GetMaxBalance() <= NewBalance)
 		{
 			Down();
 		}
@@ -168,6 +182,11 @@ void USSAttributeSet::OnRep_BeExecuted(const FGameplayAttributeData& OldBeExecut
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, BeExecuted, OldBeExecuted);
 }
 
+void USSAttributeSet::OnRep_BeAssassinated(const FGameplayAttributeData& OldAssassinated)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(USSAttributeSet, BeAssassinated, OldAssassinated);
+}
+
 void USSAttributeSet::Down()
 {
 	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(GetOwningActor());
@@ -180,7 +199,7 @@ void USSAttributeSet::Down()
 		{
 			ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(GetOwningActor());
 			BehaviorPawn->SetIsDown(false);
-			SetBalance(GetMaxBalance() - 0.1f);
+			SetBalance(GetMaxBalance() - 0.001f);
 		}), 5.0f, false);
 	}
 }

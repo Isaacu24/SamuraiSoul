@@ -219,6 +219,14 @@ void USSCombatComponent::BeExecuted(int8 RandomNumber)
 	TakeGameplayEffect(BeExecutedEffect);
 }
 
+void USSCombatComponent::BeAssassinated(int8 RandomNumber)
+{
+	AssassinationNumber = RandomNumber;
+
+	ensure(BeAssassinatedEffect);
+	TakeGameplayEffect(BeAssassinatedEffect);
+}
+
 void USSCombatComponent::Rebound()
 {
 	ensure(ReboundEffect);

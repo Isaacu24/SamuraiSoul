@@ -5,6 +5,8 @@
 #include "SSEnemyCharacter.generated.h"
 
 class USSUserWidget;
+class UBoxComponent;
+class AEnemyAssassinationEventTrigger;
 
 DECLARE_DELEGATE(FAnimDelegate);
 
@@ -42,4 +44,7 @@ public:
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> EnemyHUD;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UBoxComponent> AssassinationCollider;
 };

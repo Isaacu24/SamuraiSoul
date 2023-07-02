@@ -52,8 +52,6 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
 			HasNextComboCommand = true;
 		}
 	}
-
-	CombatPawn->SetHasNextComboCommand(HasNextComboCommand);
 }
 
 void USSGameplayAbility_Slash::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -73,6 +71,14 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 	}
 
 	AnimInstance = MyCharacter->GetMesh()->GetAnimInstance();
+
+	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(MyCharacter);
+
+	if (true == CombatablePawn->GetCanEnemyAssassination())
+	{
+		Super::EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		return;
+	}
 
 	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(MyCharacter);
 
@@ -147,12 +153,6 @@ void USSGameplayAbility_Slash::ComboCheck()
 		AnimInstance->Montage_JumpToSection(NextSection, SlashMontage);
 
 		SetComboCheckTimer();
-
-		if (true == HasNextComboCommand)
-		{
-			ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
-			CombatPawn->SetHasNextComboCommand(HasNextComboCommand);
-		}
 
 		HasNextComboCommand = false;
 	}

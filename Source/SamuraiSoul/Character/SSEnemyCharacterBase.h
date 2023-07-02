@@ -43,7 +43,7 @@ protected:
 	virtual float GetAISight() override;
 	virtual float GetAIAttackRange() override;
 
-	virtual uint8 GetCurrentCombo()
+	virtual uint8 GetCurrentCombo() override
 	{
 		if (3 <= CurrentCombo)
 		{
@@ -86,16 +86,6 @@ protected:
 	virtual void VisibleTargetUI() override;
 	virtual void HideTargetUI() override;
 
-	virtual const bool GetHasNextComboCommand() const override
-	{
-		return HasNextComboCommand;
-	};
-
-	virtual const void SetHasNextComboCommand(const bool Value) override
-	{
-		HasNextComboCommand = Value;
-	};
-
 	virtual EAttackType GetWeaponAttakType() const override;
 	virtual void SetWeaponAttackType(EAttackType InType) override;
 
@@ -127,6 +117,5 @@ protected:
 	UPROPERTY()
 	uint8 CurrentCombo;
 
-	bool HasNextComboCommand;
 	bool CanEnemyExecution;
 };

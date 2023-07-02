@@ -13,10 +13,14 @@
 ASSEnemyBaseAIController::ASSEnemyBaseAIController()
 {
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
-	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("SenseSight");
+	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("Sense_Sight");
+	AISenseConfigHearing  = CreateDefaultSubobject<UAISenseConfig_Hearing>("Sense_Hearing");
 
 	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+	AIPerceptionComponent->SetDominantSense(AISenseConfigHearing->GetSenseImplementation());
+
 	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
 }
 
 void ASSEnemyBaseAIController::OnPossess(APawn* InPawn)

@@ -26,17 +26,19 @@ public:
 	FGameplayTag Ability_WolfDrawTag;
 	FGameplayTag Ability_DefenseTag;
 	FGameplayTag Ability_ParryTag;
+	FGameplayTag Ability_AssassinationTag;
 
 	//DeferredAbility
 	FGameplayTag DeferredAbilityTag;
 	FGameplayTag DeferredAbility_ExecutionTag;
 
-	//Hit
+	//Reaction
 	FGameplayTag ReactionTag;
 	FGameplayTag HitTag;
 	FGameplayTag DeadTag;
 	FGameplayTag ReboundTag;
 	FGameplayTag BeExecutedTag;
+	FGameplayTag BeAssassinatedTag;
 
 	//Input
 	FGameplayTag Input_MoveTag;

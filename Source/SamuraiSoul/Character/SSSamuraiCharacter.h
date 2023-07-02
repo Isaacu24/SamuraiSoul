@@ -53,7 +53,6 @@ public:
 	virtual const FVector2D& GetMovementVector() const override;
 
 	virtual void Die() override;
-	virtual void PostDeath() override;
 
 	void Run();
 	void UnRun();
@@ -70,18 +69,16 @@ public:
 	virtual void SetupHUDWidget(USSHUDWidget* InHUDWidget) override;
 	virtual void SetBossDataInHUD(ASSEnemyBossCharacter* Boss) override;
 
-	virtual const bool GetHasNextComboCommand() const override
-	{
-		return HasNextComboCommand;
-	};
-
-	virtual const void SetHasNextComboCommand(const bool Value) override
-	{
-		HasNextComboCommand = Value;
-	};
-
 	virtual EAttackType GetWeaponAttakType() const override;
 	virtual void SetWeaponAttackType(EAttackType InType) override;
+
+	UFUNCTION()
+	virtual void OnCapsuleOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
+	                                   bool bFromSweep,
+	                                   const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void OnCapsuleOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex);
 
 	virtual bool GetCanEnemyExecution() const override
 	{
@@ -91,6 +88,16 @@ public:
 	virtual void SetCanEnemyExecution(bool Value) override
 	{
 		CanEnemyExecution = Value;
+	};
+
+	virtual bool GetCanEnemyAssassination() const override
+	{
+		return CanEnemyAssassination;
+	}
+
+	virtual void SetCanEnemyAssassination(bool Value) override
+	{
+		CanEnemyAssassination = Value;
 	};
 
 private:
@@ -135,6 +142,6 @@ private:
 	UPROPERTY()
 	USSSamuraiHUDWidget* MyHUD;
 
-	bool HasNextComboCommand;
 	bool CanEnemyExecution;
+	bool CanEnemyAssassination;
 };

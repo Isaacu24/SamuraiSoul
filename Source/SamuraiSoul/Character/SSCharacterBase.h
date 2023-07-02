@@ -44,7 +44,6 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void Die();
-	virtual void PostDeath();
 
 	virtual const FVector2D& GetMovementVector() const override;
 
@@ -65,7 +64,7 @@ public:
 		return StatComponent;
 	}
 
-	const bool GetAxisInput() const;
+	virtual const bool GetAxisInput() const override;
 
 	FOnCharacterDeadDelegate OnCharacterDead;
 
@@ -105,12 +104,12 @@ public:
 		bIsDefense = ~bIsDefense;
 	}
 
-	virtual bool IsDown() const
+	virtual bool IsDown() const override
 	{
 		return bIsDown;
 	}
 
-	virtual void SetIsDown(bool Value)
+	virtual void SetIsDown(bool Value) override
 	{
 		bIsDown = Value;
 	}

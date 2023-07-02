@@ -31,8 +31,6 @@ void USSAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 
 		OwnerCharacter->GetCharacterMovement()->StopMovementImmediately();
 		OwnerCharacter->GetCharacterMovement()->DisableMovement();
-
-		OwnerCharacter->Die();
 	}
 }
 
@@ -48,6 +46,6 @@ void USSAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 
 	if (nullptr != OwnerCharacter)
 	{
-		OwnerCharacter->PostDeath();
+		OwnerCharacter->Die();
 	}
 }

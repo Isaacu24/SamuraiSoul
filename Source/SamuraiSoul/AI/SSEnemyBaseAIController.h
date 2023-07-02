@@ -54,8 +54,10 @@ protected:
 	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = AI)
-	TObjectPtr<UAISenseConfig_Sight> AISenseConfigSight     = nullptr;
-	TObjectPtr<UAISenseConfig_Hearing> AISenseConfigHearing = nullptr;
+	TObjectPtr<UAISenseConfig_Sight> AISenseConfigSight;
+
+	UPROPERTY(VisibleAnywhere, Category = AI)
+	TObjectPtr<UAISenseConfig_Hearing> AISenseConfigHearing;
 
 	bool PrevIsDetected;
 };

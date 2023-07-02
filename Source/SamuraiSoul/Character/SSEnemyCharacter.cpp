@@ -8,6 +8,7 @@
 #include "Component/SSEnemyCombatComponent.h"
 #include "Component/SSCharacterStatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
+#include "Components/BoxComponent.h"
 #include "UI/SSEnemyHUDWidget.h"
 
 ASSEnemyCharacter::ASSEnemyCharacter()
@@ -49,6 +50,12 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 		EnemyHUD->SetWidgetSpace(EWidgetSpace::Screen);
 		EnemyHUD->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+
+	AssassinationCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Assassination Collider"));
+	AssassinationCollider->SetCollisionProfileName("AssassinationCollision");
+	AssassinationCollider->SetupAttachment(GetMesh());
+	AssassinationCollider->SetBoxExtent(FVector{100.f, 100.f, 100.f});
+	AssassinationCollider->SetRelativeLocation(FVector(0.0f, -140.f, 110.0f));
 }
 
 void ASSEnemyCharacter::BeginPlay()

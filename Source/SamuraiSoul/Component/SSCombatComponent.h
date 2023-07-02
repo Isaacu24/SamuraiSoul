@@ -37,6 +37,7 @@ public:
 	virtual void Rebound();
 	virtual void DefenseHit();
 	virtual void BeExecuted(int8 RandomNumber);
+	virtual void BeAssassinated(int8 RandomNumber);
 
 	void OnDefense() const;
 	void OffDefense() const;
@@ -59,6 +60,11 @@ public:
 	int8 GetExecutionNumber() const
 	{
 		return ExecutionNumber;
+	}
+
+	int8 GetAssassinationNumber() const
+	{
+		return AssassinationNumber;
 	}
 
 	ASSWeapon* GetWeapon() const
@@ -98,6 +104,9 @@ protected:
 	TSubclassOf<UGameplayEffect> BeExecutedEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> BeAssassinatedEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UGameplayEffect> ReboundEffect;
 
 	UPROPERTY()
@@ -105,4 +114,7 @@ protected:
 
 	UPROPERTY()
 	int8 ExecutionNumber;
+
+	UPROPERTY()
+	int8 AssassinationNumber;
 };

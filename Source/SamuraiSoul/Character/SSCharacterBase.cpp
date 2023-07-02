@@ -92,10 +92,7 @@ void ASSCharacterBase::Die()
 	{
 		Controller->SetIgnoreMoveInput(true);
 	}
-}
 
-void ASSCharacterBase::PostDeath()
-{
 	OnCharacterDead.Broadcast();
 }
 
