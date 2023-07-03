@@ -35,6 +35,8 @@ void USSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Direction = CalculateDirection(MyCharacter->GetVelocity(), MyCharacter->GetActorRotation());
 	GEngine->AddOnScreenDebugMessage(1, 2.0f, FColor::Red, FString::SanitizeFloat(Speed));
 
+	bPrevIsAir = bIsAir;
+
 	bIsCrouch  = MyCharacter->IsCrouch();
 	bIsAir     = MyCharacter->GetCharacterMovement()->IsFalling();
 	bIsEquip   = MyCharacter->IsEquip();
@@ -52,6 +54,15 @@ void USSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (false == bIsDefense)
 	{
 		bIsFristDefense = false;
+	}
+
+	if (true == bPrevIsAir)
+	{
+		if (false == bIsAir)
+		{
+			//Landing Event. ex) Jump Aiblity Cancel
+			MyCharacter->OnCharacterLanded.Broadcast();
+		}
 	}
 }
 

@@ -66,7 +66,14 @@ public:
 
 	virtual const bool GetAxisInput() const override;
 
+	virtual FCharacterLandedDelegate& GetCharacterLandedEvnet() override
+	{
+		return OnCharacterLanded;
+	};
+
+public:
 	FOnCharacterDeadDelegate OnCharacterDead;
+	FCharacterLandedDelegate OnCharacterLanded;
 
 public:
 	virtual bool IsCrouch() const override

@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "SSBehaviorInterface.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FCharacterLandedDelegate);
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class USSBehaviorInterface : public UInterface
@@ -38,6 +40,8 @@ public:
 
 	virtual const FVector2D& GetMovementVector() const = 0;
 	virtual const bool GetAxisInput() const = 0;
+
+	virtual FCharacterLandedDelegate& GetCharacterLandedEvnet() = 0;
 
 	virtual bool IsDie() const = 0;
 };

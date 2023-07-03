@@ -31,4 +31,8 @@ public:
 
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                       const FGameplayAbilityActivationInfo ActivationInfo) const override;
+
+protected:
+	UFUNCTION()
+	void CancelAbilityFromLand();
 };

@@ -4,6 +4,7 @@
 #include "SSGameplayAbility_Jump.h"
 #include <GameFramework/Character.h>
 #include "SSGameplayTags.h"
+#include "Interface/SSBehaviorInterface.h"
 
 USSGameplayAbility_Jump::USSGameplayAbility_Jump()
 {
@@ -24,7 +25,6 @@ void USSGameplayAbility_Jump::InputReleased(const FGameplayAbilitySpecHandle Han
                                             const FGameplayAbilityActivationInfo ActivationInfo)
 {
 	Super::InputReleased(Handle, ActorInfo, ActivationInfo);
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 }
 
 void USSGameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -38,6 +38,13 @@ void USSGameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle H
 	{
 		Character->Jump();
 	}
+
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(Character);
+
+	if (nullptr != BehaviorPawn)
+	{
+		BehaviorPawn->GetCharacterLandedEvnet().AddUObject(this, &USSGameplayAbility_Jump::CancelAbilityFromLand);
+	}
 }
 
 void USSGameplayAbility_Jump::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -50,4 +57,9 @@ void USSGameplayAbility_Jump::ApplyCost(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
+}
+
+void USSGameplayAbility_Jump::CancelAbilityFromLand()
+{
+	Super::EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
