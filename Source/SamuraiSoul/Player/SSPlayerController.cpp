@@ -38,9 +38,9 @@ void ASSPlayerController::PostProcessInput(const float DeltaTime, const bool bGa
 
 	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(GetPawn());
 
-	check(AbilityPawn);
-	check(AbilityPawn->GetAbilitySystemComponent());
-
-	USSAbilitySystemComponent* ASC = Cast<USSAbilitySystemComponent>(AbilityPawn->GetAbilitySystemComponent());
-	ASC->ProcessAbilityInput(DeltaTime, bGamePaused);
+	if (nullptr != AbilityPawn)
+	{
+		USSAbilitySystemComponent* ASC = Cast<USSAbilitySystemComponent>(AbilityPawn->GetAbilitySystemComponent());
+		ASC->ProcessAbilityInput(DeltaTime, bGamePaused);
+	}
 }

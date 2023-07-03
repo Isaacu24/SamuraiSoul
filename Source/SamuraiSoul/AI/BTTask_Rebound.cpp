@@ -5,6 +5,7 @@
 
 UBTTask_Rebound::UBTTask_Rebound()
 {
+	NodeName = TEXT("Rebound");
 }
 
 EBTNodeResult::Type UBTTask_Rebound::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

@@ -9,6 +9,7 @@
 
 UBTTask_EquipUnarm::UBTTask_EquipUnarm()
 {
+	NodeName = TEXT("EquipUnarm");
 }
 
 EBTNodeResult::Type UBTTask_EquipUnarm::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

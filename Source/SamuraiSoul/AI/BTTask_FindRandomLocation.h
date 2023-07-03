@@ -3,24 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-#include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTTask_RandomMove.generated.h"
+#include "BehaviorTree/BTTaskNode.h"
+#include "BTTask_FindRandomLocation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API UBTTask_RandomMove : public UBTTask_BlackboardBase
+class SAMURAISOUL_API UBTTask_FindRandomLocation : public UBTTaskNode
 {
-	GENERATED_BODY()	
+	GENERATED_BODY()
 
 public:
-	UBTTask_RandomMove();
+	UBTTask_FindRandomLocation();
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Search", meta = (AllowPrivateAccess = true))
 	float SearchReadius;
-
 };

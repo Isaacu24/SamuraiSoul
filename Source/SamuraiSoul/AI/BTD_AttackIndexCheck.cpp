@@ -9,13 +9,13 @@
 
 UBTD_AttackIndexCheck::UBTD_AttackIndexCheck()
 {
-	NodeName = TEXT("AttackIndexCheck");
+	NodeName = TEXT("AttackIndex Check");
 }
 
 bool UBTD_AttackIndexCheck::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
 	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-	const int AttackIndex = Controller->GetBlackboardComponent()->GetValueAsInt(BBKEY_ATTACKINDEX);
+	const int AttackIndex            = Controller->GetBlackboardComponent()->GetValueAsInt(BBKEY_ATTACKINDEX);
 
 	if (AttackIndex == MyIndex)
 	{

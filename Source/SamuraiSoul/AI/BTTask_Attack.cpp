@@ -2,6 +2,7 @@
 
 #include "AI/BTTask_Attack.h"
 #include "AIController.h"
+#include "SSAI.h"
 #include "SSEnemyAIController.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -36,7 +37,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	                            [&]()
 	                            {
 		                            ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-		                            Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), false);
+		                            Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, false);
 		                            FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	                            });
 

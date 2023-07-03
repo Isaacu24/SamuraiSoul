@@ -8,7 +8,7 @@
 
 UBTD_SelectRandomAttack::UBTD_SelectRandomAttack()
 {
-	NodeName = TEXT("SelectRandomAttack");
+	NodeName = TEXT("Select RandomAttack");
 }
 
 bool UBTD_SelectRandomAttack::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const

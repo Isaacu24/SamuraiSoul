@@ -9,6 +9,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "SSAI.h"
+#include "Kismet/GameplayStatics.h"
 
 ASSEnemyBaseAIController::ASSEnemyBaseAIController()
 {
@@ -57,7 +58,7 @@ void ASSEnemyBaseAIController::RunAI()
 
 	if (true == UseBlackboard(BBAsset, BlackboardPtr))
 	{
-		Blackboard->SetValueAsVector(BBKEY_TARGETLOCATION, GetPawn()->GetActorLocation());
+		Blackboard->SetValueAsObject(BBKEY_TARGET, UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 		bool RunResult = RunBehaviorTree(BTAsset);
 		ensure(RunResult);

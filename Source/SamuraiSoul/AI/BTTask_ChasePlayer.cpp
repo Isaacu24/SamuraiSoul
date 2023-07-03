@@ -4,7 +4,6 @@
 #include "AI/BTTask_ChasePlayer.h"
 #include "SSEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "SSAI.h"
 
@@ -16,30 +15,29 @@ UBTTask_ChasePlayer::UBTTask_ChasePlayer()
 EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-	FVector PalyerLocation           = Controller->GetBlackboardComponent()->GetValueAsVector(BBKEY_TARGETLOCATION);
-	UAIBlueprintHelperLibrary::SimpleMoveToLocation(Controller, PalyerLocation);
+	UObject* TargetObject            = Controller->GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGET);
+	AActor* PlayerActor              = Cast<AActor>(TargetObject);
 
-	APawn* ControllingPawn          = Controller->GetPawn();
-	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ControllingPawn);
+	Controller->SetFocus(PlayerActor);
 
-	const float DistanceToTarget = FVector::Distance(ControllingPawn->GetActorLocation(), PalyerLocation);
+	//const float DistanceToTarget = FVector::Distance(ControllingPawn->GetActorLocation(), PlayerActor->GetActorLocation());
 
-	if (500.f <= DistanceToTarget)
-	{
-		AIPawn->Run();
-	}
+	//if (500.f <= DistanceToTarget)
+	//{
+	//	AIPawn->Run();
+	//}
 
-	else
-	{
-		if (AIPawn->GetAIAttackRange() >= DistanceToTarget)
-		{
-			Controller->GetBlackboardComponent()->SetValueAsBool(TEXT("InAttackRange"), true);
-			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-			return EBTNodeResult::Succeeded;
-		}
+	//else
+	//{
+	//	AIPawn->Walk();
 
-		AIPawn->Walk();
-	}
+	//	if (AIPawn->GetAIAttackRange() >= DistanceToTarget)
+	//	{
+	//		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, true);
+	//		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	//		return EBTNodeResult::Succeeded;
+	//	}
+	//}
 
 	return EBTNodeResult::Succeeded;
 }

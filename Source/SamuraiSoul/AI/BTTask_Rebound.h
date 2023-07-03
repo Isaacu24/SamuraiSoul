@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
+#include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_Rebound.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API UBTTask_Rebound : public UBTTask_BlackboardBase
+class SAMURAISOUL_API UBTTask_Rebound : public UBTTaskNode
 {
 	GENERATED_BODY()
 
