@@ -2,6 +2,8 @@
 
 
 #include "SSSamuraiAnimInstance.h"
+#include "Character/SSCharacterBase.h"
+#include "Perception/AISenseConfig_Hearing.h"
 
 USSSamuraiAnimInstance::USSSamuraiAnimInstance()
 {
@@ -35,4 +37,12 @@ void USSSamuraiAnimInstance::JumpToAttackMontageSection(int32 NewSection, UAnimM
 void USSSamuraiAnimInstance::AnimNotify_NextSlashCheck() const
 {
 	OnNextAttackCheck.Broadcast();
+}
+
+void USSSamuraiAnimInstance::AnimNotify_Footstep() const
+{
+	if (nullptr != MyCharacter)
+	{
+		UAISense_Hearing::ReportNoiseEvent(GetWorld(), MyCharacter->GetActorLocation(), 1.0f, MyCharacter, 0.0f, FName("Run"));
+	}
 }

@@ -23,11 +23,14 @@ ASSCharacterBase::ASSCharacterBase()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	StatComponent = CreateDefaultSubobject<USSCharacterStatComponent>(TEXT("SSCharacterStat Component"));
+	StatComponent->SetIsReplicated(true);
 
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("SSCapsule"));
 	GetMesh()->SetCollisionProfileName("NoCollision");
+
+	GetCharacterMovement()->SetIsReplicated(true);
 }
 
 void ASSCharacterBase::BeginPlay()

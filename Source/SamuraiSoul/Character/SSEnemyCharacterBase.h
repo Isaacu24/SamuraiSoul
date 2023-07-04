@@ -41,6 +41,7 @@ protected:
 	virtual float GetAIDetectRadius() override;
 	virtual float GetAILoseDetectRadius() override;
 	virtual float GetAISight() override;
+	virtual float GetAIHearingRange() override;
 	virtual float GetAIAttackRange() override;
 
 	virtual uint8 GetCurrentCombo() override

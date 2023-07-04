@@ -96,8 +96,9 @@ ASSSamuraiCharacter::ASSSamuraiCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
 
 	CombatComponent = CreateDefaultSubobject<USSCombatComponent>(TEXT("Combat Component"));
-	InputConfig     = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputConfig"));
+	CombatComponent->SetIsReplicated(true);
 
+	InputConfig = CreateDefaultSubobject<USSInputConfigData>(TEXT("InputConfig"));
 	ControlType = ECharacterControlType::Keyboard;
 }
 

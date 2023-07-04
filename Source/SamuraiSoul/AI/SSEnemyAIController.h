@@ -22,6 +22,9 @@ public:
 	UFUNCTION()
 	virtual void TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus);
 
+	UFUNCTION()
+	virtual void PerceptionUpdated(const TArray<AActor*>& UpdatedActors);
+
 	UAIPerceptionComponent* GetAIPerceptionComponent() const
 	{
 		return AIPerceptionComponent;

@@ -22,7 +22,8 @@ protected:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	virtual void AnimNofify_Ragdoll();
+	UFUNCTION()
+	virtual void AnimNotify_Ragdoll() const;
 
 protected:
 	UPROPERTY()

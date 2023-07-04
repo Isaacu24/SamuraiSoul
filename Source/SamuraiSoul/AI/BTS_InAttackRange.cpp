@@ -49,17 +49,15 @@ void UBTS_InAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	else
 	{
 		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, false);
+
+		if (500.f <= DistanceToTarget)
+		{
+			AIPawn->Run();
+		}
+
+		else
+		{
+			AIPawn->Walk();
+		}
 	}
-
-	//bool bResult = (DistanceToTarget <= AttackRangeWithRadius);
-
-	//if (500.f <= DistanceToTarget)
-	//{
-	//	AIPawn->Run();
-	//}
-
-	//else
-	//{
-	//	AIPawn->Walk();
-	//}
 }

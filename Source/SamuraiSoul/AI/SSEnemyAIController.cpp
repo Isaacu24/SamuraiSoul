@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "AI/SSEnemyAIController.h"
 #include "SSAI.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -40,6 +39,7 @@ ASSEnemyAIController::ASSEnemyAIController()
 	AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
 
 	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
+	AIPerceptionComponent->OnPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::PerceptionUpdated);
 }
 
 void ASSEnemyAIController::BeginPlay()
@@ -53,7 +53,9 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
 
-	if (nullptr != AIPawn)
+	////Sight
+	if (nullptr != AIPawn
+		&& nullptr != AISenseConfigSight)
 	{
 		AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
 		AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
@@ -65,6 +67,19 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 
 		AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 		AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	}
+
+	//Hearing
+	if (nullptr != AIPawn
+		&& nullptr != AISenseConfigHearing)
+	{
+		AISenseConfigHearing->HearingRange                             = AIPawn->GetAIHearingRange();
+		AISenseConfigHearing->DetectionByAffiliation.bDetectEnemies    = true;
+		AISenseConfigHearing->DetectionByAffiliation.bDetectFriendlies = true;
+		AISenseConfigHearing->DetectionByAffiliation.bDetectNeutrals   = true;
+
+		AIPerceptionComponent->SetDominantSense(AISenseConfigHearing->GetSenseImplementation());
+		AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
 	}
 
 	SetPatrol(true);
@@ -142,16 +157,16 @@ void ASSEnemyAIController::SetBeExecuted(bool Value)
 
 void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)
 {
-	ASSCharacterBase* Player = Cast<ASSCharacterBase>(InActor);
+	ASSCharacterBase* InCharacter = Cast<ASSCharacterBase>(InActor);
 
-	if (nullptr == Player
-		|| true == Player->IsDie())
+	if (nullptr == InCharacter
+		|| true == InCharacter->IsDie())
 	{
 		return;
 	}
 
-	if (nullptr != Player->GetController()
-		&& true == Player->GetController()->IsPlayerController())
+	if (nullptr != InCharacter->GetController()
+		&& true == InCharacter->GetController()->IsPlayerController())
 	{
 		UBlackboardComponent* BlackboardPtr = Blackboard.Get();
 
@@ -161,7 +176,6 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 		}
 
 		const bool IsDetected = Stimulus.WasSuccessfullySensed();
-
 		Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, IsDetected);
 
 		//플레이어 목격 시 순찰 정지.
@@ -173,7 +187,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 			AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 			AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
 
-			SetFocus(Player);
+			SetFocus(InCharacter);
 			SetPatrol(false);
 		}
 
@@ -198,5 +212,27 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 		}
 
 		PrevIsDetected = IsDetected;
+	}
+}
+
+void ASSEnemyAIController::PerceptionUpdated(const TArray<AActor*>& UpdatedActors)
+{
+	for (size_t i = 0; i < UpdatedActors.Num(); ++i)
+	{
+		FActorPerceptionBlueprintInfo Info;
+		GetPerceptionComponent()->GetActorsPerception(UpdatedActors[i], Info);
+
+		for (size_t j = 0; j < Info.LastSensedStimuli.Num(); ++j)
+		{
+			FAIStimulus const Stimulus = Info.LastSensedStimuli[j];
+
+			if (FName("Run") == Stimulus.Tag)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Sound"));
+
+				const bool IsDetected = Stimulus.WasSuccessfullySensed();
+				Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, IsDetected);
+			}
+		}
 	}
 }

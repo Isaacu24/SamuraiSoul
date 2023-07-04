@@ -66,7 +66,7 @@ void USSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
-void USSCharacterAnimInstance::AnimNofify_Ragdoll()
+void USSCharacterAnimInstance::AnimNotify_Ragdoll() const
 {
 	if (nullptr != MyCharacter)
 	{

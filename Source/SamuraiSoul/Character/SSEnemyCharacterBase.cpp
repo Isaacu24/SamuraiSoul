@@ -79,6 +79,11 @@ float ASSEnemyCharacterBase::GetAISight()
 	return AICharacterStatData->AISight;
 }
 
+float ASSEnemyCharacterBase::GetAIHearingRange()
+{
+	return AICharacterStatData->AIHearingRange;
+}
+
 float ASSEnemyCharacterBase::GetAIAttackRange()
 {
 	return AICharacterStatData->AIAttackRange;

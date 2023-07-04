@@ -27,6 +27,9 @@ public:
 	UFUNCTION()
 	void AnimNotify_NextSlashCheck() const;
 
+	UFUNCTION()
+	void AnimNotify_Footstep() const;
+
 	FOnNextAttackCheckDelegate OnNextAttackCheck;
 
 protected:

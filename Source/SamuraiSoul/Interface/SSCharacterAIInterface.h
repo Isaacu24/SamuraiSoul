@@ -30,6 +30,7 @@ public:
 	virtual float GetAIDetectRadius() = 0;
 	virtual float GetAILoseDetectRadius() = 0;
 	virtual float GetAISight() = 0;
+	virtual float GetAIHearingRange() = 0;
 	virtual float GetAIAttackRange() = 0;
 
 	virtual uint8 GetCurrentCombo() = 0;
