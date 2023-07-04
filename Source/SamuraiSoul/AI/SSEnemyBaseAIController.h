@@ -28,18 +28,6 @@ public:
 	void RunAI();
 	void StopAI();
 
-	UAIPerceptionComponent* GetAIPerceptionComponent() const
-	{
-		return AIPerceptionComponent;
-	}
-
-	virtual void SetParry(bool Value);
-	virtual void SetHit(bool Value);
-	virtual void SetDead(bool Value);
-	virtual void SetRebound(bool Value);
-	virtual void SetEquip(bool Value);
-	virtual void SetBeExecuted(bool Value);
-
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
@@ -49,15 +37,6 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UBehaviorTree> BTAsset;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
-
-	UPROPERTY(VisibleAnywhere, Category = AI)
-	TObjectPtr<UAISenseConfig_Sight> AISenseConfigSight;
-
-	UPROPERTY(VisibleAnywhere, Category = AI)
-	TObjectPtr<UAISenseConfig_Hearing> AISenseConfigHearing;
 
 	bool PrevIsDetected;
 };

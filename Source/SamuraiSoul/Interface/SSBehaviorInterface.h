@@ -15,9 +15,7 @@ class USSBehaviorInterface : public UInterface
 	GENERATED_BODY()
 };
 
-/**
- * 
- */
+// Character Behavior&State or PlayerController Input
 class SAMURAISOUL_API ISSBehaviorInterface
 {
 	GENERATED_BODY()

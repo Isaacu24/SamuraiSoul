@@ -72,7 +72,6 @@ protected:
 	virtual void HidePerilousMark() override;
 
 	virtual void SetParry(bool Value) override;
-
 	virtual void SetHit(bool Value) override;
 	virtual void SetDead(bool Value) override;
 	virtual void SetRebound(bool Value) override;

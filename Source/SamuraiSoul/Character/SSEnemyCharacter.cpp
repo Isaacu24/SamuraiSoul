@@ -164,3 +164,76 @@ void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 		StatComponent->OnBPZero.AddUObject(HUDwidget, &USSEnemyHUDWidget::OffEnemyBPGauge);
 	}
 }
+
+
+void ASSEnemyCharacter::SetParry(bool Value)
+{
+	Super::SetParry(Value);
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetParry(Value);
+	}
+}
+
+void ASSEnemyCharacter::SetHit(bool Value)
+{
+	Super::SetHit(Value);
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetHit(Value);
+	}
+}
+
+void ASSEnemyCharacter::SetDead(bool Value)
+{
+	Super::SetDead(Value);
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetDead(Value);
+	}
+}
+
+void ASSEnemyCharacter::SetRebound(bool Value)
+{
+	Super::SetRebound(Value);
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetRebound(Value);
+	}
+}
+
+void ASSEnemyCharacter::SetEquip(bool Value)
+{
+	Super::SetEquip(Value);
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetEquip(Value);
+	}
+}
+
+void ASSEnemyCharacter::SetBeExecuted(bool Value)
+{
+	Super::SetBeExecuted(Value);
+
+	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetBeExecuted(Value);
+	}
+}

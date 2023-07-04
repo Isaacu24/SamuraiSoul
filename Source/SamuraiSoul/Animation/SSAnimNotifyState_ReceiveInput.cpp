@@ -3,7 +3,6 @@
 
 #include "Animation/SSAnimNotifyState_ReceiveInput.h"
 #include "Interface/SSBehaviorInterface.h"
-#include "Interface/SSCombatableInterface.h"
 
 USSAnimNotifyState_ReceiveInput::USSAnimNotifyState_ReceiveInput()
 {

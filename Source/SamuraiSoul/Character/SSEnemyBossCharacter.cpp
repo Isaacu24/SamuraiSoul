@@ -2,7 +2,7 @@
 
 
 #include "Character/SSEnemyBossCharacter.h"
-#include "AI/SSEnemyBaseAIController.h"
+#include "AI/SSEnemyBossAIController.h"
 #include "Component/SSEnemyCombatComponent.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
@@ -27,7 +27,7 @@ ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 	GetMesh()->SetRelativeLocation(FVector{0.f, 0.f, -88.5f});
 	GetMesh()->SetRelativeRotation(FRotator{0.f, -90.f, 0.f});
 
-	AIControllerClass = ASSEnemyBaseAIController::StaticClass();
+	AIControllerClass = ASSEnemyBossAIController::StaticClass();
 	AutoPossessAI     = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 

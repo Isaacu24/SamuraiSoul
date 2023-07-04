@@ -64,12 +64,18 @@ public:
 		return StatComponent;
 	}
 
-	virtual const bool GetAxisInput() const override;
-
-	virtual FCharacterLandedDelegate& GetCharacterLandedEvnet() override
+	void SetCharacterData(USSCharacterData* Data)
 	{
-		return OnCharacterLanded;
-	};
+		if (nullptr == CharacterData)
+		{
+			CharacterData = Data;
+		}
+	}
+
+	USSCharacterStatComponent* GetStatComponent()
+	{
+		return StatComponent;
+	}
 
 public:
 	FOnCharacterDeadDelegate OnCharacterDead;
@@ -126,18 +132,12 @@ public:
 		return bIsDie;
 	}
 
-	void SetCharacterData(USSCharacterData* Data)
-	{
-		if (nullptr == CharacterData)
-		{
-			CharacterData = Data;
-		}
-	}
+	virtual const bool GetAxisInput() const override;
 
-	USSCharacterStatComponent* GetStatComponent()
+	virtual FCharacterLandedDelegate& GetCharacterLandedEvnet() override
 	{
-		return StatComponent;
-	}
+		return OnCharacterLanded;
+	};
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;

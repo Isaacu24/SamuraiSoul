@@ -2,9 +2,8 @@
 
 
 #include "AI/BTTask_ChasePlayer.h"
-#include "SSEnemyAIController.h"
+#include "SSEnemyBaseAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Interface/SSCharacterAIInterface.h"
 #include "SSAI.h"
 
 UBTTask_ChasePlayer::UBTTask_ChasePlayer()
@@ -14,11 +13,11 @@ UBTTask_ChasePlayer::UBTTask_ChasePlayer()
 
 EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-	UObject* TargetObject            = Controller->GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGET);
-	AActor* PlayerActor              = Cast<AActor>(TargetObject);
+	ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetOwner());
+	UObject* TargetObject                = Controller->GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGET);
+	AActor* PlayerActor                  = Cast<AActor>(TargetObject);
 
-	Controller->SetFocus(PlayerActor);
+ 	Controller->SetFocus(PlayerActor);
 
 	//const float DistanceToTarget = FVector::Distance(ControllingPawn->GetActorLocation(), PlayerActor->GetActorLocation());
 

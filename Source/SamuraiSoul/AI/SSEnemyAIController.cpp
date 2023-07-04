@@ -8,6 +8,7 @@
 #include "Interface/SSCharacterAIInterface.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AIPerceptionTypes.h"
+#include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
 
 ASSEnemyAIController::ASSEnemyAIController()
@@ -28,6 +29,16 @@ ASSEnemyAIController::ASSEnemyAIController()
 		BTAsset = BT_ASSET.Object;
 	}
 
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
+	AISenseConfigSight    = CreateDefaultSubobject<UAISenseConfig_Sight>("Sense_Sight");
+	AISenseConfigHearing  = CreateDefaultSubobject<UAISenseConfig_Hearing>("Sense_Hearing");
+
+	AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+	AIPerceptionComponent->SetDominantSense(AISenseConfigHearing->GetSenseImplementation());
+
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
+
 	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyAIController::TargetPerceptionUpdated);
 }
 
@@ -39,6 +50,22 @@ void ASSEnemyAIController::BeginPlay()
 void ASSEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
+
+	if (nullptr != AIPawn)
+	{
+		AISenseConfigSight->DetectionByAffiliation.bDetectEnemies    = true;
+		AISenseConfigSight->DetectionByAffiliation.bDetectFriendlies = true;
+		AISenseConfigSight->DetectionByAffiliation.bDetectNeutrals   = true;
+		AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
+		AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
+		AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
+		AISenseConfigSight->SetMaxAge(5.0f);
+
+		AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
+		AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
+	}
 
 	SetPatrol(true);
 }

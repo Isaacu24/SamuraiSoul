@@ -148,62 +148,26 @@ void ASSEnemyCharacterBase::HidePerilousMark()
 
 void ASSEnemyCharacterBase::SetParry(bool Value)
 {
-	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetParry(Value);
-	}
 }
 
 void ASSEnemyCharacterBase::SetHit(bool Value)
 {
-	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetHit(Value);
-	}
 }
 
 void ASSEnemyCharacterBase::SetDead(bool Value)
 {
-	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetDead(Value);
-	}
 }
 
 void ASSEnemyCharacterBase::SetRebound(bool Value)
 {
-	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetRebound(Value);
-	}
 }
 
 void ASSEnemyCharacterBase::SetEquip(bool Value)
 {
-	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetEquip(Value);
-	}
 }
 
 void ASSEnemyCharacterBase::SetBeExecuted(bool Value)
 {
-	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetBeExecuted(Value);
-	}
 }
 
 FTargetingEndedDelegate& ASSEnemyCharacterBase::GetTargetingEndedDelegate()

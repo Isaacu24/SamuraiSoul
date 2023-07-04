@@ -2,11 +2,15 @@
 
 
 #include "AI/BTTask_SpectialAttack.h"
+
+#include "AbilitySystemComponent.h"
 #include "AIController.h"
 #include "SSAI.h"
 #include "SSEnemyAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "AbilitySystemInterface.h"
+#include "Abilities/SSAttributeSet.h"
 
 UBTTask_SpectialAttack::UBTTask_SpectialAttack()
 {
@@ -28,6 +32,14 @@ EBTNodeResult::Type UBTTask_SpectialAttack::ExecuteTask(UBehaviorTreeComponent& 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ControllingPawn);
 
 	if (nullptr == AIPawn)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	IAbilitySystemInterface* AbilityPawn = Cast<IAbilitySystemInterface>(ControllingPawn);
+	const USSAttributeSet* AttributeSet  = Cast<USSAttributeSet>(AbilityPawn->GetAbilitySystemComponent()->GetAttributeSet(USSAttributeSet::StaticClass()));
+
+	if (AttributeSet->GetMaxBalance() - 0.01f <= AttributeSet->GetBalance())
 	{
 		return EBTNodeResult::Failed;
 	}

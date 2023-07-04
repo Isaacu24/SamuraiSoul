@@ -22,16 +22,29 @@ public:
 	UFUNCTION()
 	virtual void TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus);
 
+	UAIPerceptionComponent* GetAIPerceptionComponent() const
+	{
+		return AIPerceptionComponent;
+	}
+
+	virtual void SetParry(bool Value);
+	virtual void SetPatrol(bool Value);
+	virtual void SetHit(bool Value);
+	virtual void SetDead(bool Value);
+	virtual void SetRebound(bool Value);
+	virtual void SetEquip(bool Value);
+	virtual void SetBeExecuted(bool Value);
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
-	virtual void SetParry(bool Value) override;
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
 
-	void SetPatrol(bool Value);
-	virtual void SetEquip(bool Value) override;
+	UPROPERTY(VisibleAnywhere, Category = AI)
+	TObjectPtr<UAISenseConfig_Sight> AISenseConfigSight;
 
-	virtual void SetHit(bool Value) override;
-	virtual void SetDead(bool Value) override;
-	virtual void SetRebound(bool Value) override;
-	virtual void SetBeExecuted(bool Value) override;
+	UPROPERTY(VisibleAnywhere, Category = AI)
+	TObjectPtr<UAISenseConfig_Hearing> AISenseConfigHearing;
 };

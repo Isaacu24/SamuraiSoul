@@ -6,9 +6,7 @@
 #include "SSAI.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Perception/AIPerceptionComponent.h"
 #include "Perception/AIPerceptionTypes.h"
-#include "Perception/AISenseConfig_Sight.h"
 
 ASSEnemyBossAIController::ASSEnemyBossAIController()
 {
@@ -27,8 +25,6 @@ ASSEnemyBossAIController::ASSEnemyBossAIController()
 	{
 		BTAsset = BT_ASSET.Object;
 	}
-
-	AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ASSEnemyBossAIController::TargetPerceptionUpdated);
 }
 
 void ASSEnemyBossAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)
