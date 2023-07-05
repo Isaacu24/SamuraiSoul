@@ -4,6 +4,7 @@
 #include "SSCharacterAnimInstance.h"
 #include "Character/SSCharacterBase.h"
 #include <GameFramework/CharacterMovementComponent.h>
+#include "Components/CapsuleComponent.h"
 
 USSCharacterAnimInstance::USSCharacterAnimInstance()
 {
@@ -70,6 +71,23 @@ void USSCharacterAnimInstance::AnimNotify_Ragdoll() const
 {
 	if (nullptr != MyCharacter)
 	{
+		MyCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		MyCharacter->GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+		MyCharacter->GetCharacterMovement()->StopMovementImmediately();
+		MyCharacter->GetCharacterMovement()->DisableMovement();
+
+		MyCharacter->GetMesh()->SetSimulatePhysics(true);
+		MyCharacter->GetMesh()->WakeAllRigidBodies();
+
 		MyCharacter->GetMesh()->SetCollisionProfileName(FName("Ragdoll"));
+	}
+}
+
+void USSCharacterAnimInstance::AnimNotify_Die() const
+{
+	if (nullptr != MyCharacter)
+	{
+		MyCharacter->Die();
 	}
 }

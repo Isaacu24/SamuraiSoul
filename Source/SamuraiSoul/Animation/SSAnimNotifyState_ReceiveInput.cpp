@@ -13,7 +13,21 @@ void USSAnimNotifyState_ReceiveInput::NotifyBegin(USkeletalMeshComponent* MeshCo
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 
-	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(MeshComp->GetOwner());
+	BehaviorPawn = Cast<ISSBehaviorInterface>(MeshComp->GetOwner());
+
+	if (nullptr != BehaviorPawn)
+	{
+		if (true == BehaviorPawn->GetAxisInput())
+		{
+			MeshComp->GetAnimInstance()->Montage_Stop(0.1f);
+		}
+	}
+}
+
+void USSAnimNotifyState_ReceiveInput::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
+                                                 const FAnimNotifyEventReference& EventReference)
+{
+	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 
 	if (nullptr != BehaviorPawn)
 	{

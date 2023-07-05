@@ -22,6 +22,8 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void BattleEntrance();
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 };

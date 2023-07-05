@@ -2,6 +2,7 @@
 
 
 #include "SSSamuraiAnimInstance.h"
+#include "AI/SSAI.h"
 #include "Character/SSCharacterBase.h"
 #include "Perception/AISenseConfig_Hearing.h"
 
@@ -43,6 +44,6 @@ void USSSamuraiAnimInstance::AnimNotify_Footstep() const
 {
 	if (nullptr != MyCharacter)
 	{
-		UAISense_Hearing::ReportNoiseEvent(GetWorld(), MyCharacter->GetActorLocation(), 1.0f, MyCharacter, 0.0f, FName("Run"));
+		UAISense_Hearing::ReportNoiseEvent(GetWorld(), MyCharacter->GetActorLocation(), 1.0f, MyCharacter, 0.0f, AITAG_NOISE);
 	}
 }

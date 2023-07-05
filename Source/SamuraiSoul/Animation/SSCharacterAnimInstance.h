@@ -25,6 +25,9 @@ protected:
 	UFUNCTION()
 	virtual void AnimNotify_Ragdoll() const;
 
+	UFUNCTION()
+	virtual void AnimNotify_Die() const;
+
 protected:
 	UPROPERTY()
 	TObjectPtr<class ASSCharacterBase> MyCharacter;

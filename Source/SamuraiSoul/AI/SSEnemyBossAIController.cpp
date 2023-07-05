@@ -36,6 +36,16 @@ void ASSEnemyBossAIController::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ASSEnemyBossAIController::BattleEntrance()
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISBATTLESTART, true);
+	}
+}
+
 void ASSEnemyBossAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AI/BTTask_FindRandomLocation.h"
-#include "SSEnemyAIController.h"
+#include "SSEnemyBaseAIController.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "SSAI.h"
@@ -13,7 +13,7 @@ UBTTask_FindRandomLocation::UBTTask_FindRandomLocation()
 
 EBTNodeResult::Type UBTTask_FindRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetAIOwner());
+	ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetAIOwner());
 
 	if (nullptr == Controller)
 	{

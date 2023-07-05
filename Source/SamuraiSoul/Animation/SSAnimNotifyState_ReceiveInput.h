@@ -6,6 +6,8 @@
 #include "Animation/SSAnimNotifyState.h"
 #include "SSAnimNotifyState_ReceiveInput.generated.h"
 
+class ISSBehaviorInterface;
+
 /**
  * 
  */
@@ -20,5 +22,10 @@ public:
 public:
 	virtual void NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
 	                         const FAnimNotifyEventReference& EventReference) override;
+	virtual void NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
+	                        float FrameDeltaTime, const FAnimNotifyEventReference& EventReference) override;
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+
+private:
+	ISSBehaviorInterface* BehaviorPawn;
 };

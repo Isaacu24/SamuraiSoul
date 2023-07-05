@@ -35,4 +35,14 @@ protected:
 
 	UFUNCTION()
 	virtual void OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex);
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	class ALevelSequenceActor* LevelSequenceActor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	class ULevelSequence* LevelSequence;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	class ULevelSequencePlayer* LevelSequencePlayer;
 };

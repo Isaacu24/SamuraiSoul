@@ -2,7 +2,7 @@
 
 #include "AI/BTTask_Hit.h"
 #include "AbilitySystemComponent.h"
-#include "SSEnemyAIController.h"
+#include "SSEnemyBaseAIController.h"
 #include "AbilitySystemInterface.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "SSAI.h"
@@ -35,7 +35,7 @@ void UBTTask_Hit::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory,
 
 	if (false == IsHit)
 	{
-		ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetAIOwner());
+		ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetAIOwner());
 		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_ISHIT, IsHit);
 
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

@@ -13,25 +13,6 @@ void USSAnimNotifyState_Dead::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
                                           const FAnimNotifyEventReference& EventReference)
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);;
-
-	if (nullptr == MeshComp)
-	{
-		return;
-	}
-
-	MeshComp->SetSimulatePhysics(true);
-	MeshComp->WakeAllRigidBodies();
-
-	OwnerCharacter = Cast<ASSCharacterBase>(MeshComp->GetOwner());
-
-	if (nullptr != OwnerCharacter)
-	{
-		OwnerCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		OwnerCharacter->GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
-
-		OwnerCharacter->GetCharacterMovement()->StopMovementImmediately();
-		OwnerCharacter->GetCharacterMovement()->DisableMovement();
-	}
 }
 
 void USSAnimNotifyState_Dead::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
@@ -43,9 +24,4 @@ void USSAnimNotifyState_Dead::NotifyTick(USkeletalMeshComponent* MeshComp, UAnim
 void USSAnimNotifyState_Dead::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
 	Super::NotifyEnd(MeshComp, Animation);
-
-	if (nullptr != OwnerCharacter)
-	{
-		OwnerCharacter->Die();
-	}
 }

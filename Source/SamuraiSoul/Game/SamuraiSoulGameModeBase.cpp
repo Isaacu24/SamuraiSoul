@@ -56,6 +56,8 @@ void ASamuraiSoulGameModeBase::SpawnEnemy()
 					ASSEnemyBossCharacter* Boss = GetWorld()->SpawnActor<ASSEnemyBossCharacter>(BossClass, SpawnEnemyDataArray[i].SpawnLocation,
 					                                                                            SpawnEnemyDataArray[i].SpawnRotation);
 					Boss->SetName(SpawnEnemyDataArray[i].EnemyName);
+					Boss->StopAI(); //Trace Player Blocking
+
 					SpawnBossMap.Add(SpawnEnemyDataArray[i].EnemyName, Boss);
 				}
 				break;

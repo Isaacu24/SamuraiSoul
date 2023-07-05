@@ -14,3 +14,10 @@
 #define BBKEY_ISEQUIP TEXT("IsEquip")
 
 #define BBKEY_ATTACKINDEX TEXT("AttackIndex")
+
+//Boss
+#define BBKEY_ISBATTLESTART TEXT("IsBattleStart")
+
+
+//Tag
+#define AITAG_NOISE TEXT("Noise")

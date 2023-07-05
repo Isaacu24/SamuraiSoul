@@ -4,6 +4,7 @@
 #include "Character/SSEnemyBossCharacter.h"
 #include "AI/SSEnemyBossAIController.h"
 #include "Component/SSEnemyCombatComponent.h"
+#include "Animation/SSEnemyBossAnimInstance.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 {
@@ -34,6 +35,41 @@ ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 void ASSEnemyBossCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ASSEnemyBossCharacter::StopAI()
+{
+	Super::StopAI();
+
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	SetActorTickEnabled(false);
+}
+
+void ASSEnemyBossCharacter::RunAI()
+{
+	Super::RunAI();
+
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+	SetActorTickEnabled(true);
+}
+
+void ASSEnemyBossCharacter::BattleEntrance()
+{
+	ASSEnemyBossAIController* BossController = Cast<ASSEnemyBossAIController>(GetController());
+
+	if (nullptr != BossController)
+	{
+		BossController->BattleEntrance();
+	}
+
+	USSEnemyBossAnimInstance* BossAnimInstance = Cast<USSEnemyBossAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (nullptr != BossAnimInstance)
+	{
+		BossAnimInstance->PlayBattleEntrance();
+	}
 }
 
 void ASSEnemyBossCharacter::BeginPlay()

@@ -29,6 +29,11 @@ public:
 		return Name;
 	}
 
+	virtual void StopAI() override;
+	virtual void RunAI() override;
+
+	virtual void BattleEntrance();
+
 protected:
 	virtual void BeginPlay() override;
 

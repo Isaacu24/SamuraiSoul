@@ -226,10 +226,8 @@ void ASSEnemyAIController::PerceptionUpdated(const TArray<AActor*>& UpdatedActor
 		{
 			FAIStimulus const Stimulus = Info.LastSensedStimuli[j];
 
-			if (FName("Run") == Stimulus.Tag)
+			if (AITAG_NOISE == Stimulus.Tag)
 			{
-				UE_LOG(LogTemp, Error, TEXT("Sound"));
-
 				const bool IsDetected = Stimulus.WasSuccessfullySensed();
 				Blackboard->SetValueAsBool(BBKEY_ISSEEPLAYER, IsDetected);
 			}

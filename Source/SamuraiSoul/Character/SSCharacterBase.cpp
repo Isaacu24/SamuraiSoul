@@ -24,6 +24,7 @@ ASSCharacterBase::ASSCharacterBase()
 
 	StatComponent = CreateDefaultSubobject<USSCharacterStatComponent>(TEXT("SSCharacterStat Component"));
 	StatComponent->SetIsReplicated(true);
+	StatComponent->OnHPZero.AddUObject(this, &ASSCharacterBase::Die);
 
 	MotionWarpComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping Component"));
 
@@ -91,10 +92,7 @@ void ASSCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 void ASSCharacterBase::Die()
 {
-	if (nullptr != Controller)
-	{
-		Controller->SetIgnoreMoveInput(true);
-	}
+	Controller->SetIgnoreMoveInput(true);
 
 	OnCharacterDead.Broadcast();
 }

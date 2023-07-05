@@ -17,26 +17,7 @@ EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& Own
 	UObject* TargetObject                = Controller->GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGET);
 	AActor* PlayerActor                  = Cast<AActor>(TargetObject);
 
- 	Controller->SetFocus(PlayerActor);
-
-	//const float DistanceToTarget = FVector::Distance(ControllingPawn->GetActorLocation(), PlayerActor->GetActorLocation());
-
-	//if (500.f <= DistanceToTarget)
-	//{
-	//	AIPawn->Run();
-	//}
-
-	//else
-	//{
-	//	AIPawn->Walk();
-
-	//	if (AIPawn->GetAIAttackRange() >= DistanceToTarget)
-	//	{
-	//		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, true);
-	//		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	//		return EBTNodeResult::Succeeded;
-	//	}
-	//}
+	Controller->SetFocus(PlayerActor);
 
 	return EBTNodeResult::Succeeded;
 }

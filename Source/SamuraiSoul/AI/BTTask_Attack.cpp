@@ -3,7 +3,7 @@
 #include "AI/BTTask_Attack.h"
 #include "AIController.h"
 #include "SSAI.h"
-#include "SSEnemyAIController.h"
+#include "SSEnemyBaseAIController.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -15,8 +15,8 @@ UBTTask_Attack::UBTTask_Attack()
 EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	APawn* ControllingPawn                  = OwnerComp.GetAIOwner()->GetPawn();
-	ASSEnemyAIController* EnemyAIController = Cast<ASSEnemyAIController>(ControllingPawn->GetController());
+	APawn* ControllingPawn                      = OwnerComp.GetAIOwner()->GetPawn();
+	ASSEnemyBaseAIController* EnemyAIController = Cast<ASSEnemyBaseAIController>(ControllingPawn->GetController());
 	EnemyAIController->SetFocus(nullptr);
 
 	if (nullptr == ControllingPawn)
@@ -36,7 +36,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	OnAttackFinished.BindLambda(
 	                            [&]()
 	                            {
-		                            ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+		                            ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetOwner());
 		                            Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, false);
 		                            FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	                            });
