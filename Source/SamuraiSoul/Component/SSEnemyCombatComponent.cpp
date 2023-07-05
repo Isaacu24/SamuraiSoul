@@ -2,6 +2,8 @@
 
 
 #include "Component/SSEnemyCombatComponent.h"
+
+#include "SSGameplayTags.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "Item/Weapon/SSWeapon.h"
 
@@ -35,14 +37,15 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
-void USSEnemyCombatComponent::SpecialAttackByAI(const FGameplayTag& Tag) const
+void USSEnemyCombatComponent::SpecialAttackByAI(const FGameplayTag& AbilityTag) const
 {
-	TryActivateAbility(Tag);
+	TryActivateAbility(AbilityTag);
 }
 
-void USSEnemyCombatComponent::Equip()
+void USSEnemyCombatComponent::EquipUnarm()
 {
-	TryActivateAbility(EquipTag);
+	FSSGameplayTags Tags;
+	TryActivateAbility(Tags.Get().Ability_EquipUnarmTag);
 }
 
 void USSEnemyCombatComponent::Parry(AActor* InActor)

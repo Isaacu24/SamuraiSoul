@@ -3,7 +3,6 @@
 
 #include "SSGameplayAbility_Slash.h"
 #include <GameFramework/Character.h>
-#include "SSAbilityTask_PlayMontageAndWait.h"
 #include "Abilities/GameplayAbilityTypes.h"
 #include "DataAsset/SSComboActionData.h"
 #include "Component/SSCombatComponent.h"
@@ -11,6 +10,8 @@
 #include "Interface/SSCombatableInterface.h"
 #include "Interface/SSBehaviorInterface.h"
 #include "SSGameplayTags.h"
+#include "Abilities/Tasks/AbilityTask_WaitInputPress.h"
+
 
 USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 {
@@ -30,8 +31,6 @@ void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Han
 	{
 		MyCharacter = Cast<ACharacter>(ActorInfo->OwnerActor);
 	}
-
-	ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(MyCharacter);
 
 	if (0 == CurrentCombo)
 	{
@@ -90,6 +89,10 @@ void USSGameplayAbility_Slash::ActivateAbility(const FGameplayAbilitySpecHandle 
 			return;
 		}
 	}
+
+	//UAbilityTask_WaitInputPress* InputTask = UAbilityTask_WaitInputPress::WaitInputPress(this);
+	//InputTask->OnPress.AddDynamic(this, &USSGameplayAbility_Slash::OnInputPressed);
+	//InputTask->ReadyForActivation();
 
 	PlayMontage(SlashMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -157,3 +160,13 @@ void USSGameplayAbility_Slash::ComboCheck()
 		HasNextComboCommand = false;
 	}
 }
+
+//void USSGameplayAbility_Slash::OnInputPressed(float TimeWaited)
+//{
+//	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+//
+//	ISSCombatableInterface* CombatablePawn = Cast<ISSCombatableInterface>(MyCharacter);
+//
+//	FSSGameplayTags Tags = {};
+//	CombatablePawn->GetCombatComponent()->TryActivateAbility(Tags.Get().Ability_DefenseTag);
+//}

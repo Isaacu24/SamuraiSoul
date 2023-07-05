@@ -22,8 +22,9 @@ public:
 
 	void SetEnemyWeapon() const;
 	void AttackByAI() const;
-	void SpecialAttackByAI(const FGameplayTag& Tag) const;
-	virtual void Equip();
+	void SpecialAttackByAI(const FGameplayTag& AbilityTag) const;
+
+	virtual void EquipUnarm();
 
 	virtual void Parry(AActor* InActor) override;
 	virtual void Rebound() override;
@@ -33,9 +34,6 @@ protected:
 	virtual void BeExecuted(int8 RandomNumber) override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	FGameplayTag EquipTag;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
 	FGameplayTag SlashTag;
 

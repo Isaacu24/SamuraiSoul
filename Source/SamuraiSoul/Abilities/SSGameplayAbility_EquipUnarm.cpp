@@ -100,6 +100,8 @@ void USSGameplayAbility_EquipUnarm::EndAbility(const FGameplayAbilitySpecHandle 
 		{
 			AIPawn->SetEquip(true);
 		}
+
+		AIPawn->EquipUnarmEnd();
 	}
 }
 

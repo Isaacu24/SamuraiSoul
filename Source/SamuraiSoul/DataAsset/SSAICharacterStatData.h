@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
 #include "SSAICharacterStatData.generated.h"
 
@@ -18,6 +19,9 @@ public:
 	USSAICharacterStatData();
 
 	UPROPERTY(EditAnywhere, Category = Stat)
+	float AIAttackRange;
+
+	UPROPERTY(EditAnywhere, Category = Stat)
 	float AIPatrolRadius;
 
 	UPROPERTY(EditAnywhere, Category = Stat)
@@ -30,8 +34,11 @@ public:
 	float AISight;
 
 	UPROPERTY(EditAnywhere, Category = Stat)
-	float AIAttackRange;	
-
-	UPROPERTY(EditAnywhere, Category = Stat)
 	float AIHearingRange;
+
+	UPROPERTY(EditAnywhere, Category = Enemy)
+	int AIMaxAttackCount;
+
+	UPROPERTY(EditAnywhere, Category = Enemy)
+	FGameplayTag SpectialAttackTag;
 };

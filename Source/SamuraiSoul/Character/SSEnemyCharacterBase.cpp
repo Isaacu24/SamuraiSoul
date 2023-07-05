@@ -118,13 +118,15 @@ void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAbilityFinishe
 	OnAttackFinished = InOnAttackFinished;
 }
 
+void ASSEnemyCharacterBase::SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
+{
+	OnEquipUnarmFinished = InOnAttackFinished;
+}
+
 void ASSEnemyCharacterBase::AttackByAI()
 {
 }
 
-void ASSEnemyCharacterBase::SpectialAttackByAI(const FGameplayTag& Tag)
-{
-}
 
 void ASSEnemyCharacterBase::AttackEnd()
 {
@@ -133,6 +135,11 @@ void ASSEnemyCharacterBase::AttackEnd()
 
 void ASSEnemyCharacterBase::EquipUnarm()
 {
+}
+
+void ASSEnemyCharacterBase::EquipUnarmEnd()
+{
+	OnEquipUnarmFinished.ExecuteIfBound();
 }
 
 void ASSEnemyCharacterBase::ShowPerilousMark()

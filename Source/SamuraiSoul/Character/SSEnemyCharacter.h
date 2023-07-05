@@ -27,10 +27,7 @@ public:
 
 	virtual void Die() override;
 
-	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
 	virtual void AttackByAI() override;
-	virtual void SpectialAttackByAI(const FGameplayTag& Tag) override;
-
 	virtual void EquipUnarm() override;
 
 	virtual void SetParry(bool Value) override;
@@ -54,4 +51,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UBoxComponent> AssassinationCollider;
+
+	UPROPERTY()
+	uint8 CurrentNormalAttackCount;
 };

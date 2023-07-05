@@ -8,7 +8,11 @@
 #include "Component/SSEnemyCombatComponent.h"
 #include "Component/SSCharacterStatComponent.h"
 #include <GameFramework/CharacterMovementComponent.h>
+
+#include "AbilitySystemComponent.h"
+#include "Abilities/SSAttributeSet.h"
 #include "Components/BoxComponent.h"
+#include "DataAsset/SSAICharacterStatData.h"
 #include "UI/SSEnemyHUDWidget.h"
 
 ASSEnemyCharacter::ASSEnemyCharacter()
@@ -87,37 +91,45 @@ void ASSEnemyCharacter::Die()
 	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
-{
-	Super::SetAIAttackDelegate(InOnAttackFinished);
-}
-
 void ASSEnemyCharacter::AttackByAI()
 {
-	if (nullptr != CombatComponent)
+	if (nullptr == CombatComponent)
 	{
+		return;
+	}
+
+	//Normal Attack or Ability Attack£®
+	if (CurrentNormalAttackCount < AICharacterStatData->AIMaxAttackCount)
+	{
+		++CurrentNormalAttackCount;
 		CombatComponent->AttackByAI();
 	}
 
-	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-}
-
-void ASSEnemyCharacter::SpectialAttackByAI(const FGameplayTag& Tag)
-{
-	if (nullptr != CombatComponent)
+	else
 	{
-		CombatComponent->SpecialAttackByAI(Tag);
+		CurrentNormalAttackCount = 0;
+
+		const USSAttributeSet* AttributeSet = Cast<USSAttributeSet>(GetAbilitySystemComponent()->GetAttributeSet(USSAttributeSet::StaticClass()));
+
+		if (AttributeSet->GetMaxBalance() - 0.01f <= AttributeSet->GetBalance())
+		{
+			CombatComponent->AttackByAI();
+		}
+
+		else
+		{
+			CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTag);
+		}
 	}
 
-	//?
-	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ASSEnemyCharacter::EquipUnarm()
 {
 	if (nullptr != CombatComponent)
 	{
-		CombatComponent->Equip();
+		CombatComponent->EquipUnarm();
 	}
 }
 

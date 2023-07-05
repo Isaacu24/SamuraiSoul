@@ -4,8 +4,10 @@
 #include "AI/BTTask_EquipUnarm.h"
 #include "AIController.h"
 #include "SSAI.h"
+#include "SSEnemyBaseAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Interface/SSCharacterAIInterface.h"
+#include "Interface/SSBehaviorInterface.h"
 
 UBTTask_EquipUnarm::UBTTask_EquipUnarm()
 {
@@ -15,10 +17,9 @@ UBTTask_EquipUnarm::UBTTask_EquipUnarm()
 EBTNodeResult::Type UBTTask_EquipUnarm::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(BBKEY_ISEQUIP, true);
-
-	APawn* ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
+	APawn* ControllingPawn                      = OwnerComp.GetAIOwner()->GetPawn();
+	ASSEnemyBaseAIController* EnemyAIController = Cast<ASSEnemyBaseAIController>(ControllingPawn->GetController());
+	EnemyAIController->SetFocus(nullptr);
 
 	if (nullptr == ControllingPawn)
 	{
@@ -32,7 +33,25 @@ EBTNodeResult::Type UBTTask_EquipUnarm::ExecuteTask(UBehaviorTreeComponent& Owne
 		return EBTNodeResult::Failed;
 	}
 
+	ISSBehaviorInterface* BehaviorPawn = Cast<ISSBehaviorInterface>(ControllingPawn);
+
+	if (nullptr == BehaviorPawn)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	FAICharacterAbilityFinished OnEquipUnarmFinished;
+
+	OnEquipUnarmFinished.BindLambda(
+	                                [&]()
+	                                {
+		                                FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+	                                });
+
+	AIPawn->SetAIEquipUnarmDelegate(OnEquipUnarmFinished);
 	AIPawn->EquipUnarm();
 
-	return EBTNodeResult::Succeeded;
+	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(BBKEY_ISEQUIP, BehaviorPawn->IsEquip());
+
+	return EBTNodeResult::InProgress;
 }

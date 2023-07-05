@@ -27,6 +27,7 @@ public:
 	ASSEnemyCharacterBase();
 
 	FAICharacterAbilityFinished OnAttackFinished;
+	FAICharacterAbilityFinished OnEquipUnarmFinished;
 	FAICharacterAbilityFinished OnExecutedFinished;
 
 protected:
@@ -63,11 +64,13 @@ protected:
 	virtual void Walk() override;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
+	virtual void SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
+
 	virtual void AttackByAI() override;
-	virtual void SpectialAttackByAI(const FGameplayTag& Tag) override;
 	virtual void AttackEnd() override;
 
 	virtual void EquipUnarm() override;
+	virtual void EquipUnarmEnd() override;
 
 	virtual void ShowPerilousMark() override;
 	virtual void HidePerilousMark() override;
@@ -112,7 +115,7 @@ protected:
 	FTargetingEndedDelegate OnTargetingEnded;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category= StatData)
-	USSAICharacterStatData* AICharacterStatData;
+	TObjectPtr<USSAICharacterStatData> AICharacterStatData;
 
 	UPROPERTY()
 	uint8 CurrentCombo;

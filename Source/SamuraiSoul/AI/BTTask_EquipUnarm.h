@@ -17,4 +17,6 @@ class SAMURAISOUL_API UBTTask_EquipUnarm : public UBTTaskNode
 public:
 	UBTTask_EquipUnarm();
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+private:
 };
