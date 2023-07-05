@@ -181,9 +181,8 @@ void ASSSamuraiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_LookTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Look);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_RunTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::Run);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_UnRunTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::UnRun);
-	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_CrouchStartTag, ETriggerEvent::Triggered, this,
-	                                   &ASSSamuraiCharacter::CrouchStart);
-	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_CrouchEndTag, ETriggerEvent::Triggered, this, &ASSSamuraiCharacter::CrouchEnd);
+	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_CrouchTag, ETriggerEvent::Triggered, this,
+	                                   &ASSSamuraiCharacter::Crouch);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_LockOnTag, ETriggerEvent::Completed, this, &ASSSamuraiCharacter::LockOnSwitch);
 	SSInputComponent->BindNativeAction(InputConfig, FSSGameplayTags::Get().Input_ChangeControlTag, ETriggerEvent::Triggered, this,
 	                                   &ASSSamuraiCharacter::ChangeCharacterControl);
@@ -331,16 +330,19 @@ void ASSSamuraiCharacter::UnRun()
 	GetCharacterMovement()->MaxWalkSpeed = 200.f;
 }
 
-void ASSSamuraiCharacter::CrouchStart()
+void ASSSamuraiCharacter::Crouch()
 {
-	bIsCrouch                            = true;
-	GetCharacterMovement()->MaxWalkSpeed = 100.f;
-}
+	bIsCrouch = !bIsCrouch;
 
-void ASSSamuraiCharacter::CrouchEnd()
-{
-	bIsCrouch                            = false;
-	GetCharacterMovement()->MaxWalkSpeed = 200.f;
+	if (true == bIsCrouch)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	}
+
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 200.f;
+	}
 }
 
 void ASSSamuraiCharacter::LockOnSwitch()

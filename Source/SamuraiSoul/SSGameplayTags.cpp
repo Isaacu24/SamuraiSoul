@@ -32,8 +32,7 @@ FSSGameplayTags::FSSGameplayTags()
 	Input_LookTag          = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Look"));
 	Input_RunTag           = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Run"));
 	Input_UnRunTag         = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.UnRun"));
-	Input_CrouchStartTag   = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchStart"));
-	Input_CrouchEndTag     = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.CrouchEnd"));
+	Input_CrouchTag        = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.Crouch"));
 	Input_LockOnTag        = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.LockOn"));
 	Input_ChangeControlTag = FGameplayTag::RequestGameplayTag(FName("EnhancedInput.ChangeControl"));
 

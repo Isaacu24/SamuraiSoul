@@ -45,6 +45,7 @@ public:
 	FGameplayTag Input_LookTag;
 	FGameplayTag Input_RunTag;
 	FGameplayTag Input_UnRunTag;
+	FGameplayTag Input_CrouchTag;
 	FGameplayTag Input_CrouchStartTag;
 	FGameplayTag Input_CrouchEndTag;
 	FGameplayTag Input_LockOnTag;

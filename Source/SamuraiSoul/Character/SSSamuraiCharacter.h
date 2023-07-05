@@ -56,8 +56,7 @@ public:
 
 	void Run();
 	void UnRun();
-	void CrouchStart();
-	void CrouchEnd();
+	void Crouch();
 
 	void LockOnSwitch();
 	void LockOn();
