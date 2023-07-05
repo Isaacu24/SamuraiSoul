@@ -19,7 +19,7 @@ USSGameplayAbility_Slash::USSGameplayAbility_Slash()
 
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	CancelAbilitiesWithTag.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
 }
 
 void USSGameplayAbility_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
