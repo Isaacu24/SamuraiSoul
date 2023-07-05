@@ -30,7 +30,7 @@ public:
 	float AISight;
 
 	UPROPERTY(EditAnywhere, Category = Stat)
-	float AIAttackRange;
+	float AIAttackRange;	
 
 	UPROPERTY(EditAnywhere, Category = Stat)
 	float AIHearingRange;

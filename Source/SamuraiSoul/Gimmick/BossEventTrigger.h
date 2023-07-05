@@ -27,9 +27,15 @@ protected:
 
 	virtual void OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex) override;
 
+	UFUNCTION()
+	void LevelSequenceEnded();
+
 	void DestroyTrigger();
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
 	FName KeyName;
+
+	UPROPERTY()
+	TObjectPtr<ASSEnemyBossCharacter> Boss;
 };

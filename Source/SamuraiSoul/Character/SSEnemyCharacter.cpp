@@ -98,6 +98,8 @@ void ASSEnemyCharacter::AttackByAI()
 	{
 		CombatComponent->AttackByAI();
 	}
+
+	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ASSEnemyCharacter::SpectialAttackByAI(const FGameplayTag& Tag)
@@ -106,6 +108,9 @@ void ASSEnemyCharacter::SpectialAttackByAI(const FGameplayTag& Tag)
 	{
 		CombatComponent->SpecialAttackByAI(Tag);
 	}
+
+	//?
+	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ASSEnemyCharacter::EquipUnarm()

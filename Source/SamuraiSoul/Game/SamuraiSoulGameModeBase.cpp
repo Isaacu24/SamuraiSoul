@@ -65,26 +65,21 @@ void ASamuraiSoulGameModeBase::SpawnEnemy()
 	}
 }
 
-ASSEnemyBossCharacter* ASamuraiSoulGameModeBase::SetBossDataInHUD(const FName& Key)
+ASSEnemyBossCharacter* ASamuraiSoulGameModeBase::GetBossEnemyCharacter(const FName& Key) const
 {
 	FSSSpawnEnemyData* BossData = SpawnEnemyDataTable->FindRow<FSSSpawnEnemyData>(Key, "");
-
-	ASSEnemyBossCharacter* Boss = *(SpawnBossMap.Find(BossData->EnemyName));
 
 	if (nullptr == BossData)
 	{
 		return nullptr;
 	}
 
-	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	ISSCharacterHUDInterface* HUDPawn   = Cast<ISSCharacterHUDInterface>(PlayerController->GetPawn());
+	ASSEnemyBossCharacter* Boss = *(SpawnBossMap.Find(BossData->EnemyName));
 
-	if (nullptr == HUDPawn)
+	if (nullptr == Boss)
 	{
 		return nullptr;
 	}
-
-	HUDPawn->SetBossDataInHUD(Boss);
 
 	return Boss;
 }

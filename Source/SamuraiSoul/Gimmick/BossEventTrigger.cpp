@@ -9,6 +9,8 @@
 #include "Game/SamuraiSoulGameModeBase.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
+#include "Interface/SSCharacterHUDInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 ABossEventTrigger::ABossEventTrigger()
 {
@@ -22,7 +24,6 @@ ABossEventTrigger::ABossEventTrigger()
 void ABossEventTrigger::BeginPlay()
 {
 	Super::BeginPlay();
-
 
 	FMovieSceneSequencePlaybackSettings Settings;
 	Settings.bAutoPlay   = false;
@@ -53,7 +54,8 @@ void ABossEventTrigger::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 
 	if (nullptr != GameMode)
 	{
-		ASSEnemyBossCharacter* Boss = GameMode->SetBossDataInHUD(KeyName);
+		Boss = GameMode->GetBossEnemyCharacter(KeyName);
+
 		Boss->RunAI();
 		Boss->BattleEntrance();
 		Boss->OnCharacterDead.AddUObject(this, &ABossEventTrigger::DestroyTrigger);
@@ -61,7 +63,8 @@ void ABossEventTrigger::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 
 	if (nullptr != LevelSequencePlayer)
 	{
-		LevelSequencePlayer->Play();
+		//LevelSequencePlayer->Play();
+		//LevelSequencePlayer->OnFinished.AddDynamic(this, &ABossEventTrigger::LevelSequenceEnded);
 	}
 }
 
@@ -82,6 +85,26 @@ void ABossEventTrigger::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComp, AAc
 	}
 
 	Collider->SetCollisionProfileName(FName("BlockAllDynamic"));
+}
+
+void ABossEventTrigger::LevelSequenceEnded()
+{
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	if (nullptr == PlayerController)
+	{
+		return;
+	}
+
+	ISSCharacterHUDInterface* HUDPawn = Cast<ISSCharacterHUDInterface>(PlayerController->GetPawn());
+
+	if (nullptr == HUDPawn
+		|| nullptr == Boss)
+	{
+		return;
+	}
+
+	HUDPawn->SetBossDataInHUD(Boss);
 }
 
 void ABossEventTrigger::DestroyTrigger()

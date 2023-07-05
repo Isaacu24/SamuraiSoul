@@ -4,7 +4,7 @@
 #include "AI/BTS_InAttackRange.h"
 
 #include "SSAI.h"
-#include "SSEnemyAIController.h"
+#include "SSEnemyBaseAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTS_InAttackRange::UBTS_InAttackRange()
@@ -16,8 +16,8 @@ void UBTS_InAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	APawn* ControllingPawn           = OwnerComp.GetAIOwner()->GetPawn();
-	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+	APawn* ControllingPawn               = OwnerComp.GetAIOwner()->GetPawn();
+	ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetOwner());
 
 	if (nullptr == ControllingPawn)
 	{

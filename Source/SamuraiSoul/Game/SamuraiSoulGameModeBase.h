@@ -24,7 +24,8 @@ public:
 	void BeginPlay() override;
 
 	void SpawnEnemy();
-	ASSEnemyBossCharacter* SetBossDataInHUD(const FName& Key);
+
+	ASSEnemyBossCharacter* GetBossEnemyCharacter(const FName& Key) const;
 
 protected:
 
