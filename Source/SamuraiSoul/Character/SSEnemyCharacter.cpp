@@ -83,6 +83,8 @@ void ASSEnemyCharacter::Tick(float DeltaTime)
 void ASSEnemyCharacter::Die()
 {
 	Super::Die();
+
+	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ASSEnemyCharacter::SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
