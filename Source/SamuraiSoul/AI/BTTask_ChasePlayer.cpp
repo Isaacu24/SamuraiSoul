@@ -2,7 +2,7 @@
 
 
 #include "AI/BTTask_ChasePlayer.h"
-#include "SSEnemyBaseAIController.h"
+#include "SSEnemyBossAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "SSAI.h"
 

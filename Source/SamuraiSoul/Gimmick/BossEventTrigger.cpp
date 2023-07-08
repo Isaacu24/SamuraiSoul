@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BossEventTrigger.h"
-
 #include "LevelSequence.h"
 #include "LevelSequenceActor.h"
 #include "LevelSequencePlayer.h"
@@ -28,7 +27,11 @@ void ABossEventTrigger::BeginPlay()
 	FMovieSceneSequencePlaybackSettings Settings;
 	Settings.bAutoPlay   = false;
 	Settings.bPauseAtEnd = true;
-	LevelSequencePlayer  = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), LevelSequence, Settings, LevelSequenceActor);
+	//Settings.bHideHud              = true;
+	//Settings.bHidePlayer           = true;
+	//Settings.bDisableLookAtInput   = true;
+	//Settings.bDisableMovementInput = true;
+	LevelSequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), LevelSequence, Settings, LevelSequenceActor);
 }
 
 void ABossEventTrigger::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,

@@ -77,6 +77,7 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 		AISenseConfigHearing->DetectionByAffiliation.bDetectEnemies    = true;
 		AISenseConfigHearing->DetectionByAffiliation.bDetectFriendlies = true;
 		AISenseConfigHearing->DetectionByAffiliation.bDetectNeutrals   = true;
+		AISenseConfigHearing->SetMaxAge(5.0f);
 
 		AIPerceptionComponent->SetDominantSense(AISenseConfigHearing->GetSenseImplementation());
 		AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);

@@ -6,6 +6,7 @@
 
 class USSUserWidget;
 class UBoxComponent;
+class USSEnemyCombatComponent;
 class AEnemyAssassinationEventTrigger;
 
 DECLARE_DELEGATE(FAnimDelegate);
@@ -20,6 +21,11 @@ class SAMURAISOUL_API ASSEnemyCharacter : public ASSEnemyCharacterBase
 
 public:
 	ASSEnemyCharacter();
+
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return static_cast<USSCombatComponent*>(CombatComponent);
+	}
 
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
@@ -45,7 +51,13 @@ public:
 
 	virtual void SetupCharacterWidget(USSUserWidget* InUserWidget) override;
 
-private:
+	virtual EAttackType GetWeaponAttakType() const override;
+	virtual void SetWeaponAttackType(EAttackType InType) override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> EnemyHUD;
 

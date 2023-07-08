@@ -5,6 +5,7 @@
 
 #include "SSAI.h"
 #include "SSEnemyBaseAIController.h"
+#include "SSEnemyBossAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTS_InAttackRange::UBTS_InAttackRange()
@@ -41,6 +42,15 @@ void UBTS_InAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	float DistanceToTarget      = ControllingPawn->GetDistanceTo(Target);
 	float AttackRangeWithRadius = AIPawn->GetAIAttackRange();
 
+	//Boss
+	ASSEnemyBossAIController* BossController = Cast<ASSEnemyBossAIController>(OwnerComp.GetOwner());
+
+	if (nullptr != BossController)
+	{
+		BossController->SetDistanceToTarget(DistanceToTarget);
+	}
+
+
 	if (AttackRangeWithRadius >= DistanceToTarget)
 	{
 		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, true);
@@ -50,14 +60,17 @@ void UBTS_InAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, false);
 
-		if (500.f <= DistanceToTarget)
+		if (nullptr == BossController)
 		{
-			AIPawn->Run();
-		}
+			if (500.f <= DistanceToTarget)
+			{
+				AIPawn->Run();
+			}
 
-		else
-		{
-			AIPawn->Walk();
+			else
+			{
+				AIPawn->Walk();
+			}
 		}
 	}
 }

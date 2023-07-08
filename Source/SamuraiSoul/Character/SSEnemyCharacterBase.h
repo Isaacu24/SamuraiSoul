@@ -12,7 +12,7 @@
 
 class USSWidgetComponent;
 class USSAICharacterStatData;
-class USSEnemyCombatComponent;
+class USSEnemyCombatBaseComponent;
 
 /**
  * 
@@ -33,7 +33,7 @@ public:
 protected:
 	virtual USSCombatComponent* GetCombatComponent() const override
 	{
-		return static_cast<USSCombatComponent*>(CombatComponent);
+		return nullptr;
 	}
 
 	virtual void BeginPlay() override;
@@ -103,9 +103,6 @@ protected:
 	};
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USSEnemyCombatComponent> CombatComponent;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSWidgetComponent> PerilousMark;
 

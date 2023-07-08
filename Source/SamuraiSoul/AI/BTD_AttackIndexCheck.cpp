@@ -14,13 +14,13 @@ UBTD_AttackIndexCheck::UBTD_AttackIndexCheck()
 
 bool UBTD_AttackIndexCheck::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-	const int AttackIndex            = Controller->GetBlackboardComponent()->GetValueAsInt(BBKEY_ATTACKINDEX);
+	//ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+	//const int AttackIndex            = Controller->GetBlackboardComponent()->GetValueAsInt(BBKEY_ATTACKINDEX);
 
-	if (AttackIndex == MyIndex)
-	{
-		return true;
-	}
+	//if (AttackIndex == MyIndex)
+	//{
+	//	return true;
+	//}
 
 	return false;
 }

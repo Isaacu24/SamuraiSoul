@@ -24,6 +24,11 @@ enum class ESSAbilityID : uint8
 	BeAssassinated,
 	Parry,
 	Rebound,
+	HandAndSwordSwing,
+	RunningAttack,
+	Swing,
+	SwingAndSlam,
+	UppercutAttack,
 	Hit,
 	Dead
 };

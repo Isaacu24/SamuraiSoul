@@ -158,9 +158,6 @@ protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSCharacterStatComponent> StatComponent;
 
-	UPROPERTY()
-	TObjectPtr<USSAttributeSet> Attributes;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UMotionWarpingComponent> MotionWarpComponent;
 

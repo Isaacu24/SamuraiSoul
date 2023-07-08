@@ -60,6 +60,8 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	AssassinationCollider->SetupAttachment(GetMesh());
 	AssassinationCollider->SetBoxExtent(FVector{100.f, 100.f, 100.f});
 	AssassinationCollider->SetRelativeLocation(FVector(0.0f, -140.f, 110.0f));
+
+	CombatComponent = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 }
 
 void ASSEnemyCharacter::BeginPlay()
@@ -118,7 +120,12 @@ void ASSEnemyCharacter::AttackByAI()
 
 		else
 		{
-			CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTag);
+			if (0 == AICharacterStatData->SpectialAttackTags.Num())
+			{
+				return;
+			}
+
+			CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[0]);
 		}
 	}
 
@@ -184,6 +191,15 @@ void ASSEnemyCharacter::SetupCharacterWidget(USSUserWidget* InUserWidget)
 	}
 }
 
+EAttackType ASSEnemyCharacter::GetWeaponAttakType() const
+{
+	return CombatComponent->GetWeapon()->GetAttackType();
+}
+
+void ASSEnemyCharacter::SetWeaponAttackType(EAttackType InType)
+{
+	CombatComponent->GetWeapon()->SetAttackType(InType);
+}
 
 void ASSEnemyCharacter::SetParry(bool Value)
 {

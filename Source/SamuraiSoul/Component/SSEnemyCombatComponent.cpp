@@ -2,7 +2,7 @@
 
 
 #include "Component/SSEnemyCombatComponent.h"
-
+#include "GameplayEffect.h"
 #include "SSGameplayTags.h"
 #include "Interface/SSCharacterAIInterface.h"
 #include "Item/Weapon/SSWeapon.h"
@@ -16,18 +16,12 @@ void USSEnemyCombatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void USSEnemyCombatComponent::SetEnemyWeapon() const
-{
-	Weapon->SetEnemyWeapon();
-}
-
-// AI 
 void USSEnemyCombatComponent::AttackByAI() const
 {
 	switch (Weapon->GetWeaponType())
 	{
 		case EWeaponType::Katana:
-			TryActivateAbility(SlashTag);
+			TryActivateAbility(FSSGameplayTags::Get().Ability_SlashTag);
 			break;
 		case EWeaponType::Bow:
 			// Active Ability
@@ -37,15 +31,9 @@ void USSEnemyCombatComponent::AttackByAI() const
 	}
 }
 
-void USSEnemyCombatComponent::SpecialAttackByAI(const FGameplayTag& AbilityTag) const
-{
-	TryActivateAbility(AbilityTag);
-}
-
 void USSEnemyCombatComponent::EquipUnarm()
 {
-	FSSGameplayTags Tags;
-	TryActivateAbility(Tags.Get().Ability_EquipUnarmTag);
+	TryActivateAbility(FSSGameplayTags::Get().Ability_EquipUnarmTag);
 }
 
 void USSEnemyCombatComponent::Parry(AActor* InActor)
@@ -77,6 +65,21 @@ void USSEnemyCombatComponent::BeExecuted(int8 RandomNumber)
 {
 	Super::BeExecuted(RandomNumber);
 
+	ExecutionNumber = RandomNumber;
+
+	ensure(BeExecutedEffect);
+	TakeGameplayEffect(BeExecutedEffect);
+
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
 	AIPawn->SetBeExecuted(true);
+}
+
+void USSEnemyCombatComponent::BeAssassinated(int8 RandomNumber)
+{
+	Super::BeExecuted(RandomNumber);
+
+	AssassinationNumber = RandomNumber;
+
+	ensure(BeAssassinatedEffect);
+	TakeGameplayEffect(BeAssassinatedEffect);
 }

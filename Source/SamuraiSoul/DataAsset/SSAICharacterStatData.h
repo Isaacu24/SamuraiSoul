@@ -40,5 +40,5 @@ public:
 	int AIMaxAttackCount;
 
 	UPROPERTY(EditAnywhere, Category = Enemy)
-	FGameplayTag SpectialAttackTag;
+	TArray<FGameplayTag> SpectialAttackTags;
 };

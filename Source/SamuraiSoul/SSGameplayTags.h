@@ -27,6 +27,11 @@ public:
 	FGameplayTag Ability_DefenseTag;
 	FGameplayTag Ability_ParryTag;
 	FGameplayTag Ability_AssassinationTag;
+	FGameplayTag Ability_UppercutAttackTag;
+	FGameplayTag Ability_SwingAndSlamTag;
+	FGameplayTag Ability_SwingTag;
+	FGameplayTag Ability_RunningAttackTag;
+	FGameplayTag Ability_HandAndSwordSwingTag;
 
 	//DeferredAbility
 	FGameplayTag DeferredAbilityTag;

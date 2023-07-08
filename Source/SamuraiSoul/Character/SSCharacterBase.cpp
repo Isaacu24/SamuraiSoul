@@ -2,10 +2,9 @@
 
 
 #include "SSCharacterBase.h"
-#include "AbilitySystemComponent.h"
+#include "Abilities/SSAttributeSet.h"
 #include <Components/CapsuleComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
-#include "Abilities/SSAttributeSet.h"
 #include "SSCharacterControlData.h"
 #include "MotionWarpingComponent.h"
 #include "Component/SSCharacterStatComponent.h"
@@ -51,7 +50,6 @@ void ASSCharacterBase::PossessedBy(AController* NewController)
 	//Server Gas Init
 	check(nullptr != AbilitySystemComponent);
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	AbilitySystemComponent->SetTagMapCount(FSSGameplayTags::Get().DeadTag, 0);
 
 	check(nullptr != CharacterData);
 	check(nullptr != CharacterData->AbilitySet);

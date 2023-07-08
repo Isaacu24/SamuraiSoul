@@ -3,9 +3,8 @@
 
 #include "SSEnemyCharacterBase.h"
 #include <Components/CapsuleComponent.h>
-#include "AI/SSEnemyAIController.h"
 #include "DataAsset/SSAICharacterStatData.h"
-#include "Component/SSEnemyCombatComponent.h"
+#include "Component/SSEnemyCombatBaseComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Component/SSWidgetComponent.h"
 #include "AI/SSEnemyBaseAIController.h"
@@ -14,7 +13,6 @@ ASSEnemyCharacterBase::ASSEnemyCharacterBase()
 {
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Enemy"));
 
-	CombatComponent                      = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 	GetCharacterMovement()->MaxWalkSpeed = 100.f;
 
 	TargetCursor = CreateDefaultSubobject<USSWidgetComponent>(TEXT("Cursor"));
@@ -206,10 +204,9 @@ void ASSEnemyCharacterBase::HideTargetUI()
 
 EAttackType ASSEnemyCharacterBase::GetWeaponAttakType() const
 {
-	return CombatComponent->GetWeapon()->GetAttackType();
+	return EAttackType::Normal;
 }
 
 void ASSEnemyCharacterBase::SetWeaponAttackType(EAttackType InType)
 {
-	CombatComponent->GetWeapon()->SetAttackType(InType);
 }

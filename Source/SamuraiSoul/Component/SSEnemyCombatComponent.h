@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "Component/SSCombatComponent.h"
+#include "Component/SSEnemyCombatBaseComponent.h"
 #include "SSEnemyCombatComponent.generated.h"
 
 /**
  *
  */
 UCLASS()
-class SAMURAISOUL_API USSEnemyCombatComponent : public USSCombatComponent
+class SAMURAISOUL_API USSEnemyCombatComponent : public USSEnemyCombatBaseComponent
 {
 	GENERATED_BODY()
 
@@ -19,10 +19,7 @@ public:
 	USSEnemyCombatComponent();
 
 	virtual void BeginPlay() override;
-
-	void SetEnemyWeapon() const;
-	void AttackByAI() const;
-	void SpecialAttackByAI(const FGameplayTag& AbilityTag) const;
+	void AttackByAI() const override;
 
 	virtual void EquipUnarm();
 
@@ -32,14 +29,12 @@ public:
 protected:
 	virtual void Hit(EAttackType InType) override;
 	virtual void BeExecuted(int8 RandomNumber) override;
+	virtual void BeAssassinated(int8 RandomNumber) override;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	FGameplayTag SlashTag;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> BeExecutedEffect;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	FGameplayTag StabTag;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ability, meta = (AllowPrivateAccess = "true"))
-	FGameplayTag SpinSlashTag;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UGameplayEffect> BeAssassinatedEffect;
 };

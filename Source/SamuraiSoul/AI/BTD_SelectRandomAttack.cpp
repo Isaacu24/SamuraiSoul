@@ -13,11 +13,11 @@ UBTD_SelectRandomAttack::UBTD_SelectRandomAttack()
 
 bool UBTD_SelectRandomAttack::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	int Result = FMath::RandRange(0, AttackCount);
-	UE_LOG(LogTemp, Error, TEXT("AttackIndex : %d"), Result);
+	//int Result = FMath::RandRange(0, AttackCount);
+	//UE_LOG(LogTemp, Error, TEXT("AttackIndex : %d"), Result);
 
-	ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
-	Controller->GetBlackboardComponent()->SetValueAsInt(BBKEY_ATTACKINDEX, Result);
+	//ASSEnemyAIController* Controller = Cast<ASSEnemyAIController>(OwnerComp.GetOwner());
+	//Controller->GetBlackboardComponent()->SetValueAsInt(BBKEY_ATTACKINDEX, Result);
 
 	return true;
 }

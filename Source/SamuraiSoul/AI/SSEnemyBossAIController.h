@@ -24,6 +24,8 @@ public:
 
 	virtual void BattleEntrance();
 
+	virtual void SetDistanceToTarget(float Value);
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 };

@@ -4,7 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Character/SSEnemyCharacterBase.h"
+#include "DataAsset/SSAICharacterStatData.h"
 #include "SSEnemyBossCharacter.generated.h"
+
+DECLARE_MULTICAST_DELEGATE(FBossCharacterMontageEnded);
+
+class USSEnemyBossCombatComponent;
 
 /**
  * 
@@ -16,6 +21,11 @@ class SAMURAISOUL_API ASSEnemyBossCharacter : public ASSEnemyCharacterBase
 
 public:
 	ASSEnemyBossCharacter();
+
+	virtual USSCombatComponent* GetCombatComponent() const override
+	{
+		return static_cast<USSCombatComponent*>(CombatComponent);
+	}
 
 	virtual void Tick(float DeltaTime) override;
 
@@ -33,13 +43,33 @@ public:
 	virtual void RunAI() override;
 
 	virtual void BattleEntrance();
+	virtual void AttackByAI() override;
+
+	FORCEINLINE void SetDistanceToTarget(float Value)
+	{
+		Distance = Value;
+	}
+
+	virtual EAttackType GetWeaponAttakType() const override;
+	virtual void SetWeaponAttackType(EAttackType InType) override;
+
+	UFUNCTION()
+	void OnBattleEntranceMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	FBossCharacterMontageEnded OnBattleEtranced;
 
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void PostInitializeComponents() override;
 
-private:
+protected:
 	UPROPERTY()
 	FString Name;
+
+	UPROPERTY()
+	float Distance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USSEnemyBossCombatComponent> CombatComponent;
 };

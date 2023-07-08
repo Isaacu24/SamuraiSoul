@@ -6,6 +6,7 @@
 #include "SSAI.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Character/SSEnemyBossCharacter.h"
 #include "Perception/AIPerceptionTypes.h"
 
 ASSEnemyBossAIController::ASSEnemyBossAIController()
@@ -44,6 +45,14 @@ void ASSEnemyBossAIController::BattleEntrance()
 	{
 		Blackboard->SetValueAsBool(BBKEY_ISBATTLESTART, true);
 	}
+}
+
+void ASSEnemyBossAIController::SetDistanceToTarget(float Value)
+{
+	ASSEnemyBossCharacter* Boss = Cast<ASSEnemyBossCharacter>(GetPawn());
+	check(Boss);
+
+	Boss->SetDistanceToTarget(Value);
 }
 
 void ASSEnemyBossAIController::OnPossess(APawn* InPawn)

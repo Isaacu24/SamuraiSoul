@@ -11,6 +11,7 @@
 #include "Abilities/SSGameplayAbility.h"
 #include "Interface/SSCombatableInterface.h"
 #include "AbilitySystemInterface.h"
+#include "SSGameplayTags.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -191,7 +192,7 @@ void USSCombatComponent::Parry(AActor* InActor)
 	ensure(InActor);
 	SetTarget(InActor);
 
-	TryActivateAbility(ParryTag);
+	TryActivateAbility(FSSGameplayTags::Get().Ability_ParryTag);
 }
 
 void USSCombatComponent::Hit(EAttackType InType)
@@ -211,22 +212,6 @@ void USSCombatComponent::Hit(EAttackType InType)
 	}
 }
 
-void USSCombatComponent::BeExecuted(int8 RandomNumber)
-{
-	ExecutionNumber = RandomNumber;
-
-	ensure(BeExecutedEffect);
-	TakeGameplayEffect(BeExecutedEffect);
-}
-
-void USSCombatComponent::BeAssassinated(int8 RandomNumber)
-{
-	AssassinationNumber = RandomNumber;
-
-	ensure(BeAssassinatedEffect);
-	TakeGameplayEffect(BeAssassinatedEffect);
-}
-
 void USSCombatComponent::Rebound()
 {
 	ensure(ReboundEffect);
@@ -237,4 +222,12 @@ void USSCombatComponent::DefenseHit()
 {
 	ensure(ReboundEffect);
 	TakeGameplayEffect(DefenseEffect);
+}
+
+void USSCombatComponent::BeExecuted(int8 RandomNumber)
+{
+}
+
+void USSCombatComponent::BeAssassinated(int8 RandomNumber)
+{
 }

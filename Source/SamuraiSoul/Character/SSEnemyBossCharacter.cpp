@@ -2,13 +2,19 @@
 
 
 #include "Character/SSEnemyBossCharacter.h"
+
+#include "AI/SSAI.h"
 #include "AI/SSEnemyBossAIController.h"
-#include "Component/SSEnemyCombatComponent.h"
 #include "Animation/SSEnemyBossAnimInstance.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Component/SSEnemyBossCombatComponent.h"
+#include "DataAsset/SSAICharacterStatData.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CombatComponent = CreateDefaultSubobject<USSEnemyBossCombatComponent>(TEXT("Combat Component"));
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
 		BODY_MESH(TEXT("/Script/Engine.SkeletalMesh'/Game/BossyEnemy/SkeletalMesh/SK_Mannequin_UE4_WithWeapon.SK_Mannequin_UE4_WithWeapon'"));
@@ -55,6 +61,27 @@ void ASSEnemyBossCharacter::RunAI()
 	SetActorTickEnabled(true);
 }
 
+void ASSEnemyBossCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void ASSEnemyBossCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName(""));
+		CombatComponent->SetEnemyWeapon();
+	}
+
+	USSEnemyBossAnimInstance* BossAnim = Cast<USSEnemyBossAnimInstance>(GetMesh()->GetAnimInstance());
+	check(BossAnim);
+
+	BossAnim->OnMontageEnded.AddDynamic(this, &ASSEnemyBossCharacter::OnBattleEntranceMontageEnded);
+}
+
 void ASSEnemyBossCharacter::BattleEntrance()
 {
 	ASSEnemyBossAIController* BossController = Cast<ASSEnemyBossAIController>(GetController());
@@ -72,19 +99,40 @@ void ASSEnemyBossCharacter::BattleEntrance()
 	}
 }
 
-void ASSEnemyBossCharacter::BeginPlay()
+void ASSEnemyBossCharacter::AttackByAI()
 {
-	Super::BeginPlay();
+	if (nullptr == CombatComponent)
+	{
+		return;
+	}
+
+	float AttackRadius = AICharacterStatData->AIAttackRange * 0.5f;
+
+	if (AttackRadius <= Distance)
+	{
+		CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[1]);
+	}
+
+	else
+	{
+		int Count  = AICharacterStatData->SpectialAttackTags.Num() - 1;
+		int Result = FMath::RandRange(0, Count);
+
+		CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[Result]);
+	}
 }
 
-void ASSEnemyBossCharacter::PostInitializeComponents()
+EAttackType ASSEnemyBossCharacter::GetWeaponAttakType() const
 {
-	Super::PostInitializeComponents();
+	return CombatComponent->GetWeapon()->GetAttackType();
+}
 
-	if (nullptr != CombatComponent)
-	{
-		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName(""));
-		CombatComponent->EquipDefenseBarrier();
-		CombatComponent->SetEnemyWeapon();
-	}
+void ASSEnemyBossCharacter::SetWeaponAttackType(EAttackType InType)
+{
+	CombatComponent->GetWeapon()->SetAttackType(InType);
+}
+
+void ASSEnemyBossCharacter::OnBattleEntranceMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	OnBattleEtranced.Broadcast();
 }

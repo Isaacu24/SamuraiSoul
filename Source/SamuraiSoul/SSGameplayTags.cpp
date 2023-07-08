@@ -6,17 +6,22 @@ FSSGameplayTags FSSGameplayTags::GameplayTags;
 
 FSSGameplayTags::FSSGameplayTags()
 {
-	AbilityTag               = FGameplayTag::RequestGameplayTag(FName("SSAbilities"));
-	Ability_JumpTag          = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Jump"));
-	Ability_DodgeTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dodge"));
-	Ability_EquipUnarmTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.EquipUnarm"));
-	Ability_SlashTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
-	Ability_SpinSlashTag     = FGameplayTag::RequestGameplayTag(FName("SSAbilities.SpinSlash"));
-	Ability_StabTag          = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Stab"));
-	Ability_WolfDrawTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.WolfDraw"));
-	Ability_DefenseTag       = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
-	Ability_ParryTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Parry"));
-	Ability_AssassinationTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Assassination"));
+	AbilityTag                   = FGameplayTag::RequestGameplayTag(FName("SSAbilities"));
+	Ability_JumpTag              = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Jump"));
+	Ability_DodgeTag             = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Dodge"));
+	Ability_EquipUnarmTag        = FGameplayTag::RequestGameplayTag(FName("SSAbilities.EquipUnarm"));
+	Ability_SlashTag             = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Slash"));
+	Ability_SpinSlashTag         = FGameplayTag::RequestGameplayTag(FName("SSAbilities.SpinSlash"));
+	Ability_StabTag              = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Stab"));
+	Ability_WolfDrawTag          = FGameplayTag::RequestGameplayTag(FName("SSAbilities.WolfDraw"));
+	Ability_DefenseTag           = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Defense"));
+	Ability_ParryTag             = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Parry"));
+	Ability_AssassinationTag     = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Assassination"));
+	Ability_UppercutAttackTag    = FGameplayTag::RequestGameplayTag(FName("SSAbilities.UppercutAttack"));
+	Ability_SwingAndSlamTag      = FGameplayTag::RequestGameplayTag(FName("SSAbilities.SwingAndSlam"));
+	Ability_SwingTag             = FGameplayTag::RequestGameplayTag(FName("SSAbilities.Swing"));
+	Ability_RunningAttackTag     = FGameplayTag::RequestGameplayTag(FName("SSAbilities.RunningAttack"));
+	Ability_HandAndSwordSwingTag = FGameplayTag::RequestGameplayTag(FName("SSAbilities.HandAndSwordSwing"));
 
 	DeferredAbilityTag           = FGameplayTag::RequestGameplayTag(FName("SSDeferredAbilities"));
 	DeferredAbility_ExecutionTag = FGameplayTag::RequestGameplayTag(FName("SSDeferredAbilities.Execution"));
