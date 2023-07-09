@@ -116,9 +116,14 @@ void ASSEnemyCharacterBase::SetAIAttackDelegate(const FAICharacterAbilityFinishe
 	OnAttackFinished = InOnAttackFinished;
 }
 
-void ASSEnemyCharacterBase::SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnAttackFinished)
+void ASSEnemyCharacterBase::SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnEquipUnarmFinished)
 {
-	OnEquipUnarmFinished = InOnAttackFinished;
+	OnEquipUnarmFinished = InOnEquipUnarmFinished;
+}
+
+void ASSEnemyCharacterBase::SetAIDefenseDelegate(const FAICharacterAbilityFinished& InOnDefenseFinished)
+{
+	OnDefenseFinished = InOnDefenseFinished;
 }
 
 void ASSEnemyCharacterBase::AttackByAI()
@@ -131,13 +136,22 @@ void ASSEnemyCharacterBase::AttackEnd()
 	OnAttackFinished.ExecuteIfBound();
 }
 
-void ASSEnemyCharacterBase::EquipUnarm()
+void ASSEnemyCharacterBase::EquipUnarmByAI()
 {
 }
 
 void ASSEnemyCharacterBase::EquipUnarmEnd()
 {
 	OnEquipUnarmFinished.ExecuteIfBound();
+}
+
+void ASSEnemyCharacterBase::DefenseByAI()
+{
+}
+
+void ASSEnemyCharacterBase::DefenseEnd()
+{
+	OnDefenseFinished.ExecuteIfBound();
 }
 
 void ASSEnemyCharacterBase::ShowPerilousMark()

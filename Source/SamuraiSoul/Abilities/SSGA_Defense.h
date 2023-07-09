@@ -40,7 +40,7 @@ public:
 	UFUNCTION()
 	void ReDefense(UAnimMontage* Montage, bool bInterrupted);
 
-	void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
+	virtual void AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload) override;
 
 private:
 	ACharacter* OwnerCharacter;

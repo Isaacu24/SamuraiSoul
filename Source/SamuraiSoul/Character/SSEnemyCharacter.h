@@ -34,7 +34,9 @@ public:
 	virtual void Die() override;
 
 	virtual void AttackByAI() override;
-	virtual void EquipUnarm() override;
+	virtual void EquipUnarmByAI() override;
+
+	virtual void DefenseByAI() override;
 
 	virtual void SetParry(bool Value) override;
 	virtual void SetHit(bool Value) override;

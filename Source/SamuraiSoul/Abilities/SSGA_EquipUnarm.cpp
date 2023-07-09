@@ -52,8 +52,6 @@ void USSGA_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		BehaviorPawn->SwitchIsEquip();
 	}
 
-	ASSCharacterBase* Character = Cast<ASSCharacterBase>(Owner);
-
 	if (nullptr != EquipMontage
 		&& nullptr != EquipRootMontage
 		&& false == bIsEquip)

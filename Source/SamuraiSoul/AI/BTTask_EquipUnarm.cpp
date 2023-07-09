@@ -11,7 +11,7 @@
 
 UBTTask_EquipUnarm::UBTTask_EquipUnarm()
 {
-	NodeName = TEXT("EquipUnarm");
+	NodeName = TEXT("EquipUnarmByAI");
 }
 
 EBTNodeResult::Type UBTTask_EquipUnarm::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -50,7 +50,7 @@ EBTNodeResult::Type UBTTask_EquipUnarm::ExecuteTask(UBehaviorTreeComponent& Owne
 	                                });
 
 	AIPawn->SetAIEquipUnarmDelegate(OnEquipUnarmFinished);
-	AIPawn->EquipUnarm();
+	AIPawn->EquipUnarmByAI();
 
 	EnemyAIController->GetBlackboardComponent()->SetValueAsBool(BBKEY_ISEQUIP, BehaviorPawn->IsEquip());
 

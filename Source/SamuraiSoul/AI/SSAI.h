@@ -1,10 +1,12 @@
 #pragma once
 
-#define BBKEY_ISSEEPLAYER TEXT("IsSeePlayer")
 #define BBKEY_TARGET TEXT("Target")
 #define BBKEY_PATROLPOS TEXT("PatrolPos")
+
+#define BBKEY_ISSEEPLAYER TEXT("IsSeePlayer")
 #define BBKEY_INATTACKRANGE TEXT("InAttackRange")
 #define BBKEY_ISPATROL TEXT("IsPatrol")
+#define BBKEY_ISDEFENSE TEXT("IsDefensee")
 #define BBKEY_ISPARRY TEXT("IsParry")
 
 #define BBKEY_ISHIT TEXT("IsHit")

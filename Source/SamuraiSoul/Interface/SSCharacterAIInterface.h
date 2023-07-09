@@ -42,13 +42,17 @@ public:
 	virtual void Walk() = 0;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
-	virtual void SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) = 0;
+	virtual void SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnEquipUnarmFinished) = 0;
+	virtual void SetAIDefenseDelegate(const FAICharacterAbilityFinished& InOnDefenseeFinished) = 0;
 
 	virtual void AttackByAI() = 0;
 	virtual void AttackEnd() = 0;
 
-	virtual void EquipUnarm() = 0;
+	virtual void EquipUnarmByAI() = 0;
 	virtual void EquipUnarmEnd() = 0;
+
+	virtual void DefenseByAI() = 0;
+	virtual void DefenseEnd() = 0;
 
 	virtual void ShowPerilousMark() = 0;
 	virtual void HidePerilousMark() = 0;

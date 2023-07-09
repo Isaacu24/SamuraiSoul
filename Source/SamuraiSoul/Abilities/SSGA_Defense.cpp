@@ -8,6 +8,7 @@
 #include "Component/SSCombatComponent.h"
 #include "Interface/SSCombatableInterface.h"
 #include "SSGameplayTags.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSGA_Defense::USSGA_Defense()
 {
@@ -35,7 +36,6 @@ void USSGA_Defense::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
                                     const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	UE_LOG(LogTemp, Warning, TEXT("Defense"));
 
 	OwnerCharacter                                    = Cast<ACharacter>(ActorInfo->OwnerActor);
 	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(OwnerCharacter);
@@ -60,6 +60,7 @@ void USSGA_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
                                const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
 	HitStack = 0;
 
 	ISSCombatableInterface* Combatable = Cast<ISSCombatableInterface>(OwnerCharacter);
@@ -75,6 +76,13 @@ void USSGA_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseRootMontage);
 		}
 	}
+
+	//ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+
+	//if (nullptr != AIPawn)
+	//{
+	//	AIPawn->DefenseEnd();
+	//}
 }
 
 void USSGA_Defense::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -118,7 +126,7 @@ void USSGA_Defense::ReDefense(UAnimMontage* Montage, bool bInterrupted)
 	ActivateAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, &CurrentEventData);
 }
 
-//
+
 //void USSGA_Defense::AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload)
 //{
 //	if (0 < HitStack)

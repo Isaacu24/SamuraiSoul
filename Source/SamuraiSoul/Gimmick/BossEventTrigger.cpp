@@ -66,8 +66,8 @@ void ABossEventTrigger::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, A
 
 	if (nullptr != LevelSequencePlayer)
 	{
-		//LevelSequencePlayer->Play();
-		//LevelSequencePlayer->OnFinished.AddDynamic(this, &ABossEventTrigger::LevelSequenceEnded);
+		LevelSequencePlayer->Play();
+		LevelSequencePlayer->OnFinished.AddDynamic(this, &ABossEventTrigger::LevelSequenceEnded);
 	}
 }
 

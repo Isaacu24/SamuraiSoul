@@ -12,6 +12,7 @@
 #include "Interface/SSCombatableInterface.h"
 #include "AbilitySystemInterface.h"
 #include "SSGameplayTags.h"
+#include "Abilities/SSAttributeSet.h"
 
 USSCombatComponent::USSCombatComponent()
 {
@@ -75,7 +76,14 @@ void USSCombatComponent::TryActivateAbility(const FGameplayTag& AbilityTag) cons
 
 	if (nullptr != AbilitySystemComponent)
 	{
-		//if hp is zero
+		const USSAttributeSet* Attribute = Cast<USSAttributeSet>(AbilitySystemComponent->GetAttributeSet(USSAttributeSet::StaticClass()));
+
+		if (0.f >= Attribute->GetHealth()
+			&& FSSGameplayTags::Get().DeadTag == AbilityTag)
+		{
+			return;
+		}
+
 		AbilitySystemComponent->CancelAllAbilities();
 
 		bool IsSucceced = AbilitySystemComponent->TryActivateAbilitiesByTag(FGameplayTagContainer(AbilityTag));

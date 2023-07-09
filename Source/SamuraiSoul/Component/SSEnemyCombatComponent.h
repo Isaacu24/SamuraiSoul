@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
 #include "Component/SSEnemyCombatBaseComponent.h"
 #include "SSEnemyCombatComponent.generated.h"
 
@@ -25,6 +24,8 @@ public:
 
 	virtual void Parry(AActor* InActor) override;
 	virtual void Rebound() override;
+
+	virtual void Defense();
 
 protected:
 	virtual void Hit(EAttackType InType) override;

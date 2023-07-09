@@ -12,7 +12,6 @@ USSGA_RunningAttack::USSGA_RunningAttack()
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_RunningAttackTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_RunningAttackTag);
 	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
-	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_RunningAttack::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

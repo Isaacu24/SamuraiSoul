@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AI/BTTask_Attack.h"
-#include "AIController.h"
 #include "SSAI.h"
 #include "SSEnemyBaseAIController.h"
 #include "Interface/SSCharacterAIInterface.h"
@@ -39,6 +38,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	                            {
 		                            ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetOwner());
 		                            Controller->GetBlackboardComponent()->SetValueAsBool(BBKEY_INATTACKRANGE, false);
+
 		                            FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	                            });
 

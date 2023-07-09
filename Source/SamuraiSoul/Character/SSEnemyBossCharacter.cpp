@@ -72,7 +72,7 @@ void ASSEnemyBossCharacter::PostInitializeComponents()
 
 	if (nullptr != CombatComponent)
 	{
-		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName(""));
+		CombatComponent->EquipWeapon(EWeaponType::Katana, GetMesh(), FName("WeaponStart"));
 		CombatComponent->SetEnemyWeapon();
 	}
 
@@ -110,7 +110,7 @@ void ASSEnemyBossCharacter::AttackByAI()
 
 	if (AttackRadius <= Distance)
 	{
-		CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[1]);
+		CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[0]);
 	}
 
 	else

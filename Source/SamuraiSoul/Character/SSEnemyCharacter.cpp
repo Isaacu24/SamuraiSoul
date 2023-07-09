@@ -132,11 +132,19 @@ void ASSEnemyCharacter::AttackByAI()
 	//AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void ASSEnemyCharacter::EquipUnarm()
+void ASSEnemyCharacter::EquipUnarmByAI()
 {
 	if (nullptr != CombatComponent)
 	{
 		CombatComponent->EquipUnarm();
+	}
+}
+
+void ASSEnemyCharacter::DefenseByAI()
+{
+	if (nullptr != CombatComponent)
+	{
+		CombatComponent->Defense();
 	}
 }
 

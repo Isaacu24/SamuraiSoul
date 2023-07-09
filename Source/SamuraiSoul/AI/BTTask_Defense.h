@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_ChasePlayer.generated.h"
+#include "BTTask_Defense.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API UBTTask_ChasePlayer : public UBTTaskNode
+class SAMURAISOUL_API UBTTask_Defense : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UBTTask_ChasePlayer();
+	UBTTask_Defense();
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

@@ -12,7 +12,6 @@ USSGA_SwingAndSlam::USSGA_SwingAndSlam()
 	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SwingAndSlamTag);
 	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SwingAndSlamTag);
 	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_SwingAndSlam::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

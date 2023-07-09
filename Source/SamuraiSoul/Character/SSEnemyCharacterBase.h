@@ -28,6 +28,7 @@ public:
 
 	FAICharacterAbilityFinished OnAttackFinished;
 	FAICharacterAbilityFinished OnEquipUnarmFinished;
+	FAICharacterAbilityFinished OnDefenseFinished;
 	FAICharacterAbilityFinished OnExecutedFinished;
 
 protected:
@@ -64,13 +65,17 @@ protected:
 	virtual void Walk() override;
 
 	virtual void SetAIAttackDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
-	virtual void SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnAttackFinished) override;
+	virtual void SetAIEquipUnarmDelegate(const FAICharacterAbilityFinished& InOnEquipUnarmFinished) override;
+	virtual void SetAIDefenseDelegate(const FAICharacterAbilityFinished& InOnDefenseFinished) override;
 
 	virtual void AttackByAI() override;
 	virtual void AttackEnd() override;
 
-	virtual void EquipUnarm() override;
+	virtual void EquipUnarmByAI() override;
 	virtual void EquipUnarmEnd() override;
+
+	virtual void DefenseByAI() override;
+	virtual void DefenseEnd() override;
 
 	virtual void ShowPerilousMark() override;
 	virtual void HidePerilousMark() override;

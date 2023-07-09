@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTask_ChasePlayer.h"
+#include "AI/BTTask_FocusPlayer.h"
 #include "SSEnemyBossAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "SSAI.h"
 
-UBTTask_ChasePlayer::UBTTask_ChasePlayer()
+UBTTask_FocusPlayer::UBTTask_FocusPlayer()
 {
-	NodeName = TEXT("Chase Player");
+	NodeName = TEXT("Focus Player");
 }
 
-EBTNodeResult::Type UBTTask_ChasePlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_FocusPlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ASSEnemyBaseAIController* Controller = Cast<ASSEnemyBaseAIController>(OwnerComp.GetOwner());
 	UObject* TargetObject                = Controller->GetBlackboardComponent()->GetValueAsObject(BBKEY_TARGET);

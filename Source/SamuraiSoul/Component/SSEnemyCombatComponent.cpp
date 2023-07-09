@@ -52,6 +52,11 @@ void USSEnemyCombatComponent::Rebound()
 	AIPawn->SetRebound(true);
 }
 
+void USSEnemyCombatComponent::Defense()
+{
+	TryActivateAbility(FSSGameplayTags::Get().Ability_DefenseTag);
+}
+
 void USSEnemyCombatComponent::Hit(EAttackType InType)
 {
 	Super::Hit(InType);
