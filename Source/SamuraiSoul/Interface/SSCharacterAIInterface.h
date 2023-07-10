@@ -32,6 +32,7 @@ public:
 	virtual float GetAISight() = 0;
 	virtual float GetAIHearingRange() = 0;
 	virtual float GetAIAttackRange() = 0;
+	virtual bool GetAIIsStartPatrol() = 0;
 
 	virtual uint8 GetCurrentCombo() = 0;
 

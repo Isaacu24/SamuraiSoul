@@ -23,5 +23,7 @@ public:
 	virtual void AttackByAI() const;
 	void SpecialAttackByAI(const FGameplayTag& AbilityTag) const;
 
+	virtual void Rebound() override;
+
 protected:
 };

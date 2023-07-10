@@ -83,7 +83,7 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 		AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
 	}
 
-	SetPatrol(true);
+	SetPatrol(AIPawn->GetAIIsStartPatrol());
 }
 
 void ASSEnemyAIController::SetParry(bool Value)
@@ -136,16 +136,6 @@ void ASSEnemyAIController::SetDead(bool Value)
 	}
 }
 
-void ASSEnemyAIController::SetRebound(bool Value)
-{
-	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
-
-	if (true == UseBlackboard(BBAsset, BlackboardPtr))
-	{
-		Blackboard->SetValueAsBool(BBKEY_ISREBOUND, Value);
-	}
-}
-
 void ASSEnemyAIController::SetBeExecuted(bool Value)
 {
 	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
@@ -154,6 +144,11 @@ void ASSEnemyAIController::SetBeExecuted(bool Value)
 	{
 		Blackboard->SetValueAsBool(BBKEY_ISBEEXECUTED, Value);
 	}
+}
+
+void ASSEnemyAIController::SetRebound(bool Value)
+{
+	Super::SetRebound(Value);
 }
 
 void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus Stimulus)

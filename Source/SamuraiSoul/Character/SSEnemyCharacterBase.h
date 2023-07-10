@@ -31,6 +31,9 @@ public:
 	FAICharacterAbilityFinished OnDefenseFinished;
 	FAICharacterAbilityFinished OnExecutedFinished;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = StatData)
+	TObjectPtr<USSAICharacterStatData> AICharacterStatData;
+
 protected:
 	virtual USSCombatComponent* GetCombatComponent() const override
 	{
@@ -45,6 +48,7 @@ protected:
 	virtual float GetAISight() override;
 	virtual float GetAIHearingRange() override;
 	virtual float GetAIAttackRange() override;
+	virtual bool GetAIIsStartPatrol() override;
 
 	virtual uint8 GetCurrentCombo() override
 	{
@@ -115,9 +119,6 @@ protected:
 	TObjectPtr<USSWidgetComponent> TargetCursor;
 
 	FTargetingEndedDelegate OnTargetingEnded;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category= StatData)
-	TObjectPtr<USSAICharacterStatData> AICharacterStatData;
 
 	UPROPERTY()
 	uint8 CurrentCombo;

@@ -46,3 +46,13 @@ void ASSEnemyBaseAIController::StopAI()
 		BTComponent->StopTree();
 	}
 }
+
+void ASSEnemyBaseAIController::SetRebound(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISREBOUND, Value);
+	}
+}

@@ -87,6 +87,11 @@ float ASSEnemyCharacterBase::GetAIAttackRange()
 	return AICharacterStatData->AIAttackRange;
 }
 
+bool ASSEnemyCharacterBase::GetAIIsStartPatrol()
+{
+	return AICharacterStatData->AIIsStartPatrol;
+}
+
 void ASSEnemyCharacterBase::StopAI()
 {
 	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
@@ -182,8 +187,15 @@ void ASSEnemyCharacterBase::SetDead(bool Value)
 {
 }
 
+//Enemy or Boss
 void ASSEnemyCharacterBase::SetRebound(bool Value)
 {
+	ASSEnemyBaseAIController* AIController = Cast<ASSEnemyBaseAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetRebound(Value);
+	}
 }
 
 void ASSEnemyCharacterBase::SetEquip(bool Value)

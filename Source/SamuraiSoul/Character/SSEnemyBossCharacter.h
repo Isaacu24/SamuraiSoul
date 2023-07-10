@@ -50,6 +50,8 @@ public:
 		Distance = Value;
 	}
 
+	virtual void RangeAttack();
+
 	virtual EAttackType GetWeaponAttakType() const override;
 	virtual void SetWeaponAttackType(EAttackType InType) override;
 

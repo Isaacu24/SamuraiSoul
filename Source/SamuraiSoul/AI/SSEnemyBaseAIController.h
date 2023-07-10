@@ -28,6 +28,8 @@ public:
 	void RunAI();
 	void StopAI();
 
+	virtual void SetRebound(bool Value);
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 

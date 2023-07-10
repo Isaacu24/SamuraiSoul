@@ -9,6 +9,7 @@ enum class EEnemyType : uint8
 {
 	None,
 	Katana,
+	Katana_Sentry,
 	Boss
 };
 

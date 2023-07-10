@@ -34,9 +34,10 @@ public:
 	virtual void SetPatrol(bool Value);
 	virtual void SetHit(bool Value);
 	virtual void SetDead(bool Value);
-	virtual void SetRebound(bool Value);
 	virtual void SetEquip(bool Value);
 	virtual void SetBeExecuted(bool Value);
+
+	virtual void SetRebound(bool Value) override;
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;

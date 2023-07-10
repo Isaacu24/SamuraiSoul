@@ -9,6 +9,7 @@
 
 class ASSEnemyBossCharacter;
 class ASSEnemyCharacter;
+class USSAICharacterStatData;
 
 /**
  * 
@@ -36,7 +37,7 @@ private:
 	TMap<FString, ASSEnemyBossCharacter*> SpawnBossMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<ASSEnemyCharacter> EnemyClass;
+	TArray<TSubclassOf<ASSEnemyCharacter>> EnemyClasses;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<ASSEnemyBossCharacter> BossClass;

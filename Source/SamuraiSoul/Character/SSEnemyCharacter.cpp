@@ -129,7 +129,7 @@ void ASSEnemyCharacter::AttackByAI()
 		}
 	}
 
-	//AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void ASSEnemyCharacter::EquipUnarmByAI()
@@ -248,13 +248,6 @@ void ASSEnemyCharacter::SetDead(bool Value)
 void ASSEnemyCharacter::SetRebound(bool Value)
 {
 	Super::SetRebound(Value);
-
-	ASSEnemyAIController* AIController = Cast<ASSEnemyAIController>(GetController());
-
-	if (nullptr != AIController)
-	{
-		AIController->SetRebound(Value);
-	}
 }
 
 void ASSEnemyCharacter::SetEquip(bool Value)

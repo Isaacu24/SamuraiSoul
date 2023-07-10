@@ -36,9 +36,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = Stat)
 	float AIHearingRange;
 
+	UPROPERTY(EditAnywhere, Category = Stat)
+	TArray<FGameplayTag> SpectialAttackTags;
+
 	UPROPERTY(EditAnywhere, Category = Enemy)
 	int AIMaxAttackCount;
 
 	UPROPERTY(EditAnywhere, Category = Enemy)
-	TArray<FGameplayTag> SpectialAttackTags;
+	bool AIIsStartPatrol;
 };

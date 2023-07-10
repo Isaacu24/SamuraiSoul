@@ -47,9 +47,6 @@ void USSEnemyCombatComponent::Parry(AActor* InActor)
 void USSEnemyCombatComponent::Rebound()
 {
 	Super::Rebound();
-
-	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
-	AIPawn->SetRebound(true);
 }
 
 void USSEnemyCombatComponent::Defense()

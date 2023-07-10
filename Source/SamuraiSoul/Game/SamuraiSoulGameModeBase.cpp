@@ -46,7 +46,14 @@ void ASamuraiSoulGameModeBase::SpawnEnemy()
 		{
 			case EEnemyType::Katana:
 				{
-					ASSEnemyCharacter* Enemy = GetWorld()->SpawnActor<ASSEnemyCharacter>(EnemyClass, SpawnEnemyDataArray[i].SpawnLocation,
+					ASSEnemyCharacter* Enemy = GetWorld()->SpawnActor<ASSEnemyCharacter>(EnemyClasses[0], SpawnEnemyDataArray[i].SpawnLocation,
+					                                                                     SpawnEnemyDataArray[i].SpawnRotation);
+				}
+				break;
+
+			case EEnemyType::Katana_Sentry:
+				{
+					ASSEnemyCharacter* Enemy = GetWorld()->SpawnActor<ASSEnemyCharacter>(EnemyClasses[1], SpawnEnemyDataArray[i].SpawnLocation,
 					                                                                     SpawnEnemyDataArray[i].SpawnRotation);
 				}
 				break;

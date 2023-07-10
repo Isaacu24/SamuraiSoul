@@ -2,12 +2,10 @@
 
 
 #include "Character/SSEnemyBossCharacter.h"
-
-#include "AI/SSAI.h"
 #include "AI/SSEnemyBossAIController.h"
 #include "Animation/SSEnemyBossAnimInstance.h"
-#include "BehaviorTree/BlackboardComponent.h"
 #include "Component/SSEnemyBossCombatComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "DataAsset/SSAICharacterStatData.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
@@ -120,6 +118,43 @@ void ASSEnemyBossCharacter::AttackByAI()
 
 		CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[Result]);
 	}
+}
+
+void ASSEnemyBossCharacter::RangeAttack()
+{
+	TArray<FHitResult> OutHits = {};
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(Attack), false, this);
+
+	const float AttackRange  = 100.0f;
+	const float AttackRadius = 400.0f;
+
+	const FVector Start = GetActorLocation() + GetActorForwardVector() * GetCapsuleComponent()->GetScaledCapsuleRadius();
+	const FVector End   = Start + GetActorForwardVector() * AttackRange;
+
+	bool HitDetected = GetWorld()->SweepMultiByChannel(OutHits, Start, End, FQuat::Identity, ECC_GameTraceChannel4,
+	                                                   FCollisionShape::MakeSphere(AttackRadius),
+	                                                   Params);
+
+	for (const FHitResult& HitResult : OutHits)
+	{
+		ISSCombatableInterface* CombatPawn = Cast<ISSCombatableInterface>(HitResult.GetActor());
+
+		if (nullptr != CombatPawn)
+		{
+			CombatPawn->GetCombatComponent()->Attack(HitResult.GetActor(), HitResult);
+		}
+	}
+
+#if ENABLE_DRAW_DEBUG
+
+	FVector CapsuleOrigin   = Start + (End - Start) * 0.5f;
+	float CapsuleHalfHeight = AttackRange * 0.5f;
+	FColor DrawColor        = HitDetected ? FColor::Green : FColor::Red;
+
+	DrawDebugCapsule(GetWorld(), CapsuleOrigin, CapsuleHalfHeight, AttackRadius, FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat(), DrawColor, false,
+	                 1.0f);
+
+#endif
 }
 
 EAttackType ASSEnemyBossCharacter::GetWeaponAttakType() const

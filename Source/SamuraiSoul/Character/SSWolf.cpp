@@ -107,6 +107,5 @@ void ASSWolf::OnCapsuleBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor*
 	}
 
 	OnWolfOverlap.ExecuteIfBound(OtherActor, SweepResult);
-
 	Destroy();
 }

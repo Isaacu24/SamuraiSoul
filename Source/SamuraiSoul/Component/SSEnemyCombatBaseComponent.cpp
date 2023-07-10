@@ -3,6 +3,7 @@
 
 #include "Component/SSEnemyCombatBaseComponent.h"
 #include "SSEnemyCombatComponent.h"
+#include "Interface/SSCharacterAIInterface.h"
 
 USSEnemyCombatBaseComponent::USSEnemyCombatBaseComponent()
 {
@@ -25,4 +26,12 @@ void USSEnemyCombatBaseComponent::AttackByAI() const
 void USSEnemyCombatBaseComponent::SpecialAttackByAI(const FGameplayTag& AbilityTag) const
 {
 	TryActivateAbility(AbilityTag);
+}
+
+void USSEnemyCombatBaseComponent::Rebound()
+{
+	Super::Rebound();
+
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetOwner());
+	AIPawn->SetRebound(true);
 }
