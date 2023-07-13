@@ -30,11 +30,6 @@ public:
 	virtual void ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                       const FGameplayAbilityActivationInfo ActivationInfo) const override;
 
-	//virtual void AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload) override;
-	//virtual void AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload) override;
-	//virtual void AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload) override;
-	//virtual void AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload) override;
-
 	void DefenseHit();
 
 	UFUNCTION()

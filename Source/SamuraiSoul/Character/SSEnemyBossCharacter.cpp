@@ -2,10 +2,14 @@
 
 
 #include "Character/SSEnemyBossCharacter.h"
+
+#include "Abilities/SSAbilitySystemComponent.h"
 #include "AI/SSEnemyBossAIController.h"
 #include "Animation/SSEnemyBossAnimInstance.h"
+#include "Component/SSCharacterStatComponent.h"
 #include "Component/SSEnemyBossCombatComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/TimelineComponent.h"
 #include "DataAsset/SSAICharacterStatData.h"
 
 ASSEnemyBossCharacter::ASSEnemyBossCharacter()
@@ -32,6 +36,8 @@ ASSEnemyBossCharacter::ASSEnemyBossCharacter()
 	GetMesh()->SetRelativeLocation(FVector{0.f, 0.f, -88.5f});
 	GetMesh()->SetRelativeRotation(FRotator{0.f, -90.f, 0.f});
 
+	DissolveTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("Dissolve Timeline"));
+
 	AIControllerClass = ASSEnemyBossAIController::StaticClass();
 	AutoPossessAI     = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
@@ -57,6 +63,27 @@ void ASSEnemyBossCharacter::RunAI()
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	SetActorTickEnabled(true);
+}
+
+void ASSEnemyBossCharacter::UpdateMaterialDissolve(float DissolveTime)
+{
+	if (DynamicDissolveMaterialInstance == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("This is null"));
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("dissolve : %f"), DissolveTime);
+	DynamicDissolveMaterialInstance->SetScalarParameterValue(TEXT("Dissolve"), DissolveTime);
+}
+
+void ASSEnemyBossCharacter::EndMaterialDissolve()
+{
+	Destroy();
+
+	StatComponent->DestroyComponent();
+	CombatComponent->DestroyComponent();
+	AbilitySystemComponent->DestroyComponent();
+	DissolveTimeline->DestroyComponent();
 }
 
 void ASSEnemyBossCharacter::BeginPlay()
@@ -114,10 +141,41 @@ void ASSEnemyBossCharacter::AttackByAI()
 	else
 	{
 		int Count  = AICharacterStatData->SpectialAttackTags.Num() - 1;
-		int Result = FMath::RandRange(0, Count);
+		int Result = FMath::RandRange(1, Count);
 
 		CombatComponent->SpecialAttackByAI(AICharacterStatData->SpectialAttackTags[Result]);
 	}
+}
+
+void ASSEnemyBossCharacter::Die()
+{
+	Super::Die();
+
+	if (nullptr == DissolveCurve
+		|| nullptr == DissolveTimeline
+		|| nullptr == DissolveMaterialInstance)
+	{
+		return;
+	}
+
+	DynamicDissolveMaterialInstance = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
+
+	const int32 MaterialCount = GetMesh()->GetNumOverrideMaterials();
+
+	for (int i = 0; i < MaterialCount; ++i)
+	{
+		GetMesh()->SetMaterial(i, DynamicDissolveMaterialInstance);
+		DynamicDissolveMaterialInstance->SetScalarParameterValue(TEXT("Disslove"), -0.5f);
+	}
+
+	FOnTimelineFloat DissolveTrack;
+	DissolveTrack.BindDynamic(this, &ThisClass::UpdateMaterialDissolve);
+	DissolveTimeline->AddInterpFloat(DissolveCurve, DissolveTrack);
+
+	FOnTimelineEvent TimelineEndEvent;
+	TimelineEndEvent.BindDynamic(this, &ThisClass::EndMaterialDissolve);
+	DissolveTimeline->SetTimelineFinishedFunc(TimelineEndEvent);
+	DissolveTimeline->Play();
 }
 
 void ASSEnemyBossCharacter::RangeAttack()

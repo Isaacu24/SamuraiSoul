@@ -183,6 +183,15 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 			AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 			AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
 
+			ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(GetPawn());
+
+			if (nullptr == AIPawn)
+			{
+				return;
+			}
+
+			AIPawn->SetAssassinationCollision(true);
+
 			SetFocus(InCharacter);
 			SetPatrol(false);
 		}
@@ -213,6 +222,11 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 
 void ASSEnemyAIController::PerceptionUpdated(const TArray<AActor*>& UpdatedActors)
 {
+	if (true == Blackboard->GetValueAsBool(BBKEY_ISSEEPLAYER))
+	{
+		return;
+	}
+
 	for (size_t i = 0; i < UpdatedActors.Num(); ++i)
 	{
 		FActorPerceptionBlueprintInfo Info;

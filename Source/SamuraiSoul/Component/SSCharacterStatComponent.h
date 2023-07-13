@@ -55,6 +55,9 @@ protected:
 	virtual void HandleDead(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
 
 private:
+	void StartBPSubtract();
+
+private:
 	UPROPERTY()
 	TWeakObjectPtr<const USSAttributeSet> OwnerAttributeSet;
 

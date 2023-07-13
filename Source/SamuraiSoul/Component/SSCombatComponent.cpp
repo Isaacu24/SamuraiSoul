@@ -78,8 +78,7 @@ void USSCombatComponent::TryActivateAbility(const FGameplayTag& AbilityTag) cons
 	{
 		const USSAttributeSet* Attribute = Cast<USSAttributeSet>(AbilitySystemComponent->GetAttributeSet(USSAttributeSet::StaticClass()));
 
-		if (0.f >= Attribute->GetHealth()
-			&& FSSGameplayTags::Get().DeadTag == AbilityTag)
+		if (0.f >= Attribute->GetHealth())
 		{
 			return;
 		}

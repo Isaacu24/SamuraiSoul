@@ -5,12 +5,11 @@
 #include "Character/SSEnemyBossCharacter.h"
 #include "Character/SSEnemyCharacter.h"
 #include "Interface/SSCharacterHUDInterface.h"
-#include "Kismet/GameplayStatics.h"
 
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 {
 	static ConstructorHelpers::FObjectFinder<UDataTable>
-		DataTableRef(TEXT("/Script/Engine.DataTable'/Game/MyContent/GameData/DT_SSSpawnEnemyData.DT_SSSpawnEnemyData'"));
+		DataTableRef(TEXT("/Script/Engine.DataTable'/Game/MyContent/GameData/DT_SSSpawnEnemyData_Test.DT_SSSpawnEnemyData_Test'"));
 
 	if (nullptr != DataTableRef.Object)
 	{

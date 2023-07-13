@@ -55,6 +55,10 @@ public:
 	virtual void DefenseByAI() = 0;
 	virtual void DefenseEnd() = 0;
 
+	virtual void SetAssassinationCollision(bool Value)
+	{
+	};
+
 	virtual void ShowPerilousMark() = 0;
 	virtual void HidePerilousMark() = 0;
 

@@ -35,7 +35,7 @@ void USSGA_Defense::InputReleased(const FGameplayAbilitySpecHandle Handle, const
 void USSGA_Defense::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                     const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	//Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	OwnerCharacter                                    = Cast<ACharacter>(ActorInfo->OwnerActor);
 	const ISSCombatableInterface* CombatableCharacter = Cast<ISSCombatableInterface>(OwnerCharacter);
@@ -125,44 +125,3 @@ void USSGA_Defense::ReDefense(UAnimMontage* Montage, bool bInterrupted)
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 	ActivateAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, &CurrentEventData);
 }
-
-
-//void USSGA_Defense::AbilityCompleted(FGameplayTag EventTag, FGameplayEventData Payload)
-//{
-//	if (0 < HitStack)
-//	{
-//		return;
-//	}
-//
-//	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-//}
-//
-//void USSGA_Defense::AbilityBlendOut(FGameplayTag EventTag, FGameplayEventData Payload)
-//{
-//	if (0 < HitStack)
-//	{
-//		return;
-//	}
-//
-//	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-//}
-//
-//void USSGA_Defense::AbilityInterrupted(FGameplayTag EventTag, FGameplayEventData Payload)
-//{
-//	if (0 < HitStack)
-//	{
-//		return;
-//	}
-//
-//	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-//}
-//
-//void USSGA_Defense::AbilityCancelled(FGameplayTag EventTag, FGameplayEventData Payload)
-//{
-//	if (0 < HitStack)
-//	{
-//		return;
-//	}
-//
-//	CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
-//}

@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Character/SSEnemyCharacterBase.h"
-#include "DataAsset/SSAICharacterStatData.h"
 #include "SSEnemyBossCharacter.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FBossCharacterMontageEnded);
 
+class UTimelineComponent;
 class USSEnemyBossCombatComponent;
 
 /**
@@ -45,6 +45,8 @@ public:
 	virtual void BattleEntrance();
 	virtual void AttackByAI() override;
 
+	virtual void Die() override;
+
 	FORCEINLINE void SetDistanceToTarget(float Value)
 	{
 		Distance = Value;
@@ -60,6 +62,13 @@ public:
 
 	FBossCharacterMontageEnded OnBattleEtranced;
 
+private:
+	UFUNCTION()
+	void UpdateMaterialDissolve(float DissolveTime);
+
+	UFUNCTION()
+	void EndMaterialDissolve();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -72,6 +81,19 @@ protected:
 	UPROPERTY()
 	float Distance;
 
+private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyBossCombatComponent> CombatComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMaterialInstanceDynamic> DynamicDissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UTimelineComponent> DissolveTimeline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCurveFloat> DissolveCurve;
 };

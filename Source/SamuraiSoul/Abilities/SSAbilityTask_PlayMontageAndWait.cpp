@@ -11,7 +11,7 @@
 USSAbilityTask_PlayMontageAndWait::USSAbilityTask_PlayMontageAndWait(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	Rate = 1.f;
+	Rate                 = 1.f;
 	bStopWhenAbilityEnds = true;
 }
 
@@ -22,18 +22,20 @@ void USSAbilityTask_PlayMontageAndWait::Activate()
 		return;
 	}
 
-	bool bPlayedMontage = false;
+	bool bPlayedMontage                                 = false;
 	USSAbilitySystemComponent* SSAbilitySystemComponent = GetTargetASC();
 
 	if (nullptr != SSAbilitySystemComponent)
 	{
 		const FGameplayAbilityActorInfo* ActorInfo = Ability->GetCurrentActorInfo();
-		UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
+		UAnimInstance* AnimInstance                = ActorInfo->GetAnimInstance();
 
 		if (nullptr != AnimInstance)
 		{
 			// Bind to event callback
-			EventHandle = SSAbilitySystemComponent->AddGameplayEventTagContainerDelegate(EventTags, FGameplayEventTagMulticastDelegate::FDelegate::CreateUObject(this, &USSAbilityTask_PlayMontageAndWait::OnGameplayEvent));
+			EventHandle = SSAbilitySystemComponent->AddGameplayEventTagContainerDelegate(EventTags,
+			                                                                             FGameplayEventTagMulticastDelegate::FDelegate::CreateUObject(this,
+				                                                                             &USSAbilityTask_PlayMontageAndWait::OnGameplayEvent));
 
 			if (SSAbilitySystemComponent->PlayMontage(Ability, Ability->GetCurrentActivationInfo(), MontageToPlay, Rate, StartSection) > 0.f)
 			{
@@ -53,7 +55,8 @@ void USSAbilityTask_PlayMontageAndWait::Activate()
 
 				ACharacter* Character = Cast<ACharacter>(GetAvatarActor());
 				if (Character && (Character->GetLocalRole() == ROLE_Authority ||
-					(Character->GetLocalRole() == ROLE_AutonomousProxy && Ability->GetNetExecutionPolicy() == EGameplayAbilityNetExecutionPolicy::LocalPredicted)))
+					(Character->GetLocalRole() == ROLE_AutonomousProxy && Ability->GetNetExecutionPolicy() ==
+						EGameplayAbilityNetExecutionPolicy::LocalPredicted)))
 				{
 					Character->SetAnimRootMotionTranslationScale(AnimRootMotionTranslationScale);
 				}
@@ -63,12 +66,12 @@ void USSAbilityTask_PlayMontageAndWait::Activate()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("URPGAbilityTask_PlayMontageAndWaitForEvent call to PlayMontage failed!"));
+			UE_LOG(LogTemp, Warning, TEXT("USSAbilityTask_PlayMontageAndWaitForEvent call to PlayMontage failed!"));
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("URPGAbilityTask_PlayMontageAndWaitForEvent called on invalid AbilitySystemComponent"));
+		UE_LOG(LogTemp, Warning, TEXT("USSAbilityTask_PlayMontageAndWaitForEvent called on invalid AbilitySystemComponent"));
 	}
 
 	if (false == bPlayedMontage)
@@ -98,7 +101,7 @@ FString USSAbilityTask_PlayMontageAndWait::GetDebugString() const
 	if (nullptr != Ability)
 	{
 		const FGameplayAbilityActorInfo* ActorInfo = Ability->GetCurrentActorInfo();
-		UAnimInstance* AnimInstance = ActorInfo->GetAnimInstance();
+		UAnimInstance* AnimInstance                = ActorInfo->GetAnimInstance();
 
 		if (nullptr != AnimInstance)
 		{
@@ -106,7 +109,8 @@ FString USSAbilityTask_PlayMontageAndWait::GetDebugString() const
 		}
 	}
 
-	return FString::Printf(TEXT("PlayMontageAndWaitForEvent. MontageToPlay: %s  (Currently Playing): %s"), *GetNameSafe(MontageToPlay), *GetNameSafe(PlayingMontage));
+	return FString::Printf(TEXT("PlayMontageAndWaitForEvent. MontageToPlay: %s  (Currently Playing): %s"), *GetNameSafe(MontageToPlay),
+	                       *GetNameSafe(PlayingMontage));
 }
 
 void USSAbilityTask_PlayMontageAndWait::OnDestroy(bool AbilityEnded)
@@ -115,7 +119,7 @@ void USSAbilityTask_PlayMontageAndWait::OnDestroy(bool AbilityEnded)
 	{
 		Ability->OnGameplayAbilityCancelled.Remove(CancelledHandle);
 
-		if (true == AbilityEnded 
+		if (true == AbilityEnded
 			&& true == bStopWhenAbilityEnds)
 		{
 			StopPlayingMontage();
@@ -131,17 +135,19 @@ void USSAbilityTask_PlayMontageAndWait::OnDestroy(bool AbilityEnded)
 	Super::OnDestroy(AbilityEnded);
 }
 
-USSAbilityTask_PlayMontageAndWait* USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(UGameplayAbility* OwningAbility, FName TaskInstanceName, UAnimMontage* MontageToPlay, FGameplayTagContainer EventTags, float Rate, FName StartSection, bool bStopWhenAbilityEnds, float AnimRootMotionTranslationScale)
+USSAbilityTask_PlayMontageAndWait* USSAbilityTask_PlayMontageAndWait::PlayMontageAndWaitForEvent(
+	UGameplayAbility* OwningAbility, FName TaskInstanceName, UAnimMontage* MontageToPlay, FGameplayTagContainer EventTags, float Rate, FName StartSection,
+	bool bStopWhenAbilityEnds, float AnimRootMotionTranslationScale)
 {
 	UAbilitySystemGlobals::NonShipping_ApplyGlobalAbilityScaler_Rate(Rate);
 
 	USSAbilityTask_PlayMontageAndWait* MyObj = NewAbilityTask<USSAbilityTask_PlayMontageAndWait>(OwningAbility, TaskInstanceName);
-	MyObj->MontageToPlay = MontageToPlay;
-	MyObj->EventTags = EventTags;
-	MyObj->Rate = Rate;
-	MyObj->StartSection = StartSection;
-	MyObj->AnimRootMotionTranslationScale = AnimRootMotionTranslationScale;
-	MyObj->bStopWhenAbilityEnds = bStopWhenAbilityEnds;
+	MyObj->MontageToPlay                     = MontageToPlay;
+	MyObj->EventTags                         = EventTags;
+	MyObj->Rate                              = Rate;
+	MyObj->StartSection                      = StartSection;
+	MyObj->AnimRootMotionTranslationScale    = AnimRootMotionTranslationScale;
+	MyObj->bStopWhenAbilityEnds              = bStopWhenAbilityEnds;
 
 	return MyObj;
 }
@@ -193,7 +199,7 @@ USSAbilitySystemComponent* USSAbilityTask_PlayMontageAndWait::GetTargetASC()
 
 void USSAbilityTask_PlayMontageAndWait::OnMontageBlendingOut(UAnimMontage* Montage, bool bInterrupted)
 {
-	if (Ability && Ability->GetCurrentMontage() == MontageToPlay)
+	if (nullptr != Ability && Ability->GetCurrentMontage() == MontageToPlay)
 	{
 		if (Montage == MontageToPlay)
 		{
@@ -206,7 +212,6 @@ void USSAbilityTask_PlayMontageAndWait::OnMontageBlendingOut(UAnimMontage* Monta
 			{
 				Character->SetAnimRootMotionTranslationScale(1.f);
 			}
-
 		}
 	}
 
@@ -229,10 +234,10 @@ void USSAbilityTask_PlayMontageAndWait::OnMontageBlendingOut(UAnimMontage* Monta
 
 void USSAbilityTask_PlayMontageAndWait::OnAbilityCancelled()
 {
-	if (StopPlayingMontage())
+	if (true == StopPlayingMontage())
 	{
 		// Let the BP handle the interrupt as well
-		if (ShouldBroadcastAbilityTaskDelegates())
+		if (true == ShouldBroadcastAbilityTaskDelegates())
 		{
 			OnCancelled.Broadcast(FGameplayTag(), FGameplayEventData());
 		}
@@ -243,7 +248,7 @@ void USSAbilityTask_PlayMontageAndWait::OnMontageEnded(UAnimMontage* Montage, bo
 {
 	if (!bInterrupted)
 	{
-		if (ShouldBroadcastAbilityTaskDelegates())
+		if (true == ShouldBroadcastAbilityTaskDelegates())
 		{
 			OnCompleted.Broadcast(FGameplayTag(), FGameplayEventData());
 		}
@@ -254,10 +259,10 @@ void USSAbilityTask_PlayMontageAndWait::OnMontageEnded(UAnimMontage* Montage, bo
 
 void USSAbilityTask_PlayMontageAndWait::OnGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
 {
-	if (ShouldBroadcastAbilityTaskDelegates())
+	if (true == ShouldBroadcastAbilityTaskDelegates())
 	{
 		FGameplayEventData TempData = *Payload;
-		TempData.EventTag = EventTag;
+		TempData.EventTag           = EventTag;
 
 		EventReceived.Broadcast(EventTag, TempData);
 	}

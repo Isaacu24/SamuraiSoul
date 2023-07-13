@@ -60,6 +60,7 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	AssassinationCollider->SetupAttachment(GetMesh());
 	AssassinationCollider->SetBoxExtent(FVector{100.f, 100.f, 100.f});
 	AssassinationCollider->SetRelativeLocation(FVector(0.0f, -140.f, 110.0f));
+	AssassinationCollider->SetHiddenInGame(false);
 
 	CombatComponent = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 }
@@ -207,6 +208,19 @@ EAttackType ASSEnemyCharacter::GetWeaponAttakType() const
 void ASSEnemyCharacter::SetWeaponAttackType(EAttackType InType)
 {
 	CombatComponent->GetWeapon()->SetAttackType(InType);
+}
+
+void ASSEnemyCharacter::SetAssassinationCollision(bool Value)
+{
+	if (Value == true)
+	{
+		AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+
+	else
+	{
+		AssassinationCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void ASSEnemyCharacter::SetParry(bool Value)

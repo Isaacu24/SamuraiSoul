@@ -56,6 +56,8 @@ public:
 	virtual EAttackType GetWeaponAttakType() const override;
 	virtual void SetWeaponAttackType(EAttackType InType) override;
 
+	virtual void SetAssassinationCollision(bool Value) override;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USSEnemyCombatComponent> CombatComponent;

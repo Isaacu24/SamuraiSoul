@@ -96,18 +96,25 @@ void USSCharacterStatComponent::HandleDead(AActor* DamageInstigator, AActor* Dam
 	OnHPZero.Broadcast();
 }
 
+void USSCharacterStatComponent::StartBPSubtract()
+{
+	if (false == OwnerAttributeSet.IsValid())
+	{
+		return;
+	}
+
+	if (0.f >= (OwnerAttributeSet->GetBalance() - 0.01f))
+	{
+		OnBPZero.Broadcast();
+	}
+}
+
 void USSCharacterStatComponent::HandleBPSubtracted(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec,
                                                    float DamageMagnitude)
 {
-	if (0.f >= OwnerAttributeSet->GetBalance() - 0.01f)
+	if (0.f >= (OwnerAttributeSet->GetBalance() - 0.01f))
 	{
-		GetWorld()->GetTimerManager().SetTimer(BPZeroHandle, FTimerDelegate::CreateLambda([&]()
-		{
-			if (0.f >= OwnerAttributeSet->GetBalance() - 0.01f)
-			{
-				OnBPZero.Broadcast();
-			}
-		}), 5.0f, false);
+		GetWorld()->GetTimerManager().SetTimer(BPZeroHandle, this, &USSCharacterStatComponent::StartBPSubtract, 5.0f, false);
 	}
 
 	OnBPChanged.Broadcast(OwnerAttributeSet->GetBalance());
