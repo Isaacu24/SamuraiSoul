@@ -43,17 +43,19 @@ void USSGA_Defense::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	CombatableCharacter->GetCombatComponent()->OnDefense();
 	CombatableCharacter->GetCombatComponent()->BindDefenseHit()->OnHitEvent.BindUObject(this, &USSGA_Defense::DefenseHit);
 
-	if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
-	{
-		//Not Root Anim Montage
-		PlayMontage(DefenseMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	}
+	PlayMontage(DefenseMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	else
-	{
-		//Root Anim Montage
-		PlayMontage(DefenseRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	}
+	//if (0.1f <= ActorInfo->OwnerActor->GetVelocity().Size())
+	//{
+	//	//Not Root Anim Montage
+	//	PlayMontage(DefenseMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	//}
+
+	//else
+	//{
+	//	//Root Anim Montage
+	//	PlayMontage(DefenseRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	//}
 }
 
 void USSGA_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -77,22 +79,18 @@ void USSGA_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		}
 	}
 
-	//ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
+	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(ActorInfo->OwnerActor);
 
-	//if (nullptr != AIPawn)
-	//{
-	//	AIPawn->DefenseEnd();
-	//}
+	if (nullptr != AIPawn)
+	{
+		AIPawn->DefenseEnd();
+	}
 }
 
 void USSGA_Defense::ApplyCost(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                               const FGameplayAbilityActivationInfo ActivationInfo) const
 {
 	Super::ApplyCost(Handle, ActorInfo, ActivationInfo);
-}
-
-void USSGA_Defense::AbilityEventReceived(FGameplayTag EventTag, FGameplayEventData Payload)
-{
 }
 
 void USSGA_Defense::DefenseHit()
@@ -122,6 +120,6 @@ void USSGA_Defense::DefenseHit()
 
 void USSGA_Defense::ReDefense(UAnimMontage* Montage, bool bInterrupted)
 {
-	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-	ActivateAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, &CurrentEventData);
+	//EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	//ActivateAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, &CurrentEventData);
 }

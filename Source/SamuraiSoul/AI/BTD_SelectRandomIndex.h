@@ -4,23 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTDecorator.h"
-#include "BTD_AttackIndexCheck.generated.h"
+#include "BTD_SelectRandomIndex.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SAMURAISOUL_API UBTD_AttackIndexCheck : public UBTDecorator
+class SAMURAISOUL_API UBTD_SelectRandomIndex : public UBTDecorator
 {
 	GENERATED_BODY()
 
 public:
-	UBTD_AttackIndexCheck();
+	UBTD_SelectRandomIndex();
 
 protected:
 	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	uint8 MyIndex;
+	uint8 MaxIndex;
 };

@@ -53,7 +53,7 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 
 	ISSCharacterAIInterface* AIPawn = Cast<ISSCharacterAIInterface>(InPawn);
 
-	////Sight
+	//Sight
 	if (nullptr != AIPawn
 		&& nullptr != AISenseConfigSight)
 	{
@@ -213,6 +213,7 @@ void ASSEnemyAIController::TargetPerceptionUpdated(AActor* InActor, FAIStimulus 
 
 			SetFocus(nullptr);
 			SetPatrol(true);
+
 			AIPawn->Walk();
 		}
 

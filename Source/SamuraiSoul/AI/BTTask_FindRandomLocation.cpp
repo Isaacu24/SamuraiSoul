@@ -8,7 +8,7 @@
 
 UBTTask_FindRandomLocation::UBTTask_FindRandomLocation()
 {
-	NodeName = TEXT("Find Random Location");
+	NodeName = TEXT("Find Random Patrol Pos");
 }
 
 EBTNodeResult::Type UBTTask_FindRandomLocation::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

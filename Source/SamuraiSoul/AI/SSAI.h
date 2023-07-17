@@ -15,7 +15,7 @@
 #define BBKEY_ISBEEXECUTED TEXT("IsBeExecuted")
 #define BBKEY_ISEQUIP TEXT("IsEquip")
 
-#define BBKEY_ATTACKINDEX TEXT("AttackIndex")
+#define BBKEY_RANDOMINDEX TEXT("RandomIndex")
 
 //Boss
 #define BBKEY_ISBATTLESTART TEXT("IsBattleStart")

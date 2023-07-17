@@ -60,7 +60,7 @@ ASSEnemyCharacter::ASSEnemyCharacter()
 	AssassinationCollider->SetupAttachment(GetMesh());
 	AssassinationCollider->SetBoxExtent(FVector{100.f, 100.f, 100.f});
 	AssassinationCollider->SetRelativeLocation(FVector(0.0f, -140.f, 110.0f));
-	AssassinationCollider->SetHiddenInGame(false);
+	//AssassinationCollider->SetHiddenInGame(false);
 
 	CombatComponent = CreateDefaultSubobject<USSEnemyCombatComponent>(TEXT("Combat Component"));
 }

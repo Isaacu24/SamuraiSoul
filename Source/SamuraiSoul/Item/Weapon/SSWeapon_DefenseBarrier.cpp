@@ -20,7 +20,7 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	WeaponCollider->SetRelativeRotation(FRotator{0.f, 90.f, 0.f});
 	WeaponCollider->SetBoxExtent(FVector{75.f, 5.f, 100.f});
 
-	WeaponCollider->SetCollisionProfileName("SSWeapon");
+	WeaponCollider->SetCollisionProfileName("Barrier");
 	WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	WeaponCollider->bHiddenInGame = false;
 
