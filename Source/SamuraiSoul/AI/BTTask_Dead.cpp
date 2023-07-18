@@ -13,6 +13,7 @@ EBTNodeResult::Type UBTTask_Dead::ExecuteTask(UBehaviorTreeComponent& OwnerComp,
 {
 	APawn* ControllingPawn                      = OwnerComp.GetAIOwner()->GetPawn();
 	ASSEnemyBaseAIController* EnemyAIController = Cast<ASSEnemyBaseAIController>(ControllingPawn->GetController());
+
 	EnemyAIController->SetFocus(nullptr);
 	EnemyAIController->StopAI();
 

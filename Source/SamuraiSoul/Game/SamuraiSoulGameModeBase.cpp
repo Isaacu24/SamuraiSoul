@@ -9,7 +9,7 @@
 ASamuraiSoulGameModeBase::ASamuraiSoulGameModeBase()
 {
 	static ConstructorHelpers::FObjectFinder<UDataTable>
-		DataTableRef(TEXT("/Script/Engine.DataTable'/Game/MyContent/GameData/DT_SSSpawnEnemyData_Test.DT_SSSpawnEnemyData_Test'"));
+		DataTableRef(TEXT("/Script/Engine.DataTable'/Game/MyContent/GameData/DT_SSSpawnEnemyData.DT_SSSpawnEnemyData'"));
 
 	if (nullptr != DataTableRef.Object)
 	{

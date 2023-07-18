@@ -32,11 +32,8 @@ public:
 
 	void DefenseHit();
 
-	UFUNCTION()
-	void ReDefense(UAnimMontage* Montage, bool bInterrupted);
-
 private:
-	ACharacter* OwnerCharacter;
+	TObjectPtr<ACharacter> OwnerCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAnimMontage> DefenseMontage;

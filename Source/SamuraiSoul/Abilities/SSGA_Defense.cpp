@@ -75,7 +75,7 @@ void USSGA_Defense::EndAbility(const FGameplayAbilitySpecHandle Handle, const FG
 		if (nullptr != OwnerCharacter->GetMesh()->GetAnimInstance())
 		{
 			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseMontage);
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseRootMontage);
+			//OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseLEnd"), DefenseRootMontage);
 		}
 	}
 
@@ -99,27 +99,18 @@ void USSGA_Defense::DefenseHit()
 	{
 		case 0:
 			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit"), DefenseMontage);
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit"), DefenseRootMontage);
+		//OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit"), DefenseRootMontage);
 			break;
 		case 1:
 			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit1"), DefenseMontage);
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit1"), DefenseRootMontage);
+		//OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit1"), DefenseRootMontage);
 			break;
 
 		case 2:
 			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit2"), DefenseMontage);
-			OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit2"), DefenseRootMontage);
+		//OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_JumpToSection(FName("DefenseHit2"), DefenseRootMontage);
 			break;
 	}
 
 	++HitStack;
-
-	//OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_Play(DefenseHitMontage);
-	//OwnerCharacter->GetMesh()->GetAnimInstance()->OnMontageEnded.AddDynamic(this, &USSGA_Defense::ReDefense);
-}
-
-void USSGA_Defense::ReDefense(UAnimMontage* Montage, bool bInterrupted)
-{
-	//EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
-	//ActivateAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, &CurrentEventData);
 }
