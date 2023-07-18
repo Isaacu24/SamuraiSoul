@@ -63,7 +63,7 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 		AISenseConfigSight->SightRadius                              = AIPawn->GetAIDetectRadius();
 		AISenseConfigSight->LoseSightRadius                          = AIPawn->GetAILoseDetectRadius();
 		AISenseConfigSight->PeripheralVisionAngleDegrees             = AIPawn->GetAISight();
-		AISenseConfigSight->SetMaxAge(5.0f);
+		AISenseConfigSight->SetMaxAge(3.0f);
 
 		AIPerceptionComponent->SetDominantSense(AISenseConfigSight->GetSenseImplementation());
 		AIPerceptionComponent->ConfigureSense(*AISenseConfigSight);
@@ -77,7 +77,6 @@ void ASSEnemyAIController::OnPossess(APawn* InPawn)
 		AISenseConfigHearing->DetectionByAffiliation.bDetectEnemies    = true;
 		AISenseConfigHearing->DetectionByAffiliation.bDetectFriendlies = true;
 		AISenseConfigHearing->DetectionByAffiliation.bDetectNeutrals   = true;
-		AISenseConfigHearing->SetMaxAge(5.0f);
 
 		AIPerceptionComponent->SetDominantSense(AISenseConfigHearing->GetSenseImplementation());
 		AIPerceptionComponent->ConfigureSense(*AISenseConfigHearing);
