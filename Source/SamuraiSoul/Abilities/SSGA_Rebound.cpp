@@ -9,14 +9,14 @@ USSGA_Rebound::USSGA_Rebound()
 {
 	AbilityID = ESSAbilityID::Rebound;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().ReboundTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().ReboundTag);
-	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().ReactionTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().ReboundTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().ReboundTag);
+	//ActivationBlockedTags.AddTag(FSSGameplayTags::Get().ReactionTag);
 
-	FAbilityTriggerData TriggerData;
-	TriggerData.TriggerTag    = FSSGameplayTags::Get().ReboundTag;
-	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-	AbilityTriggers.Emplace(TriggerData);
+	//FAbilityTriggerData TriggerData;
+	//TriggerData.TriggerTag    = FSSGameplayTags::Get().ReboundTag;
+	//TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	//AbilityTriggers.Emplace(TriggerData);
 }
 
 void USSGA_Rebound::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

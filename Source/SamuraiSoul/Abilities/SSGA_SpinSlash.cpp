@@ -12,9 +12,9 @@ USSGA_SpinSlash::USSGA_SpinSlash()
 {
 	AbilityID = ESSAbilityID::SpinSlash;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SpinSlashTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SpinSlashTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SpinSlashTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SpinSlashTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_SpinSlash::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

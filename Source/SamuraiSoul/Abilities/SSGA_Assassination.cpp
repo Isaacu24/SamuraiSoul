@@ -13,9 +13,9 @@ USSGA_Assassination::USSGA_Assassination()
 {
 	AbilityID = ESSAbilityID::Assassination;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_AssassinationTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_AssassinationTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_AssassinationTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_AssassinationTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Assassination::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

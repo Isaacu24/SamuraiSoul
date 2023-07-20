@@ -12,14 +12,14 @@ USSGA_Hit::USSGA_Hit()
 {
 	AbilityID = ESSAbilityID::Hit;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().HitTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().HitTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().HitTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().HitTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 
-	FAbilityTriggerData TriggerData;
-	TriggerData.TriggerTag    = FSSGameplayTags::Get().HitTag;
-	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-	AbilityTriggers.Emplace(TriggerData);
+	//FAbilityTriggerData TriggerData;
+	//TriggerData.TriggerTag    = FSSGameplayTags::Get().HitTag;
+	//TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	//AbilityTriggers.Emplace(TriggerData);
 }
 
 void USSGA_Hit::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

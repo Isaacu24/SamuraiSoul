@@ -163,7 +163,7 @@ void USSCombatComponent::OnWeapon() const
 		return;
 	}
 
-	Weapon->CollisionHiddenInGame(true);
+	//Weapon->CollisionHiddenInGame(true);
 	Weapon->SetActorEnableCollision(true);
 	Weapon->SetActorTickEnabled(true);
 }

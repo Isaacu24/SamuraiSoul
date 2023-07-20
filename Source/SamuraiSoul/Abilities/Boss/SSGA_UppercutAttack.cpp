@@ -9,9 +9,9 @@ USSGA_UppercutAttack::USSGA_UppercutAttack()
 {
 	AbilityID = ESSAbilityID::UppercutAttack;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_UppercutAttackTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_UppercutAttackTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_UppercutAttackTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_UppercutAttackTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_UppercutAttack::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

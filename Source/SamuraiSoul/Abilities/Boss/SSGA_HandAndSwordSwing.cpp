@@ -9,9 +9,9 @@ USSGA_HandAndSwordSwing::USSGA_HandAndSwordSwing()
 {
 	AbilityID = ESSAbilityID::HandAndSwordSwing;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_HandAndSwordSwingTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_HandAndSwordSwingTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_HandAndSwordSwingTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_HandAndSwordSwingTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_HandAndSwordSwing::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

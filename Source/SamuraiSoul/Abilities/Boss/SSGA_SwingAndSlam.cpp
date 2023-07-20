@@ -9,9 +9,9 @@ USSGA_SwingAndSlam::USSGA_SwingAndSlam()
 {
 	AbilityID = ESSAbilityID::SwingAndSlam;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SwingAndSlamTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SwingAndSlamTag);
-	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SwingAndSlamTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SwingAndSlamTag);
+	//ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_SwingAndSlam::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

@@ -6,6 +6,8 @@
 #include "SSWeapon.h"
 #include "SSWeapon_DefenseBarrier.generated.h"
 
+class UCapsuleComponent;
+
 DECLARE_DELEGATE(FDefenseHitDelegate)
 
 UCLASS()
@@ -28,12 +30,16 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	virtual void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
-	                               const FHitResult& SweepResult) override;
+	virtual void OnWeaponOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
+	                                  bool bFromSweep,
+	                                  const FHitResult& SweepResult) override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
 	EDefenseState DefenseType;
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	TObjectPtr<UCapsuleComponent> BarrierCollider;
 };

@@ -13,9 +13,9 @@ USSGA_Stab::USSGA_Stab()
 {
 	AbilityID = ESSAbilityID::Stab;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_StabTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_StabTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_StabTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_StabTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Stab::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

@@ -13,9 +13,9 @@ USSGA_Dodge::USSGA_Dodge()
 {
 	AbilityID = ESSAbilityID::Dodge;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DodgeTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Dodge::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

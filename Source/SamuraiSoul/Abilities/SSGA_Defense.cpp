@@ -14,9 +14,9 @@ USSGA_Defense::USSGA_Defense()
 {
 	AbilityID = ESSAbilityID::Defense;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Defense::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

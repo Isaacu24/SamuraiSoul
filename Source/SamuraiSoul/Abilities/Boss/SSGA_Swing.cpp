@@ -9,9 +9,9 @@ USSGA_Swing::USSGA_Swing()
 {
 	AbilityID = ESSAbilityID::Swing;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SwingTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SwingTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SwingTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SwingTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Swing::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

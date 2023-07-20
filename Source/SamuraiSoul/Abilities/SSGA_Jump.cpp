@@ -10,9 +10,9 @@ USSGA_Jump::USSGA_Jump()
 {
 	AbilityID = ESSAbilityID::Jump;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_JumpTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Jump::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

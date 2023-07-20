@@ -9,15 +9,15 @@ USSGA_Dead::USSGA_Dead()
 {
 	AbilityID = ESSAbilityID::Dead;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().DeadTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeadTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().DeadTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().DeadTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
 
-	FAbilityTriggerData TriggerData;
-	TriggerData.TriggerTag    = FSSGameplayTags::Get().DeadTag;
-	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-	AbilityTriggers.Emplace(TriggerData);
+	//FAbilityTriggerData TriggerData;
+	//TriggerData.TriggerTag    = FSSGameplayTags::Get().DeadTag;
+	//TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	//AbilityTriggers.Emplace(TriggerData);
 }
 
 void USSGA_Dead::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

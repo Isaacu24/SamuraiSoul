@@ -6,6 +6,7 @@
 #include <Interface/SSCombatableInterface.h>
 #include <Interface/SSBehaviorInterface.h>
 #include "Component/SSCombatComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 {
@@ -14,17 +15,18 @@ ASSWeapon_DefenseBarrier::ASSWeapon_DefenseBarrier()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon Mesh"));
 	Mesh->SetupAttachment(GetRootComponent());
 
-	WeaponCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Collider"));
-	WeaponCollider->SetupAttachment(Mesh);
-	WeaponCollider->SetRelativeLocation(FVector{0.f, 0.f, 20.f});
-	WeaponCollider->SetRelativeRotation(FRotator{0.f, 90.f, 0.f});
-	WeaponCollider->SetBoxExtent(FVector{75.f, 5.f, 100.f});
+	BarrierCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Barrier Collider"));
+	BarrierCollider->SetupAttachment(Mesh);
+	BarrierCollider->SetRelativeLocation(FVector{-30.f, 0.f, 0.f});
+	BarrierCollider->SetRelativeRotation(FRotator{0.f, 90.f, 0.f});
+	BarrierCollider->SetCapsuleHalfHeight(120.f);
+	BarrierCollider->SetCapsuleRadius(80.f);
 
-	WeaponCollider->SetCollisionProfileName("Barrier");
-	WeaponCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	WeaponCollider->bHiddenInGame = false;
+	BarrierCollider->SetCollisionProfileName("Barrier");
+	BarrierCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//BarrierCollider->bHiddenInGame = false;
 
-	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnBoxOverlapBegin);
+	BarrierCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_DefenseBarrier::OnWeaponOverlapBegin);
 
 	WeaponType = EWeaponType::Defense;
 }
@@ -180,8 +182,8 @@ void ASSWeapon_DefenseBarrier::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASSWeapon_DefenseBarrier::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
-                                                 bool bFromSweep, const FHitResult& SweepResult)
+void ASSWeapon_DefenseBarrier::OnWeaponOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
+                                                    bool bFromSweep, const FHitResult& SweepResult)
 {
 	switch (DefenseType)
 	{

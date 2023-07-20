@@ -8,7 +8,7 @@ AEventTrigger::AEventTrigger()
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Collision"));
 	Collider->SetCollisionProfileName("EventTrigger");
 	Collider->SetBoxExtent(FVector{5.f, 5.f, 5.f});
-	Collider->bHiddenInGame = false;
+	//Collider->bHiddenInGame = false;
 }
 
 // Called when the game starts or when spawned

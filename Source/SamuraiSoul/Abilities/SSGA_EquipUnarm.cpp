@@ -12,9 +12,9 @@ USSGA_EquipUnarm::USSGA_EquipUnarm()
 {
 	AbilityID = ESSAbilityID::EquipUnarm;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_EquipUnarmTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_EquipUnarm::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

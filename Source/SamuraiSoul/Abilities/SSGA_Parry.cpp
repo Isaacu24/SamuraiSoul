@@ -8,10 +8,10 @@ USSGA_Parry::USSGA_Parry()
 {
 	AbilityID = ESSAbilityID::Parry;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
-	ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_ParryTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//ActivationBlockedTags.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_Parry::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

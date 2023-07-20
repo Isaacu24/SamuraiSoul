@@ -14,6 +14,8 @@ public:
 
 	static const FSSGameplayTags& Get() { return GameplayTags; }
 
+	static void InitGameplayTag();
+
 public:
 	//Ability
 	FGameplayTag AbilityTag;

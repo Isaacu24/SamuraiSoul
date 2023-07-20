@@ -14,8 +14,9 @@ void ASSWeapon::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASSWeapon::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex, bool bFromSweep,
-                                  const FHitResult& SweepResult)
+void ASSWeapon::OnWeaponOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
+                                     bool bFromSweep,
+                                     const FHitResult& SweepResult)
 {
 }
 

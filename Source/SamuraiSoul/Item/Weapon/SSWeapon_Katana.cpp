@@ -28,7 +28,7 @@ ASSWeapon_Katana::ASSWeapon_Katana()
 	WeaponCollider->SetCollisionProfileName("PlayerWeapon");
 	WeaponCollider->SetRelativeLocation(FVector{0.f, 53.5f, 0.f});
 	WeaponCollider->SetBoxExtent(FVector{4.f, 45.f, 4.f});
-	WeaponCollider->bHiddenInGame = false;
+	//WeaponCollider->bHiddenInGame = false;
 
 	ColliderStart = CreateDefaultSubobject<USceneComponent>(TEXT("Collider Start"));
 	ColliderStart->SetupAttachment(Mesh);
@@ -37,14 +37,14 @@ ASSWeapon_Katana::ASSWeapon_Katana()
 	ColliderEnd->SetupAttachment(Mesh);
 	ColliderEnd->SetRelativeLocation(FVector{0.f, 100.f, 0.f});
 
-	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_Katana::OnBoxOverlapBegin);
+	WeaponCollider->OnComponentBeginOverlap.AddDynamic(this, &ASSWeapon_Katana::OnWeaponOverlapBegin);
 
 	WeaponType = EWeaponType::Katana;
 	AttackType = EAttackType::Normal;
 }
 
-void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
-                                         bool bFromSweep, const FHitResult& SweepResult)
+void ASSWeapon_Katana::OnWeaponOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int OtherBodyIndex,
+                                            bool bFromSweep, const FHitResult& SweepResult)
 {
 	const FVector Start = ColliderStart->GetComponentLocation();
 	const FVector End   = ColliderEnd->GetComponentLocation();
@@ -76,7 +76,7 @@ void ASSWeapon_Katana::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 
 	if (nullptr != OutHit.GetActor())
 	{
-		DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
+		//DrawDebugSphere(GetWorld(), OutHit.ImpactPoint, 25.f, 12, FColor::Green, false, 1.f);
 	}
 
 	OnWeaponOverlap.ExecuteIfBound(OtherActor, OutHit);

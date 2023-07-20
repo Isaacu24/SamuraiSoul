@@ -17,9 +17,9 @@ USSGA_Slash::USSGA_Slash()
 {
 	AbilityID = ESSAbilityID::Slash;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
-	CancelAbilitiesWithTag.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_SlashTag);
+	//CancelAbilitiesWithTag.AddTag(FSSGameplayTags::Get().Ability_DefenseTag);
 }
 
 void USSGA_Slash::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

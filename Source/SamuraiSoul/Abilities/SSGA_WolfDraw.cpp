@@ -11,9 +11,9 @@ USSGA_WolfDraw::USSGA_WolfDraw()
 {
 	AbilityID = ESSAbilityID::WolfDraw;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().Ability_WolfDrawTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_WolfDrawTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().Ability_WolfDrawTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().Ability_WolfDrawTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().AbilityTag);
 }
 
 void USSGA_WolfDraw::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

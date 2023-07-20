@@ -12,14 +12,14 @@ USSGA_BeAssassinated::USSGA_BeAssassinated()
 {
 	AbilityID = ESSAbilityID::BeAssassinated;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().BeAssassinatedTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeAssassinatedTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().BeAssassinatedTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeAssassinatedTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
 
-	FAbilityTriggerData TriggerData;
-	TriggerData.TriggerTag    = FSSGameplayTags::Get().BeAssassinatedTag;
-	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-	AbilityTriggers.Emplace(TriggerData);
+	//FAbilityTriggerData TriggerData;
+	//TriggerData.TriggerTag    = FSSGameplayTags::Get().BeAssassinatedTag;
+	//TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	//AbilityTriggers.Emplace(TriggerData);
 }
 
 void USSGA_BeAssassinated::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
