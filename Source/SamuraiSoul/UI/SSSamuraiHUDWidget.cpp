@@ -3,6 +3,7 @@
 
 #include "UI/SSSamuraiHUDWidget.h"
 #include "SSBalanceGaugeWidget.h"
+#include "Animation/WidgetAnimation.h"
 #include "Components/EditableTextBox.h"
 #include "Components/Image.h"
 #include "UI/SSHPBarWidget.h"
@@ -87,12 +88,23 @@ void USSSamuraiHUDWidget::SetBossName(const FString& Name) const
 
 void USSSamuraiHUDWidget::OnDeathScreen()
 {
+	FWidgetAnimationDynamicEvent OnAnimationFinishedEvent = {};
+
+	OnAnimationFinishedEvent.Clear();
+	OnAnimationFinishedEvent.BindDynamic(this, &USSSamuraiHUDWidget::OnRestart);
+	BindToAnimationFinished(FadeIn, OnAnimationFinishedEvent);
+
 	PlayAnimation(FadeIn);
 }
 
 void USSSamuraiHUDWidget::OffPlayerBPGauge() const
 {
 	PlayerBPGauge->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void USSSamuraiHUDWidget::OnRestart()
+{
+	IsRestart = true;
 }
 
 void USSSamuraiHUDWidget::SetVisibilityBossHUD(ESlateVisibility Value) const

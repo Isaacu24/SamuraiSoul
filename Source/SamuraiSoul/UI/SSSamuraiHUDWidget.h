@@ -41,6 +41,14 @@ public:
 
 	void OffPlayerBPGauge() const;
 
+	UFUNCTION()
+	void OnRestart();
+
+	FORCEINLINE bool GetIsRestart() const
+	{
+		return IsRestart;
+	}
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -65,4 +73,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
 	TObjectPtr<UWidgetAnimation> FadeIn;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	uint8 IsRestart : 1;
 };

@@ -138,7 +138,7 @@ private:
 	UPROPERTY()
 	FVector2D MovementVector;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = HUD, meta = (AllowPrivateAccess = "true"))
 	USSSamuraiHUDWidget* MyHUD;
 
 	bool CanEnemyExecution;

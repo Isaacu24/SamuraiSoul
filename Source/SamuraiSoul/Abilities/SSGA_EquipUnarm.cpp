@@ -59,7 +59,7 @@ void USSGA_EquipUnarm::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		if (0.1f <= Owner->GetVelocity().Size())
 		{
 			//Not Root Anim Montage
-			PlayMontage(EquipRootMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
+			PlayMontage(EquipMontage, Handle, ActorInfo, ActivationInfo, TriggerEventData);
 			UE_LOG(LogTemp, Error, TEXT("EquipMontage"));
 		}
 
