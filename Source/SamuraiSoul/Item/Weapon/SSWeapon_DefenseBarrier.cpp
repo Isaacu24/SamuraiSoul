@@ -41,7 +41,7 @@ bool ASSWeapon_DefenseBarrier::CheckAttackDirection(FVector A, FVector B)
 	float ReturnValue = FVector::DotProduct(A, B);
 	GEngine->AddOnScreenDebugMessage(2, 2.0f, FColor::Blue, FString::SanitizeFloat(ReturnValue));
 
-	if (0.5f <= ReturnValue)
+	if (0.0f <= ReturnValue)
 	{
 		return false;
 	}
