@@ -56,3 +56,23 @@ void ASSEnemyBaseAIController::SetRebound(bool Value)
 		Blackboard->SetValueAsBool(BBKEY_ISREBOUND, Value);
 	}
 }
+
+void ASSEnemyBaseAIController::SetDead(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISDEAD, Value);
+	}
+}
+
+void ASSEnemyBaseAIController::SetHit(bool Value)
+{
+	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
+
+	if (true == UseBlackboard(BBAsset, BlackboardPtr))
+	{
+		Blackboard->SetValueAsBool(BBKEY_ISHIT, Value);
+	}
+}

@@ -13,15 +13,15 @@ USSGA_BeExecuted::USSGA_BeExecuted()
 {
 	AbilityID = ESSAbilityID::BeExecuted;
 
-	AbilityTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
-	ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
-	BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
-	ActivationRequiredTags.AddTag(FSSGameplayTags::Get().ReboundTag);
+	//AbilityTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
+	//ActivationOwnedTags.AddTag(FSSGameplayTags::Get().BeExecutedTag);
+	//BlockAbilitiesWithTag.AddTag(FSSGameplayTags::Get().ReactionTag);
+	//ActivationRequiredTags.AddTag(FSSGameplayTags::Get().ReboundTag);
 
-	FAbilityTriggerData TriggerData;
-	TriggerData.TriggerTag    = FSSGameplayTags::Get().BeExecutedTag;
-	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
-	AbilityTriggers.Emplace(TriggerData);
+	//FAbilityTriggerData TriggerData;
+	//TriggerData.TriggerTag    = FSSGameplayTags::Get().BeExecutedTag;
+	//TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
+	//AbilityTriggers.Emplace(TriggerData);
 }
 
 void USSGA_BeExecuted::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

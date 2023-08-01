@@ -115,26 +115,6 @@ void ASSEnemyAIController::SetEquip(bool Value)
 	}
 }
 
-void ASSEnemyAIController::SetHit(bool Value)
-{
-	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
-
-	if (true == UseBlackboard(BBAsset, BlackboardPtr))
-	{
-		Blackboard->SetValueAsBool(BBKEY_ISHIT, Value);
-	}
-}
-
-void ASSEnemyAIController::SetDead(bool Value)
-{
-	UBlackboardComponent* BlackboardPtr = Blackboard.Get();
-
-	if (true == UseBlackboard(BBAsset, BlackboardPtr))
-	{
-		Blackboard->SetValueAsBool(BBKEY_ISDEAD, Value);
-	}
-}
-
 void ASSEnemyAIController::SetBeExecuted(bool Value)
 {
 	UBlackboardComponent* BlackboardPtr = Blackboard.Get();

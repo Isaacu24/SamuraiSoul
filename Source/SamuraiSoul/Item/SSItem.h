@@ -6,12 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "SSItem.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class SAMURAISOUL_API ASSItem : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASSItem();
 
@@ -19,8 +21,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+private:
+	UPROPERTY(EditAnywhere, Category = Item, meta = (AllowPrivateAccess = true))
+	TObjectPtr<USphereComponent> ItemCollider;
 };

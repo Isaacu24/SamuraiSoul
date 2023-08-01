@@ -28,6 +28,7 @@
 #include "Input/SSInputComponent.h"
 #include "LevelSequence/Public/LevelSequenceActor.h"
 #include "LevelSequence/Public/LevelSequencePlayer.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/SSSamuraiHUDWidget.h"
 
 // Sets default values
@@ -139,6 +140,11 @@ void ASSSamuraiCharacter::SetCharacterControlData(const USSCharacterControlData*
 	CameraArm->bInheritYaw             = ControlData->bInheritYaw;
 	CameraArm->bInheritRoll            = ControlData->bInheritRoll;
 	CameraArm->bDoCollisionTest        = ControlData->bDoCollisionTest;
+}
+
+void ASSSamuraiCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
 // Called every frame
@@ -310,7 +316,17 @@ void ASSSamuraiCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 	GetSSAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 }
 
-void ASSSamuraiCharacter::Run()
+//void ASSSamuraiCharacter::Run()
+//{
+//	if (true == bIsCrouch)
+//	{
+//		return;
+//	}
+//
+//	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+//}
+
+void ASSSamuraiCharacter::Run_Implementation()
 {
 	if (true == bIsCrouch)
 	{
@@ -320,7 +336,7 @@ void ASSSamuraiCharacter::Run()
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
-void ASSSamuraiCharacter::UnRun()
+void ASSSamuraiCharacter::UnRun_Implementation()
 {
 	if (true == bIsCrouch)
 	{

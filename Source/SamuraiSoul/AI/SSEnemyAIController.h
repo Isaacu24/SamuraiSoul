@@ -32,8 +32,6 @@ public:
 
 	virtual void SetParry(bool Value);
 	virtual void SetPatrol(bool Value);
-	virtual void SetHit(bool Value);
-	virtual void SetDead(bool Value);
 	virtual void SetEquip(bool Value);
 	virtual void SetBeExecuted(bool Value);
 

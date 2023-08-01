@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../SSItem.h"
 #include "Game/SamuraiSoul.h"
 #include "SSWeapon.generated.h"
 
@@ -16,7 +15,7 @@ class UStaticMeshComponent;
 DECLARE_DELEGATE_TwoParams(FWeaponCollisionOverlap, AActor* /*InActor*/, const FHitResult& /*OutHit*/);
 
 UCLASS()
-class SAMURAISOUL_API ASSWeapon : public ASSItem
+class SAMURAISOUL_API ASSWeapon : public AActor
 {
 	GENERATED_BODY()
 

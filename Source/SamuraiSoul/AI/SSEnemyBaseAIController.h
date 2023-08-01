@@ -29,6 +29,8 @@ public:
 	void StopAI();
 
 	virtual void SetRebound(bool Value);
+	virtual void SetDead(bool Value);
+	virtual void SetHit(bool Value);
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;

@@ -151,6 +151,13 @@ void ASSEnemyBossCharacter::Die()
 {
 	Super::Die();
 
+	ASSEnemyBossAIController* AIController = Cast<ASSEnemyBossAIController>(GetController());
+
+	if (nullptr != AIController)
+	{
+		AIController->SetDead(true);
+	}
+
 	if (nullptr == DissolveCurve
 		|| nullptr == DissolveTimeline
 		|| nullptr == DissolveMaterialInstance)
